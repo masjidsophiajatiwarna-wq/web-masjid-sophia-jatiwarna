@@ -1,0 +1,56 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "progdev.masjidsophiajatiwarna.com"
+        }
+      ],
+      "destination": "/progress-implementation-plan.html",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.masjidsophiajatiwarna.com"
+        }
+      ],
+      "destination": "/admin.html",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "progdev.masjidsophiajatiwarna.com"
+        }
+      ],
+      "destination": "/progress-implementation-plan.html"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.masjidsophiajatiwarna.com"
+        }
+      ],
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/berita",
+      "destination": "/artikel.html"
+    },
+    {
+      "source": "/berita.html",
+      "destination": "/artikel.html"
+    }
+  ]
+}

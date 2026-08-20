@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masjid Musafir Sophia Jatiwarna - Rumah Singgah Ibadah, Ladang Amal Kebaikan</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (Strict No-Emoji) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="asset/favicon/logo-black/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="asset/favicon/logo-black/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="asset/favicon/logo-black/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="asset/favicon/logo-black/favicon-16x16.png">
+
+    <style>
+        :root {
+            --color-gold-primary: #E3C466;
+            --color-gold-deep: #C9A84C;
+            --color-gold-light: #F7EFCF;
+            --color-charcoal: #1D1D1B;
+            --color-charcoal-muted: #4B5563;
+            --color-bg-sand: #F8F6F0;
+            --color-bg-white: #FFFFFF;
+            --color-border: #E5E7EB;
+            --color-success: #00A651;
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.03);
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            --transition-smooth: all 0.25s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--color-bg-sand);
+            color: var(--color-charcoal);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Top Navbar */
+        .navbar {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            text-decoration: none;
+            color: var(--color-charcoal);
+        }
+
+        .brand-logo-img {
+            height: 48px;
+            width: auto;
+        }
+
+        .brand-logo-text h2 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--color-charcoal);
+        }
+
+        .brand-logo-text p {
+            font-size: 0.75rem;
+            color: var(--color-charcoal-muted);
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-sand);
+            color: var(--color-charcoal);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-link:hover {
+            background: var(--color-gold-light);
+            border-color: var(--color-gold-deep);
+        }
+
+        .btn-link.btn-primary {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+        }
+
+        .btn-link.btn-primary:hover {
+            background: #2D2D2A;
+            color: #FFFFFF;
+        }
+
+        /* Hero Card */
+        .hero-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-left: 6px solid var(--color-gold-deep);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: var(--color-gold-light);
+            border: 1px solid var(--color-gold-deep);
+            border-radius: var(--radius-full);
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: #785800;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            line-height: 1.25;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--color-charcoal-muted);
+            max-width: 780px;
+            margin: 0 auto 1.75rem auto;
+            line-height: 1.6;
+        }
+
+        .hero-meta-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-charcoal);
+            background: var(--color-bg-sand);
+            padding: 0.45rem 0.9rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+
+        /* Pillars Feature Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--color-gold-deep);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: var(--color-gold-light);
+            color: var(--color-gold-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.55;
+        }
+
+        /* Donation Box */
+        .donation-box {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .donation-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .donation-header h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+        }
+
+        .donation-header p {
+            font-size: 0.9rem;
+            color: var(--color-charcoal-muted);
+        }
+
+        .bank-card {
+            background: #FAF8F2;
+            border: 1px solid var(--color-gold-deep);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .bank-info h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-charcoal);
+        }
+
+        .bank-acc {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--color-charcoal);
+            font-family: monospace;
+            margin: 0.2rem 0;
+        }
+
+        .bank-name {
+            font-size: 0.85rem;
+            color: var(--color-charcoal-muted);
+        }
+
+        .btn-copy {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border: none;
+            padding: 0.65rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-copy:hover {
+            background: #2D2D2A;
+            color: #FFFFFF;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--color-charcoal-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.75rem;
+            }
+            .bank-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="/" class="brand-logo">
+            <img src="asset/logo/svg/logo_masjid_black.svg" alt="Logo Masjid Sophia" class="brand-logo-img">
+            <div class="brand-logo-text">
+                <h2>Masjid Sophia</h2>
+                <p>Masjid Musafir Sophia Jatiwarna</p>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="progress-implementation-plan.html" class="btn-link btn-primary">
+                <i class="fa-solid fa-chart-line"></i> Dashboard Progres & Roadmap
+            </a>
+            <a href="https://wa.me/6285188352432" target="_blank" class="btn-link">
+                <i class="fa-solid fa-phone"></i> Hotline DKM
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Card -->
+    <section class="hero-card">
+        <div class="hero-badge">
+            <i class="fa-solid fa-circle-check"></i> Web Portal Resmi Sedang Dipersiapkan
+        </div>
+        <h1 class="hero-title">Masjid Musafir Sophia Jatiwarna</h1>
+        <p class="hero-subtitle">
+            Rumah singgah ibadah yang ramah dan terbuka 24 jam penuh bagi para musafir, pejuang nafkah di jalanan, serta pusat penyaluran infaq dan sedekah umat yang amanah, transparan, dan tepat sasaran.
+        </p>
+
+        <div class="hero-meta-grid">
+            <div class="hero-meta-item">
+                <i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep);"></i>
+                Jatiwarna, Kota Bekasi (Samping UMAR Travel)
+            </div>
+            <div class="hero-meta-item">
+                <i class="fa-solid fa-compass" style="color: var(--color-gold-deep);"></i>
+                Koordinat: -6.310391, 106.921264 (WIB)
+            </div>
+            <div class="hero-meta-item">
+                <i class="fa-solid fa-clock" style="color: var(--color-gold-deep);"></i>
+                Buka Layanan 24 Jam Penuh
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-utensils"></i></div>
+            <h3>Makan Berjamaah Gratis</h3>
+            <p>Penyediaan lebih dari 70 porsi hidangan makanan bergizi setiap hari ba'da Shalat Dzuhur bagi para musafir, ojek online, kurir, dan warga sekitar.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-quran"></i></div>
+            <h3>Santri Tahfidz Al-Qur'an</h3>
+            <p>Program pembinaan generasi Qur'ani penghafal 30 juz dan majelis ta'lim rutin yang menyejukkan hati umat.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-shower"></i></div>
+            <h3>Fasilitas Musafir 24 Jam</h3>
+            <p>Kamar mandi dan tempat wudhu higienis, ruang istirahat yang aman dan sejuk, serta air minum gratis kapan saja tanpa dipungut biaya.</p>
+        </div>
+    </section>
+
+    <!-- Donation Section -->
+    <section class="donation-box">
+        <div class="donation-header">
+            <h3>Rekening Donasi & Sedekah Resmi</h3>
+            <p>Salurkan infaq dan sedekah terbaik Anda langsung ke rekening resmi DKM Masjid Sophia</p>
+        </div>
+
+        <div class="bank-card">
+            <div class="bank-info">
+                <h4>Bank Syariah Indonesia (BSI)</h4>
+                <div class="bank-acc" id="bsi-number">7235464297</div>
+                <div class="bank-name">a.n. Masjid Sophia</div>
+            </div>
+            <button class="btn-copy" onclick="copyBsiNumber()">
+                <i class="fa-solid fa-copy"></i> <span id="copy-btn-text">Salin Nomor Rekening</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>Masjid Musafir Sophia Jatiwarna</strong> &copy; 2026. Seluruh hak cipta dilindungi.</p>
+        <p style="margin-top: 0.35rem; font-size: 0.775rem;">
+            Jl. Raya Hankam, RT.001/RW.011, Jatiwarna, Kec. Pondok Melati, Kota Bekasi, Jawa Barat 17415
+        </p>
+    </footer>
+
+</div>
+
+<script>
+    function copyBsiNumber() {
+        const text = '7235464297';
+        navigator.clipboard.writeText(text).then(() => {
+            const btnText = document.getElementById('copy-btn-text');
+            btnText.textContent = 'Berhasil Disalin!';
+            setTimeout(() => {
+                btnText.textContent = 'Salin Nomor Rekening';
+            }, 2500);
+        });
+    }
+</script>
+
+</body>
+</html>
