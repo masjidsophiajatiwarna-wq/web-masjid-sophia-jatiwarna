@@ -18,6 +18,8 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 - `[FEAT]` Modul *Dynamic Incognito Form* untuk konfirmasi donasi dan doa jamaah instan tanpa login dengan notifikasi toast konfirmasi interaktif.
 - `[FEAT]` Modul fasilitas layanan musafir 24 jam: kamar mandi/wudhu higienis, ruang istirahat, air minum gratis, dan rute strategis samping UMAR Travel.
 - `[FEAT]` Grid warta kegiatan dan artikel dakwah dengan kategori, tanggal publikasi, dan estimasi waktu baca.
+- `[FEAT]` Mobile-First Navigation & Floating WhatsApp Hotline: Penambahan *off-canvas drawer* sentuh untuk navigasi smartphone dan tombol melayang WhatsApp langsung ke Hotline DKM 24 jam (`0851-8835-2432`).
+- `[FEAT]` Penyesuaian tata letak responsif jadwal shalat hisab Kemenag (grid 2 kolom di ponsel dengan sorotan aktif otomatis) dan box salin rekening BSI 1-Click Copy yang ramah sentuhan.
 - `[ARCH]` Penegasan pemisahan arsitektur (*Decoupling*): Halaman depan publik murni melayani jamaah dan musafir tanpa mengekspos tombol atau tautan portal admin. Portal Admin DKM diisolasi tertutup melalui subdomain `admin.masjidsophiajatiwarna.com`.
 
 ---
