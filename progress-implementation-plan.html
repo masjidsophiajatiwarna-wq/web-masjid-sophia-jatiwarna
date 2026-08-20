@@ -948,9 +948,9 @@
                 <i class="fa-solid fa-desktop" style="color: var(--color-gold-deep);"></i> Fase 3: Portal Publik & Shalat Engine
             </div>
             <div class="gantt-bar-wrapper">
-                <div class="gantt-bar-fill fill-0">Siap Eksekusi</div>
+                <div class="gantt-bar-fill fill-70">80% (Layout Publik & Hisab Siap)</div>
             </div>
-            <div style="text-align: right;"><span class="status-tag status-pending">Menunggu</span></div>
+            <div style="text-align: right;"><span class="status-tag status-inprogress">Dalam Proses</span></div>
         </div>
 
         <div class="gantt-row">
@@ -1221,34 +1221,34 @@
         </div>
 
         <!-- Fase 3 Card -->
-        <div class="phase-card collapsed" id="card-fase-3">
+        <div class="phase-card" id="card-fase-3">
             <div class="phase-header" onclick="togglePhase('card-fase-3')">
                 <div class="phase-title-group">
-                    <div class="phase-badge">3</div>
+                    <div class="phase-badge in-progress">3</div>
                     <div class="phase-name">
                         <h3>Fase 3: Pengembangan Frontend Web Portal Publik & Modul Shalat</h3>
-                        <p>Landing page bertema terang, jadwal shalat hisab Kemenag presisi Jatiwarna, filantropi & katalog konten</p>
+                        <p>Landing page berstandar Istiqlal, jadwal shalat hisab Kemenag presisi Jatiwarna, filantropi & katalog konten</p>
                     </div>
                 </div>
                 <div class="phase-status-wrapper">
-                    <span class="status-tag status-pending"><i class="fa-solid fa-pause"></i> Siap Dijalankan</span>
+                    <span class="status-tag status-inprogress"><i class="fa-solid fa-clock"></i> Dalam Proses</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
             <div class="phase-body">
                 <div class="task-list">
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Modul Jadwal Shalat Presisi Jatiwarna (Kemenag Hisab Engine)
-                                <span class="task-badge-pill">js/prayer-times.js</span>
+                                <span class="task-badge-pill">index.html</span>
                             </div>
                             <div class="task-desc">Perhitungan astronomis Imsak, Subuh, Terbit, Dzuhur, Ashar, Maghrib, Isya + Live Countdown Timer + Highlight aktif + sinkronisasi ikhtiyat.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Modul Rotasi Petugas Ibadah & Kajian
@@ -1257,8 +1257,8 @@
                             <div class="task-desc">Display dinamis Imam Rawatib aktif/berikutnya, Muadzin, Khatib Jumat, dan Penceramah Kajian Tematik.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Kanal Filantropi BSI 1-Click Copy & QRIS SEDEKAH MAKAN
@@ -1267,18 +1267,18 @@
                             <div class="task-desc">Integrasi rekening BSI 7235464297 a.n. Masjid Sophia (tombol salin otomatis) dan QRIS NMID: ID2025401816769.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Dynamic Incognito Donation & Prayer Form
-                                <span class="task-badge-pill">js/donation-form.js</span>
+                                <span class="task-badge-pill">Incognito Form</span>
                             </div>
-                            <div class="task-desc">Formulir konfirmasi donasi & doa jamaah tanpa kewajiban login dengan proteksi honeypot anti-spam.</div>
+                            <div class="task-desc">Formulir konfirmasi donasi & doa jamaah tanpa kewajiban login dengan notifikasi toast konfirmasi.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Showcase Fasilitas Layanan Musafir 24 Jam
@@ -1291,10 +1291,10 @@
                         <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Portal Berita & Artikel Dakwah (artikel.html & artikel-detail.html)
+                                Portal Berita & Artikel Dakwah Mandiri (artikel.html & artikel-detail.html)
                                 <span class="task-badge-pill">Halaman Publik</span>
                             </div>
-                            <div class="task-desc">Grid feed artikel, live search, tab kategori, estimasi waktu baca, dan tombol bagikan sosial media.</div>
+                            <div class="task-desc">Grid feed artikel terpisah, live search, tab kategori, estimasi waktu baca, dan tombol bagikan sosial media.</div>
                         </div>
                     </div>
                 </div>

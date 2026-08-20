@@ -170,3 +170,19 @@ tests/           — Test suite
 - Code is readable and maintainable
 - Performance is acceptable
 - User requirements are met
+
+## Project-Specific Operational Protocols (Masjid Sophia Jatiwarna)
+
+1. **Parallel Roadmap & Documentation Synchronization (MUTLAK):**
+   Setiap aktivitas, pengembangan fitur, atau perbaikan kode WAJIB memperbarui 3 berkas ini secara paralel:
+   - `implementation-plan.md` (Rencana teknis dan status fase)
+   - `progress-implementation-plan.html` (Pelacak progres visual interaktif, checklist live, dan metrik persentase)
+   - `CHANGELOG.md` (Log riwayat rilis dan pembaruan sistem)
+2. **Otorisasi Git Push:**
+   Agent diizinkan dan diwajibkan melakukan `git commit` dan `git push` ke branch `main` setelah setiap fase/fitur selesai dan terverifikasi, menggunakan konfigurasi author resmi `Masjid Sophia <masjidsophiajatiwarna@gmail.com>`.
+3. **Pemisahan Web Publik vs Portal Admin (Standar Istiqlal):**
+   - Halaman depan publik (`index.html`) adalah portal umat & musafir murni (DILARANG menempatkan tombol/tautan langsung ke portal admin di navbar atau halaman beranda).
+   - Portal Admin DKM & Employee Dashboard hanya diakses tertutup via subdomain `admin.masjidsophiajatiwarna.com` / `admin.html`.
+4. **Strict No-Emoji & Human-First Tone:**
+   Dilarang keras menggunakan emoji di seluruh kode, antarmuka, dan dokumentasi. Gunakan icon SVG/Font Awesome dan bahasa Indonesia yang santun, hangat, serta berbasis data riil.
+

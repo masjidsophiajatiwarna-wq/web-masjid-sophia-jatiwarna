@@ -6,6 +6,22 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 
 ---
 
+## [1.1.0] - 2026-08-21
+
+### Web Portal Publik Resmi (Benchmark Istiqlal) & Pemisahan Portal Admin (Fase 3 Frontend)
+
+#### Penambahan (Added)
+- `[FEAT]` Halaman muka publik lengkap (`index.html`) mengadopsi standar arsitektur web masjid besar (Benchmark: Masjid Istiqlal & Salman ITB) bertema terang resmi (*Pure White*, *Soft Cream Sand*, *Charcoal*, dan *Sophia Gold*).
+- `[FEAT]` Modul hisab jadwal shalat presisi lokal Jatiwarna (Kemenag RI) dengan *Live Countdown Timer* detik demi detik, penanda visual shalat aktif (*Active Prayer Card Highlight*), dan waktu astronomis Imsak, Subuh, Terbit, Dzuhur, Ashar, Maghrib, Isya.
+- `[FEAT]` Modul daftar petugas ibadah dan kajian harian/mingguan (Imam Rawatib, Muadzin, Khatib Shalat Jumat, dan Penceramah Kajian Tematik).
+- `[FEAT]` Modul program filantropi terpadu: Makan Berjamaah Gratis ba'da Dzuhur (70+ porsi), Pembinaan Santri Tahfidz Al-Qur'an, Rekening BSI `7235464297` a.n. Masjid Sophia dengan fitur *1-Click Copy*, dan QRIS Merchant SEDEKAH MAKAN (NMID: `ID2025401816769`).
+- `[FEAT]` Modul *Dynamic Incognito Form* untuk konfirmasi donasi dan doa jamaah instan tanpa login dengan notifikasi toast konfirmasi interaktif.
+- `[FEAT]` Modul fasilitas layanan musafir 24 jam: kamar mandi/wudhu higienis, ruang istirahat, air minum gratis, dan rute strategis samping UMAR Travel.
+- `[FEAT]` Grid warta kegiatan dan artikel dakwah dengan kategori, tanggal publikasi, dan estimasi waktu baca.
+- `[ARCH]` Penegasan pemisahan arsitektur (*Decoupling*): Halaman depan publik murni melayani jamaah dan musafir tanpa mengekspos tombol atau tautan portal admin. Portal Admin DKM diisolasi tertutup melalui subdomain `admin.masjidsophiajatiwarna.com`.
+
+---
+
 ## [1.0.0] - 2026-08-21
 
 ### Inisialisasi & Master Roadmap (Fase 1)

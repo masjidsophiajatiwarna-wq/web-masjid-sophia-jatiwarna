@@ -98,31 +98,32 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ---
 
 ### Fase 3: Pengembangan Frontend Web Portal Publik & Modul Shalat
-- **Tujuan:** Membangun antarmuka landing page utama, modul jadwal shalat presisi, kanal donasi, dan direktori konten.
+- **Tujuan:** Membangun antarmuka portal web publik komprehensif (Benchmark: Istiqlal, Salman ITB) dengan hisab shalat presisi lokal Jatiwarna, rotasi petugas ibadah, kanal filantropi 1-Click Copy BSI & QRIS, layanan musafir 24 jam, dan pemisahan penuh dari dashboard admin DKM.
+- **Status:** Dalam Proses (Layout & Komponen Inti Frontend Terimplementasi)
 - **Daftar Tugas:**
-  - [ ] **Design System & Layout (`css/style.css`):**
-    - Penerapan tema terang (Pure White `#FFFFFF`, Soft Cream Sand `#F8F6F0`, Charcoal Text `#1D1D1B`, Sophia Gold `#E3C466` & `#C9A84C`).
-    - Tipografi `Inter`/`Plus Jakarta Sans` dan kaligrafi `Amiri` untuk doa Arab.
-    - Navigasi responsif mobile-friendly dengan off-canvas drawer.
-  - [ ] **Modul Jadwal Shalat Presisi Jatiwarna (Kemenag Hisab Engine):**
-    - Perhitungan algoritma astronomis posisi matahari berbasis garis lintang/bujur Masjid Sophia.
-    - Penyesuaian standar hisab Kemenag (Sudut Subuh -20 derajat, Isya -18 derajat, koreksi ketinggian tempat).
-    - Live Countdown Timer detik demi detik menuju waktu shalat berikutnya.
-    - Highlight visual dinamis pada kartu waktu shalat yang sedang aktif.
-    - Integrasi offset ikhtiyat yang tersinkronisasi dari database Supabase.
-  - [ ] **Modul Rotasi Petugas Ibadah & Kajian:**
-    - Tampilan kartu petugas harian: Imam Rawatib, Muadzin, Khatib Shalat Jumat, dan Penceramah Kajian.
-  - [ ] **Modul Filantropi & Donasi Umat:**
-    - Penjelasan Program Makan Berjamaah Gratis ba'da Dzuhur (target 70+ porsi/hari).
-    - Penjelasan Program Pembibitan Santri Tahfidz Al-Qur'an.
-    - Box Nomor Rekening BSI `7235464297` a.n. Masjid Sophia dengan tombol 1-Click Copy otomatis.
-    - Tampilan QRIS Merchant SEDEKAH MAKAN (NMID: `ID2025401816769`) dengan tombol simpan/unduh kode QR.
-    - Formulir konfirmasi donasi & doa jamaah instan (Dynamic Incognito Form) dengan validasi nomor WhatsApp Indonesia (+62).
-  - [ ] **Modul Fasilitas & Layanan Musafir 24 Jam:**
-    - Showcase informasi ruang istirahat musafir, ketersediaan air minum gratis, kebersihan toilet/wudhu, dan rute lokasi samping UMAR Travel.
-  - [ ] **Kanal Berita & Artikel (`artikel.html`, `artikel-detail.html`):**
-    - Grid feed artikel dakwah dan kegiatan masjid dengan pencarian instan dan filter kategori.
-    - Halaman baca artikel dengan estimasi waktu baca, rekomendasi artikel terkait, dan tombol bagikan.
+  - [x] **Design System & Layout Publik (`index.html`):**
+    - Penerapan tema terang resmi (*Pure White* `#FFFFFF`, *Soft Cream Sand* `#F8F6F0`, *Charcoal Text* `#1D1D1B`, *Sophia Gold* `#E3C466` & `#C9A84C`).
+    - Tipografi modern `Plus Jakarta Sans` / `Inter` dan kaligrafi doa Arab `Amiri`.
+    - Navigasi responsif mobile-friendly murni untuk jamaah (tanpa tombol portal admin di navbar/beranda).
+  - [x] **Modul Jadwal Shalat Presisi Jatiwarna (Kemenag Hisab Engine):**
+    - Sinkronisasi koordinat astronomis Masjid Sophia Jatiwarna (`-6.310391, 106.921264`, WIB).
+    - Penyesuaian standar hisab Kemenag (Sudut Subuh -20 derajat, Isya -18 derajat, ikhtiyat +2 menit).
+    - Fitur *Live Countdown Timer* detik demi detik menuju waktu shalat berikutnya.
+    - Penanda visual aktif (*Active Prayer Card Highlight*) pada waktu shalat yang sedang berjalan.
+  - [x] **Modul Rotasi Petugas Ibadah & Kajian:**
+    - Tampilan kartu petugas harian: Imam Rawatib aktif, Muadzin bertugas, Khatib Shalat Jumat, dan Pengisi Kajian Tematik.
+  - [x] **Modul Filantropi & Donasi Umat:**
+    - Program Unggulan Makan Berjamaah Gratis ba'da Dzuhur (70+ porsi/hari).
+    - Program Pembinaan Santri Penghafal Al-Qur'an (Tahfidz) & Operasional 24 Jam.
+    - Box Rekening Bank BSI `7235464297` a.n. Masjid Sophia dengan tombol *1-Click Copy* otomatis.
+    - QRIS Merchant SEDEKAH MAKAN (NMID: `ID2025401816769`).
+    - Formulir konfirmasi donasi & doa jamaah instan (*Dynamic Incognito Form*).
+  - [x] **Modul Fasilitas & Layanan Musafir 24 Jam:**
+    - Showcase kamar mandi & tempat wudhu bersih 24 jam, area istirahat sejuk, air minum higienis gratis, dan lokasi strategis samping UMAR Travel.
+  - [x] **Kanal Berita, Tausiyah & Warta Kegiatan:**
+    - Grid kartu artikel dakwah, laporan penyaluran donasi makan gratis, estimasi waktu baca, dan kategori.
+  - [ ] **Halaman Berita Terpisah & Detail Artikel (`artikel.html`, `artikel-detail.html`):**
+    - Grid feed artikel dakwah dan kegiatan masjid dengan pencarian instan, filter kategori, dan halaman baca artikel mandiri.
 
 ---
 
