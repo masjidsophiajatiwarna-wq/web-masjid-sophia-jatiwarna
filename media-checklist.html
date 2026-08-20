@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome (Strict No-Emoji Standard) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Supabase JS Client v2 -->
@@ -287,7 +287,7 @@
             background: #A51D19;
         }
 
-        /* Instructions Accordion / Card */
+        /* Instructions Guide Card */
         .instructions-card {
             background: var(--color-bg-white);
             border: 1px solid var(--color-border);
@@ -698,7 +698,7 @@
 
     <!-- Items Checklist Grid -->
     <div class="items-grid" id="items-container">
-        <!-- Rendered via JavaScript from assets-media-checklist.csv definition -->
+        <!-- Rendered via JavaScript -->
     </div>
 
 </div>
@@ -963,9 +963,10 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
+    // Synchronous immediate render followed by async cloud sync
+    document.addEventListener('DOMContentLoaded', () => {
         renderItems('all');
-        await loadCloudState();
+        loadCloudState();
         initRealtime();
     });
 </script>
