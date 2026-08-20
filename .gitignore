@@ -18,6 +18,9 @@ AKUN_ADMIN_PORTAL.txt
 *.cert
 *.pfx
 *.p12
+~$*
+*.tmp
+*.temp
 
 # Ketergantungan Node.js & Manajer Paket
 node_modules/
