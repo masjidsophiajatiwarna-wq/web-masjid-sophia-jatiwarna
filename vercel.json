@@ -51,6 +51,14 @@
     {
       "source": "/berita.html",
       "destination": "/artikel.html"
+    },
+    {
+      "source": "/media-checklist",
+      "destination": "/media-checklist.html"
+    },
+    {
+      "source": "/media",
+      "destination": "/media-checklist.html"
     }
   ]
 }

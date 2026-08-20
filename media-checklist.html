@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Checklist & Panduan Upload Media - Masjid Musafir Sophia Jatiwarna</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (Strict No-Emoji Standard) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="asset/favicon/logo-black/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="asset/favicon/logo-black/apple-touch-icon.png">
+
+    <style>
+        :root {
+            --color-gold-primary: #E3C466;
+            --color-gold-deep: #C9A84C;
+            --color-gold-light: #FAF6E8;
+            --color-gold-border: #E8D8A0;
+            --color-charcoal: #1D1D1B;
+            --color-charcoal-muted: #4B5563;
+            --color-bg-sand: #F8F6F0;
+            --color-bg-white: #FFFFFF;
+            --color-border: #E5E7EB;
+            --color-success: #00A651;
+            --color-success-bg: #E8F8F0;
+            --color-warning: #D97706;
+            --color-warning-bg: #FEF3C7;
+            --color-info: #2563EB;
+            --color-info-bg: #EFF6FF;
+            --color-gdrive: #0F9D58;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07);
+            --shadow-lg: 0 10px 20px -3px rgba(0,0,0,0.08);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-full: 9999px;
+            --transition: all 0.2s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--color-bg-sand);
+            color: var(--color-charcoal);
+            line-height: 1.55;
+            padding: 1.25rem 1rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Top Navigation Bar */
+        .nav-back-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .btn-nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.45rem 0.85rem;
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--color-charcoal);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-nav-back:hover {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+        }
+
+        /* Header Card */
+        .header-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-left: 6px solid var(--color-gold-deep);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .header-titles h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            line-height: 1.25;
+            margin-bottom: 0.2rem;
+        }
+
+        .header-titles p {
+            color: var(--color-charcoal-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Progress Card Box */
+        .progress-box {
+            background: #FAFAF8;
+            border: 1px solid var(--color-gold-border);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .progress-box-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.4rem;
+        }
+
+        .progress-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--color-charcoal);
+        }
+
+        .progress-count {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--color-gold-deep);
+        }
+
+        .progress-track {
+            height: 10px;
+            background: #E5E7EB;
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-gold-primary), var(--color-success));
+            border-radius: var(--radius-full);
+            transition: width 0.5s ease;
+        }
+
+        /* GDrive Action Banners */
+        .gdrive-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .gdrive-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .gdrive-card:hover {
+            border-color: var(--color-gdrive);
+        }
+
+        .gdrive-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .gdrive-icon-box {
+            width: 42px;
+            height: 42px;
+            background: #E8F5E9;
+            color: var(--color-gdrive);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .gdrive-text h3 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+        }
+
+        .gdrive-text p {
+            font-size: 0.775rem;
+            color: var(--color-charcoal-muted);
+        }
+
+        .btn-gdrive {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            padding: 0.6rem 1rem;
+            background: var(--color-gdrive);
+            color: #FFFFFF;
+            border-radius: var(--radius-sm);
+            font-size: 0.825rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-gdrive:hover {
+            background: #0B8043;
+        }
+
+        .btn-gdrive.video-btn {
+            background: #C5221F;
+        }
+
+        .btn-gdrive.video-btn:hover {
+            background: #A51D19;
+        }
+
+        /* Instructions Accordion / Card */
+        .instructions-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .instructions-card h3 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .step-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .step-item {
+            background: #FAFAFA;
+            border: 1px solid #F0F0EE;
+            border-radius: var(--radius-sm);
+            padding: 0.75rem;
+        }
+
+        .step-item strong {
+            display: block;
+            font-size: 0.825rem;
+            color: var(--color-charcoal);
+            margin-bottom: 0.2rem;
+        }
+
+        .step-item p {
+            font-size: 0.75rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.45;
+        }
+
+        /* Filter Controls */
+        .controls-bar {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.35rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 2px;
+        }
+
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.775rem;
+            font-weight: 700;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-sand);
+            color: var(--color-charcoal);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+        }
+
+        /* Items Checklist Container */
+        .items-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checklist-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.15rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .checklist-card.checked {
+            background: rgba(232, 248, 240, 0.45);
+            border-color: rgba(0, 166, 81, 0.35);
+        }
+
+        .item-checkbox {
+            width: 22px;
+            height: 22px;
+            margin-top: 0.2rem;
+            accent-color: var(--color-success);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-title-row {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .item-num {
+            font-size: 0.725rem;
+            font-weight: 800;
+            padding: 0.1rem 0.45rem;
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-radius: var(--radius-sm);
+        }
+
+        .item-category-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.1rem 0.45rem;
+            background: var(--color-gold-light);
+            border: 1px solid var(--color-gold-border);
+            color: #785800;
+            border-radius: var(--radius-sm);
+        }
+
+        .item-title {
+            font-size: 0.925rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+        }
+
+        .checklist-card.checked .item-title {
+            text-decoration: line-through;
+            color: #4B5563;
+        }
+
+        .item-desc {
+            font-size: 0.8rem;
+            color: var(--color-charcoal-muted);
+            margin-bottom: 0.5rem;
+            line-height: 1.45;
+        }
+
+        .item-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .spec-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.725rem;
+            font-weight: 600;
+            padding: 0.2rem 0.55rem;
+            background: #F3F4F6;
+            border-radius: var(--radius-sm);
+            color: var(--color-charcoal);
+        }
+
+        .spec-pill i {
+            color: var(--color-gold-deep);
+        }
+
+        .btn-item-gdrive {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.725rem;
+            font-weight: 700;
+            padding: 0.2rem 0.65rem;
+            border-radius: var(--radius-sm);
+            background: #E8F5E9;
+            color: var(--color-gdrive);
+            text-decoration: none;
+            border: 1px solid rgba(15, 157, 88, 0.2);
+            transition: var(--transition);
+        }
+
+        .btn-item-gdrive:hover {
+            background: var(--color-gdrive);
+            color: #FFFFFF;
+        }
+
+        .item-status-tag {
+            font-size: 0.725rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius-full);
+            white-space: nowrap;
+        }
+
+        .item-status-tag.pending {
+            background: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FCD34D;
+        }
+
+        .item-status-tag.ready {
+            background: var(--color-success-bg);
+            color: var(--color-success);
+            border: 1px solid rgba(0, 166, 81, 0.3);
+        }
+
+        /* Toast Alert */
+        .toast-alert {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-charcoal);
+            color: #FFFFFF;
+            padding: 0.65rem 1.15rem;
+            border-radius: var(--radius-full);
+            border-left: 4px solid var(--color-success);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            align-items: center;
+            gap: 0.45rem;
+            z-index: 2000;
+            font-size: 0.825rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* Responsive Mobile Breakpoint */
+        @media (max-width: 768px) {
+            body {
+                padding: 0.75rem 0.5rem;
+            }
+            .header-card {
+                padding: 1.15rem 1rem;
+            }
+            .gdrive-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            .checklist-card {
+                padding: 0.85rem;
+            }
+            .item-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Top Navigation Back Bar -->
+    <div class="nav-back-bar">
+        <a href="/" class="btn-nav-back">
+            <i class="fa-solid fa-arrow-left"></i> Kembali ke Roadmap Utama (progdev)
+        </a>
+        <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); font-weight: 600;">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Auto-Save Aktif
+        </div>
+    </div>
+
+    <!-- Header Card -->
+    <header class="header-card">
+        <div class="header-top">
+            <div class="brand-box">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-photo-film"></i>
+                </div>
+                <div class="header-titles">
+                    <h1>Checklist Kurasi Media & Panduan Upload</h1>
+                    <p>Daftar kebutuhan foto & video riil Masjid Musafir Sophia Jatiwarna</p>
+                </div>
+            </div>
+            <div>
+                <button class="btn-nav-back" onclick="resetAllChecklist()">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Centang
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Box -->
+        <div class="progress-box">
+            <div class="progress-box-top">
+                <span class="progress-title">
+                    <i class="fa-solid fa-chart-pie" style="color: var(--color-gold-deep);"></i> Progres Pengumpulan Media
+                </span>
+                <span class="progress-count" id="progress-text">0 / 18 Aset (0%)</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Google Drive Action Banners -->
+    <section class="gdrive-grid">
+        <div class="gdrive-card">
+            <div class="gdrive-info">
+                <div class="gdrive-icon-box">
+                    <i class="fa-solid fa-images"></i>
+                </div>
+                <div class="gdrive-text">
+                    <h3>Folder Upload Foto (GDrive)</h3>
+                    <p>Untuk foto fasad, makan gratis, ibadah, santri & musafir</p>
+                </div>
+            </div>
+            <a href="https://drive.google.com/drive/folders/1ZrRTEAClir4myN7t0r3-eNj35rf_-uS4?usp=sharing" target="_blank" class="btn-gdrive">
+                <i class="fa-brands fa-google-drive"></i> Buka Folder Foto GDrive
+            </a>
+        </div>
+
+        <div class="gdrive-card">
+            <div class="gdrive-info">
+                <div class="gdrive-icon-box" style="background: #FFEBEE; color: #C5221F;">
+                    <i class="fa-solid fa-video"></i>
+                </div>
+                <div class="gdrive-text">
+                    <h3>Folder Upload Video (GDrive)</h3>
+                    <p>Untuk video sinematik B-Roll & video reels kegiatan</p>
+                </div>
+            </div>
+            <a href="https://drive.google.com/drive/folders/13FUgFZV8w9tQT7loG9VrGIimFNo6_TJo?usp=sharing" target="_blank" class="btn-gdrive video-btn">
+                <i class="fa-brands fa-google-drive"></i> Buka Folder Video GDrive
+            </a>
+        </div>
+    </section>
+
+    <!-- Instructions Guide Card -->
+    <section class="instructions-card">
+        <h3><i class="fa-solid fa-circle-info" style="color: var(--color-gold-deep);"></i> Petunjuk Pengambilan & Penamaan File</h3>
+        <div class="step-list">
+            <div class="step-item">
+                <strong>1. Pencahayaan & Kualitas</strong>
+                <p>Gunakan kamera HP resolusi tinggi dengan pencahayaan alami/terang. Pastikan lensa bersih sebelum memotret.</p>
+            </div>
+            <div class="step-item">
+                <strong>2. Penamaan File yang Rapi</strong>
+                <p>Beri nama file deskriptif, contoh: <code>makan_gratis_01.jpg</code>, <code>fasad_siang_01.jpg</code>, <code>santri_tahfidz_01.jpg</code>.</p>
+            </div>
+            <div class="step-item">
+                <strong>3. Upload ke Folder GDrive</strong>
+                <p>Pilih folder Foto atau Video di atas, lalu unggah file asli (tanpa kompresi WA agar kualitas tetap tajam).</p>
+            </div>
+            <div class="step-item">
+                <strong>4. Centang Checklist di Sini</strong>
+                <p>Klik centang pada daftar di bawah. Data otomatis tersimpan dan progres langsung terpantau oleh Pak DKM.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Tabs -->
+    <div class="controls-bar">
+        <div class="filter-tabs">
+            <button class="filter-btn active" onclick="filterItems('all', this)">Semua (18)</button>
+            <button class="filter-btn" onclick="filterItems('Fasad & Eksterior', this)">Fasad (3)</button>
+            <button class="filter-btn" onclick="filterItems('Makan Berjamaah Gratis', this)">Makan Gratis (3)</button>
+            <button class="filter-btn" onclick="filterItems('Ibadah & Ruang Shalat', this)">Ibadah (2)</button>
+            <button class="filter-btn" onclick="filterItems('Santri Tahfidz Quran', this)">Santri (2)</button>
+            <button class="filter-btn" onclick="filterItems('Fasilitas Musafir 24 Jam', this)">Musafir (3)</button>
+            <button class="filter-btn" onclick="filterItems('Tokoh & Petugas Ibadah', this)">Petugas (2)</button>
+            <button class="filter-btn" onclick="filterItems('Video', this)">Video (3)</button>
+        </div>
+        <div style="font-size: 0.775rem; font-weight: 700; color: var(--color-charcoal-muted);">
+            Klik kartu untuk menandai selesai
+        </div>
+    </div>
+
+    <!-- Items Checklist Grid -->
+    <div class="items-grid" id="items-container">
+        <!-- Rendered via JavaScript from assets-media-checklist.csv definition -->
+    </div>
+
+</div>
+
+<!-- Toast Notification -->
+<div class="toast-alert" id="toast-alert">
+    <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i>
+    <span id="toast-text">Perubahan disimpan.</span>
+</div>
+
+<script>
+    // Master Items Data from assets-media-checklist.csv
+    const MEDIA_ITEMS = [
+        { id: 1, category: "Fasad & Eksterior", title: "Foto Fasad Masjid Siang", desc: "Tampak depan plang nama Masjid Sophia & gerbang utama saat cuaca cerah", ratio: "Landscape (16:9)", format: "WebP / JPG High-Res", qty: "Min. 3 Foto", drive: "image" },
+        { id: 2, category: "Fasad & Eksterior", title: "Foto Fasad Masjid Malam", desc: "Tampak depan masjid dengan lampu malam menyala hangat dan area parkir ramah musafir", ratio: "Landscape (16:9)", format: "WebP / JPG High-Res", qty: "Min. 2 Foto", drive: "image" },
+        { id: 3, category: "Fasad & Eksterior", title: "Plang Nama & Landmark", desc: "Detail signage plang nama Masjid Sophia & penunjuk arah samping UMAR Travel", ratio: "Landscape / Square (1:1)", format: "WebP / JPG High-Res", qty: "Min. 2 Foto", drive: "image" },
+        { id: 4, category: "Makan Berjamaah Gratis", title: "Foto Hidangan Siap Saji", desc: "Deretan porsi nasi & lauk pauk higienis siap santap ba'da Dzuhur (close-up & wide)", ratio: "Landscape (16:9)", format: "WebP / JPG High-Res", qty: "Min. 5 Foto", drive: "image" },
+        { id: 5, category: "Makan Berjamaah Gratis", title: "Suasana Makan Bersama Jamaah", desc: "Jamaah, musafir, santri, dan ojol sedang menikmati makan siang bersama dengan tertib dan ceria", ratio: "Landscape (16:9)", format: "WebP / JPG High-Res", qty: "Min. 6 Foto", drive: "image" },
+        { id: 6, category: "Makan Berjamaah Gratis", title: "Tim Relawan & Dapur", desc: "Dokumentasi pengurus/relawan saat menata dan mendistribusikan porsi makanan", ratio: "Landscape (16:9)", format: "WebP / JPG High-Res", qty: "Min. 3 Foto", drive: "image" },
+        { id: 7, category: "Ibadah & Ruang Shalat", title: "Ruang Shalat Utama & Mihrab", desc: "Kebersihan karpet saf shalat mimbar imam dan pencahayaan ruang utama yang asri", ratio: "Landscape (16:9)", format: "WebP / JPG High-Res", qty: "Min. 4 Foto", drive: "image" },
+        { id: 8, category: "Ibadah & Ruang Shalat", title: "Suasana Shalat Berjamaah", desc: "Saf shalat berjamaah waktu rawatib dan shalat Jumat yang khidmat", ratio: "Landscape (16:9)", format: "WebP / JPG High-Res", qty: "Min. 4 Foto", drive: "image" },
+        { id: 9, category: "Santri Tahfidz Quran", title: "Halaqah Al-Quran Bersama Ustadz", desc: "Santri sedang talaqqi / mengaji memegang mushaf bersama ustadz pembina", ratio: "Landscape / Square (1:1)", format: "WebP / JPG High-Res", qty: "Min. 5 Foto", drive: "image" },
+        { id: 10, category: "Santri Tahfidz Quran", title: "Ujian Tasmi' & Setoran Hafalan", desc: "Momen khidmat santri saat tasmi' hafalan 5 juz / 30 juz di depan dewan guru", ratio: "Landscape (16:9)", format: "WebP / JPG High-Res", qty: "Min. 3 Foto", drive: "image" },
+        { id: 11, category: "Fasilitas Musafir 24 Jam", title: "Area Wudhu & Kamar Mandi", desc: "Kebersihan kran wudhu lantai keset dan toilet yang selalu bersih higienis", ratio: "Landscape / Square (1:1)", format: "WebP / JPG High-Res", qty: "Min. 4 Foto", drive: "image" },
+        { id: 12, category: "Fasilitas Musafir 24 Jam", title: "Dispenser & Air Minum Gratis", desc: "Fasilitas air minum higienis gratis untuk musafir dan jamaah", ratio: "Square (1:1) / Portrait", format: "WebP / JPG High-Res", qty: "Min. 2 Foto", drive: "image" },
+        { id: 13, category: "Fasilitas Musafir 24 Jam", title: "Area Singgah & Istirahat Musafir", desc: "Sudut istirahat sejuk dan tenang bagi musafir melepas lelah perjalanan", ratio: "Landscape (16:9)", format: "WebP / JPG High-Res", qty: "Min. 3 Foto", drive: "image" },
+        { id: 14, category: "Tokoh & Petugas Ibadah", title: "Foto Portrait Imam Rawatib", desc: "Foto portrait resmi/semi-formal Imam Rawatib (background netral/masjid)", ratio: "Square (1:1) / Portrait", format: "WebP / JPG High-Res", qty: "Min. 2 Foto", drive: "image" },
+        { id: 15, category: "Tokoh & Petugas Ibadah", title: "Foto Portrait Asatidz & Penceramah", desc: "Foto portrait penceramah kajian tematik / khatib Jumat", ratio: "Square (1:1) / Portrait", format: "WebP / JPG High-Res", qty: "Min. 3 Foto", drive: "image" },
+        { id: 16, category: "Video B-Roll & Cinematic", title: "Video B-Roll Hero Header (10-15 dtk)", desc: "Klip sinematik slow motion suasana fasad masjid lantunan adzan & persiapan makan siang", ratio: "Landscape 16:9 (1080p 60fps)", format: "MP4 (H.264 / WebM)", qty: "Min. 2 Video", drive: "video" },
+        { id: 17, category: "Video Dokumentasi Kegiatan", title: "Video Penyaluran Makan Gratis (15-30 dtk)", desc: "Video dokumentasi 15-30 detik distribusi makan siang gratis ba'da Dzuhur", ratio: "Landscape / Reels (9:16)", format: "MP4 (1080p)", qty: "Min. 3 Video", drive: "video" },
+        { id: 18, category: "Video Dokumentasi Kegiatan", title: "Video Murottal & Halaqah Santri (15-30 dtk)", desc: "Cuplikan santri melantunkan ayat suci Al-Quran dengan tartil di ruang shalat", ratio: "Landscape / Reels (9:16)", format: "MP4 (1080p)", qty: "Min. 2 Video", drive: "video" }
+    ];
+
+    const GDRIVE_IMAGE_URL = "https://drive.google.com/drive/folders/1ZrRTEAClir4myN7t0r3-eNj35rf_-uS4?usp=sharing";
+    const GDRIVE_VIDEO_URL = "https://drive.google.com/drive/folders/13FUgFZV8w9tQT7loG9VrGIimFNo6_TJo?usp=sharing";
+
+    const STORAGE_KEY = "masjid_sophia_media_checklist_state";
+
+    function loadSavedState() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : {};
+        } catch (e) {
+            return {};
+        }
+    }
+
+    function saveState(state) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {}
+    }
+
+    function renderChecklist(filterCategory = 'all') {
+        const container = document.getElementById('items-container');
+        const state = loadSavedState();
+        container.innerHTML = '';
+
+        const filtered = (filterCategory === 'all') 
+            ? MEDIA_ITEMS 
+            : (filterCategory === 'Video') 
+                ? MEDIA_ITEMS.filter(item => item.drive === 'video')
+                : MEDIA_ITEMS.filter(item => item.category === filterCategory);
+
+        filtered.forEach(item => {
+            const isChecked = !!state[item.id];
+            const gdriveLink = (item.drive === 'video') ? GDRIVE_VIDEO_URL : GDRIVE_IMAGE_URL;
+
+            const card = document.createElement('div');
+            card.className = `checklist-card ${isChecked ? 'checked' : ''}`;
+            card.id = `item-card-${item.id}`;
+
+            card.innerHTML = `
+                <input type="checkbox" class="item-checkbox" id="check-${item.id}" ${isChecked ? 'checked' : ''} onchange="toggleItem(${item.id})">
+                <div class="item-details">
+                    <div class="item-header">
+                        <div class="item-title-row">
+                            <span class="item-num">#${item.id}</span>
+                            <span class="item-category-tag">${item.category}</span>
+                            <span class="item-title">${item.title}</span>
+                        </div>
+                        <span class="item-status-tag ${isChecked ? 'ready' : 'pending'}" id="status-tag-${item.id}">
+                            ${isChecked ? '<i class="fa-solid fa-check"></i> Terunggah' : '<i class="fa-solid fa-clock"></i> Belum Siap'}
+                        </span>
+                    </div>
+                    <p class="item-desc">${item.desc}</p>
+                    <div class="item-meta-row">
+                        <span class="spec-pill"><i class="fa-solid fa-shapes"></i> ${item.ratio}</span>
+                        <span class="spec-pill"><i class="fa-solid fa-file-image"></i> ${item.format}</span>
+                        <span class="spec-pill"><i class="fa-solid fa-layer-group"></i> <strong>${item.qty}</strong></span>
+                        <a href="${gdriveLink}" target="_blank" class="btn-item-gdrive">
+                            <i class="fa-brands fa-google-drive"></i> Buka GDrive
+                        </a>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        updateProgressStats();
+    }
+
+    function toggleItem(id) {
+        const state = loadSavedState();
+        const checkbox = document.getElementById(`check-${id}`);
+        const card = document.getElementById(`item-card-${id}`);
+        const tag = document.getElementById(`status-tag-${id}`);
+
+        if (checkbox.checked) {
+            state[id] = true;
+            if (card) card.classList.add('checked');
+            if (tag) {
+                tag.className = 'item-status-tag ready';
+                tag.innerHTML = '<i class="fa-solid fa-check"></i> Terunggah';
+            }
+            showToast(`Aset #${id} ditandai sudah terunggah!`);
+        } else {
+            delete state[id];
+            if (card) card.classList.remove('checked');
+            if (tag) {
+                tag.className = 'item-status-tag pending';
+                tag.innerHTML = '<i class="fa-solid fa-clock"></i> Belum Siap';
+            }
+            showToast(`Aset #${id} dibatalkan.`);
+        }
+
+        saveState(state);
+        updateProgressStats();
+    }
+
+    function updateProgressStats() {
+        const state = loadSavedState();
+        const total = MEDIA_ITEMS.length;
+        const checkedCount = Object.keys(state).length;
+        const percentage = Math.round((checkedCount / total) * 100);
+
+        const textEl = document.getElementById('progress-text');
+        const fillEl = document.getElementById('progress-fill');
+
+        if (textEl) textEl.textContent = `${checkedCount} / ${total} Aset (${percentage}%)`;
+        if (fillEl) fillEl.style.width = `${percentage}%`;
+    }
+
+    function filterItems(cat, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderChecklist(cat);
+    }
+
+    function resetAllChecklist() {
+        if (confirm("Apakah Anda yakin ingin mereset seluruh centang checklist media?")) {
+            localStorage.removeItem(STORAGE_KEY);
+            renderChecklist();
+            showToast("Seluruh centang telah direset.");
+        }
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast-alert');
+        const text = document.getElementById('toast-text');
+        if (toast && text) {
+            text.textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 2800);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderChecklist();
+    });
+</script>
+
+</body>
+</html>
