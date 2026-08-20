@@ -13,7 +13,7 @@
     <!-- Font Awesome (Strict No-Emoji Standard) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Supabase JS Client (v2 CDN) -->
+    <!-- Supabase JS Client v2 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- Favicon -->
@@ -35,8 +35,6 @@
             --color-success-bg: #E8F8F0;
             --color-warning: #D97706;
             --color-warning-bg: #FEF3C7;
-            --color-info: #2563EB;
-            --color-info-bg: #EFF6FF;
             --color-gdrive: #0F9D58;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07);
@@ -111,12 +109,6 @@
             background: var(--color-success-bg);
             color: var(--color-success);
             border: 1px solid rgba(0, 166, 81, 0.3);
-        }
-
-        .sync-badge.connecting {
-            background: var(--color-warning-bg);
-            color: var(--color-warning);
-            border-color: rgba(217, 119, 6, 0.3);
         }
 
         /* Header Card */
@@ -594,7 +586,7 @@
             <i class="fa-solid fa-arrow-left"></i> Kembali ke Roadmap Utama (progdev)
         </a>
         <div class="sync-badge" id="sync-status">
-            <i class="fa-solid fa-cloud-bolt"></i> <span id="sync-text">Terkoneksi ke Cloud Supabase</span>
+            <i class="fa-solid fa-cloud-bolt"></i> <span id="sync-text">Tersinkronisasi Real-Time Supabase</span>
         </div>
     </div>
 
@@ -748,109 +740,23 @@
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjd2FqYmVta2Joa29nd3RxY214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzg2ODMsImV4cCI6MjEwMjcxNDY4M30.SdkWOVO8TyWzQn_96SCLUzryv-blvKKCi1poXlPk5Y4";
     
     let supabase = null;
-    let cloudConnected = false;
-    let cachedState = {};
+    let checkedState = {};
+    let currentFilter = 'all';
 
+    // Initialize Supabase Client
     try {
         if (window.supabase) {
             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         }
     } catch (e) {
-        console.warn("Supabase init fallback:", e);
+        console.warn("Supabase init notice:", e);
     }
 
-    const STORAGE_KEY = "masjid_sophia_media_checklist_state";
-
-    function loadLocalState() {
-        try {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            return saved ? JSON.parse(saved) : {};
-        } catch (e) {
-            return {};
-        }
-    }
-
-    function saveLocalState(state) {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        } catch (e) {}
-    }
-
-    // Fetch from Supabase Cloud
-    async function fetchCloudState() {
-        if (!supabase) return loadLocalState();
-        try {
-            const { data, error } = await supabase
-                .from('media_checklists')
-                .select('*');
-
-            if (error) {
-                console.warn("Supabase fetch error (fallback to local):", error.message);
-                setSyncBadge(false);
-                return loadLocalState();
-            }
-
-            setSyncBadge(true);
-            const state = {};
-            if (data && data.length > 0) {
-                data.forEach(row => {
-                    if (row.is_completed) {
-                        state[row.id] = true;
-                    }
-                });
-            }
-            saveLocalState(state);
-            return state;
-        } catch (e) {
-            console.warn("Cloud sync error:", e);
-            setSyncBadge(false);
-            return loadLocalState();
-        }
-    }
-
-    // Update to Supabase Cloud
-    async function updateCloudItem(id, isCompleted) {
-        saveLocalState(cachedState);
-        if (!supabase) return;
-
-        try {
-            const item = MEDIA_ITEMS.find(m => m.id === id);
-            const { error } = await supabase
-                .from('media_checklists')
-                .upsert({
-                    id: id,
-                    category: item ? item.category : 'General',
-                    title: item ? item.title : `Aset #${id}`,
-                    is_completed: isCompleted,
-                    drive_type: item ? item.drive : 'image',
-                    updated_at: new Date().toISOString()
-                }, { onConflict: 'id' });
-
-            if (error) {
-                console.warn("Cloud update notice:", error.message);
-            }
-        } catch (e) {
-            console.warn("Cloud update exception:", e);
-        }
-    }
-
-    function setSyncBadge(isLive) {
-        const badge = document.getElementById('sync-status');
-        const text = document.getElementById('sync-text');
-        if (!badge || !text) return;
-
-        if (isLive) {
-            badge.className = 'sync-badge';
-            text.textContent = 'Tersinkronisasi Cloud Supabase';
-        } else {
-            badge.className = 'sync-badge connecting';
-            text.textContent = 'Auto-Save Lokal (Siap Sync Cloud)';
-        }
-    }
-
-    async function renderChecklist(filterCategory = 'all') {
+    // Render all items synchronously to guarantee UI is never blank
+    function renderItems(filterCategory = 'all') {
+        currentFilter = filterCategory;
         const container = document.getElementById('items-container');
-        cachedState = await fetchCloudState();
+        if (!container) return;
         container.innerHTML = '';
 
         const filtered = (filterCategory === 'all') 
@@ -860,7 +766,7 @@
                 : MEDIA_ITEMS.filter(item => item.category === filterCategory);
 
         filtered.forEach(item => {
-            const isChecked = !!cachedState[item.id];
+            const isChecked = !!checkedState[item.id];
             const gdriveLink = (item.drive === 'video') ? GDRIVE_VIDEO_URL : GDRIVE_IMAGE_URL;
 
             const card = document.createElement('div');
@@ -897,15 +803,55 @@
         updateProgressStats();
     }
 
+    // Fetch initial state from Supabase Cloud
+    async function loadCloudState() {
+        if (!supabase) return;
+        try {
+            const { data, error } = await supabase
+                .from('media_checklists')
+                .select('*');
+
+            if (!error && data) {
+                checkedState = {};
+                data.forEach(row => {
+                    if (row.is_completed) {
+                        checkedState[row.id] = true;
+                    }
+                });
+
+                // Apply updates to UI
+                MEDIA_ITEMS.forEach(item => {
+                    const isChecked = !!checkedState[item.id];
+                    const cb = document.getElementById(`check-${item.id}`);
+                    const card = document.getElementById(`item-card-${item.id}`);
+                    const tag = document.getElementById(`status-tag-${item.id}`);
+                    if (cb) cb.checked = isChecked;
+                    if (card) {
+                        if (isChecked) card.classList.add('checked');
+                        else card.classList.remove('checked');
+                    }
+                    if (tag) {
+                        tag.className = isChecked ? 'item-status-tag ready' : 'item-status-tag pending';
+                        tag.innerHTML = isChecked ? '<i class="fa-solid fa-check"></i> Terunggah' : '<i class="fa-solid fa-clock"></i> Belum Siap';
+                    }
+                });
+
+                updateProgressStats();
+            }
+        } catch (e) {
+            console.warn("Cloud load fallback:", e);
+        }
+    }
+
+    // Toggle Item Checkbox
     async function toggleItem(id) {
-        const checkbox = document.getElementById(`check-${id}`);
+        const cb = document.getElementById(`check-${id}`);
         const card = document.getElementById(`item-card-${id}`);
         const tag = document.getElementById(`status-tag-${id}`);
-
-        const isChecked = checkbox.checked;
+        const isChecked = cb ? cb.checked : false;
 
         if (isChecked) {
-            cachedState[id] = true;
+            checkedState[id] = true;
             if (card) card.classList.add('checked');
             if (tag) {
                 tag.className = 'item-status-tag ready';
@@ -913,7 +859,7 @@
             }
             showToast(`Aset #${id} ditandai sudah terunggah!`);
         } else {
-            delete cachedState[id];
+            delete checkedState[id];
             if (card) card.classList.remove('checked');
             if (tag) {
                 tag.className = 'item-status-tag pending';
@@ -923,12 +869,30 @@
         }
 
         updateProgressStats();
-        await updateCloudItem(id, isChecked);
+
+        // Save to Supabase Cloud
+        if (supabase) {
+            try {
+                const item = MEDIA_ITEMS.find(m => m.id === id);
+                await supabase
+                    .from('media_checklists')
+                    .upsert({
+                        id: id,
+                        category: item ? item.category : 'General',
+                        title: item ? item.title : `Aset #${id}`,
+                        is_completed: isChecked,
+                        drive_type: item ? item.drive : 'image',
+                        updated_at: new Date().toISOString()
+                    }, { onConflict: 'id' });
+            } catch (err) {
+                console.warn("Supabase upsert error:", err);
+            }
+        }
     }
 
     function updateProgressStats() {
         const total = MEDIA_ITEMS.length;
-        const checkedCount = Object.keys(cachedState).length;
+        const checkedCount = Object.keys(checkedState).length;
         const percentage = Math.round((checkedCount / total) * 100);
 
         const textEl = document.getElementById('progress-text');
@@ -941,13 +905,13 @@
     function filterItems(cat, btn) {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        renderChecklist(cat);
+        renderItems(cat);
     }
 
     async function refreshFromCloud() {
-        showToast("Memperbarui data dari Cloud Supabase...");
-        await renderChecklist();
-        showToast("Data terbaru berhasil dimuat.");
+        showToast("Memperbarui data dari Supabase...");
+        await loadCloudState();
+        showToast("Data cloud terbaru berhasil dimuat.");
     }
 
     function showToast(msg) {
@@ -960,24 +924,27 @@
         }
     }
 
-    // Subscribe to Supabase Real-Time Changes
+    // Subscribe to Realtime WebSocket changes
     function initRealtime() {
         if (!supabase) return;
         try {
             supabase
-                .channel('media_checklists_changes')
+                .channel('realtime-media-checklists')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'media_checklists' }, payload => {
                     if (payload.new && payload.new.id) {
                         const id = payload.new.id;
                         const isDone = payload.new.is_completed;
+                        
                         if (isDone) {
-                            cachedState[id] = true;
+                            checkedState[id] = true;
                         } else {
-                            delete cachedState[id];
+                            delete checkedState[id];
                         }
+
                         const cb = document.getElementById(`check-${id}`);
                         const card = document.getElementById(`item-card-${id}`);
                         const tag = document.getElementById(`status-tag-${id}`);
+
                         if (cb) cb.checked = isDone;
                         if (card) {
                             if (isDone) card.classList.add('checked');
@@ -992,12 +959,13 @@
                 })
                 .subscribe();
         } catch (e) {
-            console.warn("Realtime sub notice:", e);
+            console.warn("Realtime sub err:", e);
         }
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-        await renderChecklist();
+        renderItems('all');
+        await loadCloudState();
         initRealtime();
     });
 </script>
