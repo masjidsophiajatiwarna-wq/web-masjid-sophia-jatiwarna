@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pelacak Progres & Roadmap - Masjid Musafir Sophia Jatiwarna</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (Strict No-Emoji Standard) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --color-gold-primary: #E3C466;
+            --color-gold-deep: #C9A84C;
+            --color-gold-light: #F7EFCF;
+            --color-charcoal: #1D1D1B;
+            --color-charcoal-muted: #4B5563;
+            --color-bg-sand: #F8F6F0;
+            --color-bg-white: #FFFFFF;
+            --color-card-bg: #FFFFFF;
+            --color-border: #E5E7EB;
+            --color-border-focus: #C9A84C;
+            --color-success: #00A651;
+            --color-success-bg: #E8F8F0;
+            --color-warning: #D97706;
+            --color-warning-bg: #FEF3C7;
+            --color-info: #2563EB;
+            --color-info-bg: #EFF6FF;
+            --color-qris: #E31E24;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.03);
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            --transition-smooth: all 0.25s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--color-bg-sand);
+            color: var(--color-charcoal);
+            line-height: 1.6;
+            padding: 1.5rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1360px;
+            margin: 0 auto;
+        }
+
+        /* Header Card */
+        .header-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-left: 6px solid var(--color-gold-deep);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 1.75rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .brand-icon-box {
+            width: 60px;
+            height: 60px;
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-titles h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .header-titles p {
+            color: var(--color-charcoal-muted);
+            font-size: 0.95rem;
+        }
+
+        .header-meta-tags {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-top: 0.6rem;
+        }
+
+        .meta-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.75rem;
+            background: var(--color-bg-sand);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-charcoal);
+        }
+
+        .meta-pill.active {
+            background: var(--color-gold-light);
+            border-color: var(--color-gold-deep);
+            color: #785800;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.15rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-white);
+            color: var(--color-charcoal);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+
+        .btn-action:hover {
+            background: var(--color-bg-sand);
+            border-color: var(--color-gold-deep);
+            color: var(--color-charcoal);
+        }
+
+        .btn-action.btn-primary {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+        }
+
+        .btn-action.btn-primary:hover {
+            background: #2D2D2A;
+            color: #FFFFFF;
+        }
+
+        /* KPI Metrics Grid */
+        .grid-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .metric-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-gold-deep);
+        }
+
+        .metric-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-charcoal-muted);
+        }
+
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            background: var(--color-gold-light);
+            color: var(--color-gold-deep);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            line-height: 1.2;
+        }
+
+        .metric-subtext {
+            font-size: 0.825rem;
+            color: var(--color-charcoal-muted);
+            margin-top: 0.35rem;
+        }
+
+        .progress-track {
+            height: 8px;
+            background: #E5E7EB;
+            border-radius: 10px;
+            margin-top: 0.85rem;
+            overflow: hidden;
+        }
+
+        .progress-bar-inner {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-gold-primary), var(--color-success));
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+
+        /* Filter Controls */
+        .controls-bar {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.55rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-sand);
+            color: var(--color-charcoal);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tab-btn:hover {
+            background: var(--color-gold-light);
+            border-color: var(--color-gold-deep);
+        }
+
+        .tab-btn.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            position: relative;
+            min-width: 260px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 0.85rem;
+            color: var(--color-charcoal-muted);
+            font-size: 0.9rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.55rem 0.85rem 0.55rem 2.25rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            background: var(--color-bg-sand);
+            color: var(--color-charcoal);
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .search-input:focus {
+            background: var(--color-bg-white);
+            border-color: var(--color-gold-deep);
+            box-shadow: 0 0 0 3px rgba(227, 196, 102, 0.2);
+        }
+
+        /* Phase Section Styling */
+        .phase-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .phase-header {
+            padding: 1.25rem 1.5rem;
+            background: #FAFAF8;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .phase-header:hover {
+            background: #F4F1EA;
+        }
+
+        .phase-title-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .phase-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .phase-badge.done {
+            background: var(--color-success);
+            color: #FFFFFF;
+        }
+
+        .phase-badge.in-progress {
+            background: var(--color-warning);
+            color: #FFFFFF;
+        }
+
+        .phase-name h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--color-charcoal);
+            margin-bottom: 0.15rem;
+        }
+
+        .phase-name p {
+            font-size: 0.825rem;
+            color: var(--color-charcoal-muted);
+        }
+
+        .phase-status-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .status-tag.status-done {
+            background: var(--color-success-bg);
+            color: var(--color-success);
+            border: 1px solid rgba(0, 166, 81, 0.3);
+        }
+
+        .status-tag.status-inprogress {
+            background: var(--color-warning-bg);
+            color: var(--color-warning);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+        }
+
+        .status-tag.status-pending {
+            background: #F3F4F6;
+            color: #6B7280;
+            border: 1px solid #E5E7EB;
+        }
+
+        .toggle-icon {
+            color: var(--color-charcoal-muted);
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .phase-card.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .phase-body {
+            padding: 1.5rem;
+            display: block;
+        }
+
+        .phase-card.collapsed .phase-body {
+            display: none;
+        }
+
+        /* Task Items Checklist */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 0.85rem 1rem;
+            background: #FAFAFA;
+            border: 1px solid #F0F0EE;
+            border-radius: var(--radius-md);
+            transition: var(--transition-smooth);
+        }
+
+        .task-item:hover {
+            background: #FFFFFF;
+            border-color: var(--color-gold-deep);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .task-item.completed {
+            background: rgba(232, 248, 240, 0.35);
+            border-color: rgba(0, 166, 81, 0.2);
+        }
+
+        .task-checkbox {
+            margin-top: 0.25rem;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--color-success);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-size: 0.925rem;
+            font-weight: 600;
+            color: var(--color-charcoal);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .task-item.completed .task-title {
+            color: #374151;
+        }
+
+        .task-desc {
+            font-size: 0.825rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.5;
+        }
+
+        .task-badge-pill {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 4px;
+            background: var(--color-bg-sand);
+            border: 1px solid var(--color-border);
+            color: var(--color-charcoal);
+        }
+
+        /* Timeline Gantt View Container */
+        .gantt-container {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.75rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .gantt-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gantt-header h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .gantt-row {
+            display: grid;
+            grid-template-columns: 280px 1fr 110px;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0.85rem 0;
+            border-bottom: 1px dashed var(--color-border);
+        }
+
+        .gantt-row:last-child {
+            border-bottom: none;
+        }
+
+        .gantt-phase-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--color-charcoal);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .gantt-bar-wrapper {
+            background: #F3F4F6;
+            height: 22px;
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gantt-bar-fill {
+            height: 100%;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            padding-left: 0.75rem;
+            font-size: 0.725rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            transition: width 1s ease-in-out;
+        }
+
+        .gantt-bar-fill.fill-100 {
+            width: 100%;
+            background: linear-gradient(90deg, var(--color-success), #10B981);
+        }
+
+        .gantt-bar-fill.fill-70 {
+            width: 70%;
+            background: linear-gradient(90deg, var(--color-warning), #F59E0B);
+        }
+
+        .gantt-bar-fill.fill-30 {
+            width: 30%;
+            background: linear-gradient(90deg, #3B82F6, #60A5FA);
+        }
+
+        .gantt-bar-fill.fill-0 {
+            width: 8%;
+            background: #9CA3AF;
+            color: #FFFFFF;
+        }
+
+        /* RBAC Table */
+        .table-responsive {
+            overflow-x: auto;
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.75rem;
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        .custom-table th {
+            background: #FAFAF8;
+            color: var(--color-charcoal);
+            font-weight: 700;
+            padding: 1rem 0.85rem;
+            border-bottom: 2px solid var(--color-border);
+            white-space: nowrap;
+        }
+
+        .custom-table td {
+            padding: 0.85rem;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-charcoal);
+        }
+
+        .custom-table tr:hover td {
+            background: #FAF8F2;
+        }
+
+        .badge-perm {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.725rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .badge-perm.full {
+            background: var(--color-success-bg);
+            color: var(--color-success);
+            border: 1px solid rgba(0,166,81,0.3);
+        }
+
+        .badge-perm.read {
+            background: var(--color-info-bg);
+            color: var(--color-info);
+            border: 1px solid rgba(37,99,235,0.3);
+        }
+
+        .badge-perm.none {
+            background: #F3F4F6;
+            color: #9CA3AF;
+            border: 1px solid #E5E7EB;
+        }
+
+        .badge-perm.action {
+            background: var(--color-gold-light);
+            color: #785800;
+            border: 1px solid var(--color-gold-deep);
+        }
+
+        /* Pillars 7 Grid */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .pillar-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .pillar-num {
+            width: 36px;
+            height: 36px;
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .pillar-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .pillar-info p {
+            font-size: 0.8rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        .footer-note {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--color-charcoal-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--color-border);
+            margin-top: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .header-card {
+                padding: 1.25rem;
+            }
+            .gantt-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            .search-box {
+                width: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                background: #FFFFFF;
+                padding: 0;
+            }
+            .controls-bar, .header-actions, .search-box {
+                display: none !important;
+            }
+            .phase-body {
+                display: block !important;
+            }
+            .header-card, .metric-card, .phase-card, .gantt-container, .table-responsive {
+                box-shadow: none;
+                border: 1px solid #CCCCCC;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header Card -->
+    <header class="header-card">
+        <div class="brand-section">
+            <div class="brand-icon-box">
+                <i class="fa-solid fa-mosque"></i>
+            </div>
+            <div class="header-titles">
+                <h1>
+                    Masjid Musafir Sophia Jatiwarna
+                    <span class="status-tag status-done">
+                        <i class="fa-solid fa-circle-check"></i> Fase 1 Selesai
+                    </span>
+                </h1>
+                <p>Dashboard Pemantauan Progres & Master Roadmap Implementasi Web Portal</p>
+                <div class="header-meta-tags">
+                    <span class="meta-pill active">
+                        <i class="fa-solid fa-location-dot"></i> Koordinat: -6.310391, 106.921264 (WIB)
+                    </span>
+                    <span class="meta-pill">
+                        <i class="fa-solid fa-kaaba"></i> Hisab: Standar Kemenag RI
+                    </span>
+                    <span class="meta-pill">
+                        <i class="fa-solid fa-globe"></i> masjidsophiajatiwarna.com
+                    </span>
+                    <span class="meta-pill">
+                        <i class="fa-solid fa-shield-halved"></i> Strict No-Emoji Standard
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-action" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Cetak Dokumen
+            </button>
+            <button class="btn-action btn-primary" onclick="expandAllPhases()">
+                <i class="fa-solid fa-up-right-and-down-left-from-center"></i> Buka Semua Fase
+            </button>
+        </div>
+    </header>
+
+    <!-- Top KPI Metrics -->
+    <section class="grid-metrics">
+        <div class="metric-card">
+            <div class="metric-card-top">
+                <span class="metric-label">Total Fase Proyek</span>
+                <div class="metric-icon"><i class="fa-solid fa-layer-group"></i></div>
+            </div>
+            <div class="metric-value">7 <span style="font-size: 1rem; font-weight: 500; color: var(--color-charcoal-muted);">Fase (0-6)</span></div>
+            <div class="metric-subtext">Dari Kurasi Aset hingga Go-Live</div>
+            <div class="progress-track">
+                <div class="progress-bar-inner" style="width: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-card-top">
+                <span class="metric-label">Progres Keseluruhan</span>
+                <div class="metric-icon"><i class="fa-solid fa-chart-line"></i></div>
+            </div>
+            <div class="metric-value" id="overall-progress-text">35%</div>
+            <div class="metric-subtext">Fondasi, Rencana Induk & Repo Tuntas</div>
+            <div class="progress-track">
+                <div class="progress-bar-inner" id="overall-progress-bar" style="width: 35%;"></div>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-card-top">
+                <span class="metric-label">Tugas Tervalidasi</span>
+                <div class="metric-icon"><i class="fa-solid fa-list-check"></i></div>
+            </div>
+            <div class="metric-value" id="tasks-count-text">11 / 34</div>
+            <div class="metric-subtext">Item tugas selesai dikerjakan</div>
+            <div class="progress-track">
+                <div class="progress-bar-inner" style="width: 32%;"></div>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-card-top">
+                <span class="metric-label">Arsitektur Terintegrasi</span>
+                <div class="metric-icon"><i class="fa-solid fa-cubes"></i></div>
+            </div>
+            <div class="metric-value">7 <span style="font-size: 1rem; font-weight: 500; color: var(--color-charcoal-muted);">Pilar</span></div>
+            <div class="metric-subtext">GitHub, Vercel, Supabase, ImageKit, Resend</div>
+            <div class="progress-track">
+                <div class="progress-bar-inner" style="width: 100%;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="filterView('all', this)">
+                <i class="fa-solid fa-border-all"></i> Semua Tampilan
+            </button>
+            <button class="tab-btn" onclick="filterView('roadmap', this)">
+                <i class="fa-solid fa-timeline"></i> Timeline Roadmap
+            </button>
+            <button class="tab-btn" onclick="filterView('checklist', this)">
+                <i class="fa-solid fa-tasks"></i> Modul Checklist
+            </button>
+            <button class="tab-btn" onclick="filterView('rbac', this)">
+                <i class="fa-solid fa-users-gear"></i> Matriks RBAC
+            </button>
+            <button class="tab-btn" onclick="filterView('pillars', this)">
+                <i class="fa-solid fa-server"></i> 7 Pilar Sistem
+            </button>
+        </div>
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="task-search" class="search-input" placeholder="Cari modul, fitur, tugas..." onkeyup="searchTasks()">
+        </div>
+    </div>
+
+    <!-- View Section 1: Timeline Roadmap (Gantt Style) -->
+    <section class="gantt-container view-section" id="view-roadmap">
+        <div class="gantt-header">
+            <h3><i class="fa-solid fa-timeline" style="color: var(--color-gold-deep);"></i> Roadmap Ekosistem Web Masjid Sophia</h3>
+            <span class="status-tag status-inprogress">
+                <i class="fa-solid fa-clock"></i> Siklus Pengerjaan Terstruktur
+            </span>
+        </div>
+
+        <div class="gantt-row">
+            <div class="gantt-phase-name">
+                <i class="fa-solid fa-camera-retro" style="color: var(--color-charcoal-muted);"></i> Fase 0: Kurasi Aset Dokumentasi
+            </div>
+            <div class="gantt-bar-wrapper">
+                <div class="gantt-bar-fill fill-70">70% Selesai (Logo & Favicon Siap)</div>
+            </div>
+            <div style="text-align: right;"><span class="status-tag status-inprogress">Dalam Proses</span></div>
+        </div>
+
+        <div class="gantt-row">
+            <div class="gantt-phase-name">
+                <i class="fa-solid fa-flag-checkered" style="color: var(--color-success);"></i> Fase 1: Inisialisasi & Rencana Induk
+            </div>
+            <div class="gantt-bar-wrapper">
+                <div class="gantt-bar-fill fill-100">100% Selesai Tuntas</div>
+            </div>
+            <div style="text-align: right;"><span class="status-tag status-done">Selesai</span></div>
+        </div>
+
+        <div class="gantt-row">
+            <div class="gantt-phase-name">
+                <i class="fa-solid fa-database" style="color: var(--color-info);"></i> Fase 2: Database & Keamanan RLS
+            </div>
+            <div class="gantt-bar-wrapper">
+                <div class="gantt-bar-fill fill-0">Siap Eksekusi</div>
+            </div>
+            <div style="text-align: right;"><span class="status-tag status-pending">Menunggu</span></div>
+        </div>
+
+        <div class="gantt-row">
+            <div class="gantt-phase-name">
+                <i class="fa-solid fa-desktop" style="color: var(--color-gold-deep);"></i> Fase 3: Portal Publik & Shalat Engine
+            </div>
+            <div class="gantt-bar-wrapper">
+                <div class="gantt-bar-fill fill-0">Siap Eksekusi</div>
+            </div>
+            <div style="text-align: right;"><span class="status-tag status-pending">Menunggu</span></div>
+        </div>
+
+        <div class="gantt-row">
+            <div class="gantt-phase-name">
+                <i class="fa-solid fa-list-check" style="color: var(--color-charcoal);"></i> Fase 4: Admin DKM & Task Engine
+            </div>
+            <div class="gantt-bar-wrapper">
+                <div class="gantt-bar-fill fill-0">Siap Eksekusi</div>
+            </div>
+            <div style="text-align: right;"><span class="status-tag status-pending">Menunggu</span></div>
+        </div>
+
+        <div class="gantt-row">
+            <div class="gantt-phase-name">
+                <i class="fa-solid fa-vial-circle-check" style="color: var(--color-charcoal-muted);"></i> Fase 5: Uji Presisi & Audit
+            </div>
+            <div class="gantt-bar-wrapper">
+                <div class="gantt-bar-fill fill-0">Siap Eksekusi</div>
+            </div>
+            <div style="text-align: right;"><span class="status-tag status-pending">Menunggu</span></div>
+        </div>
+
+        <div class="gantt-row">
+            <div class="gantt-phase-name">
+                <i class="fa-solid fa-rocket" style="color: var(--color-success);"></i> Fase 6: Go-Live & SEO Cutover
+            </div>
+            <div class="gantt-bar-wrapper">
+                <div class="gantt-bar-fill fill-0">Siap Eksekusi</div>
+            </div>
+            <div style="text-align: right;"><span class="status-tag status-pending">Menunggu</span></div>
+        </div>
+    </section>
+
+    <!-- View Section 2: Detailed Modules Checklist -->
+    <section class="view-section" id="view-checklist">
+        
+        <!-- Fase 0 Card -->
+        <div class="phase-card" id="card-fase-0">
+            <div class="phase-header" onclick="togglePhase('card-fase-0')">
+                <div class="phase-title-group">
+                    <div class="phase-badge in-progress">0</div>
+                    <div class="phase-name">
+                        <h3>Fase 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid</h3>
+                        <p>Pengumpulan materi visual otentik: Logo SVG, Favicon, dokumentasi makan gratis, dan fasilitas 24 jam</p>
+                    </div>
+                </div>
+                <div class="phase-status-wrapper">
+                    <span class="status-tag status-inprogress"><i class="fa-solid fa-clock"></i> Dalam Proses</span>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+            </div>
+            <div class="phase-body">
+                <div class="task-list">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Verifikasi Aset Logo Vektor Resmi (.SVG & .PNG)
+                                <span class="task-badge-pill">asset/logo</span>
+                            </div>
+                            <div class="task-desc">Logo resmi Masjid Sophia tersedia dalam format vektor hitam dan putih (logo_masjid_black.svg & logo_masjid_white.svg).</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Paket Favicon Multi-Ukuran & Web Manifest
+                                <span class="task-badge-pill">asset/favicon</span>
+                            </div>
+                            <div class="task-desc">Favicon 16x16, 32x32, favicon.ico, apple-touch-icon, android-chrome, dan site.webmanifest terkonfigurasi.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Kurasi Foto Riil Dokumentasi Makan Berjamaah Gratis ba'da Dzuhur
+                                <span class="task-badge-pill">Dokumentasi</span>
+                            </div>
+                            <div class="task-desc">Menyiapkan foto asli penyaluran hidangan makan gratis harian kepada para musafir, pengemudi ojek online, dan dhuafa.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Kurasi Foto Fasilitas Layanan Musafir 24 Jam & Halaqah Santri
+                                <span class="task-badge-pill">Dokumentasi</span>
+                            </div>
+                            <div class="task-desc">Menyiapkan foto area istirahat musafir, toilet/wudhu higienis, dispenser air gratis, dan kegiatan santri tahfidz Al-Qur'an.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fase 1 Card -->
+        <div class="phase-card" id="card-fase-1">
+            <div class="phase-header" onclick="togglePhase('card-fase-1')">
+                <div class="phase-title-group">
+                    <div class="phase-badge done"><i class="fa-solid fa-check"></i></div>
+                    <div class="phase-name">
+                        <h3>Fase 1: Inisialisasi Infrastruktur, Berkas Tata Kelola & Monitoring</h3>
+                        <p>Dokumentasi inti, .gitignore, implementation plan, changelog, dan pelacak progres interaktif</p>
+                    </div>
+                </div>
+                <div class="phase-status-wrapper">
+                    <span class="status-tag status-done"><i class="fa-solid fa-circle-check"></i> Selesai (100%)</span>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+            </div>
+            <div class="phase-body">
+                <div class="task-list">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Penyusunan BRAND_GUIDE.md & Standar Visual Resmi
+                                <span class="task-badge-pill">BRAND_GUIDE.md</span>
+                            </div>
+                            <div class="task-desc">Penetapan palet tema terang (#FFFFFF, #F8F6F0, #1D1D1B, #E3C466, #C9A84C), tipografi Inter/Plus Jakarta Sans & Amiri, serta aturan bebas emoji.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pembuatan Master Blueprint Arsitektur 7 Pilar
+                                <span class="task-badge-pill">Master-Fullstack-Web-App-Services-v1.md</span>
+                            </div>
+                            <div class="task-desc">Standarisasi modul decoupled: Incognito Form, QRIS, Article Studio, KPI Analytics, Health Monitoring, dan Data Archive.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pembuatan .gitignore Komprehensif
+                                <span class="task-badge-pill">.gitignore</span>
+                            </div>
+                            <div class="task-desc">Pengamanan kredensial Supabase/Vercel/Resend, eliminasi cache node_modules, log, dan artefak build.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pembuatan README.md Repositori Resmi
+                                <span class="task-badge-pill">README.md</span>
+                            </div>
+                            <div class="task-desc">Dokumentasi arsitektur 7 pilar, hisab shalat presisi Kemenag Jatiwarna, matriks RBAC 10 peran DKM, dan petunjuk instalasi.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pembuatan implementation-plan.md Rencana Induk
+                                <span class="task-badge-pill">implementation-plan.md</span>
+                            </div>
+                            <div class="task-desc">Master roadmap teknis lengkap dari Fase 0 (Pipeline Kurasi Aset) hingga Fase 6 (Go-Live).</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pembuatan CHANGELOG.md Versi 1.0.0
+                                <span class="task-badge-pill">CHANGELOG.md</span>
+                            </div>
+                            <div class="task-desc">Pencatatan riwayat rilis awal mengikuti standar Keep a Changelog dan Conventional Commits.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pembuatan Web Pelacak Progres Interaktif
+                                <span class="task-badge-pill">progress-implementation-plan.html</span>
+                            </div>
+                            <div class="task-desc">Antarmuka visual responsif, bebas emoji, dinamis, dan siap dideploy pada subdomain pemantauan progdev.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fase 2 Card -->
+        <div class="phase-card collapsed" id="card-fase-2">
+            <div class="phase-header" onclick="togglePhase('card-fase-2')">
+                <div class="phase-title-group">
+                    <div class="phase-badge">2</div>
+                    <div class="phase-name">
+                        <h3>Fase 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS</h3>
+                        <p>Skema PostgreSQL terpusat, autentikasi pengurus, penyimpanan media, dan proteksi Zero-Trust RLS</p>
+                    </div>
+                </div>
+                <div class="phase-status-wrapper">
+                    <span class="status-tag status-pending"><i class="fa-solid fa-pause"></i> Siap Dijalankan</span>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+            </div>
+            <div class="phase-body">
+                <div class="task-list">
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Skema Tabel Waktu Shalat & Offset Ikhtiyat (prayer_settings)
+                                <span class="task-badge-pill">SQL Migration</span>
+                            </div>
+                            <div class="task-desc">Menyimpan koordinat Jatiwarna (-6.310391, 106.921264), metode hisab Kemenag, dan offset menit manual per waktu shalat.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Skema Tabel Rotasi Petugas Ibadah (duty_rosters)
+                                <span class="task-badge-pill">SQL Migration</span>
+                            </div>
+                            <div class="task-desc">Jadwal harian/mingguan Imam Rawatib, Muadzin, Khatib Jumat, dan Penceramah Kajian Tematik.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Skema Formulir Donasi Incognito & Kas Masuk (form_submissions, donations_cashflow)
+                                <span class="task-badge-pill">SQL Migration</span>
+                            </div>
+                            <div class="task-desc">Penerimaan donasi tanpa login, nomor WhatsApp +62, alokasi program makan gratis / santri, dan rekonsiliasi transfer.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Skema Task Management DKM & Chat Internal (tasks, task_comments)
+                                <span class="task-badge-pill">SQL Migration</span>
+                            </div>
+                            <div class="task-desc">Struktur data Kanban (To Do, In Progress, In Review, Done), deadline, prioritas, dan riwayat obrolan instruksi pengurus.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Skema Article Studio CMS & Profil Pengurus (articles, user_profiles)
+                                <span class="task-badge-pill">SQL Migration</span>
+                            </div>
+                            <div class="task-desc">Penerbitan artikel dakwah, berita kegiatan, dan integrasi 10 peran RBAC dengan auth.users Supabase.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Penerapan Zero-Trust Row Level Security (RLS Hardening)
+                                <span class="task-badge-pill">RLS Security</span>
+                            </div>
+                            <div class="task-desc">Mengisolasi akses baca/tulis publik vs authenticated admin untuk menjamin nol kebocoran data donatur.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fase 3 Card -->
+        <div class="phase-card collapsed" id="card-fase-3">
+            <div class="phase-header" onclick="togglePhase('card-fase-3')">
+                <div class="phase-title-group">
+                    <div class="phase-badge">3</div>
+                    <div class="phase-name">
+                        <h3>Fase 3: Pengembangan Frontend Web Portal Publik & Modul Shalat</h3>
+                        <p>Landing page bertema terang, jadwal shalat hisab Kemenag presisi Jatiwarna, filantropi & katalog konten</p>
+                    </div>
+                </div>
+                <div class="phase-status-wrapper">
+                    <span class="status-tag status-pending"><i class="fa-solid fa-pause"></i> Siap Dijalankan</span>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+            </div>
+            <div class="phase-body">
+                <div class="task-list">
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Modul Jadwal Shalat Presisi Jatiwarna (Kemenag Hisab Engine)
+                                <span class="task-badge-pill">js/prayer-times.js</span>
+                            </div>
+                            <div class="task-desc">Perhitungan astronomis Imsak, Subuh, Terbit, Dzuhur, Ashar, Maghrib, Isya + Live Countdown Timer + Highlight aktif + sinkronisasi ikhtiyat.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Modul Rotasi Petugas Ibadah & Kajian
+                                <span class="task-badge-pill">UI Component</span>
+                            </div>
+                            <div class="task-desc">Display dinamis Imam Rawatib aktif/berikutnya, Muadzin, Khatib Jumat, dan Penceramah Kajian Tematik.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Kanal Filantropi BSI 1-Click Copy & QRIS SEDEKAH MAKAN
+                                <span class="task-badge-pill">Filantropi</span>
+                            </div>
+                            <div class="task-desc">Integrasi rekening BSI 7235464297 a.n. Masjid Sophia (tombol salin otomatis) dan QRIS NMID: ID2025401816769.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Dynamic Incognito Donation & Prayer Form
+                                <span class="task-badge-pill">js/donation-form.js</span>
+                            </div>
+                            <div class="task-desc">Formulir konfirmasi donasi & doa jamaah tanpa kewajiban login dengan proteksi honeypot anti-spam.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Showcase Fasilitas Layanan Musafir 24 Jam
+                                <span class="task-badge-pill">UI Section</span>
+                            </div>
+                            <div class="task-desc">Informasi kamar mandi wudhu bersih, ruang istirahat, air minum gratis, dan titik lokasi strategis samping UMAR Travel.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Portal Berita & Artikel Dakwah (artikel.html & artikel-detail.html)
+                                <span class="task-badge-pill">Halaman Publik</span>
+                            </div>
+                            <div class="task-desc">Grid feed artikel, live search, tab kategori, estimasi waktu baca, dan tombol bagikan sosial media.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fase 4 Card -->
+        <div class="phase-card collapsed" id="card-fase-4">
+            <div class="phase-header" onclick="togglePhase('card-fase-4')">
+                <div class="phase-title-group">
+                    <div class="phase-badge">4</div>
+                    <div class="phase-name">
+                        <h3>Fase 4: Pengembangan Web Admin DKM & Employee Dashboard</h3>
+                        <p>Benchmark SIABE-PORTO & WEB-UMAR: Task Management terpadu, Article Studio, kalibrasi ikhtiyat & kas</p>
+                    </div>
+                </div>
+                <div class="phase-status-wrapper">
+                    <span class="status-tag status-pending"><i class="fa-solid fa-pause"></i> Siap Dijalankan</span>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+            </div>
+            <div class="phase-body">
+                <div class="task-list">
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Modul Task Management Terpadu (Kanban, Gantt, Table, Archive)
+                                <span class="task-badge-pill">Admin Core</span>
+                            </div>
+                            <div class="task-desc">Papan kerja kolaboratif DKM: Kanban board status, timeline Gantt view, tabel pencarian, dan pengarsipan tugas.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Sistem Chat Koordinasi Internal Antar-Pengurus
+                                <span class="task-badge-pill">Admin Chat</span>
+                            </div>
+                            <div class="task-desc">Ruang komunikasi internal terikat per tiket tugas untuk menjaga rekam jejak instruksi kerja DKM.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Article & Event Studio CMS (Quill.js Rich Editor)
+                                <span class="task-badge-pill">CMS Studio</span>
+                            </div>
+                            <div class="task-desc">Editor publikasi artikel dakwah, upload cover ImageKit, penataan slug, dan pratinjau cuplikan Google Search.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Panel Kalibrasi Ikhtiyat Shalat & Rotasi Petugas
+                                <span class="task-badge-pill">DKM Panel</span>
+                            </div>
+                            <div class="task-desc">Pengaturan menit ikhtiyat (tambah/kurang menit) dan penugasan Imam, Muadzin, Khatib, dan Penceramah.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Laporan Arus Kas, Rekonsiliasi & Ekspor Data
+                                <span class="task-badge-pill">Keuangan</span>
+                            </div>
+                            <div class="task-desc">Verifikasi donasi masuk, pencatatan biaya makan gratis & operasional, serta ekspor laporan kas ke CSV.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fase 5 Card -->
+        <div class="phase-card collapsed" id="card-fase-5">
+            <div class="phase-header" onclick="togglePhase('card-fase-5')">
+                <div class="phase-title-group">
+                    <div class="phase-badge">5</div>
+                    <div class="phase-name">
+                        <h3>Fase 5: Pengujian Terpadu, Audit Keamanan & UAT</h3>
+                        <p>Validasi hisab Kemenag, uji beban formulir, sanitasi XSS/SQLi, dan audit responsive mobile</p>
+                    </div>
+                </div>
+                <div class="phase-status-wrapper">
+                    <span class="status-tag status-pending"><i class="fa-solid fa-pause"></i> Siap Dijalankan</span>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+            </div>
+            <div class="phase-body">
+                <div class="task-list">
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Uji Akurasi Hisab Shalat Kemenag vs Jadwal Resmi Kota Bekasi
+                                <span class="task-badge-pill">Testing</span>
+                            </div>
+                            <div class="task-desc">Memastikan kesesuaian waktu hisab astronomis lokal dengan kalender resmi Kemenag Kota Bekasi.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Uji Keamanan Form Donasi & Audit RLS Supabase
+                                <span class="task-badge-pill">Security</span>
+                            </div>
+                            <div class="task-desc">Pengujian pencegahan SQL Injection, pembersihan payload XSS, dan verifikasi zero-trust RLS.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Uji Responsif Multi-Device & Cross-Browser
+                                <span class="task-badge-pill">UI/UX Test</span>
+                            </div>
+                            <div class="task-desc">Verifikasi tampilan optimal pada Mobile (360-430px), Tablet (768-1024px), dan Desktop (1280px+).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fase 6 Card -->
+        <div class="phase-card collapsed" id="card-fase-6">
+            <div class="phase-header" onclick="togglePhase('card-fase-6')">
+                <div class="phase-title-group">
+                    <div class="phase-badge">6</div>
+                    <div class="phase-name">
+                        <h3>Fase 6: Finalisasi Produksi, SEO, Email Routing, DNS Cutover & Go-Live</h3>
+                        <p>Schema.org JSON-LD, sitemap.xml, robots.txt, custom 404, Resend DKIM/SPF, dan rilis live produksi</p>
+                    </div>
+                </div>
+                <div class="phase-status-wrapper">
+                    <span class="status-tag status-pending"><i class="fa-solid fa-pause"></i> Siap Dijalankan</span>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+            </div>
+            <div class="phase-body">
+                <div class="task-list">
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Optimasi SEO Lengkap (OpenGraph, Schema.org Mosque & Organization)
+                                <span class="task-badge-pill">SEO</span>
+                            </div>
+                            <div class="task-desc">Penataan metadata Google Search, Twitter Cards, dan structured data JSON-LD.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Berkas robots.txt, sitemap.xml & Custom 404.html
+                                <span class="task-badge-pill">SEO & Routing</span>
+                            </div>
+                            <div class="task-desc">Peta situs terstruktur, proteksi crawling folder admin, dan halaman error bertema terang.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Gateway Email Transaksional & DNS Authentication (Resend.com)
+                                <span class="task-badge-pill">Email</span>
+                            </div>
+                            <div class="task-desc">Konfigurasi catatan DNS SPF, DKIM, DMARC untuk pengiriman tanda terima donasi terpercaya.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                DNS Cutover Cloudflare & Subdomain Routing Vercel
+                                <span class="task-badge-pill">Hosting & DNS</span>
+                            </div>
+                            <div class="task-desc">Aktivasi domain utama masjidsophiajatiwarna.com dan subdomain progdev serta admin.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- View Section 3: RBAC Matrix -->
+    <section class="table-responsive view-section" id="view-rbac">
+        <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--color-border); background: #FAFAF8;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fa-solid fa-users-gear" style="color: var(--color-gold-deep);"></i> Matriks Hak Akses Pengurus (10 Peran RBAC)
+            </h3>
+            <p style="font-size: 0.825rem; color: var(--color-charcoal-muted); margin-top: 0.25rem;">
+                Standarisasi pembagian wewenang operasional terpadu DKM Masjid Musafir Sophia Jatiwarna
+            </p>
+        </div>
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>Modul / Fitur Sistem</th>
+                    <th>Super Admin</th>
+                    <th>Ketua DKM</th>
+                    <th>PJ Media</th>
+                    <th>PJ Logistik</th>
+                    <th>PJ Santri</th>
+                    <th>PJ Musafir</th>
+                    <th>PJ Ibadah</th>
+                    <th>PJ Keuangan</th>
+                    <th>PJ Keamanan</th>
+                    <th>PJ Kebersihan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Konfigurasi & Database</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Task Management (Kanban)</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Article Studio CMS</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Review</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm action">Kajian</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Kalibrasi Shalat & Ikhtiyat</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm action">Persetujuan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Rotasi Petugas Ibadah</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm action">Persetujuan</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Logistik & Makan Gratis</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Laporan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm read">Laporan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Data Santri & Tahfidz</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Laporan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Layanan Fasilitas Musafir</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Laporan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Kas & Verifikasi Donasi</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm action">Request</span></td>
+                    <td><span class="badge-perm action">Request</span></td>
+                    <td><span class="badge-perm action">Request</span></td>
+                    <td><span class="badge-perm action">Request</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm action">Request</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Log Keamanan & Piket</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Laporan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Sanitasi & Kebersihan</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Laporan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- View Section 4: 7 Pillars Architecture -->
+    <section class="view-section" id="view-pillars">
+        <div style="margin-bottom: 1.25rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fa-solid fa-server" style="color: var(--color-gold-deep);"></i> Arsitektur 7 Pilar Infrastruktur Layanan
+            </h3>
+            <p style="font-size: 0.825rem; color: var(--color-charcoal-muted); margin-top: 0.25rem;">
+                Standar stack modern terdistribusi untuk menjamin performa tinggi, keamanan data, dan ketersediaan 99.9%
+            </p>
+        </div>
+        <div class="pillars-grid">
+            <div class="pillar-card">
+                <div class="pillar-num">1</div>
+                <div class="pillar-info">
+                    <h4>GitHub</h4>
+                    <p>Manajemen kode sumber repositori, branching strategy, versioning, dan automasi CI/CD terpusat.</p>
+                </div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-num">2</div>
+                <div class="pillar-info">
+                    <h4>Vercel Edge Network</h4>
+                    <p>Hosting global serverless, zero-downtime deployment, SSL otomatis, dan routing subdomain kustom.</p>
+                </div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-num">3</div>
+                <div class="pillar-info">
+                    <h4>Supabase (PostgreSQL)</h4>
+                    <p>Backend database relasional, autentikasi terkelola JWT, fungsi RPC, dan proteksi Zero-Trust RLS.</p>
+                </div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-num">4</div>
+                <div class="pillar-info">
+                    <h4>ImageKit.io CDN</h4>
+                    <p>CDN media global, kompresi otomatis WebP/AVIF, on-the-fly image resizing, dan upload aman.</p>
+                </div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-num">5</div>
+                <div class="pillar-info">
+                    <h4>Resend.com</h4>
+                    <p>Gateway pengiriman email transaksional, tanda terima donasi otomatis, dan integrasi DKIM/SPF/DMARC.</p>
+                </div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-num">6</div>
+                <div class="pillar-info">
+                    <h4>Gmail Integration</h4>
+                    <p>Email resmi DKM terverifikasi, routing penerusan surat, dan saluran komunikasi formal.</p>
+                </div>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-num">7</div>
+                <div class="pillar-info">
+                    <h4>Google Drive Storage</h4>
+                    <p>Penyimpanan arsip video kajian resolusi tinggi, berkas backup database, dan arsip hukum.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-note">
+        <p><strong>Masjid Musafir Sophia Jatiwarna</strong> &copy; 2026. Seluruh hak cipta dilindungi.</p>
+        <p style="margin-top: 0.35rem; font-size: 0.775rem;">
+            Jl. Raya Hankam, RT.001/RW.011, Jatiwarna, Kec. Pondok Melati, Kota Bekasi, Jawa Barat 17415 | Samping UMAR Travel
+        </p>
+    </footer>
+
+</div>
+
+<script>
+    // Toggle Single Phase
+    function togglePhase(cardId) {
+        const card = document.getElementById(cardId);
+        if (card) {
+            card.classList.toggle('collapsed');
+        }
+    }
+
+    // Expand All Phases
+    let allExpanded = false;
+    function expandAllPhases() {
+        const cards = document.querySelectorAll('.phase-card');
+        allExpanded = !allExpanded;
+        cards.forEach(card => {
+            if (allExpanded) {
+                card.classList.remove('collapsed');
+            } else {
+                card.classList.add('collapsed');
+            }
+        });
+    }
+
+    // Filter Views (Tabs)
+    function filterView(viewName, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const allSections = document.querySelectorAll('.view-section');
+        
+        if (viewName === 'all') {
+            allSections.forEach(s => s.style.display = 'block');
+        } else if (viewName === 'roadmap') {
+            allSections.forEach(s => s.style.display = 'none');
+            document.getElementById('view-roadmap').style.display = 'block';
+        } else if (viewName === 'checklist') {
+            allSections.forEach(s => s.style.display = 'none');
+            document.getElementById('view-checklist').style.display = 'block';
+        } else if (viewName === 'rbac') {
+            allSections.forEach(s => s.style.display = 'none');
+            document.getElementById('view-rbac').style.display = 'block';
+        } else if (viewName === 'pillars') {
+            allSections.forEach(s => s.style.display = 'none');
+            document.getElementById('view-pillars').style.display = 'block';
+        }
+    }
+
+    // Search Tasks in Checklist
+    function searchTasks() {
+        const query = document.getElementById('task-search').value.toLowerCase();
+        const taskItems = document.querySelectorAll('.task-item');
+        const phaseCards = document.querySelectorAll('.phase-card');
+
+        if (query.trim() === '') {
+            taskItems.forEach(item => item.style.display = 'flex');
+            phaseCards.forEach(card => card.style.display = 'block');
+            return;
+        }
+
+        // Filter task items
+        taskItems.forEach(item => {
+            const title = item.querySelector('.task-title').textContent.toLowerCase();
+            const desc = item.querySelector('.task-desc').textContent.toLowerCase();
+            if (title.includes(query) || desc.includes(query)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // Hide phase card if all tasks are hidden
+        phaseCards.forEach(card => {
+            const visibleTasks = card.querySelectorAll('.task-item[style="display: flex;"]');
+            if (visibleTasks.length > 0) {
+                card.style.display = 'block';
+                card.classList.remove('collapsed');
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Live Progress Calculator
+    function updateProgress() {
+        const allCheckboxes = document.querySelectorAll('.task-checkbox');
+        const total = allCheckboxes.length;
+        let checkedCount = 0;
+
+        allCheckboxes.forEach(cb => {
+            const taskItem = cb.closest('.task-item');
+            if (cb.checked) {
+                checkedCount++;
+                if (taskItem) taskItem.classList.add('completed');
+            } else {
+                if (taskItem) taskItem.classList.remove('completed');
+            }
+        });
+
+        const percentage = Math.round((checkedCount / total) * 100);
+
+        // Update UI
+        const progressText = document.getElementById('overall-progress-text');
+        const progressBar = document.getElementById('overall-progress-bar');
+        const taskCountText = document.getElementById('tasks-count-text');
+
+        if (progressText) progressText.textContent = percentage + '%';
+        if (progressBar) progressBar.style.width = percentage + '%';
+        if (taskCountText) taskCountText.textContent = `${checkedCount} / ${total}`;
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+        updateProgress();
+    });
+</script>
+
+</body>
+</html>

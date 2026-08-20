@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pusat Edukasi, Berita & Panduan Manasik - UMAR Travel</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="images/logo/logo-umarNsupport/favicon-umar.svg" type="image/svg+xml">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Arsip lengkap artikel, tips umrah, panduan manasik, dan kabar dakwah Masjid Sophia Jatiwarna dari UMAR Travel (PT UMAR SINERGI BERSAMA / PPIU U.228/2020).">
+    <meta name="keywords" content="artikel umroh, tips manasik umrah, panduan umroh 2026, travel umroh terpercaya, masjid sophia jatiwarna, umar travel">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.umrahmarifatullah.com/artikel.html">
+    
+    <!-- Open Graph / WhatsApp / Facebook -->
+    <meta property="og:site_name" content="UMAR Travel">
+    <meta property="og:title" content="Pusat Edukasi, Berita & Panduan Manasik - UMAR Travel">
+    <meta property="og:description" content="Arsip lengkap artikel, tips umrah, panduan manasik, dan kabar dakwah Masjid Sophia Jatiwarna dari UMAR Travel.">
+    <meta property="og:image" content="https://www.umrahmarifatullah.com/images/pictures/hero-images/masjid-sophia.webp">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.umrahmarifatullah.com/artikel.html">
+
+    <!-- Twitter Card Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pusat Edukasi, Berita & Panduan Manasik - UMAR Travel">
+    <meta name="twitter:description" content="Arsip lengkap artikel, tips umrah, panduan manasik, dan kabar dakwah Masjid Sophia Jatiwarna dari UMAR Travel.">
+    <meta name="twitter:image" content="https://www.umrahmarifatullah.com/images/pictures/hero-images/masjid-sophia.webp">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- CDN Libraries: Font Awesome & AOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            background-color: #F9FAFB;
+            color: #374151;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Archive Hero Banner */
+        .archive-hero {
+            background: linear-gradient(135deg, var(--color-black-gold) 0%, var(--color-black-secondary) 100%);
+            color: var(--color-white);
+            padding: 5rem 1.25rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid var(--color-gold-primary);
+        }
+
+        .archive-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(248, 190, 32, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .archive-hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: var(--color-gold-primary);
+            margin-bottom: 1rem;
+            line-height: 1.25;
+        }
+
+        .archive-hero-subtitle {
+            font-size: 1.05rem;
+            color: var(--color-gray-300);
+            max-width: 720px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Search & Filter Container */
+        .archive-search-box {
+            max-width: 640px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .archive-search-input {
+            width: 100%;
+            padding: 1rem 1.5rem 1rem 3.25rem;
+            font-size: 1rem;
+            border-radius: var(--radius-full);
+            border: 2px solid rgba(248, 190, 32, 0.4);
+            background: #FFFFFF;
+            color: #1D1D1B;
+            outline: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: all 0.25s ease;
+        }
+
+        .archive-search-input:focus {
+            border-color: var(--color-gold-primary);
+            box-shadow: 0 12px 30px rgba(248, 190, 32, 0.3);
+        }
+
+        .search-icon-inside {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-gold-dark);
+            font-size: 1.15rem;
+        }
+
+        /* Filter Tabs */
+        .archive-filters-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 2.5rem 0 2rem;
+        }
+
+        .filter-pill-btn {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            color: #4B5563;
+            padding: 0.5rem 1.1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-pill-btn:hover {
+            border-color: var(--color-gold-primary);
+            color: var(--color-gold-dark);
+            transform: translateY(-1px);
+        }
+
+        .filter-pill-btn.active {
+            background: var(--color-gold-primary);
+            color: var(--color-black-gold);
+            border-color: var(--color-gold-primary);
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(248, 190, 32, 0.35);
+        }
+
+        /* Article Cards Grid */
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 992px) {
+            .archive-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            .archive-hero-title {
+                font-size: 2.15rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .archive-grid {
+                grid-template-columns: 1fr;
+            }
+            .archive-hero {
+                padding: 4rem 1rem 3rem;
+            }
+            .archive-hero-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        .archive-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .archive-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+            border-color: rgba(248, 190, 32, 0.4);
+        }
+
+        .archive-card-image-wrap {
+            position: relative;
+            height: 210px;
+            overflow: hidden;
+            background: #F3F4F6;
+        }
+
+        .archive-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .archive-card:hover .archive-card-image {
+            transform: scale(1.05);
+        }
+
+        .archive-card-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(29, 29, 27, 0.85);
+            backdrop-filter: blur(4px);
+            color: var(--color-gold-primary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.3rem 0.75rem;
+            border-radius: 50px;
+            border: 1px solid rgba(248, 190, 32, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .archive-card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .archive-card-meta {
+            font-size: 0.78rem;
+            color: #6B7280;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .archive-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-black-gold);
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .archive-card-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .archive-card-title a:hover {
+            color: var(--color-gold-dark);
+        }
+
+        .archive-card-excerpt {
+            font-size: 0.875rem;
+            color: #4B5563;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .archive-card-footer {
+            padding-top: 1rem;
+            border-top: 1px solid #F3F4F6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.825rem;
+        }
+
+        .archive-card-author {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .archive-card-cta {
+            font-weight: 700;
+            color: var(--color-gold-dark);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: transform 0.2s;
+        }
+
+        .archive-card-cta:hover {
+            transform: translateX(3px);
+            color: var(--color-gold-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================================================
+       1. TOPBAR INFORMASI & LEGALITAS (MATCHING INDEX.HTML)
+       ========================================================================== -->
+    <div class="topbar">
+        <div class="container topbar-content">
+            <div class="topbar-info">
+                <div class="topbar-info-item">
+                    <i class="fa-solid fa-award"></i>
+                    <span>PPIU Kemenag RI No. U.228/2020 | PT Maktap Shiyahah Alharbi</span>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <div class="topbar-social">
+                    <a href="https://instagram.com/umrahmarifatullah" target="_blank" title="Instagram UMAR Travel"><i class="fa-brands fa-instagram"></i> @umrahmarifatullah</a>
+                    <a href="https://tiktok.com/@umrahmarifatullah" target="_blank" title="TikTok UMAR Travel"><i class="fa-brands fa-tiktok"></i> @umrahmarifatullah</a>
+                    <a href="admin.html" class="admin-portal-link" style="color: var(--color-gold-primary); font-size: 0.8rem; font-weight: 600; text-decoration: none; margin-left: 0.5rem;"><i class="fa-solid fa-lock"></i> Portal Admin</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       2. HEADER NAVIGATION (MATCHING INDEX.HTML DESIGN SYSTEM)
+       ========================================================================== -->
+    <header class="header-nav">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo" title="Kembali ke Beranda UMAR Travel">
+                <img src="images/logo/logo-umarNsupport/logo_umarFULL_white.svg" alt="UMAR Travel Logo" onerror="this.src='images/logo/logo-umarNsupport/logo_umarONLY_white.svg'">
+            </a>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html#hero" class="nav-link">Beranda</a></li>
+                <li><a href="index.html#paket" class="nav-link">Paket Umrah</a></li>
+                <li><a href="index.html#cek-agen" class="nav-link text-gold"><i class="fa-solid fa-user-check"></i> Cek List Agen</a></li>
+                <li><a href="index.html#nilai-csr" class="nav-link">Social Value</a></li>
+                <li><a href="artikel.html" class="nav-link active">Artikel & Event</a></li>
+                <li><a href="index.html#perlengkapan" class="nav-link">Perlengkapan</a></li>
+                <li><a href="index.html#kontak" class="nav-link">Kontak</a></li>
+
+                <!-- Mobile Drawer CTA Buttons -->
+                <li class="mobile-nav-cta">
+                    <a href="index.html#cek-agen" class="btn btn-outline-gold" style="width: 100%;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Cek Agen Resmi
+                    </a>
+                    <a href="https://wa.me/6282221216434?text=Bismillah,%20saya%20ingin%20konsultasi%20paket%20Umrah%20bersama%20UMAR%20Travel" target="_blank" class="btn btn-whatsapp" style="width: 100%;">
+                        <i class="fa-brands fa-whatsapp"></i> Konsultasi CS
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Desktop Nav CTA Buttons -->
+            <div class="nav-cta">
+                <a href="index.html#cek-agen" class="btn btn-outline-gold" style="padding: 0.5rem 1rem; font-size: 0.825rem;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Cek Agen Resmi
+                </a>
+                <a href="https://wa.me/6282221216434?text=Bismillah,%20saya%20ingin%20konsultasi%20paket%20Umrah%20bersama%20UMAR%20Travel" target="_blank" class="btn btn-whatsapp" style="padding: 0.5rem 1rem; font-size: 0.825rem;">
+                    <i class="fa-brands fa-whatsapp"></i> Konsultasi CS
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Toggle -->
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+       HERO BANNER & SEARCH BAR
+       ========================================================================== -->
+    <section class="archive-hero">
+        <div class="container">
+            <span class="section-badge" style="background: rgba(248,190,32,0.15); border-color: rgba(248,190,32,0.4);"><i class="fa-solid fa-book-bookmark"></i> Pusat Edukasi & Publikasi</span>
+            <h1 class="archive-hero-title">Kabar, Panduan Manasik & Syiar Dakwah</h1>
+            <p class="archive-hero-subtitle">
+                Temukan kumpulan artikel komprehensif, tips persiapan ibadah umrah, bimbingan manasik, dan kabar kegiatan amal jariyah Masjid Sophia Jatiwarna.
+            </p>
+
+            <!-- Instant Search Input -->
+            <div class="archive-search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon-inside"></i>
+                <input type="text" id="archive-search-input" class="archive-search-input" placeholder="Ketik kata kunci artikel atau judul..." onkeyup="filterArticles()">
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       CATEGORY FILTERS & ARTICLES GRID
+       ========================================================================== -->
+    <section class="section" style="padding-top: 2rem; padding-bottom: 5rem;">
+        <div class="container">
+            
+            <!-- Category Filter Pills -->
+            <div class="archive-filters-wrapper" id="category-filters">
+                <button class="filter-pill-btn active" onclick="setCategoryFilter('all', this)">Semua Publikasi</button>
+                <button class="filter-pill-btn" onclick="setCategoryFilter('Edukasi & Tips Umrah', this)">Edukasi & Tips Umrah</button>
+                <button class="filter-pill-btn" onclick="setCategoryFilter('Kegiatan & Kajian Masjid Sophia', this)">Masjid Sophia</button>
+                <button class="filter-pill-btn" onclick="setCategoryFilter('Panduan Manasik', this)">Panduan Manasik</button>
+                <button class="filter-pill-btn" onclick="setCategoryFilter('Kabar Santri & CSR', this)">Kabar Santri & CSR</button>
+                <button class="filter-pill-btn" onclick="setCategoryFilter('Berita & Informasi Resmi', this)">Berita Resmi</button>
+            </div>
+
+            <!-- Result Count Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid #E5E7EB; flex-wrap: wrap; gap: 0.5rem;">
+                <span id="result-count-badge" style="font-size: 0.875rem; color: #6B7280; font-weight: 600;">
+                    Memuat artikel...
+                </span>
+                <span style="font-size: 0.8rem; color: var(--color-gold-dark); font-weight: 700;">
+                    <i class="fa-solid fa-circle-check"></i> Konten Resmi Terverifikasi
+                </span>
+            </div>
+
+            <!-- Dynamic Articles Grid -->
+            <div id="archive-articles-grid" class="archive-grid">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="archive-empty-state" style="display: none; text-align: center; padding: 4rem 1rem; background: #FFFFFF; border-radius: var(--radius-lg); border: 1px dashed #D1D5DB; margin-top: 1rem;">
+                <i class="fa-solid fa-newspaper" style="font-size: 3rem; color: #D1D5DB; margin-bottom: 1rem;"></i>
+                <h3 style="font-size: 1.25rem; color: #374151; font-weight: 700; margin-bottom: 0.5rem;">Tidak Ada Artikel Ditemukan</h3>
+                <p style="font-size: 0.9rem; color: #6B7280; max-width: 480px; margin: 0 auto 1.5rem;">
+                    Tidak ada publikasi yang cocok dengan kata kunci atau kategori yang Anda pilih. Silakan gunakan kata kunci lain.
+                </p>
+                <button type="button" class="btn btn-outline-gold btn-sm" onclick="resetSearchAndFilter()">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Pencarian
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       BOTTOM UMRAH CONSULTATION BANNER
+       ========================================================================== -->
+    <section style="background: linear-gradient(135deg, var(--color-black-gold) 0%, var(--color-black-secondary) 100%); color: #FFF; padding: 4rem 1.25rem; text-align: center; border-top: 2px solid var(--color-gold-primary);">
+        <div class="container" style="max-width: 780px;">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--color-gold-primary); margin-bottom: 1rem;">
+                Siap Melangkah Menuju Baitullah Bersama UMAR Travel?
+            </h3>
+            <p style="color: var(--color-gray-300); font-size: 1rem; margin-bottom: 2rem; line-height: 1.6;">
+                Dapatkan bimbingan ibadah sesuai sunnah, kepastian jadwal keberangkatan, dan fasilitas hotel bintang terbaik di pelataran Masjidil Haram & Nabawi.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="https://wa.me/6281234567890?text=Assalamu'alaikum%20Admin%20UMAR%20Travel,%20saya%20ingin%20konsultasi%20jadwal%20dan%20paket%20umrah" target="_blank" class="btn btn-primary" style="padding: 0.85rem 2rem;">
+                    <i class="fa-brands fa-whatsapp"></i> Hubungi Konsultan Umrah
+                </a>
+                <a href="index.html#paket" class="btn btn-outline-gold" style="padding: 0.85rem 2rem;">
+                    <i class="fa-solid fa-plane-departure"></i> Lihat Paket Umrah 2026
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+    <footer id="kontak">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="images/logo/logo-umarNsupport/logo_umarFULL_white.svg" alt="UMAR Travel" style="height: 50px; margin-bottom: 1.25rem;">
+                    <p>
+                        <strong>PT Maktap Shiyahah Alharbi / PT UMAR SINERGI BERSAMA</strong><br>
+                        Lembaga Penyelenggara Perjalanan Ibadah Umrah (PPIU) Resmi Kemenag RI No. U.228/2020.
+                    </p>
+                    <p style="margin-top: 1rem; color: var(--color-gold-primary); font-style: italic;">
+                        "Sahabat Menuju Baitullah"
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigasi Halaman</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#tentang">Tentang UMAR</a></li>
+                        <li><a href="index.html#nilai-csr">Social Value & Masjid Sophia</a></li>
+                        <li><a href="index.html#paket">Paket Umrah Terfavorit</a></li>
+                        <li><a href="index.html#perlengkapan">Perlengkapan Eksklusif</a></li>
+                        <li><a href="artikel.html">Arsip Berita & Panduan</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Kantor Operasional</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+                        <i class="fa-solid fa-location-dot" style="color: var(--color-gold-primary); margin-right: 0.4rem;"></i>
+                        Jl. Raya Hankam, Jatiwarna, Pondok Melati, Kota Bekasi (Kompleks Masjid Sophia)
+                    </p>
+                    <p style="font-size: 0.9rem;">
+                        <i class="fa-solid fa-phone" style="color: var(--color-gold-primary); margin-right: 0.4rem;"></i>
+                        Hotline: (021) 8499-xxxx / 0812-xxxx-xxxx
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 PT UMAR SINERGI BERSAMA (UMAR Travel). Hak Cipta Dilindungi Undang-Undang.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase Client & Archive Logic -->
+    <script src="js/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script>
+        // Seed Fallback Dataset
+        const SEED_ARTICLES = [
+            {
+                id: 'art-001',
+                slug: 'bimbingan-manasik-umrah-komprehensif-1448h',
+                title: 'Bimbingan Manasik Umrah Komprehensif Musim 1448 H Bersama Ustaz Subhan Umar',
+                category: 'Panduan Manasik',
+                author_name: 'Ustaz Subhan Umar',
+                featured_image: 'images/pictures/hero-images/hero-1.webp',
+                excerpt: 'Panduan tata cara ibadah umrah sesuai sunnah Rasulullah SAW mulai dari niat di miqat, tawaf, sai hingga tahallul demi meraih umrah yang mabrur.',
+                published_at: '2026-08-10T08:00:00Z',
+                reading_time: '5 Menit Baca',
+                views: 342,
+                status: 'Published'
+            },
+            {
+                id: 'art-002',
+                slug: 'kajian-rutin-santunan-santri-masjid-sophia',
+                title: 'Kajian Rutin & Santunan Santri Penghafal Al-Qur\'an Masjid Sophia Jatiwarna',
+                category: 'Kegiatan & Kajian Masjid Sophia',
+                author_name: 'DKM Masjid Sophia',
+                featured_image: 'images/pictures/hero-images/masjid-sophia.webp',
+                excerpt: 'Laporan kegiatan sosial bulanan dan tabligh akbar bersama jamaah UMAR Travel dalam rangka mendukung pendidikan para santri yatim penghafal Al-Qur\'an.',
+                published_at: '2026-08-08T10:00:00Z',
+                reading_time: '4 Menit Baca',
+                views: 520,
+                status: 'Published'
+            },
+            {
+                id: 'art-003',
+                slug: 'panduan-persiapan-dokumen-paspor-bio-visam-2026',
+                title: 'Panduan Persiapan Dokumen Paspor & Bio Visam Umrah Musim 2026/2027',
+                category: 'Edukasi & Tips Umrah',
+                author_name: 'Tim Media UMAR',
+                featured_image: 'images/pictures/gallery-feed/feed1.webp',
+                excerpt: 'Langkah praktis rekam biometrik mandiri melalui aplikasi Saudi Visa Bio serta syarat kelengkapan paspor masa berlaku minimal 6 bulan.',
+                published_at: '2026-08-05T14:30:00Z',
+                reading_time: '3 Menit Baca',
+                views: 189,
+                status: 'Published'
+            }
+        ];
+
+        let allArticles = [];
+        let currentCategory = 'all';
+
+        async function fetchArchiveArticles() {
+            try {
+                if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                    const { data, error } = await supabaseClient
+                        .from('articles')
+                        .select('*')
+                        .order('published_at', { ascending: false });
+
+                    if (!error && data && data.length > 0) {
+                        allArticles = data.filter(a => (a.status || 'Published').toLowerCase() === 'published');
+                        renderGrid();
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.warn('⚠️ Supabase fetch fallback:', e);
+            }
+
+            const saved = localStorage.getItem('umar_cms_articles');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        allArticles = parsed.filter(a => (a.status || 'Published').toLowerCase() === 'published');
+                        renderGrid();
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            allArticles = SEED_ARTICLES;
+            applyInitialUrlParams();
+        }
+
+        function applyInitialUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const kat = urlParams.get('kategori') || urlParams.get('cat');
+            if (kat && kat !== 'all') {
+                const buttons = document.querySelectorAll('.filter-pill-btn');
+                let foundBtn = null;
+                buttons.forEach(btn => {
+                    const btnText = btn.innerText.toLowerCase();
+                    if (btnText.includes(kat.toLowerCase()) || kat.toLowerCase().includes(btnText)) {
+                        foundBtn = btn;
+                    }
+                });
+                if (foundBtn) {
+                    setCategoryFilter(kat, foundBtn);
+                    return;
+                }
+            }
+            renderGrid(allArticles);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navMenu = document.getElementById('navMenu');
+            if (mobileToggle && navMenu) {
+                mobileToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    const icon = mobileToggle.querySelector('i');
+                    if (icon) {
+                        if (navMenu.classList.contains('active')) {
+                            icon.classList.remove('fa-bars');
+                            icon.classList.add('fa-xmark');
+                        } else {
+                            icon.classList.remove('fa-xmark');
+                            icon.classList.add('fa-bars');
+                        }
+                    }
+                });
+            }
+
+            fetchArchiveArticles();
+        });
+
+        function setCategoryFilter(category, btnElement) {
+            currentCategory = category;
+            document.querySelectorAll('.filter-pill-btn').forEach(btn => btn.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+            filterArticles();
+        }
+
+        function filterArticles() {
+            const query = (document.getElementById('archive-search-input')?.value || '').toLowerCase().trim();
+            
+            let filtered = allArticles.filter(art => {
+                const artCat = (art.category || '').toLowerCase();
+                let matchCat = (currentCategory === 'all');
+                if (!matchCat) {
+                    const targetCat = currentCategory.toLowerCase();
+                    matchCat = artCat === targetCat || artCat.includes(targetCat) || targetCat.includes(artCat);
+                }
+                const matchSearch = !query || 
+                    (art.title && art.title.toLowerCase().includes(query)) ||
+                    (art.excerpt && art.excerpt.toLowerCase().includes(query)) ||
+                    (art.category && art.category.toLowerCase().includes(query));
+                return matchCat && matchSearch;
+            });
+
+            renderGrid(filtered);
+        }
+
+        function resetSearchAndFilter() {
+            const input = document.getElementById('archive-search-input');
+            if (input) input.value = '';
+            currentCategory = 'all';
+            document.querySelectorAll('.filter-pill-btn').forEach((btn, idx) => {
+                if (idx === 0) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            renderGrid(allArticles);
+        }
+
+        function renderGrid(articlesToRender = allArticles) {
+            const grid = document.getElementById('archive-articles-grid');
+            const emptyState = document.getElementById('archive-empty-state');
+            const countBadge = document.getElementById('result-count-badge');
+
+            if (!grid) return;
+
+            if (countBadge) {
+                countBadge.innerText = `Menampilkan ${articlesToRender.length} dari ${allArticles.length} Publikasi Resmi`;
+            }
+
+            if (articlesToRender.length === 0) {
+                grid.style.display = 'none';
+                if (emptyState) emptyState.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            if (emptyState) emptyState.style.display = 'none';
+
+            let html = '';
+            articlesToRender.forEach(art => {
+                const slug = art.slug || art.id;
+                const cover = art.featured_image || art.image || 'images/pictures/hero-images/masjid-sophia.webp';
+                const dateStr = art.published_at 
+                    ? new Date(art.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+                    : 'Terbaru';
+                const readingTime = art.reading_time || '3 Menit Baca';
+                const author = art.author_name || art.authorTeam || 'Tim Media UMAR';
+
+                html += `
+                    <article class="archive-card">
+                        <div class="archive-card-image-wrap">
+                            <img src="${cover}" alt="${art.title}" class="archive-card-image">
+                            <span class="archive-card-badge">${art.category || 'Berita'}</span>
+                        </div>
+                        <div class="archive-card-body">
+                            <div class="archive-card-meta">
+                                <span><i class="fa-regular fa-calendar" style="color: var(--color-gold-dark);"></i> ${dateStr}</span>
+                                <span>•</span>
+                                <span><i class="fa-regular fa-clock" style="color: var(--color-gold-dark);"></i> ${readingTime}</span>
+                            </div>
+                            <h3 class="archive-card-title">
+                                <a href="artikel-detail.html?slug=${slug}">${art.title}</a>
+                            </h3>
+                            <p class="archive-card-excerpt">
+                                ${art.excerpt || 'Klik untuk membaca ulasan selengkapnya...'}
+                            </p>
+                            <div class="archive-card-footer">
+                                <div class="archive-card-author">
+                                    <i class="fa-solid fa-pen-nib" style="color: var(--color-gold-dark);"></i> ${author}
+                                </div>
+                                <a href="artikel-detail.html?slug=${slug}" class="archive-card-cta">
+                                    Baca ➔
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            });
+
+            grid.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

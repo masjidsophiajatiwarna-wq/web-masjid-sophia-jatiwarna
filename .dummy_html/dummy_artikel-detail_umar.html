@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Artikel & Berita - UMAR Travel</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="images/logo/logo-umarNsupport/favicon-umar.svg" type="image/svg+xml">
+    
+    <!-- SEO Meta Tags -->
+    <meta id="meta-description" name="description" content="Informasi, berita, edukasi, dan event seputar ibadah umrah serta kegiatan dakwah Masjid Sophia Jatiwarna bersama UMAR Travel.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- CDN Libraries: Font Awesome & AOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            background-color: #FAFAFA;
+            color: #374151;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+        }
+
+        /* Reading Article Header & Container */
+        .article-reader-container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 2.5rem 1.25rem 5rem;
+        }
+
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #6B7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumbs a {
+            color: #6B7280;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--color-gold-dark);
+        }
+
+        .article-category-badge {
+            display: inline-block;
+            background: #FFF8E7;
+            color: #B8860B;
+            border: 1px solid rgba(248, 190, 32, 0.4);
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.35rem 0.9rem;
+            border-radius: 50px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .article-title-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.35rem;
+            font-weight: 800;
+            color: var(--color-black-gold);
+            line-height: 1.3;
+            margin-bottom: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .article-title-heading {
+                font-size: 1.75rem;
+            }
+        }
+
+        .article-meta-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #E5E7EB;
+            margin-bottom: 2rem;
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+
+        .author-box {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .author-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--color-gold-primary);
+            object-fit: cover;
+        }
+
+        .author-info h5 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--color-black-gold);
+        }
+
+        .author-info span {
+            font-size: 0.8rem;
+            color: #6B7280;
+        }
+
+        .meta-stats-group {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .reading-time-pill {
+            background: #F3F4F6;
+            color: #4B5563;
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        /* Featured Image Banner */
+        .featured-image-wrapper {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2.5rem;
+            background: #E5E7EB;
+            max-height: 440px;
+        }
+
+        .featured-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            max-height: 440px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Rich Article Body Content */
+        .article-content-body {
+            font-size: 1.1rem;
+            line-height: 1.85;
+            color: #374151;
+        }
+
+        .article-content-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content-body h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--color-black-gold);
+            margin: 2.25rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #F3F4F6;
+        }
+
+        .article-content-body h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-black-gold);
+            margin: 1.8rem 0 0.8rem;
+        }
+
+        .article-content-body blockquote {
+            border-left: 4px solid var(--color-gold-dark);
+            background: #FFFDF7;
+            padding: 1.25rem 1.5rem;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: #4B5563;
+            border-radius: 0 12px 12px 0;
+            margin: 1.75rem 0;
+            box-shadow: 0 2px 8px rgba(184, 134, 11, 0.08);
+        }
+
+        .article-content-body ul, .article-content-body ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .article-content-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 1.75rem 0;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        .article-content-body a {
+            color: var(--color-gold-dark);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        /* Share & Interaction Box */
+        .share-card-box {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin: 3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .share-buttons-group {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-share {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-share-wa {
+            background: #25D366;
+            color: #FFFFFF;
+        }
+        .btn-share-wa:hover {
+            background: #1EBE5D;
+            color: #FFFFFF;
+            transform: translateY(-1px);
+        }
+
+        .btn-share-fb {
+            background: #1877F2;
+            color: #FFFFFF;
+        }
+        .btn-share-fb:hover {
+            background: #1465D2;
+            color: #FFFFFF;
+            transform: translateY(-1px);
+        }
+
+        .btn-share-copy {
+            background: #F3F4F6;
+            color: #374151;
+            border: 1px solid #D1D5DB;
+        }
+        .btn-share-copy:hover {
+            background: #E5E7EB;
+            transform: translateY(-1px);
+        }
+
+        /* Umrah Consultation CTA Box */
+        .article-cta-box {
+            background: linear-gradient(135deg, #1D1D1B 0%, #2A2A28 100%);
+            color: #FFFFFF;
+            border-radius: 16px;
+            padding: 2.25rem 2rem;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(248, 190, 32, 0.3);
+        }
+
+        .article-cta-box::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 140px;
+            height: 140px;
+            background: rgba(248, 190, 32, 0.12);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Related Articles Section */
+        .related-section {
+            margin-top: 4rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .related-card {
+            background: #FFFFFF;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .related-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .related-card-img {
+            height: 160px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .related-card-body {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        /* Toast Feedback */
+        .toast-copy-notify {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1D1D1B;
+            color: #F8BE20;
+            border: 1px solid #F8BE20;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toast-copy-notify.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================================================
+       1. TOPBAR INFORMASI & LEGALITAS (MATCHING INDEX.HTML)
+       ========================================================================== -->
+    <div class="topbar">
+        <div class="container topbar-content">
+            <div class="topbar-info">
+                <div class="topbar-info-item">
+                    <i class="fa-solid fa-award"></i>
+                    <span>PPIU Kemenag RI No. U.228/2020 | PT Maktap Shiyahah Alharbi</span>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <div class="topbar-social">
+                    <a href="https://instagram.com/umrahmarifatullah" target="_blank" title="Instagram UMAR Travel"><i class="fa-brands fa-instagram"></i> @umrahmarifatullah</a>
+                    <a href="https://tiktok.com/@umrahmarifatullah" target="_blank" title="TikTok UMAR Travel"><i class="fa-brands fa-tiktok"></i> @umrahmarifatullah</a>
+                    <a href="admin.html" class="admin-portal-link" style="color: var(--color-gold-primary); font-size: 0.8rem; font-weight: 600; text-decoration: none; margin-left: 0.5rem;"><i class="fa-solid fa-lock"></i> Portal Admin</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       2. HEADER NAVIGATION (MATCHING INDEX.HTML DESIGN SYSTEM)
+       ========================================================================== -->
+    <header class="header-nav">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo" title="Kembali ke Beranda UMAR Travel">
+                <img src="images/logo/logo-umarNsupport/logo_umarFULL_white.svg" alt="UMAR Travel Logo" onerror="this.src='images/logo/logo-umarNsupport/logo_umarONLY_white.svg'">
+            </a>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html#hero" class="nav-link">Beranda</a></li>
+                <li><a href="index.html#paket" class="nav-link">Paket Umrah</a></li>
+                <li><a href="index.html#cek-agen" class="nav-link text-gold"><i class="fa-solid fa-user-check"></i> Cek List Agen</a></li>
+                <li><a href="index.html#nilai-csr" class="nav-link">Social Value</a></li>
+                <li><a href="index.html#berita-event" class="nav-link active">Berita & Event</a></li>
+                <li><a href="index.html#kontak" class="nav-link">Kontak</a></li>
+
+                <!-- Mobile Drawer CTA Buttons -->
+                <li class="mobile-nav-cta">
+                    <a href="index.html#cek-agen" class="btn btn-outline-gold" style="width: 100%;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Cek Agen Resmi
+                    </a>
+                    <a href="https://wa.me/6282221216434?text=Bismillah,%20saya%20membaca%20artikel%20di%20web%20dan%20ingin%20konsultasi%20paket%20Umrah" target="_blank" class="btn btn-whatsapp" style="width: 100%;">
+                        <i class="fa-brands fa-whatsapp"></i> Konsultasi CS
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Desktop Nav CTA Buttons -->
+            <div class="nav-cta">
+                <a href="index.html#cek-agen" class="btn btn-outline-gold" style="padding: 0.5rem 1rem; font-size: 0.825rem;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Cek Agen Resmi
+                </a>
+                <a href="https://wa.me/6282221216434?text=Bismillah,%20saya%20membaca%20artikel%20di%20web%20dan%20ingin%20konsultasi%20paket%20Umrah" target="_blank" class="btn btn-whatsapp" style="padding: 0.5rem 1rem; font-size: 0.825rem;">
+                    <i class="fa-brands fa-whatsapp"></i> Konsultasi CS
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Toggle -->
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+       3. ARTICLE READER CONTENT SECTION
+       ========================================================================== -->
+    <main class="article-reader-container">
+        <!-- Breadcrumbs Navigation -->
+        <nav class="breadcrumbs">
+            <a href="index.html"><i class="fa-solid fa-house"></i> Beranda</a>
+            <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i>
+            <a href="artikel.html">Berita & Event</a>
+            <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i>
+            <a href="artikel.html" id="breadcrumb-cat-link" style="color: #6B7280; text-decoration: none;">Kategori</a>
+            <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i>
+            <span id="breadcrumb-title" style="color: #1D1D1B; font-weight: 600;">Detail Artikel</span>
+        </nav>
+
+        <!-- Article Header -->
+        <div class="article-header">
+            <span id="article-category-badge" class="article-category-badge">Kategori</span>
+            <h1 id="article-main-title" class="article-title-heading">Memuat Artikel...</h1>
+
+            <div class="article-meta-bar">
+                <div class="author-box">
+                    <img id="author-avatar-img" src="images/pictures/pp-cs/pp-lina.webp" alt="Author Avatar" class="author-avatar">
+                    <div class="author-info">
+                        <h5 id="article-author-name">Tim Media UMAR</h5>
+                        <span id="article-published-date">Dipublikasikan pada 14 Agustus 2026</span>
+                    </div>
+                </div>
+
+                <div class="meta-stats-group">
+                    <span id="article-reading-time" class="reading-time-pill"><i class="fa-regular fa-clock"></i> 3 Menit Baca</span>
+                    <span style="font-size: 0.85rem; color: #6B7280;"><i class="fa-regular fa-eye text-gold"></i> <b id="article-views-count">1</b> Dilihat</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Image Banner -->
+        <div class="featured-image-wrapper">
+            <img id="article-featured-img" src="images/pictures/hero-images/masjid-sophia.webp" alt="Featured Image">
+        </div>
+
+        <!-- Body Content (HTML from Quill) -->
+        <article id="article-content-container" class="article-content-body">
+            <p>Sedang memuat isi lengkap artikel...</p>
+        </article>
+
+        <!-- Share & Interaction Box -->
+        <div class="share-card-box">
+            <div>
+                <h5 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: #1D1D1B;">Bagikan Artikel Ini:</h5>
+                <p style="margin: 0; font-size: 0.75rem; color: #6B7280;">Sebarkan informasi bermanfaat ini kepada keluarga & sahabat</p>
+            </div>
+
+            <div class="share-buttons-group">
+                <a id="btn-share-wa" href="#" target="_blank" class="btn-share btn-share-wa">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                </a>
+                <a id="btn-share-fb" href="#" target="_blank" class="btn-share btn-share-fb">
+                    <i class="fa-brands fa-facebook-f"></i> Facebook
+                </a>
+                <button type="button" class="btn-share btn-share-copy" onclick="copyArticleLink()">
+                    <i class="fa-solid fa-link"></i> Salin Tautan
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Consultation CTA -->
+        <div class="article-cta-box">
+            <div style="max-width: 620px;">
+                <span style="background: rgba(248, 190, 32, 0.2); color: #F8BE20; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">
+                    <i class="fa-solid fa-kaaba"></i> Sahabat Menuju Baitullah
+                </span>
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #FFFFFF; margin: 0.75rem 0 0.5rem;">
+                    Rencanakan Ibadah Umrah Khusyuk Bersama UMAR Travel
+                </h3>
+                <p style="font-size: 0.9rem; color: #D1D5DB; margin-bottom: 1.5rem; line-height: 1.6;">
+                    Dapatkan bimbingan manasik sesuai Sunnah, fasilitas hotel bintang dekat pelataran masjid, serta pendampingan muthawif berpengalaman.
+                </p>
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                    <a href="https://wa.me/6282221216434?text=Bismillah,%20saya%20membaca%20artikel%20di%20web%20dan%20ingin%20konsultasi%20paket%20Umrah" target="_blank" class="btn btn-primary">
+                        <i class="fa-brands fa-whatsapp"></i> Hubungi Tim Konsultan
+                    </a>
+                    <a href="index.html#paket" class="btn btn-outline-gold" style="color: #FFFFFF; border-color: rgba(255,255,255,0.4);">
+                        Lihat Pilihan Paket
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Articles Section -->
+        <section class="related-section">
+            <h4 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #1D1D1B; margin-bottom: 0.25rem;">
+                Artikel & Berita Terkait Lainnya
+            </h4>
+            <p style="font-size: 0.85rem; color: #6B7280; margin: 0;">Baca juga publikasi dan panduan terbaru dari UMAR Travel</p>
+
+            <div id="related-articles-grid" class="related-grid">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification for Copy Link -->
+    <div id="toast-copy-notify" class="toast-copy-notify">
+        <i class="fa-solid fa-circle-check"></i> Tautan artikel berhasil disalin ke clipboard!
+    </div>
+
+    <!-- ==========================================================================
+       4. FOOTER INFORMASI, MAPS & KONTAK
+       ========================================================================== -->
+    <footer id="kontak">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="images/logo/logo-umarNsupport/logo_umarFULL_white.svg" alt="UMAR Travel" style="height: 50px; margin-bottom: 1.25rem;">
+                    <p>
+                        <strong>PT Maktap Shiyahah Alharbi / PT UMAR SINERGI BERSAMA</strong><br>
+                        Lembaga Penyelenggara Perjalanan Ibadah Umrah (PPIU) Resmi Kemenag RI No. U.228/2020.
+                    </p>
+                    <p style="margin-top: 1rem; color: var(--color-gold-primary); font-style: italic;">
+                        "Sahabat Menuju Baitullah"
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigasi Cepat</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#hero">Beranda</a></li>
+                        <li><a href="index.html#paket">Paket Umrah 2026/2027</a></li>
+                        <li><a href="index.html#cek-agen">Verifikasi Agen Resmi</a></li>
+                        <li><a href="artikel.html">Arsip Berita & Event</a></li>
+                        <li><a href="admin.html">Portal Admin</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Legalitas & Izin</h4>
+                    <ul class="footer-links">
+                        <li><i class="fa-solid fa-check text-gold"></i> PPIU No. U.228/2020</li>
+                        <li><i class="fa-solid fa-check text-gold"></i> Akreditasi KAN</li>
+                        <li><i class="fa-solid fa-check text-gold"></i> Keanggotaan IATA</li>
+                        <li><i class="fa-solid fa-check text-gold"></i> Terintegrasi SISKOPATUH</li>
+                        <li><i class="fa-solid fa-check text-gold"></i> Anggota SAPUHI</li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Kantor Pusat</h4>
+                    <p>
+                        <i class="fa-solid fa-location-dot text-gold"></i> Samping Masjid Sophia Jatiwarna, Kec. Pd. Melati, Kota Bekasi, Jawa Barat 17415
+                    </p>
+                    <p style="margin-top: 0.6rem;">
+                        <i class="fa-brands fa-instagram text-gold"></i> @umrahmarifatullah
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 UMAR Travel (PT UMAR SINERGI BERSAMA). Seluruh hak cipta dilindungi undang-undang.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase Client & Article Engine Script -->
+    <script src="js/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    
+    <script>
+        // Mobile Toggle Navigation Listener
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navMenu = document.getElementById('navMenu');
+            if (mobileToggle && navMenu) {
+                mobileToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    const icon = mobileToggle.querySelector('i');
+                    if (icon) {
+                        if (navMenu.classList.contains('active')) {
+                            icon.classList.remove('fa-bars');
+                            icon.classList.add('fa-xmark');
+                        } else {
+                            icon.classList.remove('fa-xmark');
+                            icon.classList.add('fa-bars');
+                        }
+                    }
+                });
+            }
+
+            loadArticleDetail();
+        });
+
+        const DEFAULT_ARTICLES = [
+            {
+                id: 'art-001',
+                title: 'Bimbingan Manasik Umrah Komprehensif Musim 1448 H Bersama Ustaz Subhan Umar',
+                slug: 'bimbingan-manasik-umrah-1448h',
+                category: 'Panduan Manasik',
+                author_name: 'Ustaz Subhan Umar',
+                authorTeam: 'Ustaz Subhan Umar',
+                featured_image: 'images/pictures/hero-images/masjid-sophia.webp',
+                image: 'images/pictures/hero-images/masjid-sophia.webp',
+                excerpt: 'Pelaksanaan bimbingan manasik intensif di Masjid Sophia Jatiwarna untuk memberikan pemahaman tata cara ibadah umrah sesuai Sunnah Rasulullah SAW.',
+                content: '<h2>Kesiapan Ruhiyah dan Fiqih Manasik Sesuai Sunnah</h2><p>Ibadah umrah bukan sekadar perjalanan fisik melintasi benua, melainkan safar ruhiyah menuju Baitullah yang menuntut pemahaman fiqih mendalam. Di <strong>UMAR Travel</strong>, kami berkomitmen menyelenggarakan bimbingan manasik komprehensif bagi seluruh calon jamaah sebelum keberangkatan.</p><blockquote><p><em>"Ambillah dariku tata cara manasik haji dan umrah kalian..."</em> — HR. Muslim</p></blockquote><h3>Poin Utama Bimbingan Manasik:</h3><ul><li><strong>Ihram dan Miqat:</strong> Memahami batasan miqat, niat ihram yang benar, serta larangan-larangan selama berihram.</li><li><strong>Thawaf &amp; Sa\'i:</strong> Praktik langsung putaran thawaf mengelilingi replika Ka\'bah dan rute sa\'i antara Shafa dan Marwah.</li><li><strong>Doa dan Adab di Tanah Suci:</strong> Menghafal doa-doa ma\'tsur serta menjaga adab saat berada di Masjidil Haram dan Masjid Nabawi.</li></ul><p>Bimbingan ini diselenggarakan langsung di kompleks <strong>Masjid Sophia Jatiwarna</strong> dengan fasilitas ruang auditorium yang nyaman dan audio-visual interaktif.</p>',
+                reading_time: '4 Menit Baca',
+                published_at: '2026-08-12',
+                views: 342,
+                status: 'Published'
+            },
+            {
+                id: 'art-002',
+                title: "Kajian Rutin & Santunan Santri Penghafal Al-Qur'an Masjid Sophia Jatiwarna",
+                slug: 'kajian-rutin-santri-masjid-sophia',
+                category: 'Kegiatan & Kajian Masjid Sophia',
+                author_name: 'DKM Masjid Sophia',
+                authorTeam: 'DKM Masjid Sophia',
+                featured_image: 'images/pictures/hero-images/masjid-sophia.webp',
+                image: 'images/pictures/hero-images/masjid-sophia.webp',
+                excerpt: 'Seluruh keuntungan operasional UMAR Travel disalurkan secara konsisten untuk mendukung pemberdayaan santri dan operasional Masjid Sophia Jatiwarna.',
+                content: '<h2>Sinergi Dakwah: Umrah untuk Keberkahan Umat</h2><p>Salah satu nilai luhur yang membedakan <strong>UMAR Travel</strong> adalah komitmen sosial dan dakwah kami. Setiap rupiah keuntungan operasional yang diperoleh dialokasikan kembali untuk mendukung kegiatan dakwah, santunan yatim, dan beasiswa santri penghafal Al-Qur\'an di <strong>Masjid Sophia Jatiwarna</strong>.</p><blockquote><p><em>"Sedekah tidak akan mengurangi harta, dan tidaklah Allah menambah bagi seorang hamba yang memaafkan melainkan kemuliaan."</em> — HR. Tirmidzi</p></blockquote><h3>Program Sosial Unggulan:</h3><ul><li><strong>Beasiswa Tahfidz Qur\'an:</strong> Pembinaan asrama santri mukim dengan target hafalan 30 juz mutqin.</li><li><strong>Kajian Fiqih dan Tematik:</strong> Kajian rutin mingguan terbuka untuk umum bersama para asatidz berpengalaman.</li><li><strong>Layanan Musafir &amp; Ambulans Gratis:</strong> Fasilitas rest area 24 jam bagi musafir yang singgah di sekitar Jatiwarna, Bekasi.</li></ul><p>Dengan memilih UMAR Travel, setiap jamaah secara tidak langsung turut menjadi bagian dari donatur abadi yang mengalirkan pahala jariyah bagi para penghafal Al-Qur\'an.</p>',
+                reading_time: '3 Menit Baca',
+                published_at: '2026-08-09',
+                views: 520,
+                status: 'Published'
+            },
+            {
+                id: 'art-003',
+                title: 'Panduan Persiapan Dokumen Paspor & Bio Visam Umrah 2026/2027',
+                slug: 'panduan-dokumen-paspor-biovisam-2026',
+                category: 'Edukasi & Tips Umrah',
+                author_name: 'Tim Media UMAR',
+                authorTeam: 'Tim Media UMAR',
+                featured_image: 'images/pictures/hero-images/masjid-sophia.webp',
+                image: 'images/pictures/hero-images/masjid-sophia.webp',
+                excerpt: 'Panduan lengkap persyaratan paspor minimal 6 bulan masa berlaku serta perekaman biometrik via aplikasi Saudi Visa Bio secara mandiri.',
+                content: '<h2>Kelengkapan Dokumen Perjalanan Umrah Musim 1448 H</h2><p>Pemerintah Kerajaan Arab Saudi terus memodernisasi proses penerbitan visa umrah melalui sistem digitalisasi. Agar keberangkatan Anda lancar tanpa kendala administratif, berikut panduan lengkap dokumen yang wajib disiapkan.</p><h3>1. Paspor Republik Indonesia</h3><ul><li>Masa berlaku paspor minimal <strong>6 bulan</strong> terhitung sejak tanggal kepulangan ke tanah air.</li><li>Nama di paspor minimal terdiri dari <strong>2 suku kata</strong> (contoh: <em>Ahmad Zaki</em>).</li><li>Tersedia minimal 3 halaman kosong untuk kebutuhan cap imigrasi.</li></ul><h3>2. Rekam Biometrik Saudi Visa Bio</h3><p>Perekaman sidik jari dan foto retina wajah kini dapat dilakukan secara mandiri melalui aplikasi resmi <strong>Saudi Visa Bio</strong> di smartphone Anda. Tim operasional UMAR Travel siap memberikan panduan langkah demi langkah.</p><blockquote><p><strong>Tips Penting:</strong> Pastikan pencahayaan ruangan terang saat melakukan scanning wajah dan hindari penggunaan lensa kontak berwarna.</p></blockquote>',
+                reading_time: '5 Menit Baca',
+                published_at: '2026-08-07',
+                views: 189,
+                status: 'Published'
+            }
+        ];
+
+        async function loadArticleDetail() {
+            if (typeof initSupabase === 'function' && !supabaseClient) {
+                initSupabase();
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const rawSlug = urlParams.get('slug') || urlParams.get('id') || '';
+            const cleanSlug = decodeURIComponent(rawSlug).trim().toLowerCase();
+
+            let currentArticle = null;
+            let allArticles = [];
+
+            // 1. Direct Supabase Query
+            try {
+                if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                    if (cleanSlug) {
+                        const { data, error } = await supabaseClient
+                            .from('articles')
+                            .select('*')
+                            .or(`slug.eq.${cleanSlug},id.eq.${cleanSlug}`)
+                            .limit(1);
+
+                        if (!error && data && data.length > 0) {
+                            currentArticle = data[0];
+                        }
+                    }
+
+                    // Fetch full list for related articles & fallback
+                    const { data: listData, error: listErr } = await supabaseClient
+                        .from('articles')
+                        .select('*')
+                        .order('published_at', { ascending: false });
+
+                    if (!listErr && listData && listData.length > 0) {
+                        allArticles = listData;
+                        if (!currentArticle && cleanSlug) {
+                            currentArticle = allArticles.find(a => 
+                                (a.slug && a.slug.toLowerCase().trim() === cleanSlug) ||
+                                (a.id && a.id.toLowerCase().trim() === cleanSlug)
+                            );
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('⚠️ Supabase detail fetch exception:', e);
+            }
+
+            // 2. LocalStorage Fallback
+            if (!currentArticle) {
+                const stored = localStorage.getItem('umar_cms_articles');
+                if (stored) {
+                    try {
+                        const parsed = JSON.parse(stored);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            allArticles = parsed;
+                            currentArticle = parsed.find(a => 
+                                (a.slug && a.slug.toLowerCase().trim() === cleanSlug) ||
+                                (a.id && a.id.toLowerCase().trim() === cleanSlug)
+                            ) || parsed[0];
+                        }
+                    } catch (e) {}
+                }
+            }
+
+            // 3. Fallback to DEFAULT_ARTICLES
+            if (!currentArticle) {
+                allArticles = DEFAULT_ARTICLES;
+                currentArticle = DEFAULT_ARTICLES.find(a => 
+                    (a.slug && a.slug.toLowerCase().trim() === cleanSlug) ||
+                    (a.id && a.id.toLowerCase().trim() === cleanSlug)
+                ) || DEFAULT_ARTICLES[0];
+            }
+
+            if (!currentArticle) {
+                document.getElementById('article-main-title').innerText = 'Artikel Tidak Ditemukan';
+                document.getElementById('article-content-container').innerHTML = '<p>Maaf, artikel yang Anda cari tidak tersedia atau telah dipindahkan.</p>';
+                return;
+            }
+
+            // Populate Page SEO, OpenGraph & Schema.org Metadata
+            const seoTitle = currentArticle.meta_title || currentArticle.title;
+            const seoDesc = currentArticle.meta_description || currentArticle.excerpt || 'Informasi, berita, edukasi, dan event seputar ibadah umrah serta kegiatan dakwah Masjid Sophia Jatiwarna bersama UMAR Travel.';
+            const seoKeywords = currentArticle.meta_keywords || 'umrah 2026, manasik umrah, travel umrah resmi, masjid sophia, umar travel';
+            const pageUrl = window.location.href;
+            const coverImg = currentArticle.featured_image || currentArticle.image || 'images/pictures/hero-images/masjid-sophia.webp';
+            const absoluteCoverUrl = coverImg.startsWith('http') ? coverImg : (window.location.origin + '/' + coverImg.replace(/^\//, ''));
+
+            document.title = `${seoTitle} - UMAR Travel`;
+            const pageTitleEl = document.getElementById('page-title');
+            if (pageTitleEl) pageTitleEl.innerText = `${seoTitle} - UMAR Travel`;
+
+            function setMetaTag(attrName, attrVal, content) {
+                let tag = document.querySelector(`meta[${attrName}="${attrVal}"]`);
+                if (!tag) {
+                    tag = document.createElement('meta');
+                    tag.setAttribute(attrName, attrVal);
+                    document.head.appendChild(tag);
+                }
+                tag.setAttribute('content', content);
+            }
+
+            setMetaTag('name', 'description', seoDesc);
+            setMetaTag('name', 'keywords', seoKeywords);
+            setMetaTag('property', 'og:title', `${seoTitle} - UMAR Travel`);
+            setMetaTag('property', 'og:description', seoDesc);
+            setMetaTag('property', 'og:image', absoluteCoverUrl);
+            setMetaTag('property', 'og:url', pageUrl);
+            setMetaTag('property', 'og:type', 'article');
+            setMetaTag('property', 'og:site_name', 'UMAR Travel (Sahabat Menuju Baitullah)');
+            setMetaTag('name', 'twitter:card', 'summary_large_image');
+            setMetaTag('name', 'twitter:title', `${seoTitle} - UMAR Travel`);
+            setMetaTag('name', 'twitter:description', seoDesc);
+            setMetaTag('name', 'twitter:image', absoluteCoverUrl);
+
+            // Inject Schema.org JSON-LD Structured Data
+            let schemaScript = document.getElementById('schema-article-jsonld');
+            if (!schemaScript) {
+                schemaScript = document.createElement('script');
+                schemaScript.id = 'schema-article-jsonld';
+                schemaScript.type = 'application/ld+json';
+                document.head.appendChild(schemaScript);
+            }
+            schemaScript.text = JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "NewsArticle",
+                "headline": currentArticle.title,
+                "description": seoDesc,
+                "image": [absoluteCoverUrl],
+                "datePublished": currentArticle.published_at || "2026-08-14T00:00:00Z",
+                "dateModified": currentArticle.updated_at || currentArticle.published_at || "2026-08-14T00:00:00Z",
+                "author": [{
+                    "@type": "Organization",
+                    "name": currentArticle.author_name || "UMAR Travel Editorial Team",
+                    "url": "https://www.umrahmarifatullah.com"
+                }],
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "UMAR Travel (PT UMAR SINERGI BERSAMA)",
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": "https://www.umrahmarifatullah.com/images/logo/logo-umarNsupport/logo_umarFULL_black.svg"
+                    }
+                },
+                "mainEntityOfPage": {
+                    "@type": "WebPage",
+                    "@id": pageUrl
+                }
+            });
+
+            // Populate Breadcrumbs & Badge
+            const catLink = document.getElementById('breadcrumb-cat-link');
+            if (catLink) {
+                catLink.innerText = currentArticle.category || 'Berita & Event';
+                catLink.href = `artikel.html?kategori=${encodeURIComponent(currentArticle.category || 'all')}`;
+            }
+
+            const titleBreadcrumb = document.getElementById('breadcrumb-title');
+            if (titleBreadcrumb) {
+                titleBreadcrumb.innerText = currentArticle.title.length > 38 
+                    ? currentArticle.title.substring(0, 35) + '...' 
+                    : currentArticle.title;
+            }
+
+            const catBadge = document.getElementById('article-category-badge');
+            if (catBadge) catBadge.innerText = currentArticle.category || 'Berita & Event';
+
+            const mainTitle = document.getElementById('article-main-title');
+            if (mainTitle) mainTitle.innerText = currentArticle.title;
+
+            const author = currentArticle.author_name || currentArticle.authorTeam || 'Tim Media UMAR';
+            const authorEl = document.getElementById('article-author-name');
+            if (authorEl) authorEl.innerText = author;
+
+            let dateStr = '14 Agustus 2026';
+            if (currentArticle.published_at || currentArticle.eventDate) {
+                const d = new Date(currentArticle.published_at || currentArticle.eventDate);
+                if (!isNaN(d.getTime())) {
+                    dateStr = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+                }
+            }
+            const dateEl = document.getElementById('article-published-date');
+            if (dateEl) dateEl.innerText = `Dipublikasikan pada ${dateStr}`;
+
+            const readingEl = document.getElementById('article-reading-time');
+            if (readingEl) readingEl.innerHTML = `<i class="fa-regular fa-clock"></i> ${currentArticle.reading_time || '3 Menit Baca'}`;
+
+            const viewsCount = (currentArticle.views || 1) + 1;
+            const viewsEl = document.getElementById('article-views-count');
+            if (viewsEl) viewsEl.innerText = viewsCount;
+
+            const featuredImgEl = document.getElementById('article-featured-img');
+            if (featuredImgEl) {
+                featuredImgEl.src = coverImg;
+                featuredImgEl.alt = currentArticle.title;
+                if (currentArticle.image_fit) featuredImgEl.style.objectFit = currentArticle.image_fit;
+                if (currentArticle.image_position) featuredImgEl.style.objectPosition = currentArticle.image_position;
+            }
+
+            const contentEl = document.getElementById('article-content-container');
+            if (contentEl) {
+                contentEl.innerHTML = currentArticle.content || `<p>${currentArticle.excerpt || ''}</p>`;
+            }
+
+            // Social Share Links
+            const currentUrl = encodeURIComponent(window.location.href);
+            const shareText = encodeURIComponent(`${currentArticle.title}\n\nBaca artikel selengkapnya di UMAR Travel:`);
+            const waBtn = document.getElementById('btn-share-wa');
+            if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${shareText}%20${currentUrl}`;
+            const fbBtn = document.getElementById('btn-share-fb');
+            if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+
+            // Increment View Counter in Supabase & LocalStorage
+            try {
+                if (typeof supabaseClient !== 'undefined' && supabaseClient && currentArticle.id) {
+                    supabaseClient.from('articles').update({ views: viewsCount }).eq('id', currentArticle.id);
+                }
+            } catch (e) {}
+
+            // Render Related Articles
+            const related = allArticles.filter(a => (a.slug !== currentArticle.slug && a.id !== currentArticle.id)).slice(0, 3);
+            const relatedGrid = document.getElementById('related-articles-grid');
+            if (relatedGrid && related.length > 0) {
+                let html = '';
+                related.forEach(rel => {
+                    const rCover = rel.featured_image || rel.image || 'images/pictures/hero-images/masjid-sophia.webp';
+                    const rSlug = rel.slug || rel.id;
+                    html += `
+                        <a href="artikel-detail.html?slug=${rSlug}" class="related-card">
+                            <img src="${rCover}" alt="${rel.title}" class="related-card-img">
+                            <div class="related-card-body">
+                                <span style="font-size: 0.72rem; font-weight: 700; color: #B8860B; text-transform: uppercase;">${rel.category || 'Berita'}</span>
+                                <h5 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: #1D1D1B; line-height: 1.4;">${rel.title}</h5>
+                                <p style="font-size: 0.8rem; color: #6B7280; margin: 0; line-height: 1.5;">${rel.excerpt ? (rel.excerpt.substring(0, 80) + '...') : ''}</p>
+                                <span style="margin-top: auto; font-size: 0.8rem; font-weight: 600; color: #B8860B;">Baca Selengkapnya &rarr;</span>
+                            </div>
+                        </a>
+                    `;
+                });
+                relatedGrid.innerHTML = html;
+            }
+        }
+
+        function copyArticleLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                const toast = document.getElementById('toast-copy-notify');
+                if (toast) {
+                    toast.classList.add('show');
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                    }, 3000);
+                }
+            }).catch(() => {
+                alert('Tautan artikel: ' + window.location.href);
+            });
+        }
+    </script>
+</body>
+</html>

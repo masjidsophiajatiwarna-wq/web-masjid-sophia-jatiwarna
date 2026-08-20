@@ -1,0 +1,3050 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Portal Admin Terpadu - UMAR Travel</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="images/logo/logo-umarNsupport/favicon-umar.svg">
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Leaflet.js CSS & Script (Free & OpenStreetMap) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Quill.js Rich Text Editor CDN -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        :root {
+            --sidebar-width: 260px;
+        }
+
+        body {
+            background-color: #F4F1EA;
+            min-height: 100vh;
+        }
+
+        /* --------------------------------------------------------------------------
+           LOGIN OVERLAY
+           -------------------------------------------------------------------------- */
+        .login-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1D1D1B 0%, #2A2A26 100%);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .login-box {
+            background: #FFFFFF;
+            border-radius: 20px;
+            max-width: 440px;
+            width: 100%;
+            padding: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            border: 1px solid rgba(248, 190, 32, 0.3);
+            text-align: center;
+        }
+
+        .login-logo img {
+            height: 60px;
+            margin: 0 auto 1rem auto;
+        }
+
+        .login-box h3 {
+            font-size: 1.5rem;
+            color: #1D1D1B;
+            margin-bottom: 0.25rem;
+        }
+
+        .login-box p {
+            font-size: 0.875rem;
+            color: #6B7280;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #374151;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #F8BE20;
+            box-shadow: 0 0 0 3px rgba(248, 190, 32, 0.2);
+        }
+
+        .demo-credentials-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #FAF8F5;
+            border: 1px dashed #B8860B;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            text-align: left;
+        }
+
+        .demo-credentials-box code {
+            background: rgba(248, 190, 32, 0.2);
+            color: #B8860B;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* --------------------------------------------------------------------------
+           MAIN ADMIN DASHBOARD LAYOUT
+           -------------------------------------------------------------------------- */
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            background: #1D1D1B;
+            color: #FFFFFF;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-brand img {
+            height: 40px;
+        }
+
+        .sidebar-brand h4 {
+            color: #F8BE20;
+            font-size: 1.1rem;
+            line-height: 1.2;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            color: #D1D5DB;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: rgba(248, 190, 32, 0.15);
+            color: #F8BE20;
+        }
+
+        .sidebar-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .admin-main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .admin-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FFFFFF;
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            margin-bottom: 2rem;
+            border: 1px solid #E5E7EB;
+        }
+
+        .user-profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #F8BE20;
+        }
+
+        .user-info h5 {
+            font-size: 0.95rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .role-pill {
+            font-size: 0.72rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: #FFF8E7;
+            color: #B8860B;
+            border: 1px solid #F8BE20;
+        }
+
+        .btn-table-action {
+            background: #F3F4F6;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+        .btn-table-action:hover {
+            background: #E5E7EB;
+            transform: translateY(-1px);
+        }
+        .text-blue { color: #2563EB; }
+        .text-emerald { color: #059669; }
+        .text-red { color: #DC2626; }
+        .text-gray { color: #9CA3AF; }
+
+        /* Global Filter Control Card */
+        .filter-control-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #E5E7EB;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid #F8BE20;
+        }
+
+        .filter-control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #1D1D1B;
+            font-size: 0.95rem;
+        }
+
+        .btn-reset-filter {
+            background: #F3F4F6;
+            color: #4B5563;
+            border: 1px solid #D1D5DB;
+            padding: 0.35rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-reset-filter:hover {
+            background: #E5E7EB;
+            color: #1D1D1B;
+        }
+
+        .filter-control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-item label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #6B7280;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-select-filter {
+            width: 100%;
+            padding: 0.55rem 0.85rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            background: #FAF9F6;
+            color: #1D1D1B;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-select-filter:focus {
+            border-color: #F8BE20;
+            background: #FFFFFF;
+        }
+
+        /* Table Pagination Flex & Buttons (High Contrast & Clear Active State) */
+        .table-pagination-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid #F3F4F6;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pagination-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .pagination-btn {
+            background: #FFFFFF;
+            color: #374151;
+            border: 1.5px solid #D1D5DB;
+            padding: 0.45rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            height: 38px;
+            user-select: none;
+        }
+
+        .pagination-btn:hover:not([disabled]):not(.active) {
+            background: #FFF8E7;
+            color: #B8860B;
+            border-color: #F8BE20;
+            transform: translateY(-1px);
+        }
+
+        .pagination-btn.active {
+            background: #1D1D1B !important;
+            color: #F8BE20 !important;
+            border: 2px solid #F8BE20 !important;
+            font-weight: 800 !important;
+            box-shadow: 0 4px 12px rgba(29, 29, 27, 0.3) !important;
+            transform: scale(1.05);
+        }
+
+        .pagination-btn[disabled] {
+            opacity: 0.35;
+            background: #F9FAFB;
+            border-color: #E5E7EB;
+            cursor: not-allowed;
+        }
+
+        .pagination-dots {
+            padding: 0 0.35rem;
+            color: #9CA3AF;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        /* Modal Containment & Professional Viewport Scrolling */
+        .modal-overlay {
+            overflow-y: auto !important;
+            padding: 1.5rem 1rem !important;
+            box-sizing: border-box !important;
+        }
+
+        .modal-box {
+            max-height: 88vh !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            margin: auto !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5) !important;
+            position: relative;
+        }
+
+        .modal-box form {
+            display: flex !important;
+            flex-direction: column !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            overflow: hidden !important;
+        }
+
+        .modal-header {
+            flex-shrink: 0 !important;
+            padding: 1.25rem 1.5rem !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 10 !important;
+        }
+
+        .modal-body {
+            overflow-y: auto !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            max-height: calc(88vh - 130px) !important;
+            padding: 1.25rem 1.5rem !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-footer {
+            flex-shrink: 0 !important;
+            position: sticky !important;
+            bottom: 0 !important;
+            z-index: 10 !important;
+        }
+
+        /* Quill.js Rich Editor Custom Styling */
+        .modal-box-lg {
+            max-width: 880px !important;
+            width: 95% !important;
+        }
+
+        .ql-toolbar.ql-snow {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            background: #F9FAFB;
+            border-color: #E5E7EB;
+            padding: 0.6rem 0.8rem;
+        }
+
+        .ql-container.ql-snow {
+            border-color: #E5E7EB;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            background: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .ql-editor {
+            min-height: 220px;
+            max-height: 360px;
+            overflow-y: auto;
+            line-height: 1.7;
+            color: #1D1D1B;
+        }
+
+        .ql-editor blockquote {
+            border-left: 4px solid #B8860B;
+            padding-left: 1rem;
+            color: #4B5563;
+            background: #FFFDF7;
+            font-style: italic;
+            border-radius: 0 6px 6px 0;
+            margin: 0.75rem 0;
+        }
+
+        .image-preset-pill {
+            display: inline-block;
+            padding: 0.25rem 0.65rem;
+            background: #F3F4F6;
+            border: 1px solid #E5E7EB;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #4B5563;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 0.35rem;
+            margin-top: 0.35rem;
+        }
+
+        .image-preset-pill:hover {
+            background: #FFF8E7;
+            border-color: #F8BE20;
+            color: #B8860B;
+        }
+
+        /* Gallery Media Library Styles */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+        }
+
+        .gallery-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+            border-color: #F8BE20;
+        }
+
+        .gallery-card-thumb {
+            height: 140px;
+            width: 100%;
+            object-fit: cover;
+            background: #F3F4F6;
+            cursor: pointer;
+            display: block;
+        }
+
+        .gallery-card-body {
+            padding: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            flex: 1;
+        }
+
+        .gallery-card-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1D1D1B;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .gallery-card-meta {
+            font-size: 0.72rem;
+            color: #6B7280;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .storage-bar-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .storage-progress-bg {
+            background: #F3F4F6;
+            height: 10px;
+            border-radius: 50px;
+            overflow: hidden;
+            margin: 0.75rem 0 0.4rem;
+        }
+
+        .storage-progress-fill {
+            background: linear-gradient(90deg, #F8BE20, #B8860B);
+            height: 100%;
+            border-radius: 50px;
+            transition: width 0.5s ease;
+        }
+
+        /* Detail Jamaah Modal Layout (Gambar 2 Format) */
+        .detail-section-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #B8860B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid #F3F4F6;
+            margin-bottom: 0.75rem;
+        }
+
+        .detail-grid-2col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem 1rem;
+        }
+
+        .detail-input[readonly], .detail-input[disabled] {
+            background-color: #FAF9F6;
+            color: #1D1D1B;
+            border-color: #E5E7EB;
+            cursor: default;
+        }
+
+        .detail-input.editable-active {
+            background-color: #FFFFFF !important;
+            border-color: #F8BE20 !important;
+            box-shadow: 0 0 0 3px rgba(248, 190, 32, 0.15) !important;
+            cursor: text !important;
+        }
+
+        body.modal-open-scroll-lock {
+            overflow: hidden !important;
+        }
+
+        /* Force High-Readability Modern Sans-Serif Font Across Dashboard & Modals */
+        body, h1, h2, h3, h4, h5, h6,
+        .sidebar-brand h4,
+        .modal-header h4,
+        #detail-modal-title,
+        .chart-header h4,
+        .table-header-flex h4,
+        .filter-control-header span,
+        .kpi-value, .kpi-label,
+        .admin-sidebar, .admin-topbar, .admin-table {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+            letter-spacing: normal !important;
+        }
+
+        #detail-modal-title {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+            font-weight: 700 !important;
+            font-size: 1.05rem !important;
+            color: #FFFFFF !important;
+        }
+
+        .btn-outline-danger {
+            background: transparent;
+            color: #EF4444;
+            border: 1px solid #EF4444;
+            border-radius: 8px;
+            padding: 0.55rem 1rem;
+            font-size: 0.825rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-outline-danger:hover {
+            background: #EF4444;
+            color: #FFFFFF;
+        }
+
+        /* Auto Capslock & Datepicker Styling */
+        .auto-caps, input[type="text"].detail-input, textarea.detail-input {
+            text-transform: uppercase !important;
+        }
+
+        input[type="date"].detail-input {
+            cursor: pointer;
+        }
+
+        /* Admin Dark Modal Overlay & Container Box Styling */
+        #modal-detail-jamaah .modal-box {
+            background: #1D1D1B;
+            color: #FFFFFF;
+            border-radius: 16px;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            border: 1px solid rgba(248, 190, 32, 0.4);
+            margin: auto;
+        }
+
+        #modal-detail-jamaah .modal-header {
+            background: #1D1D1B;
+            color: #FFFFFF;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            flex-shrink: 0;
+        }
+
+        #modal-detail-jamaah .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+            background: #1D1D1B;
+        }
+
+        #modal-detail-jamaah label {
+            color: #D1D5DB !important;
+            font-size: 0.75rem !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.3px;
+        }
+
+        #modal-detail-jamaah .detail-section-title {
+            color: #F8BE20 !important;
+            font-size: 0.78rem !important;
+            font-weight: 800 !important;
+            border-bottom: 1px solid rgba(248, 190, 32, 0.3) !important;
+            padding-bottom: 0.3rem;
+            margin-bottom: 0.85rem;
+        }
+
+        #modal-detail-jamaah .detail-input {
+            background-color: #262623 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #40403C !important;
+            color-scheme: dark;
+        }
+
+        #modal-detail-jamaah .detail-input[readonly], 
+        #modal-detail-jamaah .detail-input[disabled] {
+            background-color: #1A1A18 !important;
+            color: #9CA3AF !important;
+            border-color: #2E2E2A !important;
+            opacity: 1 !important;
+        }
+
+        #modal-detail-jamaah .detail-input.editable-active {
+            background-color: #2D2D29 !important;
+            color: #FFFFFF !important;
+            border-color: #F8BE20 !important;
+            box-shadow: 0 0 0 3px rgba(248, 190, 32, 0.2) !important;
+        }
+
+        /* Grid KPI & Cards */
+        .grid-kpi {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #E5E7EB;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .kpi-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #FFF8E7;
+            color: #B8860B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-label {
+            font-size: 0.8rem;
+            color: #6B7280;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .kpi-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1D1D1B;
+        }
+
+        .kpi-subtext {
+            font-size: 0.8rem;
+            color: #10B981;
+            font-weight: 600;
+        }
+
+        /* Chart Section Grid (Fixed CSS Grid Min-Width Canvas Overflow) */
+        .grid-charts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .chart-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #E5E7EB;
+            min-width: 0; /* CRITICAL FIX: prevents CSS Grid item canvas overflow */
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #F3F4F6;
+        }
+
+        .chart-header h4 {
+            font-size: 1.05rem;
+            color: #1D1D1B;
+        }
+
+        .chart-container-box {
+            position: relative;
+            height: 260px;
+            width: 100%;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        /* Table Card */
+        .table-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #E5E7EB;
+        }
+
+        .table-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .search-table-input {
+            padding: 0.6rem 1rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            width: 280px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        .admin-table th {
+            background: #FAF8F5;
+            padding: 0.85rem 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: #374151;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        .admin-table td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid #F3F4F6;
+            vertical-align: middle;
+        }
+
+        .status-badge-lunas {
+            background: #ECFDF5;
+            color: #065F46;
+            padding: 0.25rem 0.65rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .status-badge-dp {
+            background: #FFFBEB;
+            color: #D97706;
+            padding: 0.25rem 0.65rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .badge-admin {
+            background: #F3F4F6;
+            color: #374151;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .badge-cat {
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-umar { background: #FFF8E7; color: #B8860B; }
+        .badge-masjid { background: #ECFDF5; color: #047857; }
+
+        .btn-action {
+            background: #F3F4F6;
+            border: 1px solid #E5E7EB;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            color: #374151;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            padding: 0 !important;
+            margin: 0;
+            line-height: 1 !important;
+            vertical-align: middle;
+        }
+
+        .btn-action i {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-size: 0.85rem;
+        }
+
+        .btn-action:hover {
+            background: #E5E7EB;
+            border-color: #D1D5DB;
+            transform: translateY(-1px);
+        }
+
+        /* Collapsible & Mobile Sidebar */
+        .admin-sidebar {
+            width: 260px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            background: #1D1D1B;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .admin-sidebar.collapsed {
+            width: 70px;
+            padding: 1.25rem 0.5rem;
+        }
+
+        .admin-sidebar.collapsed .sidebar-brand h4,
+        .admin-sidebar.collapsed .link-text {
+            display: none !important;
+        }
+
+        .admin-sidebar.collapsed .sidebar-brand {
+            justify-content: center;
+        }
+
+        .sidebar-collapse-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #F8BE20;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-left: auto;
+            transition: all 0.2s;
+        }
+
+        .sidebar-collapse-btn:hover {
+            background: #F8BE20;
+            color: #1D1D1B;
+            border-color: #F8BE20;
+        }
+
+        .admin-sidebar.collapsed .sidebar-collapse-btn {
+            margin-left: 0;
+        }
+
+        .admin-main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            min-width: 0;
+            overflow-x: hidden;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .admin-main.sidebar-collapsed {
+            margin-left: 70px;
+            width: calc(100% - 70px);
+            min-width: 0;
+        }
+
+        .mobile-sidebar-btn {
+            display: none;
+            background: #F3F4F6;
+            color: #1D1D1B;
+            border: 1px solid #D1D5DB;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-backdrop.active {
+            display: block;
+        }
+
+        /* Clean Multi-Select Checkbox Dropdown (Gambar 3 Style) */
+        .ms-custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .ms-btn {
+            width: 100%;
+            padding: 0.55rem 0.85rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 0.825rem;
+            background: #FAF9F6;
+            color: #1D1D1B;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .ms-btn:hover {
+            background: #FFFFFF;
+            border-color: #F8BE20;
+        }
+
+        .ms-panel {
+            position: absolute;
+            top: 105%;
+            left: 0;
+            width: 100%;
+            min-width: 250px;
+            background: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            border: 1px solid #E5E7EB;
+            z-index: 1500;
+            padding: 0.75rem;
+            display: none;
+        }
+
+        .ms-search-input {
+            width: 100%;
+            padding: 0.45rem 0.75rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            outline: none;
+        }
+
+        .ms-quick-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.4rem;
+            border-bottom: 1px solid #F3F4F6;
+        }
+
+        .ms-action-btn {
+            background: transparent;
+            color: #6B7280;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .ms-action-btn:hover {
+            color: #B8860B;
+            text-decoration: underline;
+        }
+
+        .ms-options-scroll {
+            max-height: 220px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .ms-group-header {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #9CA3AF;
+            text-transform: uppercase;
+            padding: 0.4rem 0.2rem 0.1rem 0.2rem;
+            letter-spacing: 0.5px;
+            border-top: 1px solid #F3F4F6;
+            margin-top: 0.3rem;
+        }
+
+        .ms-group-header:first-child {
+            border-top: none;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .ms-option-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.825rem;
+            color: #374151;
+            padding: 0.35rem 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s;
+            user-select: none;
+        }
+
+        .ms-option-item:hover {
+            background: #FFF8E7;
+        }
+
+        .ms-option-item input[type="checkbox"] {
+            accent-color: #F8BE20;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-charts { grid-template-columns: 1fr; }
+            .mobile-sidebar-btn { display: flex; }
+            .sidebar-collapse-btn { display: none; }
+            .admin-sidebar {
+                left: -280px;
+                height: 100vh;
+                box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            }
+            .admin-sidebar.mobile-open { left: 0; }
+            .admin-main { margin-left: 0 !important; width: 100% !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Mobile Sidebar Backdrop Overlay -->
+<div id="sidebar-backdrop" class="sidebar-backdrop" onclick="AdminController.closeMobileSidebar()"></div>
+
+<!-- ------------------------------------------------------------------------
+     LOGIN SCREEN OVERLAY (Controlled by AuthGuard)
+     ------------------------------------------------------------------------ -->
+<div id="login-overlay" class="login-wrapper">
+    <div class="login-box">
+        <div class="login-logo">
+            <img src="images/logo/logo-umarNsupport/logo_umarFULL_black.svg" alt="UMAR Travel Logo" onerror="this.src='images/logo/logo-umarNsupport/favicon-umar.svg'">
+        </div>
+        <h3>Portal Admin Terpadu</h3>
+        <p>Login Sistem Management UMAR Travel & Masjid Sophia</p>
+
+        <form id="login-form" onsubmit="handleLoginSubmit(event)">
+            <div class="form-group">
+                <label>Email / Username</label>
+                <input type="email" id="login-email" class="form-input" placeholder="contoh: superadmin@umar.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                <i class="fa-solid fa-right-to-bracket"></i> Masuk ke Portal
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------
+     MAIN ADMIN DASHBOARD LAYOUT
+     ------------------------------------------------------------------------ -->
+<div id="admin-app" class="admin-layout" style="display: none;">
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <img src="images/logo/logo-umarNsupport/favicon-umar-white.svg" alt="Logo">
+            <h4>UMAR Admin Portal</h4>
+            <button class="sidebar-collapse-btn" onclick="AdminController.toggleSidebar()" title="Collapse Sidebar">
+                <i class="fa-solid fa-chevron-left" id="sidebar-toggle-icon"></i>
+            </button>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-link active" id="nav-modul-sales" onclick="switchTab('modul-sales')">
+                <i class="fa-solid fa-chart-line"></i>
+                <span class="link-text">Closing & Transaksi</span>
+            </li>
+            <li class="sidebar-link" id="nav-modul-agen" onclick="switchTab('modul-agen')">
+                <i class="fa-solid fa-handshake-angle"></i>
+                <span class="link-text">Transaksi Agen</span>
+            </li>
+            <li class="sidebar-link" id="nav-modul-cms" onclick="switchTab('modul-cms')">
+                <i class="fa-solid fa-newspaper"></i>
+                <span class="link-text">CMS Berita & Event</span>
+            </li>
+            <li class="sidebar-link" id="nav-modul-gallery" onclick="switchTab('modul-gallery')">
+                <i class="fa-solid fa-photo-film"></i>
+                <span class="link-text">Galeri Media</span>
+            </li>
+            <li class="sidebar-link" id="nav-modul-users" onclick="switchTab('modul-users')">
+                <i class="fa-solid fa-user-shield"></i>
+                <span class="link-text">Akses Tim & Admin</span>
+            </li>
+        </ul>
+
+        <button class="btn btn-outline-gold btn-sm" onclick="AuthGuard.logout()" style="width: 100%; margin-top: auto;">
+            <i class="fa-solid fa-power-off"></i> <span class="link-text">Keluar</span>
+        </button>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+        <!-- Topbar -->
+        <div class="admin-topbar">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button class="mobile-sidebar-btn" title="Toggle Sidebar" onclick="AdminController.toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div>
+                    <h3 id="page-title" style="font-size: 1.3rem;">Dashboard Transaksi & Pencapaian Closing</h3>
+                    <p style="font-size: 0.8rem; color: #6B7280;">Sistem Informasi Database Jamaah & Analytics UMAR Travel</p>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button type="button" class="btn btn-outline-gold btn-sm" onclick="AdminController.syncAllToSupabase()" title="Sinkronkan seluruh data transaksi ke Supabase DB">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> <span>Sinkron ke DB</span>
+                </button>
+
+                <div class="user-profile-badge" onclick="AdminController.openMyProfileModal()" style="cursor: pointer;" title="Klik untuk mengelola Profil Saya & Ganti Password">
+                    <img id="user-avatar-img" src="images/logo/logo-umarNsupport/favicon-umar.svg" class="user-avatar" alt="User Avatar">
+                    <div class="user-info">
+                        <h5 id="user-name-txt">Super Admin</h5>
+                        <span id="user-role-badge" class="role-pill">SUPERADMIN</span>
+                    </div>
+                    <i class="fa-solid fa-user-gear text-gold" style="font-size: 0.85rem; margin-left: 0.35rem;" title="Pengaturan Profil"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================================================================
+             MODUL 1: DASHBOARD TRANSAKSI & CLOSING ACHIEVEMENT
+             =================================================================== -->
+        <section id="tab-modul-sales">
+            <!-- Global Multi-Select Filter Control Bar -->
+            <div class="filter-control-card">
+                <div class="filter-control-header">
+                    <span><i class="fa-solid fa-filter text-gold"></i> Filter Analytics Multi-Check</span>
+                    <button class="btn-reset-filter" onclick="AdminController.resetFilters()">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Filter
+                    </button>
+                </div>
+                <div class="filter-control-grid">
+                    <!-- 1. Periode Waktu Multi-Select -->
+                    <div class="filter-item">
+                        <label><i class="fa-regular fa-calendar-days"></i> PERIODE (TAHUN, BULAN, MINGGU)</label>
+                        <div class="ms-custom-dropdown">
+                            <button type="button" class="ms-btn" onclick="AdminController.toggleMsPanel('ms-period-panel', event)">
+                                <span id="ms-period-text">Semua Periode</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div id="ms-period-panel" class="ms-panel">
+                                <div class="ms-quick-actions">
+                                    <button type="button" class="ms-action-btn" onclick="AdminController.setAllCheckboxes('ms-period-options', true, 'period')">Pilih Semua</button>
+                                    <button type="button" class="ms-action-btn" onclick="AdminController.setAllCheckboxes('ms-period-options', false, 'period')">Hapus Semua</button>
+                                </div>
+                                <div class="ms-options-scroll" id="ms-period-options">
+                                    <div class="ms-group-header">TAHUN</div>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-year" value="2027" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Tahun 2027</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-year" value="2026" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Tahun 2026</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-year" value="2025" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Tahun 2025</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-year" value="2024" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Tahun 2024</span></label>
+
+                                    <div class="ms-group-header">BULAN</div>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="1" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Januari</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="2" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Februari</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="3" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Maret</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="4" checked onchange="AdminController.onMsCheckboxChange('period')"><span>April</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="5" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Mei</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="6" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Juni</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="7" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Juli</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="8" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Agustus</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="9" checked onchange="AdminController.onMsCheckboxChange('period')"><span>September</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="10" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Oktober</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="11" checked onchange="AdminController.onMsCheckboxChange('period')"><span>November</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-month" value="12" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Desember</span></label>
+
+                                    <div class="ms-group-header">MINGGU</div>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-week" value="w1" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Minggu 1 (Tgl 1 - 7)</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-week" value="w2" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Minggu 2 (Tgl 8 - 14)</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-week" value="w3" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Minggu 3 (Tgl 15 - 21)</span></label>
+                                    <label class="ms-option-item"><input type="checkbox" class="cb-week" value="w4" checked onchange="AdminController.onMsCheckboxChange('period')"><span>Minggu 4 (Tgl 22+)</span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Paket Umrah Multi-Select -->
+                    <div class="filter-item">
+                        <label><i class="fa-solid fa-kaaba"></i> PAKET / KAFILAH</label>
+                        <div class="ms-custom-dropdown">
+                            <button type="button" class="ms-btn" onclick="AdminController.toggleMsPanel('ms-package-panel', event)">
+                                <span id="ms-package-text">Semua Paket Umrah</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div id="ms-package-panel" class="ms-panel">
+                                <input type="text" class="ms-search-input" placeholder="Cari Paket..." onkeyup="AdminController.searchMsOptions('ms-package-options', this.value)">
+                                <div class="ms-quick-actions">
+                                    <button type="button" class="ms-action-btn" onclick="AdminController.setAllCheckboxes('ms-package-options', true, 'package')">Pilih Semua</button>
+                                    <button type="button" class="ms-action-btn" onclick="AdminController.setAllCheckboxes('ms-package-options', false, 'package')">Hapus Semua</button>
+                                </div>
+                                <div class="ms-options-scroll" id="ms-package-options">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Admin Marketing Multi-Select -->
+                    <div class="filter-item">
+                        <label><i class="fa-solid fa-headset"></i> ADMIN MARKETING</label>
+                        <div class="ms-custom-dropdown">
+                            <button type="button" class="ms-btn" onclick="AdminController.toggleMsPanel('ms-admin-panel', event)">
+                                <span id="ms-admin-text">Semua Admin CS</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div id="ms-admin-panel" class="ms-panel">
+                                <div class="ms-quick-actions">
+                                    <button type="button" class="ms-action-btn" onclick="AdminController.setAllCheckboxes('ms-admin-options', true, 'admin')">Pilih Semua</button>
+                                    <button type="button" class="ms-action-btn" onclick="AdminController.setAllCheckboxes('ms-admin-options', false, 'admin')">Hapus Semua</button>
+                                </div>
+                                <div class="ms-options-scroll" id="ms-admin-options">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Status Payment Multi-Select -->
+                    <div class="filter-item">
+                        <label><i class="fa-solid fa-wallet"></i> STATUS PAYMENT</label>
+                        <div class="ms-custom-dropdown">
+                            <button type="button" class="ms-btn" onclick="AdminController.toggleMsPanel('ms-statpay-panel', event)">
+                                <span id="ms-statpay-text">Semua Status Pay</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div id="ms-statpay-panel" class="ms-panel">
+                                <div class="ms-options-scroll" id="ms-statpay-options">
+                                    <label class="ms-option-item">
+                                        <input type="checkbox" value="LUNAS" checked onchange="AdminController.onMsCheckboxChange('statpay')">
+                                        <span>LUNAS</span>
+                                    </label>
+                                    <label class="ms-option-item">
+                                        <input type="checkbox" value="DP" checked onchange="AdminController.onMsCheckboxChange('statpay')">
+                                        <span>DP / CICILAN</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Top KPI Cards -->
+            <div class="grid-kpi">
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="kpi-label">Total Jamaah Closing</div>
+                    <div class="kpi-value" id="kpi-total-jamaah">Loading...</div>
+                    <div style="background: #E5E7EB; height: 6px; border-radius: 10px; margin-top: 4px; overflow: hidden;">
+                        <div id="kpi-quota-progress" style="background: #10B981; height: 100%; width: 64%;"></div>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    <div class="kpi-label">Total Omzet Closing</div>
+                    <div class="kpi-value" id="kpi-total-omzet">Loading...</div>
+                    <div class="kpi-subtext"><i class="fa-solid fa-arrow-trend-up"></i> Realized Revenue</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+                        <div class="kpi-icon" style="margin-bottom: 0; width: 38px; height: 38px; font-size: 1.1rem;"><i class="fa-solid fa-crown"></i></div>
+                        <span class="role-pill" style="font-size: 0.65rem; background: #FFF8E7; color: #B8860B;">TOP 5 KAFILAH</span>
+                    </div>
+                    <div class="kpi-label" style="font-size: 0.75rem;">5 Paket Umrah Terlaris</div>
+                    <div id="kpi-top-packages-list" style="margin-top: 0.3rem; display: flex; flex-direction: column;">
+                        <span style="font-size: 0.78rem; color: #9CA3AF;">Memuat paket terlaris...</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="fa-solid fa-credit-card"></i></div>
+                    <div class="kpi-label">Status Pembayaran</div>
+                    <div class="kpi-value" id="kpi-statpay-ratio" style="font-size: 1.05rem;">Loading...</div>
+                    <div class="kpi-subtext"><i class="fa-solid fa-shield-check"></i> Verified Receipts</div>
+                </div>
+            </div>
+
+            <!-- 4 Visual Chart.js Canvas Cards -->
+            <div class="grid-charts">
+                <!-- 1. Line Chart: Tren Closing -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h4><i class="fa-solid fa-chart-line text-gold"></i> Tren Pendaftaran Closing Jamaah</h4>
+                    </div>
+                    <div class="chart-container-box">
+                        <canvas id="chartTrenClosing"></canvas>
+                    </div>
+                </div>
+
+                <!-- 2. Bar Chart: Leaderboard Admin Marketing -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h4><i class="fa-solid fa-trophy text-gold"></i> Leaderboard Performance Admin Marketing</h4>
+                    </div>
+                    <div class="chart-container-box">
+                        <canvas id="chartLeaderboard"></canvas>
+                    </div>
+                </div>
+
+                <!-- 3. Doughnut Chart: Distribusi Paket -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h4><i class="fa-solid fa-pie-chart text-gold"></i> Distribusi Pilihan Paket Umrah</h4>
+                    </div>
+                    <div class="chart-container-box">
+                        <canvas id="chartPaket"></canvas>
+                    </div>
+                </div>
+
+                <!-- 4. Bar Chart: Channel Performance -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h4><i class="fa-solid fa-bullhorn text-gold"></i> Performa Channel Marketing</h4>
+                    </div>
+                    <div class="chart-container-box">
+                        <canvas id="chartChannel"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Peta Demografi & Tren Closing Jamaah Indonesia (PRIORITAS 1 - Leaflet.js) -->
+            <div class="chart-card" style="margin-bottom: 2rem; width: 100%;">
+                <div class="chart-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                    <div>
+                        <h4><i class="fa-solid fa-map-location-dot text-gold"></i> Peta Demografi & Sebaran Closing Jamaah Indonesia</h4>
+                        <p style="font-size: 0.78rem; color: #6B7280; margin-top: 2px;">
+                            Visualisasi persebaran demografis pendaftaran jamaah berbasis Kabupaten / Kota (OpenStreetMap & Leaflet Heatmap Markers)
+                        </p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="badge-admin" id="map-total-cities-badge">Memuat Peta...</span>
+                        <button type="button" class="btn btn-outline-gold btn-sm" onclick="AdminController.resetMapZoom()" title="Reset Tampilan Peta">
+                            <i class="fa-solid fa-expand"></i> Reset View
+                        </button>
+                    </div>
+                </div>
+                <div id="indonesia-jamaah-map" style="height: 440px; width: 100%; border-radius: 12px; border: 1px solid #E5E7EB; z-index: 1;"></div>
+                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 0.75rem; font-size: 0.78rem; color: #4B5563; align-items: center;">
+                    <span style="font-weight: 700; color: #1D1D1B;">Legenda Kepadatan Closing:</span>
+                    <div style="display: flex; align-items: center; gap: 0.35rem;">
+                        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #FDE047; border: 1px solid #CA8A04;"></span> 1-2 Jamaah
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.35rem;">
+                        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #F59E0B; border: 1px solid #D97706;"></span> 3-9 Jamaah
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.35rem;">
+                        <span style="display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #B8860B; border: 1px solid #78350F;"></span> 10+ Jamaah (Konsentrasi Tinggi)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Transactions Table -->
+            <div class="table-card">
+                <div class="table-header-flex">
+                    <div>
+                        <h4><i class="fa-solid fa-table-list text-gold"></i> Daftar Transaksi Closing Jamaah</h4>
+                        <p id="table-count-info" style="font-size: 0.8rem; color: #6B7280;">Menampilkan data real-time database</p>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                        <!-- Rows per page selector -->
+                        <div style="display: flex; align-items: center; gap: 0.4rem;">
+                            <label style="font-size: 0.8rem; color: #6B7280; white-space: nowrap;">Tampilkan:</label>
+                            <select id="table-rows-per-page" class="form-select-filter" style="padding: 0.4rem 0.6rem; font-size: 0.8rem;" onchange="AdminController.changeRowsPerPage(this.value)">
+                                <option value="10">10 Baris</option>
+                                <option value="25">25 Baris</option>
+                                <option value="50" selected>50 Baris</option>
+                                <option value="100">100 Baris</option>
+                                <option value="all">Semua Baris</option>
+                            </select>
+                        </div>
+
+                        <input type="text" id="search-closing-input" class="search-table-input" placeholder="🔍 Cari Jamaah / ID / Admin..." onkeyup="AdminController.handleSearchFilter()">
+                        <button class="btn btn-primary btn-sm" onclick="AdminController.openModal('modal-add-closing')">
+                            <i class="fa-solid fa-plus"></i> Tambah Transaksi Baru
+                        </button>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID JAMAAH</th>
+                                <th>NAMA JAMAAH</th>
+                                <th>PAKET UMRAH</th>
+                                <th>ADMIN MARKETING</th>
+                                <th>TOTAL BAYAR</th>
+                                <th>STATUS PAY</th>
+                                <th>AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-closings">
+                            <tr>
+                                <td colspan="7" class="text-center" style="padding: 2rem;">Memuat data transaksi...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Table Pagination Flex -->
+                <div class="table-pagination-flex">
+                    <div id="table-pagination-info" style="font-size: 0.85rem; color: #6B7280;">
+                        Menampilkan 1 - 50 dari 321 Transaksi
+                    </div>
+                    <div class="pagination-buttons" id="pagination-controls">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             MODUL AGEN: DASHBOARD TRANSAKSI & PERFORMA AGEN (v1.9.0)
+             =================================================================== -->
+        <section id="tab-modul-agen" style="display: none;">
+            <!-- Filter Bar for Agen -->
+            <div class="filter-control-card">
+                <div class="filter-control-header">
+                    <span><i class="fa-solid fa-filter text-gold"></i> Filter Analytics Transaksi Agen</span>
+                    <button class="filter-reset-btn" onclick="AdminController.resetAgenFilters()"><i class="fa-solid fa-rotate-left"></i> Reset Filter</button>
+                </div>
+
+                <div class="filter-grid">
+                    <!-- Filter Agen Select -->
+                    <div class="filter-item">
+                        <label><i class="fa-solid fa-user-tie"></i> PILIH AGEN REFERENSI</label>
+                        <select id="filter-agen-select" class="form-select-filter" onchange="AdminController.onAgenFilterChange()">
+                            <option value="ALL">-- Semua Agen Referensi --</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter Status Payment Agen -->
+                    <div class="filter-item">
+                        <label><i class="fa-solid fa-wallet"></i> STATUS PAYMENT</label>
+                        <select id="filter-agen-statpay" class="form-select-filter" onchange="AdminController.onAgenFilterChange()">
+                            <option value="ALL">Semua Status (Lunas & DP)</option>
+                            <option value="LUNAS">Hanya LUNAS</option>
+                            <option value="DP">Hanya DP / CICILAN</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter Paket Agen -->
+                    <div class="filter-item">
+                        <label><i class="fa-solid fa-kaaba"></i> PAKET UMRAH</label>
+                        <select id="filter-agen-paket" class="form-select-filter" onchange="AdminController.onAgenFilterChange()">
+                            <option value="ALL">-- Semua Pilihan Paket --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Top KPI Cards for Agen -->
+            <div class="grid-kpi">
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+                    <div class="kpi-label">Total Jamaah Jalur Agen</div>
+                    <div class="kpi-value" id="kpi-agen-total-jamaah">Loading...</div>
+                    <div class="kpi-subtext" id="kpi-agen-share-pct"><i class="fa-solid fa-chart-pie"></i> Kontribusi Closing</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <div class="kpi-label">Total Omzet Jalur Agen</div>
+                    <div class="kpi-value" id="kpi-agen-total-omzet">Loading...</div>
+                    <div class="kpi-subtext"><i class="fa-solid fa-arrow-trend-up"></i> Nilai Transaksi Mitra</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="fa-solid fa-medal"></i></div>
+                    <div class="kpi-label">Top Performer Agen</div>
+                    <div class="kpi-value" id="kpi-agen-top-performer" style="font-size: 1.1rem; line-height: 1.3;">Loading...</div>
+                    <div class="kpi-subtext" id="kpi-agen-top-subtext">Closing Terbanyak</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="fa-solid fa-id-badge"></i></div>
+                    <div class="kpi-label">Agen Aktif Closing</div>
+                    <div class="kpi-value" id="kpi-agen-active-count">Loading...</div>
+                    <div class="kpi-subtext" id="kpi-agen-total-registered">Dari Total Mitra Agen</div>
+                </div>
+            </div>
+
+            <!-- 2 Chart Cards for Agen -->
+            <div class="grid-charts">
+                <!-- 1. Bar Chart: Leaderboard Top Agen -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h4><i class="fa-solid fa-trophy text-gold"></i> Leaderboard Top 10 Closing Agen</h4>
+                    </div>
+                    <div class="chart-container-box">
+                        <canvas id="chartAgenLeaderboard"></canvas>
+                    </div>
+                </div>
+
+                <!-- 2. Doughnut Chart: Paket Pilihan Jalur Agen -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h4><i class="fa-solid fa-chart-pie text-gold"></i> Distribusi Paket Pilihan Jalur Agen</h4>
+                    </div>
+                    <div class="chart-container-box">
+                        <canvas id="chartAgenPaket"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Peta Sebaran Transaksi Mitra Agen -->
+            <div class="chart-card" style="margin-bottom: 2rem; width: 100%;">
+                <div class="chart-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                    <div>
+                        <h4><i class="fa-solid fa-map-marked-alt text-gold"></i> Peta Sebaran Transaksi Mitra Agen</h4>
+                        <p style="font-size: 0.78rem; color: #6B7280; margin-top: 2px;">
+                            Persebaran domisili jamaah yang berhasil di-closing oleh seluruh mitra agen UMAR Travel
+                        </p>
+                    </div>
+                    <span class="badge-admin" id="map-agen-cities-badge">Memuat Peta Agen...</span>
+                </div>
+                <div id="indonesia-agen-map" style="height: 400px; width: 100%; border-radius: 12px; border: 1px solid #E5E7EB; z-index: 1;"></div>
+            </div>
+
+            <!-- Table 1: Daftar Transaksi Jamaah Jalur Agen -->
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-header-flex">
+                    <div>
+                        <h4><i class="fa-solid fa-file-invoice-dollar text-gold"></i> Daftar Transaksi Closing Mitra Agen</h4>
+                        <p id="table-agen-count-info" style="font-size: 0.8rem; color: #6B7280;">Daftar seluruh transaksi yang direferensikan oleh mitra agen</p>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                        <input type="text" id="search-agen-trans-input" class="search-table-input" placeholder="🔍 Cari Jamaah / Agen / ID..." onkeyup="AdminController.handleAgenSearch()">
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID JAMAAH</th>
+                                <th>TGL ORDER</th>
+                                <th>NAMA JAMAAH</th>
+                                <th>AGEN REFERENSI</th>
+                                <th>PAKET UMRAH</th>
+                                <th>TOTAL BAYAR</th>
+                                <th>STATUS</th>
+                                <th>AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-agen-closings">
+                            <tr>
+                                <td colspan="8" class="text-center" style="padding: 2rem;">Memuat transaksi agen...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-pagination-flex">
+                    <div id="table-agen-pagination-info" style="font-size: 0.85rem; color: #6B7280;">
+                        Menampilkan transaksi agen
+                    </div>
+                    <div class="pagination-buttons" id="pagination-agen-controls"></div>
+                </div>
+            </div>
+
+            <!-- Table 2: Direktori Master Data & Performa Seluruh Agen -->
+            <div class="table-card">
+                <div class="table-header-flex">
+                    <div>
+                        <h4><i class="fa-solid fa-address-book text-gold"></i> Direktori & Rekapitulasi Mitra Agen</h4>
+                        <p id="table-master-agen-info" style="font-size: 0.8rem; color: #6B7280;">Database mitra agen resmi UMAR Travel beserta total pencapaian</p>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                        <input type="text" id="search-master-agen-input" class="search-table-input" placeholder="🔍 Cari Nama Agen / Kota / ID..." onkeyup="AdminController.handleMasterAgenSearch()">
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID AGEN</th>
+                                <th>NAMA AGEN</th>
+                                <th>KOTA / KABUPATEN</th>
+                                <th>PROVINSI</th>
+                                <th>WHATSAPP</th>
+                                <th>TOTAL CLOSING</th>
+                                <th>TOTAL OMZET</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-master-agents">
+                            <tr>
+                                <td colspan="7" class="text-center" style="padding: 2rem;">Memuat direktori agen...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             MODUL 2: CMS BERITA, ARTIKEL & EVENT
+             =================================================================== -->
+        <section id="tab-modul-cms" style="display: none;">
+            <div class="table-card">
+                <div class="table-header-flex">
+                    <div>
+                        <h4><i class="fa-solid fa-newspaper text-gold"></i> Manajemen Berita, Artikel & Event</h4>
+                        <p style="font-size: 0.8rem; color: #6B7280;">Kelola konten publikasi UMAR Travel dan Masjid Sophia Jatiwarna</p>
+                    </div>
+
+                    <button class="btn btn-primary btn-sm" onclick="AdminController.openModal('modal-add-article')">
+                        <i class="fa-solid fa-plus"></i> Buat Artikel / Event Baru
+                    </button>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>JUDUL ARTIKEL / EVENT</th>
+                                <th>KATEGORI</th>
+                                <th>PENULIS / TIM</th>
+                                <th>DIBACA</th>
+                                <th>STATUS</th>
+                                <th>AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-articles">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             MODUL 2.5: GALERI KONTEN & MEDIA LIBRARY (WEBP AUTO-COMPRESSION)
+             =================================================================== -->
+        <section id="tab-modul-gallery" style="display: none;">
+            <!-- Storage Usage Stat Card -->
+            <div class="storage-bar-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                    <div>
+                        <h4 style="margin: 0; font-size: 1rem; color: #1D1D1B;">
+                            <i class="fa-solid fa-hard-drive text-gold"></i> Kuota Storage Supabase (Free Tier: 1.0 GB)
+                        </h4>
+                        <p style="margin: 0.2rem 0 0 0; font-size: 0.78rem; color: #6B7280;">
+                            ✨ Engine pintar: Setiap foto yang diunggah otomatis dikompresi ke format <b>WebP (~50-120 KB)</b> sehingga hemat penyimpanan hingga 98%.
+                        </p>
+                    </div>
+                    <span id="storage-used-badge" class="badge-admin" style="font-weight: 700; color: #B8860B; background: #FFF8E7;">
+                        0.3 MB / 1,024 MB (3 File)
+                    </span>
+                </div>
+                
+                <div class="storage-progress-bg">
+                    <div id="storage-progress-bar" class="storage-progress-fill" style="width: 0.2%;"></div>
+                </div>
+            </div>
+
+            <!-- Media Gallery Main Card -->
+            <div class="table-card">
+                <div class="table-header-flex">
+                    <div>
+                        <h4><i class="fa-solid fa-photo-film text-gold"></i> Galeri Media & Manajemen Aset Gambar</h4>
+                        <p style="font-size: 0.8rem; color: #6B7280;">Daftar seluruh file gambar yang siap digunakan sebagai foto sampul atau disisipkan ke artikel</p>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                        <input type="text" id="search-gallery-input" class="search-table-input" placeholder="🔍 Cari nama file..." onkeyup="AdminController.handleGallerySearch()">
+                        
+                        <label class="btn btn-primary btn-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Gambar (Auto WebP)
+                            <input type="file" accept="image/png, image/jpeg, image/webp, image/svg+xml" multiple onchange="AdminController.handleGalleryDirectUpload(this)" style="display: none;">
+                        </label>
+                    </div>
+                </div>
+
+                <div id="gallery-upload-banner" style="display: none; background: #FFF8E7; border: 1px dashed #F8BE20; border-radius: 8px; padding: 0.75rem 1rem; margin-top: 1rem; font-size: 0.85rem; color: #B8860B;">
+                    <i class="fa-solid fa-spinner fa-spin"></i> <span id="gallery-upload-text">Sedang mengompresi gambar ke WebP dan mengunggah ke Supabase...</span>
+                </div>
+
+                <!-- Gallery Grid Container -->
+                <div id="gallery-media-grid" class="gallery-grid">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             MODUL 3: MANAJEMEN AKSES TIM (SUPERADMIN ONLY)
+             =================================================================== -->
+        <section id="tab-modul-users" style="display: none;">
+            <div class="table-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+                    <div>
+                        <h4 style="margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-users-gear text-gold"></i> Manajemen Pengguna & Hak Akses
+                        </h4>
+                        <p style="font-size: 0.85rem; color: #6B7280; margin: 0.25rem 0 0;">Kelola akun staf, hak akses role RBAC, dan status aktif pengguna portal admin UMAR Travel.</p>
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-primary" onclick="AdminController.openAddUserModal()">
+                            <i class="fa-solid fa-user-plus"></i> Tambah User Baru
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search & Role Filter Bar -->
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; background: #F9FAFB; padding: 0.75rem; border-radius: 10px; border: 1px solid #E5E7EB; align-items: center;">
+                    <div style="flex: 1; min-width: 240px; position: relative;">
+                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9CA3AF;"></i>
+                        <input type="text" id="user-search-input" class="form-input" placeholder="Cari nama, email, atau nomor HP pengguna..." style="padding-left: 2.25rem;" oninput="AdminController.handleUserSearch()">
+                    </div>
+
+                    <div style="min-width: 170px;">
+                        <select id="user-role-filter" class="form-input" onchange="AdminController.handleUserSearch()">
+                            <option value="all">Semua Role</option>
+                            <option value="superadmin">Super Admin</option>
+                            <option value="sales_cs">Sales & CS</option>
+                            <option value="umar_content">Redaksi UMAR</option>
+                            <option value="masjid_content">Pengurus Masjid Sophia</option>
+                        </select>
+                    </div>
+
+                    <div style="min-width: 140px;">
+                        <select id="user-status-filter" class="form-input" onchange="AdminController.handleUserSearch()">
+                            <option value="all">Semua Status</option>
+                            <option value="active">Aktif</option>
+                            <option value="inactive">Nonaktif</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>PENGGUNA</th>
+                                <th>EMAIL</th>
+                                <th>ROLE SISTEM</th>
+                                <th>STATUS</th>
+                                <th>LOGIN TERAKHIR</th>
+                                <th style="text-align: right;">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- ------------------------------------------------------------------------
+     MODAL: DETAIL & EDIT JAMAAH (Gambar 2 Layout)
+     ------------------------------------------------------------------------ -->
+<div id="modal-detail-jamaah" class="modal-overlay" onclick="AdminController.closeModalOnBackdrop('modal-detail-jamaah', event)">
+    <div class="modal-box" style="max-width: 860px; width: 95%;">
+        <div class="modal-header">
+            <div>
+                <h4 id="detail-modal-title" style="font-size: 1.15rem;"><i class="fa-solid fa-id-card text-gold"></i> DETAIL JAMAAH | ID # <span id="detail-id-jamaah">001</span></h4>
+                <p style="font-size: 0.78rem; color: #9CA3AF; margin-top: 2px;">Sistem Informasi Database Transaksi Jamaah UMAR Travel</p>
+            </div>
+            <button class="modal-close-btn" onclick="AdminController.closeModal('modal-detail-jamaah')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="form-edit-jamaah" onsubmit="AdminController.saveJamaahEdit(event)">
+                <input type="hidden" id="edit-id-jamaah-key">
+
+                <!-- SECTION 1: INFORMASI PERSONAL -->
+                <div class="detail-section-title">INFORMASI PERSONAL</div>
+                <div class="detail-grid-2col">
+                    <div class="form-group">
+                        <label>NAMA PEMESAN</label>
+                        <input type="text" id="detail-nama-pemesan" class="form-input detail-input auto-caps" placeholder="contoh: FAJAR MAULANA" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>NAMA JAMAAH</label>
+                        <input type="text" id="detail-nama-jamaah" class="form-input detail-input auto-caps" placeholder="contoh: SITI AMINAH" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label>NAMA AYAH</label>
+                        <input type="text" id="detail-nama-ayah" class="form-input detail-input auto-caps" placeholder="contoh: ABDULLAH" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>TEMPAT LAHIR</label>
+                        <input type="text" id="detail-tempat-lahir" class="form-input detail-input auto-caps" placeholder="contoh: JAKARTA" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>TANGGAL LAHIR</label>
+                        <input type="date" id="detail-tanggal-lahir" class="form-input detail-input" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>NO. TELP JAMAAH</label>
+                        <input type="text" id="detail-telp-jamaah" class="form-input detail-input" placeholder="contoh: 081234567890" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>NO. TELP KELUARGA</label>
+                        <input type="text" id="detail-telp-keluarga" class="form-input detail-input" placeholder="contoh: 089876543210" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL JAMAAH</label>
+                        <input type="email" id="detail-email-jamaah" class="form-input detail-input" placeholder="contoh: jamaah@gmail.com" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>JENIS KELAMIN</label>
+                        <select id="detail-jenis-kelamin" class="form-input detail-input" disabled>
+                            <option value="LAKI - LAKI">LAKI - LAKI</option>
+                            <option value="PEREMPUAN">PEREMPUAN</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>STATUS PERNIKAHAN</label>
+                        <select id="detail-status-pernikahan" class="form-input detail-input" disabled>
+                            <option value="BELUM MENIKAH">BELUM MENIKAH</option>
+                            <option value="MENIKAH">MENIKAH</option>
+                            <option value="JANDA/DUDA">JANDA/DUDA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>HUBUNGAN</label>
+                        <select id="detail-hubungan" class="form-input detail-input" disabled>
+                            <option value="ANAK">ANAK</option>
+                            <option value="IBU">IBU</option>
+                            <option value="BAPAK">BAPAK</option>
+                            <option value="KAKAK">KAKAK</option>
+                            <option value="ADIK">ADIK</option>
+                            <option value="ISTRI">ISTRI</option>
+                            <option value="SUAMI">SUAMI</option>
+                            <option value="INFANT">INFANT</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>PENDIDIKAN</label>
+                        <select id="detail-pendidikan" class="form-input detail-input" disabled>
+                            <option value="TIDAK SEKOLAH">TIDAK SEKOLAH</option>
+                            <option value="SD/MI">SD/MI</option>
+                            <option value="SMP/MTS">SMP/MTS</option>
+                            <option value="SMA/MA">SMA/MA</option>
+                            <option value="D1">D1</option>
+                            <option value="D2">D2</option>
+                            <option value="D3">D3</option>
+                            <option value="D4/S1">D4/S1</option>
+                            <option value="S2">S2</option>
+                            <option value="S3">S3</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>PEKERJAAN</label>
+                        <select id="detail-pekerjaan" class="form-input detail-input" disabled>
+                            <option value="TIDAK BEKERJA">TIDAK BEKERJA</option>
+                            <option value="PEG. SWASTA">PEG. SWASTA</option>
+                            <option value="WIRAUSAHA">WIRAUSAHA</option>
+                            <option value="TNI/POLRI">TNI/POLRI</option>
+                            <option value="PETANI">PETANI</option>
+                            <option value="NELAYAN">NELAYAN</option>
+                            <option value="LAINNYA">LAINNYA</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: ALAMAT LENGKAP -->
+                <div class="detail-section-title" style="margin-top: 1.25rem;">ALAMAT LENGKAP</div>
+                <div class="form-group">
+                    <label>ALAMAT</label>
+                    <textarea id="detail-alamat" class="form-input detail-input auto-caps" rows="2" placeholder="contoh: JL. SOPHIA NO. 12 RT 01/RW 02" readonly></textarea>
+                </div>
+                <div class="detail-grid-2col">
+                    <div class="form-group">
+                        <label>PROVINSI</label>
+                        <select id="detail-provinsi" class="form-input detail-input" disabled onchange="AdminController.onProvinsiChange(this.value)">
+                            <option value="">Pilih Provinsi...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>KAB / KOTA</label>
+                        <select id="detail-kabkota" class="form-input detail-input" disabled>
+                            <option value="">Pilih Kab/Kota...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>KECAMATAN</label>
+                        <input type="text" id="detail-kecamatan" class="form-input detail-input auto-caps" placeholder="contoh: JATIWARNA" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>KELURAHAN</label>
+                        <input type="text" id="detail-kelurahan" class="form-input detail-input auto-caps" placeholder="contoh: PONDOK GEDE" readonly>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: IDENTITAS & DOKUMEN PASPOR -->
+                <div class="detail-section-title" style="margin-top: 1.25rem;">IDENTITAS & DOKUMEN PASPOR</div>
+                <div class="detail-grid-2col">
+                    <div class="form-group">
+                        <label>KEWARGANEGARAAN</label>
+                        <select id="detail-kewarganegaraan" class="form-input detail-input" disabled>
+                            <option value="WNI">WNI</option>
+                            <option value="WNA">WNA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>JENIS IDENTITAS</label>
+                        <select id="detail-jenis-identitas" class="form-input detail-input" disabled>
+                            <option value="NIK">NIK</option>
+                            <option value="KITAS">KITAS</option>
+                            <option value="KITAP">KITAP</option>
+                            <option value="PASPOR">PASPOR</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>NOMOR IDENTITAS (NIK / KTP)</label>
+                    <input type="text" id="detail-nomor-identitas" class="form-input detail-input" placeholder="contoh: 3175012345670001" readonly>
+                </div>
+                <div class="detail-grid-2col">
+                    <div class="form-group">
+                        <label>NOMOR PASSPORT</label>
+                        <input type="text" id="detail-no-passport" class="form-input detail-input auto-caps" placeholder="contoh: C1234567" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>KANTOR IMIGRASI</label>
+                        <input type="text" id="detail-kantor-imigrasi" class="form-input detail-input auto-caps" placeholder="contoh: KANTOR IMIGRASI JAKARTA TIMUR" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>ISSUED DATE</label>
+                        <input type="date" id="detail-issued" class="form-input detail-input" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>EXPIRY DATE</label>
+                        <input type="date" id="detail-expiry" class="form-input detail-input" readonly>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: PAKET & STATUS TRANSAKSI -->
+                <div class="detail-section-title" style="margin-top: 1.25rem;">PAKET & STATUS TRANSAKSI</div>
+                <div class="detail-grid-2col">
+                    <div class="form-group">
+                        <label>PAKET UMRAH</label>
+                        <input type="text" id="detail-paket" class="form-input detail-input auto-caps" placeholder="contoh: UMROH HEMAT AKHIR TAHUN 9D" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>ADMIN MARKETING</label>
+                        <select id="detail-admin-marketing" class="form-input detail-input" disabled>
+                            <option value="LINA">LINA</option>
+                            <option value="TITIN">TITIN</option>
+                            <option value="FARAH">FARAH</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>CHANNEL MARKETING</label>
+                        <select id="detail-channel" class="form-input detail-input" disabled>
+                            <option value="ONLINE">ONLINE</option>
+                            <option value="OFFLINE">OFFLINE</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>SUB CHANNEL</label>
+                        <select id="detail-sub-channel-select" class="form-input detail-input" disabled onchange="AdminController.onSubChannelChange(this.value)">
+                            <option value="FACEBOOK">FACEBOOK</option>
+                            <option value="TIKTOK">TIKTOK</option>
+                            <option value="INSTAGRAM">INSTAGRAM</option>
+                            <option value="SAUDARA">SAUDARA</option>
+                            <option value="UTS">UTS</option>
+                            <option value="BELUM TAHU">BELUM TAHU</option>
+                            <option value="CUSTOM">YANG LAINNYA (Ketik Manual...)</option>
+                        </select>
+                        <input type="text" id="detail-sub-channel-custom" class="form-input detail-input auto-caps" style="display: none; margin-top: 0.4rem;" placeholder="Ketik Sub Channel lainnya..." readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>PERLENGKAPAN</label>
+                        <select id="detail-perlengkapan" class="form-input detail-input" disabled>
+                            <option value="KABIN SET">KABIN SET</option>
+                            <option value="KOPER SET">KOPER SET</option>
+                            <option value="MINIMALIST">MINIMALIST</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>REQUEST KAMAR</label>
+                        <select id="detail-req-kamar" class="form-input detail-input" disabled>
+                            <option value="DOUBLE ROOM">DOUBLE ROOM</option>
+                            <option value="TRIPLE ROOM">TRIPLE ROOM</option>
+                            <option value="QUAD ROOM">QUAD ROOM</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>HARGA PAKET</label>
+                        <input type="text" id="detail-harga" class="form-input detail-input" placeholder="contoh: 28500000" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>TOTAL BAYAR</label>
+                        <input type="text" id="detail-total-bayar" class="form-input detail-input" placeholder="contoh: 28500000" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>STATUS PAYMENT</label>
+                        <select id="detail-statpay" class="form-input detail-input" disabled>
+                            <option value="LUNAS">LUNAS</option>
+                            <option value="DP">DP</option>
+                        </select>
+                    </div>
+                      <div class="form-group">
+                        <label>NOMINAL DP</label>
+                        <input type="text" id="detail-dp" class="form-input detail-input" placeholder="contoh: 5000000" readonly>
+                    </div>
+                </div>
+
+                <!-- SECTION 5: INFORMASI MITRA AGEN -->
+                <div class="detail-section-title" style="margin-top: 1.25rem;">INFORMASI MITRA AGEN</div>
+                <div class="detail-grid-2col">
+                    <div class="form-group">
+                        <label>TRANSAKSI DARI AGEN?</label>
+                        <select id="detail-is-transaksi-agen" class="form-input detail-input" disabled onchange="AdminController.onDetailIsAgenChange(this.value)">
+                            <option value="TIDAK">TIDAK (Transaksi Langsung)</option>
+                            <option value="YA">YA (Melalui Mitra Agen)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>NAMA & ID AGEN</label>
+                        <input type="text" id="detail-nama-agen" class="form-input detail-input auto-caps" placeholder="contoh: FAHMI RAMDHANI (ATRV-001IV25)" readonly>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div style="display: flex; gap: 0.75rem; margin-top: 1.75rem; justify-content: flex-end; flex-wrap: wrap;">
+                    <button type="button" class="btn-outline-danger" id="btn-delete-jamaah" onclick="AdminController.deleteJamaahRecord()">
+                        <i class="fa-solid fa-trash-can"></i> Hapus Transaksi
+                    </button>
+                    <button type="button" id="btn-enable-edit" class="btn btn-outline-gold" onclick="AdminController.enableJamaahEditMode()">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit Data Jamaah
+                    </button>
+                    <button type="submit" id="btn-save-edit" class="btn btn-primary" style="display: none;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                    </button>
+                    <button type="button" class="btn btn-outline-gold" onclick="AdminController.closeModal('modal-detail-jamaah')">Tutup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------
+     MODAL: TAMBAH TRANSAKSI CLOSING BARU (Auto-Generated ID Jamaah v1.9.0)
+     ------------------------------------------------------------------------ -->
+<div id="modal-add-closing" class="modal-overlay" onclick="AdminController.closeModalOnBackdrop('modal-add-closing', event)">
+    <div class="modal-box" style="max-width: 600px; width: 95%;">
+        <div class="modal-header">
+            <h4><i class="fa-solid fa-cart-plus text-gold"></i> Tambah Transaksi Closing Baru</h4>
+            <button class="modal-close-btn" onclick="AdminController.closeModal('modal-add-closing')">&times;</button>
+        </div>
+        <div class="modal-body" style="max-height: 80vh; overflow-y: auto; padding: 1.5rem;">
+            <form onsubmit="AdminController.addNewTransaction(event)">
+                <!-- Auto Generated ID Preview -->
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                        <label style="font-weight: 700; color: #1D1D1B; margin: 0;"><i class="fa-solid fa-barcode text-gold"></i> ID JAMAAH (AUTO-GENERATED)</label>
+                        <span class="role-pill" style="background: #FFF8E7; color: #B8860B; font-size: 0.68rem;">Sistem Otomatis</span>
+                    </div>
+                    <input type="text" id="new-id-jamaah" class="form-input auto-caps" style="background: #FAF8F5; font-weight: 800; color: #B8860B; letter-spacing: 0.5px; border: 1.5px solid #F8BE20;" readonly placeholder="Format: 001/X/18/NOV-24">
+                    <small style="font-size: 0.72rem; color: #6B7280; margin-top: 3px; display: block;">Format otomatis: [Urutan 3-Digit]/[Bulan Order Romawi]/[Tanggal Paket]/[Bulan-Tahun Paket]</small>
+                </div>
+
+                <div class="detail-grid-2col" style="margin-top: 0.75rem;">
+                    <div class="form-group">
+                        <label>TANGGAL ORDER</label>
+                        <input type="date" id="new-tgl-order" class="form-input" required onchange="AdminController.generateNewIdJamaah()">
+                    </div>
+                    <div class="form-group">
+                        <label>TANGGAL PAKET / KEBERANGKATAN</label>
+                        <input type="date" id="new-tgl-paket" class="form-input" required onchange="AdminController.generateNewIdJamaah()">
+                    </div>
+                </div>
+
+                <div class="detail-grid-2col">
+                    <div class="form-group">
+                        <label>NAMA PEMESAN</label>
+                        <input type="text" id="new-nama-pemesan" class="form-input auto-caps" placeholder="contoh: FAJAR MAULANA">
+                    </div>
+                    <div class="form-group">
+                        <label>NAMA JAMAAH</label>
+                        <input type="text" id="new-nama" class="form-input auto-caps" placeholder="contoh: SITI AMINAH" required>
+                    </div>
+                </div>
+
+                <div class="detail-grid-2col">
+                    <div class="form-group">
+                        <label>PAKET UMRAH</label>
+                        <select id="new-paket" class="form-input" required onchange="AdminController.onNewPaketChange(this.value)">
+                            <option value="Umroh Hemat Akhir Tahun 9D">Umroh Hemat Akhir Tahun 9D</option>
+                            <option value="Umroh Nyaman Direct Flight 9D">Umroh Nyaman Direct Flight 9D</option>
+                            <option value="Umroh Awal Ramadhan 9D">Umroh Awal Ramadhan 9D</option>
+                            <option value="Umroh Itikaf Madinah 16D">Umroh Itikaf Madinah 16D</option>
+                            <option value="Umroh Itikaf Makkah 16D">Umroh Itikaf Makkah 16D</option>
+                            <option value="Umroh Plus Turki 12D">Umroh Plus Turki 12D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>ADMIN MARKETING</label>
+                        <select id="new-admin" class="form-input" required>
+                            <option value="LINA">LINA</option>
+                            <option value="TITIN">TITIN</option>
+                            <option value="FARAH">FARAH</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="detail-grid-2col">
+                    <div class="form-group">
+                        <label>TOTAL BAYAR (RP)</label>
+                        <input type="number" id="new-harga" class="form-input" placeholder="contoh: 28500000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>STATUS PEMBAYARAN</label>
+                        <select id="new-statpay" class="form-input">
+                            <option value="LUNAS">LUNAS</option>
+                            <option value="DP">DP / CICILAN</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Jalur Kemitraan Agen -->
+                <div class="detail-grid-2col" style="margin-top: 0.5rem; padding-top: 0.75rem; border-top: 1px dashed #E5E7EB;">
+                    <div class="form-group">
+                        <label>TRANSAKSI DARI MITRA AGEN?</label>
+                        <select id="new-is-agen" class="form-input" onchange="AdminController.onNewIsAgenToggle(this.value)">
+                            <option value="TIDAK">TIDAK (Transaksi Langsung)</option>
+                            <option value="YA">YA (Melalui Mitra Agen)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="new-agen-wrapper" style="display: none;">
+                        <label>PILIH MITRA AGEN</label>
+                        <select id="new-agent-select" class="form-input">
+                            <option value="">-- Pilih Nama Agen --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-outline-gold" onclick="AdminController.closeModal('modal-add-closing')">Batal</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;"><i class="fa-solid fa-floppy-disk"></i> Simpan Transaksi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------
+     MODAL: TAMBAH ARTIKEL / EVENT BARU
+     ------------------------------------------------------------------------ -->
+<!-- ------------------------------------------------------------------------
+     MODAL: TAMBAH ARTIKEL / EVENT BARU (QUILL RICH TEXT EDITOR)
+     ------------------------------------------------------------------------ -->
+<div id="modal-add-article" class="modal-overlay" onclick="AdminController.closeModalOnBackdrop('modal-add-article', event)">
+    <div class="modal-box modal-box-lg">
+        <div class="modal-header">
+            <h4 id="modal-art-title"><i class="fa-solid fa-feather-pointed text-gold"></i> Editor Publikasi Artikel & Event</h4>
+            <button class="modal-close-btn" onclick="AdminController.closeModal('modal-add-article')">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 1.5rem;">
+            <form onsubmit="AdminController.saveArticle(event)">
+                <input type="hidden" id="edit-art-id" value="">
+                <!-- Judul Artikel -->
+                <div class="form-group" style="margin-bottom: 1.2rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Judul Artikel / Publikasi <span style="color:#EF4444;">*</span></label>
+                    <input type="text" id="new-art-title" class="form-input" style="font-size: 1.05rem; font-weight: 600;" placeholder="Contoh: Bimbingan Manasik Umrah Komprehensif Musim 1448 H..." oninput="AdminController.onArticleTitleInput(this.value)" required>
+                </div>
+
+                <!-- Grid Kategori & Penulis -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-weight: 700; color: #1D1D1B;">Kategori Konten <span style="color:#EF4444;">*</span></label>
+                        <select id="new-art-cat" class="form-input" required>
+                            <option value="Edukasi & Tips Umrah">Edukasi & Tips Umrah</option>
+                            <option value="Kegiatan & Kajian Masjid Sophia">Kegiatan & Kajian Masjid Sophia</option>
+                            <option value="Panduan Manasik">Panduan Manasik</option>
+                            <option value="Kabar Santri & CSR">Kabar Santri & CSR</option>
+                            <option value="Berita & Informasi Resmi">Berita & Informasi Resmi</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-weight: 700; color: #1D1D1B;">Penulis / Tim Konten</label>
+                        <select id="new-art-author" class="form-input">
+                            <option value="Tim Media UMAR">Tim Media UMAR</option>
+                            <option value="DKM Masjid Sophia">DKM Masjid Sophia</option>
+                            <option value="Muthawif UMAR">Muthawif UMAR</option>
+                            <option value="Ustaz Subhan Umar">Ustaz Subhan Umar</option>
+                            <option value="Super Admin">Super Admin</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Foto Sampul Utama (Featured Image) -->
+                <div class="form-group" style="margin-bottom: 1.2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <label style="font-weight: 700; color: #1D1D1B; margin-bottom: 0;">Foto Sampul Utama (Featured Image)</label>
+                        <div style="display: flex; gap: 0.4rem;">
+                            <label class="btn btn-outline-gold btn-sm" style="cursor: pointer; font-size: 0.75rem; padding: 0.25rem 0.6rem; display: inline-flex; align-items: center; gap: 0.35rem;">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Foto (Auto WebP)
+                                <input type="file" id="cover-file-input" accept="image/png, image/jpeg, image/webp, image/svg+xml" onchange="AdminController.handleCoverUpload(this)" style="display: none;">
+                            </label>
+                            <button type="button" class="btn btn-outline-gold btn-sm" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; display: inline-flex; align-items: center; gap: 0.35rem;" onclick="AdminController.openMediaPicker('new-art-image')">
+                                <i class="fa-solid fa-images"></i> Dari Galeri
+                            </button>
+                        </div>
+                    </div>
+
+                    <input type="text" id="new-art-image" class="form-input" value="images/pictures/hero-images/masjid-sophia.webp" placeholder="https://... atau path URL gambar" oninput="AdminController.previewFeaturedImage(this.value)">
+                    
+                    <div id="cover-upload-status" style="display: none; font-size: 0.75rem; color: #B8860B; margin-top: 0.3rem; font-weight: 600;">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Mengompresi ke WebP & Mengunggah...
+                    </div>
+
+                    <div style="margin-top: 0.4rem;">
+                        <span style="font-size: 0.75rem; color: #6B7280; margin-right: 0.4rem;">Pilihan Cepat:</span>
+                        <span class="image-preset-pill" onclick="AdminController.setPresetImage('images/pictures/hero-images/masjid-sophia.webp')"><i class="fa-solid fa-mosque"></i> Masjid Sophia</span>
+                        <span class="image-preset-pill" onclick="AdminController.setPresetImage('images/pictures/gallery-feed/feed1.webp')"><i class="fa-solid fa-kaaba"></i> Baitullah Ka'bah</span>
+                        <span class="image-preset-pill" onclick="AdminController.setPresetImage('images/pictures/hero-images/hero-1.webp')"><i class="fa-solid fa-users"></i> Jamaah Umrah</span>
+                    </div>
+
+                    <!-- Layout Adjustment Toolbar -->
+                    <div style="margin-top: 0.6rem; display: flex; gap: 0.5rem; flex-wrap: wrap; background: #F9FAFB; padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid #E5E7EB; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: #4B5563;">
+                            <i class="fa-solid fa-crop-simple text-gold"></i>
+                            <label style="font-weight: 600; margin: 0;">Tampilan:</label>
+                            <select id="art-cover-fit" class="form-input" style="padding: 0.2rem 0.4rem; font-size: 0.75rem; width: auto; height: auto;" onchange="AdminController.updateCoverAdjustment()">
+                                <option value="cover" selected>Cover (Isi Penuh)</option>
+                                <option value="contain">Contain (Tampil Utuh)</option>
+                                <option value="fill">Fill (Stretch)</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: #4B5563;">
+                            <i class="fa-solid fa-arrows-up-down-left-right text-gold"></i>
+                            <label style="font-weight: 600; margin: 0;">Fokus Posisi:</label>
+                            <select id="art-cover-pos" class="form-input" style="padding: 0.2rem 0.4rem; font-size: 0.75rem; width: auto; height: auto;" onchange="AdminController.updateCoverAdjustment()">
+                                <option value="center center" selected>Tengah (Center)</option>
+                                <option value="center top">Atas (Top)</option>
+                                <option value="center bottom">Bawah (Bottom)</option>
+                                <option value="left center">Kiri (Left)</option>
+                                <option value="right center">Kanan (Right)</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: #4B5563;">
+                            <label style="font-weight: 600; margin: 0;">Tinggi Box:</label>
+                            <select id="art-cover-height" class="form-input" style="padding: 0.2rem 0.4rem; font-size: 0.75rem; width: auto; height: auto;" onchange="AdminController.updateCoverAdjustment()">
+                                <option value="140px" selected>140px (Standar)</option>
+                                <option value="200px">200px (Besar)</option>
+                                <option value="260px">260px (Banner)</option>
+                            </select>
+                        </div>
+
+                        <button type="button" class="btn btn-outline-gold btn-sm" style="font-size: 0.75rem; padding: 0.2rem 0.6rem; margin-left: auto;" onclick="AdminController.openCoverFullPreview()">
+                            <i class="fa-solid fa-expand"></i> Zoom Full Popup
+                        </button>
+                    </div>
+
+                    <!-- Interactive Preview Wrapper -->
+                    <div id="featured-image-preview-wrapper" onclick="AdminController.openCoverFullPreview()" title="Klik untuk memperbesar / melihat foto asli secara penuh" style="margin-top: 0.5rem; height: 140px; border-radius: 8px; overflow: hidden; background: #1F2937; position: relative; border: 1px solid #D1D5DB; cursor: pointer;">
+                        <img id="new-art-image-preview" src="images/pictures/hero-images/masjid-sophia.webp" alt="Preview Sampul" style="width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block;">
+                        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; color: #FFF; font-weight: 600; font-size: 0.85rem;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                            <span style="background: rgba(0,0,0,0.7); padding: 6px 12px; border-radius: 20px;"><i class="fa-solid fa-magnifying-glass-plus text-gold"></i> Klik untuk Zoom Full Popup</span>
+                        </div>
+                        <span style="position: absolute; bottom: 6px; right: 8px; background: rgba(0,0,0,0.75); color: #FFF; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; pointer-events: none;">
+                            <i class="fa-solid fa-eye text-gold"></i> Preview Foto Sampul
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Ringkasan Singkat (Excerpt) -->
+                <div class="form-group" style="margin-bottom: 1.2rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Ringkasan Singkat (Excerpt Preview Halaman Depan) <span style="color:#EF4444;">*</span></label>
+                    <textarea id="new-art-excerpt" class="form-input" rows="2" placeholder="Tuliskan 1-2 kalimat ringkasan yang menarik untuk cuplikan kartu artikel..." oninput="AdminController.onArticleExcerptInput(this.value)" required></textarea>
+                </div>
+
+                <!-- Quill.js Rich Text Editor -->
+                <div class="form-group" style="margin-bottom: 1.2rem;">
+                    <label style="font-weight: 700; color: #1D1D1B; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Isi Lengkap Artikel / Berita <span style="color:#EF4444;">*</span></span>
+                        <span style="font-size: 0.75rem; color: #6B7280; font-weight: normal;"><i class="fa-solid fa-wand-magic-sparkles text-gold"></i> Rich Text (Format, Quote, Link & Gambar)</span>
+                    </label>
+                    <div id="quill-editor-container" style="height: 250px;"></div>
+                </div>
+
+                <!-- ===================================================================
+                     SECTION SEO & MESIN PENCARI (GOOGLE & WHATSAPP PREVIEW)
+                     =================================================================== -->
+                <div class="seo-card-container" style="background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 12px; padding: 1.25rem; margin-top: 1.5rem; margin-bottom: 1.2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #E5E7EB; padding-bottom: 0.75rem;">
+                        <h4 style="margin: 0; font-size: 0.95rem; color: #1D1D1B; display: flex; align-items: center; gap: 0.4rem;">
+                            <i class="fa-solid fa-magnifying-glass-chart text-gold"></i> Pengaturan SEO & Mesin Pencari (Google & WhatsApp)
+                        </h4>
+                        <span style="font-size: 0.75rem; color: #047857; font-weight: 700; background: #ECFDF5; padding: 2px 8px; border-radius: 4px;">
+                            ✨ Auto-Sync Aktif
+                        </span>
+                    </div>
+
+                    <!-- Meta Title -->
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                            <label style="font-weight: 700; font-size: 0.85rem; color: #1D1D1B; margin-bottom: 0;">Meta Title (Judul SEO untuk Google)</label>
+                            <span id="seo-title-count" style="font-size: 0.72rem; color: #047857; font-weight: 600;">0 / 60 Karakter</span>
+                        </div>
+                        <input type="text" id="seo-meta-title" class="form-input" style="font-size: 0.9rem;" placeholder="Judul yang menarik untuk hasil pencarian Google..." oninput="AdminController.onSeoTitleInput()">
+                    </div>
+
+                    <!-- Meta Description -->
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                            <label style="font-weight: 700; font-size: 0.85rem; color: #1D1D1B; margin-bottom: 0;">Meta Description (Deskripsi Cuplikan)</label>
+                            <span id="seo-desc-count" style="font-size: 0.72rem; color: #047857; font-weight: 600;">0 / 160 Karakter</span>
+                        </div>
+                        <textarea id="seo-meta-desc" class="form-input" rows="2" style="font-size: 0.85rem;" placeholder="Deskripsi ringkas yang muncul di bawah judul Google & link preview WhatsApp..." oninput="AdminController.onSeoDescInput()"></textarea>
+                    </div>
+
+                    <!-- Meta Keywords -->
+                    <div class="form-group" style="margin-bottom: 1.25rem;">
+                        <label style="font-weight: 700; font-size: 0.85rem; color: #1D1D1B; margin-bottom: 0.35rem;">Kata Kunci / Tags (Pisahkan dengan koma)</label>
+                        <input type="text" id="seo-meta-keywords" class="form-input" style="font-size: 0.85rem;" placeholder="Contoh: umroh 2026, panduan manasik, travel umroh jakarta, masjid sophia">
+                    </div>
+
+                    <!-- Live Google Search Mockup Snippet -->
+                    <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #E5E7EB;">
+                        <div style="font-size: 0.75rem; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.6rem;">
+                            <i class="fa-brands fa-google" style="color: #4285F4;"></i> Live Preview Hasil Pencarian Google
+                        </div>
+                        <div id="google-search-mockup" style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px; padding: 1rem; font-family: Arial, sans-serif;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 4px;">
+                                <div style="width: 18px; height: 18px; border-radius: 50%; background: #1D1D1B; display: flex; align-items: center; justify-content: center; color: #F8BE20; font-size: 0.6rem; font-weight: 800;">U</div>
+                                <div style="font-size: 0.75rem; color: #202124; line-height: 1.2;">
+                                    <div style="font-weight: 600;">UMAR Travel</div>
+                                    <div id="mockup-google-url" style="color: #4D5156; font-size: 0.7rem;">https://umrahmarifatullah.com › artikel › ...</div>
+                                </div>
+                            </div>
+                            <div id="mockup-google-title" style="font-size: 1.05rem; color: #1a0dab; font-weight: 500; line-height: 1.3; margin: 4px 0 2px; cursor: pointer;">
+                                Judul Artikel untuk Google Search Preview
+                            </div>
+                            <div id="mockup-google-desc" style="font-size: 0.8rem; color: #4D5156; line-height: 1.4;">
+                                Ringkasan deskripsi artikel yang menarik akan muncul di sini sebagai pratinjau mesin pencari Google.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status & Action Buttons -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #E5E7EB; flex-wrap: wrap; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 1.2rem;">
+                        <label style="font-weight: 700; color: #1D1D1B; font-size: 0.85rem; margin-bottom: 0;">Status Publikasi:</label>
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; cursor: pointer;">
+                            <input type="radio" name="art-status" value="Published" checked>
+                            <span style="font-weight: 600; color: #047857;"><i class="fa-solid fa-globe"></i> Publikasikan Sekarang</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; cursor: pointer;">
+                            <input type="radio" name="art-status" value="Draft">
+                            <span style="color: #6B7280;"><i class="fa-solid fa-file-lines"></i> Simpan Draft</span>
+                        </label>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button type="button" class="btn btn-outline-gold" onclick="AdminController.closeModal('modal-add-article')">Batal</button>
+                        <button type="submit" id="btn-save-art" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Simpan & Publikasikan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------
+     MODAL: PEMILIH DARI GALERI MEDIA (MEDIA PICKER)
+     ------------------------------------------------------------------------ -->
+<div id="modal-media-picker" class="modal-overlay" onclick="AdminController.closeModalOnBackdrop('modal-media-picker', event)">
+    <div class="modal-box modal-box-lg" style="max-height: 85vh;">
+        <div class="modal-header">
+            <h4><i class="fa-solid fa-images text-gold"></i> Pilih Gambar dari Galeri Media</h4>
+            <button class="modal-close-btn" onclick="AdminController.closeModal('modal-media-picker')">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                <input type="text" id="picker-search-input" class="form-input" placeholder="🔍 Cari file gambar..." style="max-width: 320px; font-size: 0.85rem;" onkeyup="AdminController.filterMediaPicker()">
+                
+                <label class="btn btn-primary btn-sm" style="cursor: pointer; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Baru (Auto WebP)
+                    <input type="file" accept="image/png, image/jpeg, image/webp, image/svg+xml" onchange="AdminController.handlePickerUpload(this)" style="display: none;">
+                </label>
+            </div>
+
+            <div id="picker-upload-status" style="display: none; background: #FFF8E7; border: 1px dashed #F8BE20; border-radius: 8px; padding: 0.5rem 0.75rem; margin-bottom: 1rem; font-size: 0.8rem; color: #B8860B;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Mengompresi ke WebP dan mengunggah ke Supabase...
+            </div>
+
+            <div id="media-picker-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; max-height: 50vh; overflow-y: auto;">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+   MODAL: POPUP LIGHTBOX FULL PREVIEW FOTO SAMPUL
+   ========================================================================= -->
+<div id="modal-cover-preview" class="modal-overlay" onclick="AdminController.closeModalOnBackdrop('modal-cover-preview', event)" style="z-index: 12000;">
+    <div class="modal-box modal-box-lg" style="background: #111827; border: 1px solid rgba(248, 190, 32, 0.4); border-radius: 16px; max-width: 900px; width: 92%; overflow: hidden; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8); position: relative; display: flex; flex-direction: column;">
+        <!-- Header -->
+        <div class="modal-header" style="background: #1F2937; border-bottom: 1px solid #374151; display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem;">
+            <div>
+                <h4 style="margin: 0; color: #FFFFFF; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-image text-gold"></i> Pratinjau Penuh Foto Sampul
+                </h4>
+                <p id="cover-modal-dimensions" style="margin: 0; font-size: 0.75rem; color: #9CA3AF;">Dimensi Asli: Memeriksa...</p>
+            </div>
+            <button type="button" class="modal-close" onclick="AdminController.closeCoverFullPreview()" style="background: transparent; border: none; color: #D1D5DB; font-size: 1.4rem; cursor: pointer; line-height: 1; padding: 0.25rem 0.5rem; border-radius: 6px;" title="Tutup">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Body Image Display -->
+        <div class="modal-body" style="padding: 1.5rem; display: flex; align-items: center; justify-content: center; overflow: auto; background: #0B0F19; min-height: 320px; max-height: 65vh;">
+            <img id="cover-modal-img" src="" alt="Full Preview" style="max-width: 100%; max-height: 60vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+        </div>
+
+        <!-- Footer -->
+        <div style="padding: 0.75rem 1.25rem; background: #1F2937; border-top: 1px solid #374151; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+            <span id="cover-modal-url" style="font-size: 0.75rem; color: #9CA3AF; word-break: break-all; max-width: 65%;"></span>
+            <div style="display: flex; gap: 0.5rem;">
+                <a id="cover-modal-open-tab" href="#" target="_blank" class="btn btn-outline-gold btn-sm" style="color: #FFF; font-size: 0.75rem;">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Tab Baru
+                </a>
+                <button type="button" class="btn btn-primary btn-sm" onclick="AdminController.closeCoverFullPreview()" style="font-size: 0.75rem;">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+   MODAL 1: TAMBAH USER BARU (SUPERADMIN ONLY)
+   ========================================================================= -->
+<div id="modal-add-user" class="modal-overlay" onclick="AdminController.closeModalOnBackdrop('modal-add-user', event)">
+    <div class="modal-box" style="max-width: 540px; width: 95%;">
+        <div class="modal-header">
+            <div>
+                <h4><i class="fa-solid fa-user-plus text-gold"></i> Tambah Pengguna Baru</h4>
+                <p style="font-size: 0.8rem; color: #6B7280; margin: 0;">Buat kredensial staf & atur hak akses role di portal admin UMAR.</p>
+            </div>
+            <button type="button" class="modal-close" onclick="AdminController.closeModal('modal-add-user')">&times;</button>
+        </div>
+
+        <form id="form-add-user" onsubmit="AdminController.saveNewUser(event)">
+            <div class="modal-body" style="padding: 1.5rem;">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Nama Lengkap Pengguna <span style="color:#EF4444;">*</span></label>
+                    <input type="text" id="new-user-fullname" class="form-input" placeholder="Contoh: Ahmad Subhan Pratama" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Alamat Email Login <span style="color:#EF4444;">*</span></label>
+                    <input type="email" id="new-user-email" class="form-input" placeholder="nama@umar.com" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Nomor WhatsApp / HP</label>
+                    <input type="text" id="new-user-phone" class="form-input" placeholder="+628123456789">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Role & Hak Akses Modul <span style="color:#EF4444;">*</span></label>
+                    <select id="new-user-role" class="form-input" required>
+                        <option value="sales_cs" selected>SALES_CS (Dashboard Transaksi, Closing & CRM Agen)</option>
+                        <option value="umar_content">UMAR_CONTENT (CMS Berita, Artikel & Galeri Media UMAR)</option>
+                        <option value="masjid_content">MASJID_CONTENT (CMS Berita & Event Masjid Sophia)</option>
+                        <option value="superadmin">SUPERADMIN (Akses Penuh ke Seluruh Sistem & Manajemen User)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Password Awal <span style="color:#EF4444;">*</span></label>
+                    <div style="position: relative;">
+                        <input type="password" id="new-user-password" class="form-input" placeholder="Minimal 6 karakter" required minlength="6">
+                        <button type="button" onclick="AdminController.togglePasswordVisibility('new-user-password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6B7280; cursor: pointer;">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0.5rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Status Akun</label>
+                    <div style="display: flex; gap: 1rem; margin-top: 0.35rem;">
+                        <label style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                            <input type="radio" name="new-user-status" value="active" checked> <span style="color: #059669; font-weight: 600;">Aktif</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                            <input type="radio" name="new-user-status" value="inactive"> <span style="color: #6B7280; font-weight: 600;">Nonaktif (Blokir Akses)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="padding: 1rem 1.5rem; background: #F9FAFB; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 0.5rem;">
+                <button type="button" class="btn btn-secondary" onclick="AdminController.closeModal('modal-add-user')">Batal</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-user-check"></i> Simpan & Buat Akun</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================================
+   MODAL 2: EDIT DATA PENGGUNA (SUPERADMIN ONLY)
+   ========================================================================= -->
+<div id="modal-edit-user" class="modal-overlay" onclick="AdminController.closeModalOnBackdrop('modal-edit-user', event)">
+    <div class="modal-box" style="max-width: 540px; width: 95%;">
+        <div class="modal-header">
+            <div>
+                <h4><i class="fa-solid fa-user-pen text-gold"></i> Edit Data Pengguna</h4>
+                <p style="font-size: 0.8rem; color: #6B7280; margin: 0;">Perbarui informasi akun, nomor kontak, role hak akses, dan status.</p>
+            </div>
+            <button type="button" class="modal-close" onclick="AdminController.closeModal('modal-edit-user')">&times;</button>
+        </div>
+
+        <form id="form-edit-user" onsubmit="AdminController.saveEditUser(event)">
+            <input type="hidden" id="edit-user-id">
+            <div class="modal-body" style="padding: 1.5rem;">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Nama Lengkap Pengguna <span style="color:#EF4444;">*</span></label>
+                    <input type="text" id="edit-user-fullname" class="form-input" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Alamat Email Login <span style="color:#EF4444;">*</span></label>
+                    <input type="email" id="edit-user-email" class="form-input" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Nomor WhatsApp / HP</label>
+                    <input type="text" id="edit-user-phone" class="form-input">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Role & Hak Akses Modul <span style="color:#EF4444;">*</span></label>
+                    <select id="edit-user-role" class="form-input" required>
+                        <option value="sales_cs">SALES_CS (Dashboard Transaksi, Closing & CRM Agen)</option>
+                        <option value="umar_content">UMAR_CONTENT (CMS Berita, Artikel & Galeri Media UMAR)</option>
+                        <option value="masjid_content">MASJID_CONTENT (CMS Berita & Event Masjid Sophia)</option>
+                        <option value="superadmin">SUPERADMIN (Akses Penuh ke Seluruh Sistem & Manajemen User)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0.5rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Status Akun</label>
+                    <div style="display: flex; gap: 1rem; margin-top: 0.35rem;">
+                        <label style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                            <input type="radio" name="edit-user-status" value="active" id="edit-status-active"> <span style="color: #059669; font-weight: 600;">Aktif</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                            <input type="radio" name="edit-user-status" value="inactive" id="edit-status-inactive"> <span style="color: #6B7280; font-weight: 600;">Nonaktif (Blokir Akses)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="padding: 1rem 1.5rem; background: #F9FAFB; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 0.5rem;">
+                <button type="button" class="btn btn-secondary" onclick="AdminController.closeModal('modal-edit-user')">Batal</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================================
+   MODAL 3: RESET / GANTI PASSWORD USER (SUPERADMIN ONLY)
+   ========================================================================= -->
+<div id="modal-reset-user-password" class="modal-overlay" onclick="AdminController.closeModalOnBackdrop('modal-reset-user-password', event)">
+    <div class="modal-box" style="max-width: 480px; width: 95%;">
+        <div class="modal-header">
+            <div>
+                <h4><i class="fa-solid fa-key text-gold"></i> Reset Password Pengguna</h4>
+                <p style="font-size: 0.8rem; color: #6B7280; margin: 0;">Setel kata sandi baru untuk pengguna.</p>
+            </div>
+            <button type="button" class="modal-close" onclick="AdminController.closeModal('modal-reset-user-password')">&times;</button>
+        </div>
+
+        <form id="form-reset-password" onsubmit="AdminController.saveResetPassword(event)">
+            <input type="hidden" id="reset-user-id">
+            <div class="modal-body" style="padding: 1.5rem;">
+                <div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 0.75rem; border-radius: 8px; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.8rem; color: #92400E;">Target Pengguna:</div>
+                    <div id="reset-target-user-info" style="font-weight: 700; color: #78350F; font-size: 0.95rem;">-</div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Password Baru <span style="color:#EF4444;">*</span></label>
+                    <div style="position: relative;">
+                        <input type="password" id="reset-new-password" class="form-input" placeholder="Minimal 6 karakter" required minlength="6">
+                        <button type="button" onclick="AdminController.togglePasswordVisibility('reset-new-password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6B7280; cursor: pointer;">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end;">
+                    <button type="button" class="btn btn-outline-gold btn-sm" onclick="AdminController.generateRandomPasswordForReset()" style="font-size: 0.75rem;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Password Kuat
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="padding: 1rem 1.5rem; background: #F9FAFB; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 0.5rem;">
+                <button type="button" class="btn btn-secondary" onclick="AdminController.closeModal('modal-reset-user-password')">Batal</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-shield-check"></i> Simpan Password Baru</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================================
+   MODAL 4: PROFIL SAYA (PENGATURAN PROFIL & AVATAR WEBP - ACCESSIBLE ALL ROLES)
+   ========================================================================= -->
+<div id="modal-my-profile" class="modal-overlay" onclick="AdminController.closeModalOnBackdrop('modal-my-profile', event)">
+    <div class="modal-box" style="max-width: 580px; width: 95%;">
+        <div class="modal-header">
+            <div>
+                <h4><i class="fa-solid fa-user-circle text-gold"></i> Pengaturan Profil Saya</h4>
+                <p style="font-size: 0.8rem; color: #6B7280; margin: 0;">Kelola foto avatar, nama, nomor WhatsApp, dan ganti kata sandi pribadi Anda.</p>
+            </div>
+            <button type="button" class="modal-close" onclick="AdminController.closeModal('modal-my-profile')">&times;</button>
+        </div>
+
+        <form id="form-my-profile" onsubmit="AdminController.saveMyProfile(event)">
+            <div class="modal-body" style="padding: 1.5rem;">
+                <!-- Avatar Upload Section with Live Canvas WebP Compression -->
+                <div style="display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.5rem; background: #F9FAFB; padding: 1rem; border-radius: 12px; border: 1px solid #E5E7EB;">
+                    <div style="position: relative; width: 80px; height: 80px; flex-shrink: 0;">
+                        <img id="my-profile-avatar-preview" src="images/logo/logo-umarNsupport/favicon-umar.svg" alt="Avatar" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #F8BE20; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <label for="avatar-file-input" style="position: absolute; bottom: 0; right: 0; background: #1D1D1B; color: #F8BE20; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #FFF; font-size: 0.75rem;" title="Upload Avatar Baru">
+                            <i class="fa-solid fa-camera"></i>
+                        </label>
+                        <input type="file" id="avatar-file-input" accept="image/png, image/jpeg, image/webp" onchange="AdminController.handleAvatarUpload(this)" style="display: none;">
+                    </div>
+
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <h5 id="my-profile-name-badge" style="margin: 0; font-size: 1rem; color: #1D1D1B;">User Name</h5>
+                            <span id="my-profile-role-badge" class="role-pill">ROLE</span>
+                        </div>
+                        <p style="font-size: 0.75rem; color: #6B7280; margin: 0.25rem 0 0;">
+                            <i class="fa-solid fa-compress text-gold"></i> Auto-Resize 400x400 & WebP Converter (Hemat Kuota Supabase).
+                        </p>
+                        <div id="avatar-upload-status" style="display: none; font-size: 0.75rem; color: #B8860B; font-weight: 600; margin-top: 0.25rem;">
+                            <i class="fa-solid fa-spinner fa-spin"></i> Mengompresi & Mengunggah Avatar...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Nama Lengkap <span style="color:#EF4444;">*</span></label>
+                    <input type="text" id="my-profile-fullname" class="form-input" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Alamat Email (Login)</label>
+                    <input type="email" id="my-profile-email" class="form-input" disabled style="background: #F3F4F6; cursor: not-allowed;">
+                    <span style="font-size: 0.72rem; color: #9CA3AF;">Email login diatur oleh Super Admin.</span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                    <label style="font-weight: 700; color: #1D1D1B;">Nomor WhatsApp / HP</label>
+                    <input type="text" id="my-profile-phone" class="form-input" placeholder="+628123456789">
+                </div>
+
+                <!-- Section: Ganti Password Pribadi -->
+                <div style="border-top: 1px dashed #D1D5DB; padding-top: 1rem; margin-top: 1rem;">
+                    <div style="font-weight: 700; color: #1D1D1B; font-size: 0.9rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+                        <i class="fa-solid fa-lock text-gold"></i> Ganti Kata Sandi Pribadi (Opsional)
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.75rem;">
+                        <label style="font-size: 0.8rem; font-weight: 600; color: #4B5563;">Password Saat Ini</label>
+                        <input type="password" id="my-profile-current-pass" class="form-input" placeholder="Masukkan password lama Anda">
+                    </div>
+
+                    <div class="grid-2-cols" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <div class="form-group">
+                            <label style="font-size: 0.8rem; font-weight: 600; color: #4B5563;">Password Baru</label>
+                            <input type="password" id="my-profile-new-pass" class="form-input" placeholder="Min. 6 karakter" minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size: 0.8rem; font-weight: 600; color: #4B5563;">Konfirmasi Password Baru</label>
+                            <input type="password" id="my-profile-confirm-pass" class="form-input" placeholder="Ulangi password baru">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="padding: 1rem 1.5rem; background: #F9FAFB; border-top: 1px solid #E5E7EB; display: flex; justify-content: flex-end; gap: 0.5rem;">
+                <button type="button" class="btn btn-secondary" onclick="AdminController.closeModal('modal-my-profile')">Tutup</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Simpan Profil Saya</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Core System Scripts -->
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth-guard.js"></script>
+<script src="js/admin.js"></script>
+
+<script>
+    // Handle Page Login Submit
+    async function handleLoginSubmit(e) {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const pass = document.getElementById('login-password').value;
+
+        const res = await AuthGuard.login(email, pass, true);
+        if (res.success) {
+            checkAuthAndRender();
+        } else {
+            alert(res.message);
+        }
+    }
+
+    function fillDemo(email, pass) {
+        document.getElementById('login-email').value = email;
+        document.getElementById('login-password').value = pass;
+    }
+
+    // Initial Authentication & Role Authorization Check
+    function checkAuthAndRender() {
+        const user = AuthGuard.getUserSession();
+        const loginOverlay = document.getElementById('login-overlay');
+        const adminApp = document.getElementById('admin-app');
+
+        if (!user) {
+            loginOverlay.style.display = 'flex';
+            adminApp.style.display = 'none';
+            return;
+        }
+
+        loginOverlay.style.display = 'none';
+        adminApp.style.display = 'flex';
+
+        // Set User Badge
+        const nameEl = document.getElementById('user-name-txt');
+        if (nameEl) nameEl.innerText = user.name || user.full_name || 'Admin';
+
+        const roleEl = document.getElementById('user-role-badge');
+        if (roleEl) roleEl.innerText = (user.role || 'USER').toUpperCase();
+
+        const avatarEl = document.getElementById('user-avatar-img');
+        if (avatarEl && (user.avatar || user.avatar_url)) {
+            avatarEl.src = user.avatar_url || user.avatar;
+        }
+
+        // Apply RBAC Tab Restrictions
+        const navUsers = document.getElementById('nav-modul-users');
+        const navSales = document.getElementById('nav-modul-sales');
+        const navAgen = document.getElementById('nav-modul-agen');
+        const navCms = document.getElementById('nav-modul-cms');
+        const navGallery = document.getElementById('nav-modul-gallery');
+
+        if (user.role === 'superadmin') {
+            if (navUsers) navUsers.style.display = 'flex';
+            if (navSales) navSales.style.display = 'flex';
+            if (navAgen) navAgen.style.display = 'flex';
+            if (navCms) navCms.style.display = 'flex';
+            if (navGallery) navGallery.style.display = 'flex';
+            switchTab('modul-sales');
+        } else if (user.role === 'sales_cs') {
+            if (navUsers) navUsers.style.display = 'none';
+            if (navCms) navCms.style.display = 'none';
+            if (navGallery) navGallery.style.display = 'none';
+            if (navSales) navSales.style.display = 'flex';
+            if (navAgen) navAgen.style.display = 'flex';
+            switchTab('modul-sales');
+        } else if (user.role === 'umar_content' || user.role === 'masjid_content') {
+            if (navUsers) navUsers.style.display = 'none';
+            if (navSales) navSales.style.display = 'none';
+            if (navAgen) navAgen.style.display = 'none';
+            if (navCms) navCms.style.display = 'flex';
+            if (navGallery) navGallery.style.display = 'flex';
+            switchTab('modul-cms');
+        } else {
+            if (navUsers) navUsers.style.display = 'none';
+            switchTab('modul-sales');
+        }
+
+        // Load Closings Data & CMS Data
+        AdminController.loadClosingsData();
+        AdminController.renderArticlesTable();
+    }
+
+    // Switch Nav Tabs
+    function switchTab(tabId) {
+        const user = AuthGuard.getUserSession();
+        if (tabId === 'modul-users' && (!user || user.role !== 'superadmin')) {
+            alert('🚫 Akses Ditolak: Modul Manajemen Pengguna hanya dapat diakses oleh Super Admin.');
+            return;
+        }
+
+        document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+        document.querySelectorAll('section[id^="tab-modul"]').forEach(sec => sec.style.display = 'none');
+
+        const targetSec = document.getElementById(`tab-${tabId}`);
+        if (targetSec) targetSec.style.display = 'block';
+
+        if (tabId === 'modul-sales') {
+            document.getElementById('nav-modul-sales')?.classList.add('active');
+            document.getElementById('page-title').innerText = 'Dashboard Transaksi & Pencapaian Closing';
+            if (window.AdminController && window.AdminController.invalidateMapSize) {
+                setTimeout(() => window.AdminController.invalidateMapSize('sales'), 150);
+            }
+        } else if (tabId === 'modul-agen') {
+            document.getElementById('nav-modul-agen')?.classList.add('active');
+            document.getElementById('page-title').innerText = 'Dashboard Transaksi & Performa Mitra Agen';
+            if (window.AdminController && window.AdminController.renderAgenDashboard) {
+                window.AdminController.renderAgenDashboard();
+            }
+            if (window.AdminController && window.AdminController.invalidateMapSize) {
+                setTimeout(() => window.AdminController.invalidateMapSize('agen'), 150);
+            }
+        } else if (tabId === 'modul-cms') {
+            document.getElementById('nav-modul-cms')?.classList.add('active');
+            document.getElementById('page-title').innerText = 'CMS Berita, Artikel & Event';
+        } else if (tabId === 'modul-gallery') {
+            document.getElementById('nav-modul-gallery')?.classList.add('active');
+            document.getElementById('page-title').innerText = 'Galeri Media & Konten (Penyimpanan WebP)';
+            if (window.AdminController && window.AdminController.renderMediaGallery) {
+                window.AdminController.renderMediaGallery();
+            }
+        } else if (tabId === 'modul-users') {
+            document.getElementById('nav-modul-users')?.classList.add('active');
+            document.getElementById('page-title').innerText = 'Manajemen Hak Akses Tim & Pengguna';
+            if (window.AdminController && window.AdminController.renderUsersTable) {
+                window.AdminController.renderUsersTable();
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        checkAuthAndRender();
+    });
+</script>
+
+</body>
+</html>

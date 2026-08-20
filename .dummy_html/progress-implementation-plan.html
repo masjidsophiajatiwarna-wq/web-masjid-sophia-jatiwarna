@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Dashboard & Gantt Chart - UMAR Travel Web Project</title>
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-gold: #F8BE20;
+            --dark-gold: #B8860B;
+            --black-gold: #1D1D1B;
+            --cream-sand: #F4F1EA;
+            --white: #FFFFFF;
+            --gray-light: #F8F9FA;
+            --gray-border: #E2E8F0;
+            --gray-text: #64748B;
+            --green-success: #10B981;
+            --blue-info: #3B82F6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream-sand);
+            color: var(--black-gold);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .dashboard-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .header-card {
+            background: var(--black-gold);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(29,29,27,0.15);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-left: 6px solid var(--primary-gold);
+        }
+
+        .header-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            margin-bottom: 0.25rem;
+        }
+
+        .header-title p {
+            color: #D1D5DB;
+            font-size: 0.95rem;
+        }
+
+        .badge-status {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--green-success);
+            color: var(--green-success);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grid-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--gray-border);
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: var(--gray-text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--black-gold);
+        }
+
+        .progress-bar-bg {
+            background: #E5E7EB;
+            height: 10px;
+            border-radius: 10px;
+            margin-top: 0.75rem;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--primary-gold), var(--green-success));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+
+        .section-card {
+            background: var(--white);
+            padding: 1.75rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid var(--gray-border);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--cream-sand);
+        }
+
+        .section-title-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--black-gold);
+        }
+
+        .section-title-left i {
+            color: var(--dark-gold);
+        }
+
+        .gantt-scroll-container {
+            overflow-x: auto;
+            width: 100%;
+            border: 1px solid var(--gray-border);
+            border-radius: 10px;
+        }
+
+        .gantt-grid-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        .gantt-grid-table th {
+            background-color: var(--black-gold);
+            color: var(--white);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .gantt-grid-table th.col-name {
+            width: 380px;
+            text-align: left;
+            padding-left: 1rem;
+        }
+
+        .gantt-grid-table th.col-date {
+            width: 110px;
+        }
+
+        .gantt-grid-table th.col-status {
+            width: 95px;
+        }
+
+        .gantt-grid-table th.col-day {
+            width: 55px;
+        }
+
+        .gantt-grid-table td {
+            padding: 0.65rem 0.5rem;
+            border-bottom: 1px solid #F1F5F9;
+            border-right: 1px solid #F1F5F9;
+            font-size: 0.85rem;
+            vertical-align: middle;
+        }
+
+        .gantt-grid-table td.cell-name {
+            font-weight: 600;
+            padding-left: 1rem;
+            color: var(--black-gold);
+        }
+
+        .gantt-grid-table td.cell-center {
+            text-align: center;
+        }
+
+        .phase-row td {
+            background-color: var(--cream-sand) !important;
+            font-weight: 700;
+            color: var(--black-gold);
+            font-size: 0.9rem;
+            padding: 0.65rem 1rem;
+            border-right: none !important;
+        }
+
+        .gantt-bar-cell {
+            position: relative;
+            padding: 0 4px !important;
+        }
+
+        .bar-pill {
+            height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--white);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 4px;
+        }
+
+        .bar-pill.done {
+            background: linear-gradient(90deg, #10B981, #059669);
+        }
+
+        .tag-status {
+            font-size: 0.72rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .tag-status.done {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--green-success);
+        }
+
+        .task-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 1.1rem;
+            border-radius: 10px;
+            background: var(--gray-light);
+            border: 1px solid var(--gray-border);
+        }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .task-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .task-icon.done {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--green-success);
+        }
+
+        .task-name {
+            font-weight: 600;
+            font-size: 0.92rem;
+        }
+
+        .task-desc {
+            font-size: 0.82rem;
+            color: var(--gray-text);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--gray-text);
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="header-card">
+        <div class="header-title">
+            <h1><i class="fa-solid fa-kaaba"></i> UMAR Travel - Implementation Progress</h1>
+            <p>PT Maktap Shiyahah Alharbi / PT UMAR SINERGI BERSAMA (PPIU No. U.228/2020)</p>
+        </div>
+        <div class="badge-status">
+            <i class="fa-solid fa-circle-check"></i> Production Ready v2.3.0 (100%)
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid-stats">
+        <div class="stat-card">
+            <div class="label">Overall Progress</div>
+            <div class="value">100%</div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: 100%;"></div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Current Status</div>
+            <div class="value" style="font-size: 1.3rem; color: var(--green-success);">Production Ready</div>
+            <p style="font-size: 0.85rem; color: var(--dark-gold); font-weight: 600; margin-top: 0.5rem;">
+                <i class="fa-solid fa-shield-check"></i> Security Hardened & Zero-Trust RLS
+            </p>
+        </div>
+        <div class="stat-card">
+            <div class="label">Domains & Subdomains</div>
+            <div class="value" style="font-size: 0.88rem; word-break: break-all; font-family: monospace;">
+                • <a href="https://umrahmarifatullah.com" target="_blank" style="color: var(--dark-gold);">umrahmarifatullah.com</a><br>
+                • <a href="https://progdev.umrahmarifatullah.com" target="_blank" style="color: var(--dark-gold);">progdev.umrahmarifatullah.com</a><br>
+                • <a href="https://admin.umrahmarifatullah.com" target="_blank" style="color: var(--green-success);">admin.umrahmarifatullah.com</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clean Grid Gantt Chart -->
+    <div class="section-card">
+        <div class="section-title">
+            <div class="section-title-left">
+                <i class="fa-solid fa-chart-gantt"></i> 
+                <span>Timeline Implementasi Gantt Chart</span>
+            </div>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--dark-gold);">Agustus 2026</span>
+        </div>
+
+        <div class="gantt-scroll-container">
+            <table class="gantt-grid-table">
+                <thead>
+                    <tr>
+                        <th class="col-name">Deliverable / Task Name</th>
+                        <th class="col-date">Jadwal</th>
+                        <th class="col-status">Status</th>
+                        <th class="col-day">13 Ags</th>
+                        <th class="col-day">14 Ags</th>
+                        <th class="col-day">15 Ags</th>
+                        <th class="col-day">16 Ags</th>
+                        <th class="col-day">17 Ags</th>
+                        <th class="col-day">18 Ags</th>
+                        <th class="col-day">19 Ags</th>
+                        <th class="col-day">20 Ags</th>
+                        <th class="col-day">21 Ags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- PHASE 1 -->
+                    <tr class="phase-row">
+                        <td colspan="12"><i class="fa-solid fa-folder-open"></i> Phase 1: Inisialisasi, Brand Ingestion & Planning</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">1.1 Competitor Deepsearch & Brand Guide (v1.0.0)</td>
+                        <td class="cell-center">13 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td class="gantt-bar-cell"><div class="bar-pill done" title="13 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+
+                    <!-- PHASE 2 -->
+                    <tr class="phase-row">
+                        <td colspan="12"><i class="fa-solid fa-code"></i> Phase 2: Core Development & 9 Poin Revisi User</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">2.1 Landing Page & 9 Poin Revisi User (v1.1.0 - v1.2.1)</td>
+                        <td class="cell-center">13 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td class="gantt-bar-cell"><div class="bar-pill done" title="13 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+
+                    <!-- PHASE 3 -->
+                    <tr class="phase-row">
+                        <td colspan="12"><i class="fa-solid fa-cloud-arrow-up"></i> Phase 3: Git Remote Push & Custom Domain Setup</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">3.1 Custom Domain & Subdomain Routing (v1.2.2)</td>
+                        <td class="cell-center">13 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td class="gantt-bar-cell"><div class="bar-pill done" title="13 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+
+                    <!-- PHASE 4 -->
+                    <tr class="phase-row">
+                        <td colspan="12"><i class="fa-solid fa-chart-line"></i> Phase 4: Portal Admin Terpadu, Analytics & CMS Engine</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.1 Auth Guard & RBAC System (v1.3.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.2 Analytics Filter Real-Time & Pagination (v1.4.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.3 Multi-Check Dropdown & Collapsible Sidebar (v1.5.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.4 Detail Modal 39 Kolom & Live Edit Action (v1.6.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.5 Auto-CAPSLOCK & Dropdown SISKOPATUH (v1.7.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.6 Monthly Closing Trend & Top 5 Packages Ranking (v1.8.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.7 Heatmap Leaflet.js & Modul Transaksi Agen (v1.9.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.8 Smart Dataset Ingestion & One-Click Cloud Sync (v1.9.1)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.9 Rich CMS Quill.js, WebP Compressor & Gallery (v2.0.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.10 Public Archive, Full Edit & SEO Snippet Mockup (v2.1.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">4.11 User Management RBAC, Self Profile & 8h Timeout (v2.2.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+
+                    <!-- PHASE 5 -->
+                    <tr class="phase-row">
+                        <td colspan="12"><i class="fa-solid fa-shield-halved"></i> Phase 5: Production Security Hardening & Go-Live</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">5.1 Database RLS Zero-Trust Security Hardening (v2.3.0)</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">5.2 SEO Meta, Robots.txt, Sitemap.xml & Schema.org JSON-LD</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="cell-name">5.3 Custom 404 Error Page & Core Web Vitals Optimization</td>
+                        <td class="cell-center">14 Ags 2026</td>
+                        <td class="cell-center"><span class="tag-status done">Selesai</span></td>
+                        <td></td><td class="gantt-bar-cell"><div class="bar-pill done" title="14 Ags (Selesai)"><i class="fa-solid fa-check"></i></div></td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Detailed Deliverables & Checklist -->
+    <div class="section-card">
+        <div class="section-title">
+            <div class="section-title-left">
+                <i class="fa-solid fa-list-check"></i> Milestone Deliverables & Task Status
+            </div>
+        </div>
+        <ul class="task-list">
+            <li class="task-item">
+                <div class="task-info">
+                    <div class="task-icon done"><i class="fa-solid fa-check"></i></div>
+                    <div>
+                        <div class="task-name">Phase 1: Analisis Kompetitor & Implementation Planning</div>
+                        <div class="task-desc">Deepsearch kompetitor (Ventour, Arminareka, Basmalah, Uhud Tour) dan penyusunan brand guide.</div>
+                    </div>
+                </div>
+                <span class="tag-status done">Selesai</span>
+            </li>
+
+            <li class="task-item">
+                <div class="task-info">
+                    <div class="task-icon done"><i class="fa-solid fa-check"></i></div>
+                    <div>
+                        <div class="task-name">Phase 2: Pengembangan Landing Page & 9 Poin Revisi User</div>
+                        <div class="task-desc">Favicon, foto Masjid Sophia, aspect ratio perlengkapan, alamat kantor pusat & maps, Popup 3 CS, Marquee slider logo (65px), Floating WA button, modal Flyer & PDF Itinerary.</div>
+                    </div>
+                </div>
+                <span class="tag-status done">Selesai</span>
+            </li>
+
+            <li class="task-item">
+                <div class="task-info">
+                    <div class="task-icon done"><i class="fa-solid fa-check"></i></div>
+                    <div>
+                        <div class="task-name">Phase 3: Domain & Subdomain Routing Configuration</div>
+                        <div class="task-desc">umrahmarifatullah.com, progdev.umrahmarifatullah.com, dan admin.umrahmarifatullah.com.</div>
+                    </div>
+                </div>
+                <span class="tag-status done">Selesai</span>
+            </li>
+
+            <li class="task-item">
+                <div class="task-info">
+                    <div class="task-icon done"><i class="fa-solid fa-check"></i></div>
+                    <div>
+                        <div class="task-name">Phase 4: Portal Admin Terpadu, Analytics & CMS Engine</div>
+                        <div class="task-desc">Auth Guard RBAC, KPI Cards, Chart.js Visuals, Multi-Check Filter, Modal 39 Kolom, Dropdown SISKOPATUH, Heatmap Leaflet.js, Modul Transaksi Agen, Cloud Sync Supabase, CMS Quill.js, Gallery WebP, dan Manajemen Akun RBAC.</div>
+                    </div>
+                </div>
+                <span class="tag-status done">Selesai</span>
+            </li>
+
+            <li class="task-item">
+                <div class="task-info">
+                    <div class="task-icon done"><i class="fa-solid fa-check"></i></div>
+                    <div>
+                        <div class="task-name">Phase 5: Production Security Hardening & Go-Live Release</div>
+                        <div class="task-desc">Penyelesaian 9 Warning RLS Supabase, Zero-Trust Policies, Sanitasi Data Leak, robots.txt, sitemap.xml, Schema.org JSON-LD, Halaman Error 404 Kustom, dan Optimasi Core Web Vitals.</div>
+                    </div>
+                </div>
+                <span class="tag-status done">Selesai</span>
+            </li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 UMAR Travel (PT UMAR SINERGI BERSAMA / PT Maktap Shiyahah Alharbi) - Sahabat Menuju Baitullah.</p>
+    </footer>
+</div>
+
+</body>
+</html>
