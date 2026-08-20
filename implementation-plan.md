@@ -127,22 +127,25 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 
 ---
 
-### Fase 4: Pengembangan Web Admin DKM & Dashboard Manajemen Tugas
-- **Tujuan:** Membangun dashboard terpusat bagi jajaran pengurus DKM dengan fitur manajemen tugas terpadu dan CMS berita.
+### Fase 4: Pengembangan Web Admin DKM, Self-Sustain CMS & Task Health Dashboard
+- **Tujuan:** Membangun dashboard terpusat bagi jajaran pengurus DKM dengan sistem manajemen tugas terpadu (*Task Health*), CMS mandiri tanpa coding (*Self-Sustain Page & Media Builder*), pemantauan kesehatan sistem, dan ekspor laporan PDF.
 - **Benchmark Rujukan:** `SIABE-PORTO` (Task Management) & `WEB-UMAR` (CMS Studio & Analytics).
 - **Daftar Tugas:**
   - [ ] **Autentikasi & Guard RBAC (`admin.html`):**
     - Halaman login aman dengan validasi sesi JWT Supabase.
     - Sidebar adaptif yang hanya menampilkan menu sesuai kewenangan peran akun (10 peran RBAC).
-  - [ ] **Modul Task Management Terpadu:**
+  - [ ] **Modul Task Management & Task Health Monitoring:**
     - **Kanban Board:** Papan drag-and-drop tugas (To Do, In Progress, In Review, Done).
+    - **Task Health & Analytics:** Monitoring burn-down chart, keterlambatan tugas PIC, rasio efisiensi divisi, dan matriks produktivitas pengurus.
     - **Timeline / Gantt View:** Visualisasi jadwal tenggat waktu kerja tim DKM.
     - **Table View:** Tabel interaktif pencarian dan pengurutan tugas berdasarkan PIC dan prioritas.
     - **Archive Task:** Pengarsipan otomatis tugas selesai untuk menjaga kerapihan papan aktif.
     - **Internal Chat System:** Obrolan koordinasi internal per tiket tugas untuk menjaga rekam jejak instruksi.
-  - [ ] **Article & Event Studio CMS:**
-    - Rich Text Editor untuk penulisan artikel dakwah dan agenda kajian.
-    - Pengaturan slug otomatis, pemilihan gambar cover, dan pratinjau cuplikan Google Search (SEO Snippet).
+    - **Export Laporan PDF Mandiri:** Ekspor laporan aktivitas dan kinerja masing-masing anggota tim DKM ke format PDF standar Web Landscape (1920x1080 / A4).
+  - [ ] **No-Code Modular CMS & Dynamic Page Builder (Self-Sustain Tim Masjid):**
+    - **Dynamic Homepage Media Manager:** Pengaturan foto/video banner slider hero, galeri kegiatan, dan kartu program yang tampil di beranda tanpa menyentuh kode HTML.
+    - **Custom Page / Section Builder:** Modul pembuatan halaman statis mandiri (misal: "Sejarah Masjid", "Profil Pengurus", "Laporan Qurban", "Panduan Ramadhan") dengan form/WYSIWYG sederhana.
+    - **Article & Gallery Studio:** Pengelolaan artikel dakwah, berita penyaluran donasi makan gratis, upload media ImageKit CDN (foto & video streaming 20GB), dan pratinjau cuplikan SEO Google.
   - [ ] **Panel Kalibrasi Waktu Shalat & Rotasi Petugas:**
     - Pengaturan menit ikhtiyat (tambah/kurang menit) yang langsung memperbarui kalkulasi jadwal di landing page publik.
     - Form penetapan dan rotasi nama Imam, Muadzin, Khatib, dan Penceramah.
@@ -150,6 +153,8 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - Verifikasi data donasi masuk via form incognito.
     - Pencatatan pengeluaran harian operasional dapur makan gratis dan pemeliharaan masjid.
     - Fitur ekspor laporan keuangan ke format CSV dan cetak ringkasan kas.
+  - [ ] **System Health & CDN Storage Monitor (Khusus Super Admin):**
+    - Monitoring kesehatan database Supabase, kuota CDN ImageKit.io (penyimpanan & video streaming 20GB), cache hit-rate Vercel, dan delivery rate email Resend.
 
 ---
 
