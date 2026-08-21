@@ -4,6 +4,17 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.1] - 2026-08-22
+
+### Perbaikan Modal Dialog Box Account Control, Deteksi Status Online, dan Log Login Terakhir
+
+#### Perbaikan Bug (Fixed)
+- `[MODAL_OVERLAY_NESTING]` Memperbaiki penutupan tag HTML `#task-detail-modal` yang sebelumnya menyebabkan seluruh modal dialog box Manajemen Pengguna (`#modal-admin-add-user`, `#modal-admin-edit-user`, `#modal-confirm-reset-user`, `#modal-user-self-profile`) terjebak di dalam kontainer yang tersembunyi. Seluruh popup kini dapat dibuka dan diklik dengan sempurna.
+- `[STATUS_ONLINE_DETECTION]` Memperbaiki indikator status keaktifan pengurus: Pengguna yang sedang login aktif ditandai dengan badge hijau **Online** (`live-dot`), sementara akun yang tidak sedang aktif ditampilkan dengan badge abu-abu **Offline** secara presisi.
+- `[LOGIN_TIMESTAMP_TRACKING]` Sinkronisasi waktu login terakhir secara realtime: Akun yang sedang aktif otomatis menampilkan log waktu login hari ini (`Sedang Aktif`), serta menghapus teks `(Realtime)` pada kepala kolom tabel sesuai preferensi estetika antarmuka.
+
+---
+
 ## [1.7.0] - 2026-08-22
 
 ### Modul Manajemen Pengguna DKM (Account Control), Dynamic RBAC Matrix, dan Profil Mandiri Pengurus
