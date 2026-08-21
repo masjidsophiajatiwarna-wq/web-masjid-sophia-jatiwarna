@@ -7,8 +7,8 @@
 **Domain Utama Produksi:** `https://masjidsophiajatiwarna.com/`  
 **Domain Sekunder (Redirect 301):** `https://masjidsophiajatiwarna.my.id/`, `https://masjidsophia.com/`  
 **Subdomain Pemantauan & Admin:** `https://progdev.masjidsophiajatiwarna.com/`, `https://admin.masjidsophiajatiwarna.com/`  
-**Versi Rencana Induk:** v5.0 (Mobile-First Optimization & 3-Tier Android APK Pipeline)  
-**Terakhir Diperbarui:** 2026-08-21  
+**Versi Rencana Induk:** v5.2 (Integrasi Suite Akun Pengurus DKM, Dynamic RBAC 17 Modul, Presensi 3-Tier SIABE-PORTO, Single-Write Login Broadcast, Hybrid Local Master Persistence, dan Mobile Grabber Table Engine)  
+**Terakhir Diperbarui:** 2026-08-22  
 
 ---
 
@@ -26,8 +26,13 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
    - Kanal Pengaduan, Kotak Saran, dan Aspirasi Fasilitas Jamaah.
    - Layanan Musafir 24 Jam: Kamar mandi bersih, area istirahat, dispenser air minum, dan rute lokasi samping UMAR Travel.
 2. **Sistem Manajemen Operasional Terpadu DKM & Employee Dashboard (Benchmark: SIABE-PORTO & Standard Modul Odoo/Masjid):**
-   - **Desain Fluid Desktop vs Mobile-First Touch UI:** Pengalaman desktop yang lega dan leluasa, serta adaptasi fluid ke antarmuka mobile-first khusus smartphone (Bottom Navigation Bar, Bottom Sheet Modal Drawer, target sentuh min 48px, gestur swipe).
-   - **Task Management Karyawan 5 View + 2 Panel:** Kanban, Gantt Timeline (`frappe-gantt`), Calendar Spanning Bars, All Tasks Table (Filter/Sort/Bulk Archive/CSV), Archive View per divisi, Riwayat Pengelolaan Realtime (CDC WebSocket 100% tanpa refresh), dan Chat Koordinasi Multi-Arah antar semua PJ & Ketua DKM.
+   - **Desain Fluid Desktop vs Mobile-First Touch UI:** Pengalaman desktop yang lega dan leluasa, serta adaptasi fluid ke antarmuka mobile-first khusus smartphone (Table Drag Grabber Engine, Bottom Navigation Bar, Bottom Sheet Modal Drawer, target sentuh min 48px, gestur swipe touch pan).
+   - **Task Management Karyawan 5 View + 2 Panel:** Kanban, Gantt Timeline Split-Pane ISO 8601, Calendar 2-Layer Matrix SIABE-PORTO Spanning Bars, All Tasks Table (Filter/Sort/Bulk Archive/CSV), Archive View per divisi, Riwayat Pengelolaan Realtime (CDC WebSocket 100% tanpa refresh), dan Chat Koordinasi Multi-Arah Pro WhatsApp-Style antar semua PJ & Ketua DKM.
+   - **Suite Modul Manajemen Pengguna DKM (Account Control & RBAC Matrix):**
+     - Tabel direktori akun pengurus realtime dengan pelacakan presensi 3-tier (Online, Idle, Offline) zero server overhead.
+     - Modal override akun untuk Super Admin & Ketua DKM: reset kredensial ke default baku, auto-pattern multi-PJ (`media2@...`), matriks hak akses 17 modul granular (`permissions JSONB`), dan paksa akhiri sesi (*Force Logout*).
+     - Modal profil mandiri pengurus: upload foto avatar ImageKit CDN dan pembaruan password/email dengan aturan wajib login ulang (*Strict Security Auto-Logout*).
+     - Lapisan persistensi hibrida master lokal (`masjid_sophia_admin_users_master`) sebagai fail-safe otomatis terhadap pembatasan Row Level Security (RLS 403) Supabase DB.
    - **Suite Modul Operasional per Penanggung Jawab (PJ) Divisi:**
      - **PJ Media & Dakwah:** Content & Article Studio (Quill.js Rich Text, slug generator, ImageKit WebP cover), Dynamic Homepage Media Manager, dan Lightbox Gallery.
      - **PJ Logistik & Sarpras:** Manajemen Porsi Makan Dzuhur (kebutuhan bahan, porsi terbagi, logistik dapur) & Manajemen Aset/Inventaris Masjid (nomor inventaris, kondisi aset, lokasi, riwayat servis).
@@ -45,15 +50,15 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ## 2. Peta Fase Implementasi Teknis
 
 ```text
-[FASE 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid] (0% - Dikelola Tim Media)
+[FASE 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid] (50% - Dikelola Tim Media)
        |
 [FASE 1: Inisialisasi Infrastruktur, Berkas Tata Kelola & Monitoring] (STATUS: SELESAI 100%)
        |
 [FASE 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS] (STATUS: SELESAI 90%)
        |
-[FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: DALAM PROSES)
+[FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: 60% SELESAI)
        |
-[FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: DALAM PROSES)
+[FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: 50% SELESAI)
        |
 [FASE 5: Pengujian Terpadu, Audit Keamanan & User Acceptance Testing]
        |
@@ -117,24 +122,29 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 
 ### Fase 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ
 - **Benchmark Rujukan:** SIABE-PORTO (Task Engine & Cloud Monitor), WEB-UMAR Admin (Article Studio), dan Standard Modul Odoo/Masjid (`.unused-modul-web-sophia`)
-- **Status:** 25% Selesai (Admin Core, Auth, KPI & Pengaduan Selesai)
+- **Status:** 50% Selesai (Admin Core, Task Management 5 View, Obrolan Koordinasi Multi-Arah, Account Control & Dynamic RBAC, Profil Mandiri & Mobile Grabber Selesai)
 - **Daftar Tugas:**
   - [x] **Pondasi Admin Core & Auth Gate (`admin.html`):** Gerbang login Supabase Auth JWT, sidebar adaptif RBAC 10 peran, panel KPI Real-Time, inbox kotak saran, dan rekonsiliasi kas harian.
-  - [ ] **Optimasi Antarmuka Fluid Desktop & Mobile-First Touch UI (`admin.html`):**
-    - **Tampilan Desktop / Laptop:** Multi-kolom lebar, tabel data komprehensif, sidebar statis nyaman.
-    - **Tampilan Smartphone (Android & iPhone):** Adaptasi fluid menjadi aplikasi mobile:
-      - *Bottom Navigation Bar* untuk menu-menu prioritas (Task, Chat, Laporan, Kas).
-      - *Bottom Sheet Drawer* (modal geser dari bawah) untuk formulir input cepat (setoran santri, nota bon, laporan piket).
-      - *Target Sentuh Minimal 48x48px* pada tombol dan kontrol checkbox agar anti salah pencet.
-      - *Optimasi Touch & Gestur:* Swipe tab ganti view, card touch feedback, pull-to-refresh data.
+  - [x] **Optimasi Antarmuka Fluid Desktop & Mobile-First Touch UI (`admin.html`):**
+    - **Tampilan Desktop / Laptop:** Multi-kolom lebar, split-pane layout gantt (fixed sidebar 250px + timeline), tabel data komprehensif, sidebar collapse to icon mode (72px).
+    - **Tampilan Smartphone (Android & iPhone):** Table Drag Grabber Engine (`.table-responsive`), drag-to-scroll kursor grab/grabbing, target sentuh min 48px, gestur swipe touch pan, auto-center Today view, modal backdrop scroll lock (`overflow: hidden`).
   - [x] **Task Management Terpadu (5 View + 2 Panel):**
     - [x] Kanban Board (drag-and-drop HTML5, filter divisi, badge prioritas, dan tombol cepat sentuh status).
-    - [x] Gantt Timeline (visualisasi bar jadwal mulai hingga tenggat per PJ dengan skala Hari/Minggu/Bulan).
-    - [x] Calendar View (grid bulanan dengan multi-hari spanning bar, klik tanggal untuk tambah tugas, dan mode Agenda kronologis).
-    - [x] All Tasks Table (filter multi-kriteria, live search, sorting interaktif, bulk archive, dan unduh CSV).
+    - [x] Gantt Timeline (arsitektur split-pane zero leakage, bar jadwal mulai hingga tenggat per PJ dengan skala Hari/Pekanan ISO 8601 W01-W53/Bulan, Auto-Fit all tasks, grab-to-scroll pan, auto-center Today).
+    - [x] Calendar View (arsitektur 2-layer matrix SIABE-PORTO, baris pekan terpisah, background grid + events layer, continuous multi-day spanning bars via grid-column, collision-free vertical slotting, across-week continuation indicators, drag & hold date range selection, strict date chronological validation).
+    - [x] All Tasks Table (filter multi-kriteria, live search, sorting interaktif, bulk archive, bulk delete, dan unduh CSV).
     - [x] Archive View (penyimpanan tugas selesai per divisi, 1-klik pulihkan, dan hapus permanen).
-    - [x] Riwayat Pengelolaan Realtime (CDC WebSocket 100% tanpa refresh).
-    - [x] Chat Koordinasi Multi-Arah (semua PJ, Ketua DKM, Super Admin 100% tanpa refresh).
+    - [x] Riwayat Pengelolaan Realtime (CDC WebSocket 100% tanpa refresh + RFC4122 UUID).
+    - [x] Chat Koordinasi Multi-Arah Pro (WhatsApp-style reply/quote, WhatsApp markdown bold/italic/strike/code, multiline auto-grow composer, @PJ_Nama cursor-aware mentions & unread badge counters, Delete for Everyone CHAT_DELETE broadcast & Supabase CDC, ImageKit WebP/WebM media attachment, 7-day query filter & cache retention).
+  - [x] **Modul User Accounts & Access Control (Khusus Super Admin & Ketua DKM - Benchmark SIABE-PORTO):**
+    - [x] **Tabel Seluruh Akun Pengurus Realtime:** Daftar akun DKM dengan status presisi (Online / Idle / Offline) berbasis 3-Tier Activity Presence SIABE-PORTO, status login terakhir (*last active*), peran, divisi, dan sinkronisasi live tanpa refresh via Supabase Presence & CDC.
+    - [x] **Modal Override Akun (Super Admin / DKM):** Reset kredensial ke baku awal (1-click reset ke `AKUN_PENGURUS_DKM.txt`), ubah email/nama, auto-pattern multi-PJ generator (`media2@...`), dan tombol **Paksa Akhiri Sesi (*Force End Session / Logout*)** via WebSocket `FORCE_LOGOUT`.
+    - [x] **Matriks Izin Dinamis 17 Modul (`permissions JSONB`):** Pengaturan hak akses granular per modul (Penuh / Baca / Request / Review / Laporan / Kajian / Persetujuan / Tidak Ada Akses) yang merender sidebar secara dinamis dan fleksibel (non-hardcoded).
+    - [x] **Lapisan Presensi & Persistensi Hibrida (`masjid_sophia_admin_users_master`):** 3-Tier Activity Presence (Online <1 jam, Idle 1-3 jam, Offline >3 jam/logout, 3-hour inactivity session timeout), Single-Write Login Broadcast (tanpa polling heartbeat berat), dan Local Master Persistence sebagai fail-safe pembatasan Row Level Security (RLS 403 Forbidden).
+  - [x] **Modal Profil & Keamanan Mandiri Pengurus (Self-Service Profile & Security):**
+    - [x] **Akses Mandiri PJ Divisi:** Dibuka lewat klik kartu profil/avatar di pojok kiri bawah sidebar.
+    - [x] **Tab 1 - General Profile:** Ubah Nama Lengkap dan **Upload Foto Profil (Avatar)** dari perangkat lokal langsung teroptimasi (auto WebP 400x400) ke **ImageKit.io CDN**.
+    - [x] **Tab 2 - Security & Login:** Ganti kata sandi dan ganti email dengan **Strict Security Rule: Otomatis Logout & Wajib Login Ulang**.
   - [ ] **Suite Modul Khusus per Divisi PJ:**
     - **PJ Media & Dakwah:** Article Studio (Quill.js Rich Text, slug generator, ImageKit cover WebP) & Dynamic Homepage Media Manager (review Ketua DKM).
     - **PJ Logistik & Sarpras:** Porsi Makan Gratis ba'da Dzuhur (70+ porsi/hari, dapur) & Inventaris Aset Fisik Masjid (kode inventaris, lokasi, kondisi, servis).
@@ -148,14 +158,6 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - **Formulir Pengajuan Izin Mandiri (Seluruh Pengurus):** Formulir bagi seluruh PJ divisi untuk mengajukan izin (Izin Sakit + bukti surat dokter, Keperluan Pribadi, Tugas Luar, Cuti Operasional) dengan tanggal mulai, tanggal selesai, alasan, dan status transparan.
     - **Alur Persetujuan Terpusat (Approval Flow):** Panel khusus bagi **Ketua DKM & Super Admin** untuk menyetujui (*Approve*) atau menolak (*Reject*) permohonan izin dengan catatan.
     - **Cron Otomasi & Keep-Alive:** Rekapitulasi absensi harian dan notifikasi pengingat pengajuan izin pending ke pimpinan DKM.
-  - [ ] **Modul User Accounts & Access Control (Khusus Super Admin & Ketua DKM - Benchmark SIABE-PORTO):**
-    - **Tabel Seluruh Akun Pengurus Realtime:** Daftar akun DKM dengan status login terakhir (*last active*), role, divisi, dan status aktif tanpa perlu refresh halaman.
-    - **Modal Override Akun (Super Admin / DKM):** Reset kata sandi, ubah email/nama, dan tombol **Paksa Akhiri Sesi (*Force End Session / Logout*)**.
-    - **Matriks Izin Dinamis per Modul (`permissions JSONB`):** Pengaturan hak akses tiap akun ke modul-modul sistem (Baca / Tulis / Tidak Ada Akses) yang merender sidebar secara dinamis dan fleksibel (non-hardcoded).
-  - [ ] **Modal Profil & Keamanan Mandiri Pengurus (Self-Service Profile & Security):**
-    - **Akses Mandiri PJ Divisi:** Dibuka lewat klik kartu profil/avatar di pojok kiri bawah sidebar.
-    - **Tab 1 - General Profile:** Ubah Nama, No WhatsApp, dan **Upload Foto Profil (Avatar)** dari perangkat lokal ke **ImageKit.io CDN**.
-    - **Tab 2 - Security & Login:** Ganti kata sandi dan ganti email dengan **Strict Security Rule: Otomatis Logout & Wajib Login Ulang**.
   - [ ] **Pemantau Kesehatan Arsitektur 7 Pilar Cloud (Khusus Super Admin):**
     - Dashboard kuota free-tier 7 pilar, kalkulasi dinamis `{ count: 'exact', head: true }`, KPI Row biaya IDR 0, panduan preventif (>80%).
   - [ ] **Ekspor Laporan Kinerja PDF Mandiri per Anggota Tim DKM:**

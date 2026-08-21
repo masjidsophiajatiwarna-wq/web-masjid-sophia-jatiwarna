@@ -36,12 +36,12 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 #### Perbaikan & Penyempurnaan (Fixed & Improved)
 - `[PRESENCE_TRACKING_CHANNEL]` Mengintegrasikan sistem **Supabase Presence Tracking (`sync`, `join`, `leave`)** dan siaran langsung `USER_LOGOUT_EVENT`:
   - Ketika pengurus melakukan logout, menutup peramban (*browser*), atau berpindah ke layar login, sistem seketika memutus pelacakan presensi (*untrack*) dan menyiarkan sinyal keluar ke seluruh peramban lain.
-  - Status akun seketika beralih menjadi **⚪ Offline** secara otomatis (*zero refresh*).
+  - Status akun seketika beralih menjadi **Offline** secara otomatis (*zero refresh*).
   - Mengatasi kendala status tetap *online* setelah *hard refresh* dengan membedakan secara tegas antara waktu riwayat login (`last_login`) dan koneksi presensi aktif pengguna saat ini.
 - `[ADAPTIVE_COLOR_STYLING]` Menyesuaikan skema warna indikator dan teks waktu login terakhir:
-  - **🟢 Online:** Badge hijau (`live-dot`) dengan teks waktu hijau tebal `#047857` dan label `(Sedang Aktif)`.
-  - **🟡 Idle (Standby):** Badge kuning amber (`live-dot` amber) dengan teks waktu amber tebal `#B45309` dan label `(Standby / Idle)`.
-  - **⚪ Offline:** Badge abu-abu dengan teks riwayat waktu abu-abu redup `#64748B` (atau `#94A3B8` jika belum pernah login).
+  - **Online (Aktif):** Badge hijau (`live-dot`) dengan teks waktu hijau tebal `#047857` dan label `(Sedang Aktif)`.
+  - **Idle (Standby):** Badge kuning amber (`live-dot` amber) dengan teks waktu amber tebal `#B45309` dan label `(Standby / Idle)`.
+  - **Offline:** Badge abu-abu dengan teks riwayat waktu abu-abu redup `#64748B` (atau `#94A3B8` jika belum pernah login).
 
 ---
 
@@ -52,9 +52,9 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 #### Penambahan & Pembaruan (Added & Updated)
 - `[TABLE_DRAG_GRABBER]` Menambahkan fungsionalitas **Drag-to-Scroll (Grabber Engine)** pada seluruh kontainer tabel `.table-responsive` dengan kursor interaktif `grab` / `grabbing` serta dukungan *fluid native touch scroll* untuk kenyamanan navigasi perangkat seluler (*Mobile-First UI*).
 - `[ACTIVITY_PRESENCE_3TIER]` Mengimplementasikan arsitektur *Activity Event-Listener* berbasis standar SIABE-PORTO (Zero Server Overhead):
-  - **🟢 Online:** Pengurus aktif berinteraksi di portal dalam waktu $< 1$ jam.
-  - **🟡 Idle (Standby):** Tidak ada interaksi selama $1$ hingga $3$ jam.
-  - **⚪ Offline:** Tidak ada aktivitas $> 3$ jam atau belum login.
+  - **Online:** Pengurus aktif berinteraksi di portal dalam waktu $< 1$ jam.
+  - **Idle (Standby):** Tidak ada interaksi selama $1$ hingga $3$ jam.
+  - **Offline:** Tidak ada aktivitas $> 3$ jam atau belum login.
   - **Inactivity Timeout:** Sesi otomatis diakhiri dan dipaksa logout setelah 3 jam pasif total demi keamanan data DKM.
 - `[SINGLE_WRITE_LOGIN_BROADCAST]` Menghilangkan *polling/heartbeat* berulang: Pembaruan `last_login` ke database Supabase hanya dieksekusi 1 kali saat proses login, disertai siaran instan WebSocket `USER_LOGIN_EVENT` yang menyinkronkan status online ke seluruh browser/tab pengurus lain secara instan tanpa *refresh*.
 - `[ACTION_BUTTON_SIMPLIFICATION]` Menyederhanakan label tombol aksi tabel akun menjadi **`Edit`** (ikon `fa-user-pen`) untuk tampilan tabel yang lebih ringkas dan proporsional.

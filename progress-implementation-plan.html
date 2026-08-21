@@ -880,7 +880,7 @@
             </div>
             <div>
                 <span class="status-tag status-inprogress">
-                    <i class="fa-solid fa-spinner fa-spin"></i> Fase 3 Sedang Berjalan
+                    <i class="fa-solid fa-spinner fa-spin"></i> Fase 4 Sedang Berjalan
                 </span>
             </div>
         </div>
@@ -1031,12 +1031,12 @@
         <div class="gantt-card-item">
             <div class="gantt-item-top">
                 <span class="gantt-item-name">
-                    <i class="fa-solid fa-list-check" style="color: var(--color-charcoal);"></i> Fase 4: Web Admin DKM & Task Engine
+                    <i class="fa-solid fa-list-check" style="color: var(--color-charcoal);"></i> Fase 4: Web Admin DKM, Fluid Mobile & Task Engine
                 </span>
-                <span class="status-tag status-inprogress">25% Selesai</span>
+                <span class="status-tag status-inprogress">50% Selesai</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-25">25% - Admin Core Live, Modul Besar Belum</div>
+                <div class="gantt-bar-fill fill-50">50% - Admin Core, Task Suite, Obrolan & Account Control Live</div>
             </div>
         </div>
 
@@ -1506,14 +1506,14 @@
                             <div class="task-desc">Verifikasi donasi masuk dan pencatatan biaya makan gratis harian.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Desain Fluid Responsif Desktop & Ponsel (Mobile-First Touch UI)
                                 <span class="task-badge-pill">Mobile-First</span>
                             </div>
-                            <div class="task-desc">Tampilan lebar lega di desktop dan adaptasi fluid di layar HP (navigasi bilah bawah, modal geser dari bawah, tombol min 48px, gestur swipe).</div>
+                            <div class="task-desc">Tampilan desktop leluasa dan adaptasi fluid di layar HP (Table Drag Grabber Engine, target sentuh min 48px, gestur swipe touch pan, auto-center Today, modal backdrop scroll lock).</div>
                         </div>
                     </div>
 
@@ -1836,34 +1836,44 @@
                     <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #EEF2FF; border-left: 3px solid #6366F1; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #3730A3;">
                         <i class="fa-solid fa-users-gear" style="color: #6366F1;"></i> Manajemen Akun & Hak Akses Pengurus (Khusus DKM & Super Admin)
                     </div>
-                    <div class="task-item">
+                    <div class="task-item completed">
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Tabel Akun Pengurus Realtime & Status Login Terakhir
+                                Tabel Akun Pengurus Realtime & Presensi 3-Tier
                                 <span class="task-badge-pill">Account Control</span>
                             </div>
-                            <div class="task-desc">Daftar akun DKM dengan status login terakhir, peran, divisi, dan pembaruan live tanpa refresh (Supabase Realtime CDC).</div>
+                            <div class="task-desc">Daftar akun DKM dengan status presisi (Online, Idle, Offline) berbasis SIABE-PORTO zero server overhead, last login tracking, dan sinkronisasi live CDC + Presence.</div>
                         </div>
                     </div>
-                    <div class="task-item">
+                    <div class="task-item completed">
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Pengaturan Hak Akses Dinamis per Modul & Paksa Akhiri Sesi
+                                Matriks Hak Akses Granular 17 Modul & Paksa Akhiri Sesi
                                 <span class="task-badge-pill">Override & RBAC</span>
                             </div>
-                            <div class="task-desc">Popup override akun bagi Super Admin/DKM untuk mengatur izin modul (Baca/Tulis/Tidak Ada Akses), reset kata sandi, dan paksa logout (end session).</div>
+                            <div class="task-desc">Modal override akun untuk Super Admin & DKM: izin modul granular (Baca, Tulis, Request, Review, Laporan, dll.), reset kredensial ke default, dan paksa logout (end session).</div>
                         </div>
                     </div>
-                    <div class="task-item">
+                    <div class="task-item completed">
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Modal Profil Mandiri (Upload Foto ImageKit & Keamanan Akun)
                                 <span class="task-badge-pill">Profil Mandiri</span>
                             </div>
-                            <div class="task-desc">Setiap akun PJ bisa mengunggah foto profil dari perangkat lokal ke ImageKit, ganti kata sandi & email dengan auto-logout wajib.</div>
+                            <div class="task-desc">Setiap akun PJ bisa mengunggah foto profil dari perangkat lokal ke ImageKit CDN (auto WebP 400x400), ganti kata sandi & email dengan auto-logout wajib.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Lapisan Persistensi Hibrida & Penanganan RLS DB Supabase
+                                <span class="task-badge-pill">Hybrid Master</span>
+                            </div>
+                            <div class="task-desc">Penyimpanan persisten lokal master (masjid_sophia_admin_users_master) yang otomatis digabungkan saat refresh halaman sebagai perlindungan fail-safe terhadap pembatasan RLS 403.</div>
                         </div>
                     </div>
 
