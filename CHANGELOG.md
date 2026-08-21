@@ -4,6 +4,16 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.6.9] - 2026-08-22
+
+### Perbaikan ReferenceError escapeHtml pada Rendering Kalender Bulanan
+
+#### Peningkatan & Penyempurnaan (Enhanced & Fixed)
+- `[REFERENCE_ERROR FIX]` Menambahkan deklarasi fungsi utilitas sanitasi teks `escapeHtml(str)` di berkas `admin.html` untuk mengamankan judul tugas sebelum disematkan ke dalam elemen `.cal-span-bar`.
+- `[CALENDAR RENDERING VERIFICATION]` Memastikan seluruh batang multi-hari (*continuous spanning bars*) dan baris pekan kalender bulan Agustus & September 2026 langsung termuat sempurna tanpa *uncaught exception* di konsol peramban.
+
+---
+
 ## [1.6.8] - 2026-08-22
 
 ### Implementasi Arsitektur Kalender 2-Layer Matrix & Continuous Spanning Bar Baku (Benchmark: SIABE-PORTO)
