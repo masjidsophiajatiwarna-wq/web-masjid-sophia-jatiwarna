@@ -4,6 +4,17 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.10] - 2026-08-22
+
+### Inisialisasi Direktori Akun pada Layar Login & Resolusi Dinamis Akun Baru
+
+#### Perbaikan & Penyempurnaan (Fixed & Improved)
+- `[LOGIN_DIRECTORY_PRELOAD]` Memastikan fungsi `loadAdminUsers()` dieksekusi sejak awal pada *event* `DOMContentLoaded` dan `showAuthScreen()` sehingga direktori akun pengurus telah terisi penuh saat layar login ditampilkan.
+- `[DYNAMIC_ROLE_RESOLUTION]` Menambahkan pemetaan dinamis pola email resmi (`getRoleAndDivisionFromEmail`) yang secara otomatis mengenali peran divisi untuk setiap akun baru terdaftar (seperti `musafir2@masjidsophiajatiwarna.com` $\rightarrow$ `PJ_MUSAFIR`) dan memvalidasi kata sandi baku `SophiaJatiwarna2026!` tanpa hambatan.
+- `[STORAGE_MASTER_FALLBACK]` Membaca langsung cadangan `masjid_sophia_admin_users_master` dari penyimpanan lokal saat verifikasi login berlangsung jika data database Supabase belum selesai dimuat.
+
+---
+
 ## [1.7.9] - 2026-08-22
 
 ### Penyelarasan Tema Visual Multi-Cloud Monitor Sesuai Brand Guide Resmi (Light, Warm, Clean & Serene)

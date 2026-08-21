@@ -4221,8 +4221,25 @@
             console.warn("Supabase Admin init:", e);
         }
 
+        function getRoleAndDivisionFromEmail(email) {
+            const clean = (email || '').toLowerCase().trim();
+            if (clean.startsWith('superadmin')) return { role: 'SUPER_ADMIN', division: 'IT & Ekosistem Digital', name: 'Super Administrator Sophia' };
+            if (clean.startsWith('superuser')) return { role: 'SUPER_USER', division: 'Quality Assurance & Audit', name: 'Super User Testing Sophia' };
+            if (clean.startsWith('dkm') || clean.startsWith('ketua')) return { role: 'KETUA_DKM', division: 'Pimpinan DKM', name: 'Ketua DKM Masjid Sophia' };
+            if (clean.startsWith('media')) return { role: 'PJ_MEDIA', division: 'Media & Dakwah', name: 'Penanggung Jawab Media & Dakwah' };
+            if (clean.startsWith('logistik')) return { role: 'PJ_LOGISTIK', division: 'Logistik & Sarpras', name: 'Penanggung Jawab Logistik & Sarpras' };
+            if (clean.startsWith('santri')) return { role: 'PJ_SANTRI', division: 'Santri Tahfidz', name: 'Penanggung Jawab Santri Tahfidz' };
+            if (clean.startsWith('musafir')) return { role: 'PJ_MUSAFIR', division: 'Layanan Musafir', name: 'Penanggung Jawab Layanan Musafir' };
+            if (clean.startsWith('ibadah')) return { role: 'PJ_IBADAH', division: 'Peribadatan & Acara', name: 'Penanggung Jawab Peribadatan & Acara' };
+            if (clean.startsWith('keuangan')) return { role: 'PJ_KEUANGAN', division: 'Keuangan & Akuntansi', name: 'Penanggung Jawab Keuangan & Akuntansi' };
+            if (clean.startsWith('keamanan')) return { role: 'PJ_KEAMANAN', division: 'Keamanan & Ketertiban', name: 'Penanggung Jawab Keamanan & Ketertiban' };
+            if (clean.startsWith('kebersihan')) return { role: 'PJ_KEBERSIHAN', division: 'Kebersihan & Sanitasi', name: 'Penanggung Jawab Kebersihan & Sanitasi' };
+            return { role: 'STAFF', division: 'Operasional Masjid', name: 'Staff Pengurus DKM' };
+        }
+
         // Check Auth Session on Load
         document.addEventListener('DOMContentLoaded', async () => {
+            loadAdminUsers();
             if (sbClient) {
                 const { data: { session } } = await sbClient.auth.getSession();
                 if (session && session.user) {
@@ -4230,6 +4247,8 @@
                 } else {
                     showAuthScreen();
                 }
+            } else {
+                showAuthScreen();
             }
         });
 
@@ -4244,28 +4263,62 @@
             btn.disabled = true;
 
             try {
+                // Ensure users list is populated from storage or DB
+                if (!adminUsersList || adminUsersList.length === 0) {
+                    await loadAdminUsers();
+                }
+
                 let loginSuccess = false;
                 let authUser = null;
 
                 // 1. Try standard Supabase Auth
                 if (sbClient) {
-                    const { data, error } = await sbClient.auth.signInWithPassword({
-                        email: email,
-                        password: password
-                    });
+                    try {
+                        const { data, error } = await sbClient.auth.signInWithPassword({
+                            email: email,
+                            password: password
+                        });
 
-                    if (!error && data && data.user) {
-                        loginSuccess = true;
-                        authUser = data.user;
-                    } else if (error) {
-                        console.warn("Supabase signIn attempt notice:", error.message);
+                        if (!error && data && data.user) {
+                            loginSuccess = true;
+                            authUser = data.user;
+                        }
+                    } catch (signInErr) {
+                        console.warn("Supabase signIn attempt notice:", signInErr);
                     }
                 }
 
-                // 2. If standard signIn failed (e.g. newly added account without GoTrue entry yet or default password)
+                // 2. Fallback / Auto-Provisioning for Newly Created Accounts & Default Passwords
                 if (!loginSuccess) {
-                    const matchingUser = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === email) ||
-                        DEFAULT_ADMIN_USERS_SEED.find(u => (u.email || '').toLowerCase().trim() === email);
+                    let matchingUser = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === email);
+                    
+                    if (!matchingUser) {
+                        try {
+                            const localMaster = JSON.parse(localStorage.getItem('masjid_sophia_admin_users_master') || '[]');
+                            matchingUser = localMaster.find(u => (u.email || '').toLowerCase().trim() === email);
+                        } catch (e) {}
+                    }
+
+                    if (!matchingUser) {
+                        matchingUser = DEFAULT_ADMIN_USERS_SEED.find(u => (u.email || '').toLowerCase().trim() === email);
+                    }
+
+                    // If not found yet but is a valid @masjidsophiajatiwarna.com account, construct dynamic profile
+                    if (!matchingUser && email.endsWith('@masjidsophiajatiwarna.com')) {
+                        const meta = getRoleAndDivisionFromEmail(email);
+                        matchingUser = {
+                            id: 'user_' + Date.now(),
+                            email: email,
+                            full_name: meta.name,
+                            role: meta.role,
+                            division: meta.division,
+                            is_active: true,
+                            permissions: ROLE_PERMISSION_TEMPLATES[meta.role] || ROLE_PERMISSION_TEMPLATES['PJ_MEDIA'],
+                            created_at: new Date().toISOString()
+                        };
+                        adminUsersList.push(matchingUser);
+                        saveCustomUsersToLocal();
+                    }
 
                     if (matchingUser) {
                         if (matchingUser.is_active === false) {
@@ -4278,7 +4331,7 @@
                         const isCustomPassMatch = customPass && password === customPass;
 
                         if (isDefaultPass || isCustomPassMatch) {
-                            // Auto-provision into Supabase Auth
+                            // Auto-provision into Supabase Auth in background
                             if (sbClient) {
                                 try {
                                     const { data: upData } = await sbClient.auth.signUp({
@@ -4294,7 +4347,6 @@
                                     });
                                     if (upData && upData.user) {
                                         authUser = upData.user;
-                                        loginSuccess = true;
                                     } else {
                                         const { data: inData } = await sbClient.auth.signInWithPassword({
                                             email: email,
@@ -4302,7 +4354,6 @@
                                         });
                                         if (inData && inData.user) {
                                             authUser = inData.user;
-                                            loginSuccess = true;
                                         }
                                     }
                                 } catch (provErr) {
@@ -4373,6 +4424,7 @@
         function showAuthScreen() {
             document.getElementById('auth-screen').style.display = 'flex';
             document.getElementById('admin-app').style.display = 'none';
+            loadAdminUsers();
         }
 
         function getUserDisplayName(user) {
