@@ -4,6 +4,24 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.6.3] - 2026-08-22
+
+### Restrukturisasi Navigasi Sidebar, Fitur Collapse Sidebar, dan Tata Letak Fleksibel Toolbar Tugas
+
+#### Peningkatan & Penyempurnaan (Enhanced & Fixed)
+- `[SIDEBAR COLLAPSE TOGGLE]` Penambahan fitur *collapse / expand* sidebar secara halus (*smooth transition*) dengan tombol toggle hamburger (`fa-bars`) di header utama:
+  - **Desktop:** Mengecilkan sidebar menjadi 72px (*icon-only mode*) untuk memperluas ruang kerja, dan menyimpan status preferensi ke `localStorage`.
+  - **Mobile:** Berfungsi sebagai laci navigasi responsif (*mobile drawer overlay*).
+- `[REORGANISASI MENU UTAMA SIDEBAR]`
+  - Menjadikan **Riwayat Portal** (`history`) sebagai menu tab utama tersendiri di sidebar (menggantikan nama lama *"Riwayat Realtime"*) untuk memudahkan pemantauan audit trail dan log CDC secara menyeluruh.
+  - Menjadikan **Chat Koordinasi DKM** (`chat`) sebagai menu tab utama mandiri di sidebar lengkap dengan badge jumlah *unread mentions* real-time (`#badge-sidebar-chat-mentions`), memberikan ruang layar percakapan yang lapang setinggi satu layar penuh.
+- `[PEMURNIAN TOP BAR MODUL TUGAS]`
+  - Menyederhanakan sub-navigasi tugas menjadi 5 tampilan murni: **Papan Kanban**, **Garis Waktu Gantt**, **Kalender Tugas**, **Tabel Seluruh Tugas**, dan **Arsip Selesai**.
+- `[FLUID & COMPACT TASK TOOLBAR]`
+  - Menata ulang layout `.task-toolbar` agar fleksibel dan tidak patah/turun baris secara canggung pada resolusi layar sedang atau saat DevTools terbuka. Filter judul tugas, divisi, prioritas, status, dan tombol aksi tertata seimbang dan responsif.
+
+---
+
 ## [1.6.2] - 2026-08-22
 
 ### Penyempurnaan Format Markup WhatsApp & Hapus Pesan untuk Semua (Delete for Everyone)

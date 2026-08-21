@@ -184,6 +184,43 @@
             flex-direction: column;
             justify-content: space-between;
             z-index: 100;
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s ease;
+            overflow-x: hidden;
+        }
+
+        /* Collapsed Sidebar State (Desktop) */
+        .admin-sidebar.collapsed {
+            width: 72px;
+            padding: 1.5rem 0.5rem;
+        }
+
+        .admin-sidebar.collapsed .sidebar-brand {
+            justify-content: center;
+            padding-bottom: 0.75rem;
+        }
+
+        .admin-sidebar.collapsed .sidebar-brand-text,
+        .admin-sidebar.collapsed .nav-item-btn span,
+        .admin-sidebar.collapsed .user-profile-box,
+        .admin-sidebar.collapsed .btn-logout span {
+            display: none !important;
+        }
+
+        .admin-sidebar.collapsed .nav-item-btn {
+            justify-content: center;
+            padding: 0.75rem 0;
+            gap: 0;
+        }
+
+        .admin-sidebar.collapsed .nav-item-btn i {
+            width: auto;
+            font-size: 1.15rem;
+            margin: 0;
+        }
+
+        .admin-sidebar.collapsed .btn-logout {
+            justify-content: center;
+            padding: 0.6rem 0;
         }
 
         .sidebar-brand {
@@ -193,6 +230,7 @@
             padding-bottom: 1.25rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 1.5rem;
+            transition: padding 0.2s ease;
         }
 
         .sidebar-brand-icon {
@@ -206,6 +244,7 @@
             justify-content: center;
             font-size: 1.25rem;
             font-weight: 800;
+            flex-shrink: 0;
         }
 
         .sidebar-brand-text h2 {
@@ -213,6 +252,7 @@
             font-weight: 800;
             line-height: 1.2;
             color: #FFFFFF;
+            white-space: nowrap;
         }
 
         .sidebar-brand-text span {
@@ -220,6 +260,7 @@
             color: var(--color-gold-primary);
             font-weight: 600;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .sidebar-nav {
@@ -245,6 +286,7 @@
             width: 100%;
             text-align: left;
             transition: var(--transition);
+            white-space: nowrap;
         }
 
         .nav-item-btn:hover, .nav-item-btn.active {
@@ -256,6 +298,7 @@
             width: 18px;
             text-align: center;
             font-size: 1rem;
+            flex-shrink: 0;
         }
 
         .sidebar-footer {
@@ -292,6 +335,10 @@
             font-weight: 700;
             cursor: pointer;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .btn-logout:hover {
@@ -304,6 +351,33 @@
             margin-left: 260px;
             padding: 2rem;
             min-height: 100vh;
+            transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .admin-main.sidebar-collapsed {
+            margin-left: 72px;
+        }
+
+        .btn-sidebar-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            color: var(--color-charcoal);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .btn-sidebar-toggle:hover {
+            background: var(--color-gold-light);
+            color: var(--color-gold-deep);
+            border-color: var(--color-gold-primary);
         }
 
         .top-app-bar {
@@ -586,49 +660,61 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 0.75rem;
+            gap: 0.65rem;
             flex-wrap: wrap;
             margin-bottom: 1.25rem;
             background: var(--color-bg-white);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
-            padding: 0.85rem 1rem;
+            padding: 0.75rem 1rem;
         }
 
         .task-filters-group {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.45rem;
             flex-wrap: wrap;
-            flex: 1;
+            flex: 1 1 500px;
+            min-width: 260px;
         }
 
         .task-search-input {
-            padding: 0.5rem 0.85rem;
+            padding: 0.45rem 0.75rem;
             border: 1px solid var(--color-border);
             border-radius: var(--radius-sm);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-family: inherit;
             background: #FAFAFA;
-            min-width: 220px;
-            flex: 1;
+            min-width: 150px;
+            flex: 1 1 160px;
+            transition: var(--transition);
         }
 
         .task-search-input:focus {
             outline: none;
             border-color: var(--color-gold-deep);
             background: #FFFFFF;
+            box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.12);
         }
 
         .task-filter-select {
-            padding: 0.5rem 0.85rem;
+            padding: 0.45rem 0.65rem;
             border: 1px solid var(--color-border);
             border-radius: var(--radius-sm);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-family: inherit;
             background: #FAFAFA;
             color: var(--color-charcoal);
             cursor: pointer;
+            flex: 0 1 auto;
+            min-width: 110px;
+            transition: var(--transition);
+        }
+
+        .task-filter-select:focus {
+            outline: none;
+            border-color: var(--color-gold-deep);
+            background: #FFFFFF;
         }
 
         /* 1. Kanban Board */
@@ -1609,33 +1695,45 @@
                 <ul class="sidebar-nav">
                     <li>
                         <button class="nav-item-btn active" onclick="switchTab('overview', this)">
-                            <i class="fa-solid fa-gauge-high"></i> Ringkasan Utama
+                            <i class="fa-solid fa-gauge-high"></i> <span>Ringkasan Utama</span>
                         </button>
                     </li>
                     <li>
                         <button class="nav-item-btn" onclick="switchTab('donations', this)">
-                            <i class="fa-solid fa-hand-holding-dollar"></i> Donasi & Infaq
+                            <i class="fa-solid fa-hand-holding-dollar"></i> <span>Donasi & Infaq</span>
                         </button>
                     </li>
                     <li>
-                        <button class="nav-item-btn" onclick="switchTab('tasks', this)" style="display: flex; align-items: center; justify-content: space-between;">
-                            <span><i class="fa-solid fa-list-check"></i> Tugas & Task Health</span>
-                            <span id="badge-sidebar-tasks-mentions" class="mention-count-badge" style="display: none; margin-left: 0.5rem;">0</span>
+                        <button class="nav-item-btn" onclick="switchTab('tasks', this)">
+                            <i class="fa-solid fa-list-check"></i> <span>Tugas & Task Health</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item-btn" onclick="switchTab('history', this)">
+                            <i class="fa-solid fa-clock-rotate-left"></i> <span>Riwayat Portal</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item-btn" onclick="switchTab('chat', this)" style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="fa-solid fa-comments"></i> <span>Chat Koordinasi DKM</span>
+                            </div>
+                            <span id="badge-sidebar-chat-mentions" class="mention-count-badge" style="display: none; margin-left: auto;">0</span>
                         </button>
                     </li>
                     <li>
                         <button class="nav-item-btn" onclick="switchTab('feedback', this)">
-                            <i class="fa-solid fa-comments"></i> Kotak Saran Jamaah
+                            <i class="fa-solid fa-comments"></i> <span>Kotak Saran Jamaah</span>
                         </button>
                     </li>
                     <li>
                         <button class="nav-item-btn" onclick="switchTab('articles', this)">
-                            <i class="fa-solid fa-newspaper"></i> Warta & Artikel
+                            <i class="fa-solid fa-newspaper"></i> <span>Warta & Artikel</span>
                         </button>
                     </li>
                     <li>
                         <button class="nav-item-btn" onclick="switchTab('health', this)">
-                            <i class="fa-solid fa-server"></i> System Health
+                            <i class="fa-solid fa-server"></i> <span>System Health</span>
                         </button>
                     </li>
                 </ul>
@@ -1649,7 +1747,7 @@
                     </div>
                 </div>
                 <button class="btn-logout" onclick="handleLogout()">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar Sistem
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Keluar Sistem</span>
                 </button>
             </div>
         </aside>
@@ -1658,9 +1756,14 @@
         <main class="admin-main">
             <!-- Top App Bar -->
             <header class="top-app-bar">
-                <div class="page-header-titles">
-                    <h1 id="panel-heading-title">Ringkasan Operasional Masjid</h1>
-                    <p id="panel-heading-desc">Pemantauan real-time arus infaq, tugas tim, dan layanan musafir 24 jam</p>
+                <div style="display: flex; align-items: center; gap: 0.85rem;">
+                    <button type="button" class="btn-sidebar-toggle" onclick="toggleSidebarCollapse()" title="Sembunyikan/Tampilkan Sidebar">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="page-header-titles">
+                        <h1 id="panel-heading-title">Ringkasan Operasional Masjid</h1>
+                        <p id="panel-heading-desc">Pemantauan real-time arus infaq, tugas tim, dan layanan musafir 24 jam</p>
+                    </div>
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
                     <a href="/media-checklist" target="_blank" class="btn-action-gold" style="text-decoration: none;">
@@ -1785,9 +1888,9 @@
                 </div>
             </div>
 
-            <!-- Tab 3: Tasks Panel (5 Views + 2 Support Panels) -->
+            <!-- Tab 3: Tasks Panel (5 Views) -->
             <div id="tab-tasks" class="tab-content-panel" style="display: none;">
-                <!-- View Switcher Segmented Navigation -->
+                <!-- View Switcher Segmented Navigation (5 Core Views) -->
                 <div class="task-view-nav">
                     <button class="task-view-btn active" id="btn-view-kanban" onclick="switchTaskView('kanban')">
                         <i class="fa-solid fa-table-columns"></i> Papan Kanban
@@ -1803,13 +1906,6 @@
                     </button>
                     <button class="task-view-btn" id="btn-view-archive" onclick="switchTaskView('archive')">
                         <i class="fa-solid fa-box-archive"></i> Arsip Selesai <span class="task-view-badge" id="badge-archive-count">0</span>
-                    </button>
-                    <div style="width: 1px; height: 24px; background: var(--color-border); margin: 0 0.25rem;"></div>
-                    <button class="task-view-btn" id="btn-view-history" onclick="switchTaskView('history')">
-                        <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Realtime
-                    </button>
-                    <button class="task-view-btn" id="btn-view-chat" onclick="switchTaskView('chat')">
-                        <i class="fa-solid fa-comments"></i> Chat Koordinasi DKM <span id="badge-chat-mentions" class="mention-count-badge" style="display: none;">0</span>
                     </button>
                 </div>
 
@@ -2063,69 +2159,72 @@
                     </div>
                 </div>
 
-                <!-- SUPPORT PANEL 1: Riwayat Pengelolaan Realtime (Activity Logs) -->
-                <div id="task-subview-history" class="task-subview" style="display: none;">
-                    <div class="section-panel">
-                        <div class="panel-header">
-                            <div class="panel-title">
-                                <i class="fa-solid fa-clock-rotate-left" style="color: var(--color-gold-deep);"></i> Log Riwayat Pengelolaan Tugas Real-Time (CDC)
-                            </div>
-                            <div style="font-size: 0.75rem; color: var(--color-success); font-weight: 700;">
-                                <i class="fa-solid fa-circle-dot"></i> Terhubung WebSocket Realtime
-                            </div>
+            </div>
+
+            <!-- Tab: Riwayat Portal Panel -->
+            <div id="tab-history" class="tab-content-panel" style="display: none;">
+                <div class="section-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i class="fa-solid fa-clock-rotate-left" style="color: var(--color-gold-deep);"></i> Log Riwayat Aktivitas Portal DKM (CDC)
                         </div>
-                        <div class="activity-feed-list" id="activity-feed-container">
-                            <!-- Rendered dynamically -->
+                        <div style="font-size: 0.75rem; color: var(--color-success); font-weight: 700;">
+                            <i class="fa-solid fa-circle-dot"></i> Terhubung WebSocket Realtime
                         </div>
                     </div>
-                </div>
-
-                <!-- SUPPORT PANEL 2: Chat Koordinasi Multi-Arah DKM -->
-                <div id="task-subview-chat" class="task-subview" style="display: none;">
-                    <div class="section-panel" style="padding: 0; overflow: hidden;">
-                        <div style="padding: 1rem 1.25rem; background: var(--color-charcoal); color: #FFFFFF; display: flex; justify-content: space-between; align-items: center;">
-                            <div style="display: flex; align-items: center; gap: 0.65rem;">
-                                <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--color-gold-primary); color: var(--color-charcoal); display: flex; align-items: center; justify-content: center; font-weight: 800;">
-                                    <i class="fa-solid fa-comments"></i>
-                                </div>
-                                <div>
-                                    <div style="font-size: 0.85rem; font-weight: 800;">Ruang Koordinasi Pengurus DKM Sophia</div>
-                                    <div style="font-size: 0.7rem; color: var(--color-gold-primary);">Saluran komunikasi multi-arah antar 10 peran DKM (Live 100% tanpa refresh)</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat-room-container" style="border: none; border-radius: 0;">
-                            <div class="chat-messages-stream" id="chat-messages-stream">
-                                <!-- Messages rendered dynamically -->
-                            </div>
-                            <!-- WhatsApp Style Reply Preview Bar -->
-                            <div class="chat-reply-preview-bar" id="chat-reply-preview-bar" style="display: none;">
-                                <div class="reply-preview-left-bar"></div>
-                                <div class="reply-preview-content">
-                                    <div class="reply-preview-sender" id="reply-preview-sender">Ustadz Ridwan</div>
-                                    <div class="reply-preview-text" id="reply-preview-text">Cuplikan pesan...</div>
-                                </div>
-                                <button type="button" class="btn-cancel-reply" onclick="cancelReply()" title="Batal balas">&times;</button>
-                            </div>
-                            <!-- Floating Mention Autocomplete Popup -->
-                            <div class="mention-autocomplete-popup" id="mention-autocomplete-popup">
-                                <!-- Mention items populated dynamically -->
-                            </div>
-                            <!-- Hidden Media File Input -->
-                            <input type="file" id="chat-media-input" accept="image/*,video/*" style="display: none;" onchange="handleChatMediaUpload(event)">
-                            <form class="chat-composer-bar" onsubmit="handleSendChatMessage(event)">
-                                <button type="button" class="btn-shift" style="width: 38px; height: 38px; flex-shrink: 0;" onclick="document.getElementById('chat-media-input').click()" title="Lampirkan Gambar atau Video">
-                                    <i class="fa-solid fa-paperclip"></i>
-                                </button>
-                                <textarea id="chat-composer-input" class="chat-input" rows="1" placeholder="Ketik pesan koordinasi atau @ untuk tag PJ..." oninput="handleChatInput(event)" onkeydown="handleChatKeyDown(event)" autocomplete="off" required></textarea>
-                                <button type="submit" class="btn-action-gold" style="flex-shrink: 0; height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;">
-                                    <i class="fa-solid fa-paper-plane"></i> Kirim
-                                </button>
-                            </form>
-                        </div>
+                    <div class="activity-feed-list" id="activity-feed-container" style="max-height: calc(100vh - 250px);">
+                        <!-- Rendered dynamically -->
                     </div>
                 </div>
+            </div>
 
+            <!-- Tab: Chat Koordinasi DKM Panel -->
+            <div id="tab-chat" class="tab-content-panel" style="display: none;">
+                <div class="section-panel" style="padding: 0; overflow: hidden; height: calc(100vh - 200px); min-height: 520px; display: flex; flex-direction: column;">
+                    <div style="padding: 1rem 1.25rem; background: var(--color-charcoal); color: #FFFFFF; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                        <div style="display: flex; align-items: center; gap: 0.65rem;">
+                            <div style="width: 34px; height: 34px; border-radius: 50%; background: var(--color-gold-primary); color: var(--color-charcoal); display: flex; align-items: center; justify-content: center; font-weight: 800;">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.9rem; font-weight: 800;">Ruang Koordinasi Pengurus DKM Sophia</div>
+                                <div style="font-size: 0.7rem; color: var(--color-gold-primary);">Saluran komunikasi multi-arah antar 10 peran DKM (Live WhatsApp-Style tanpa refresh)</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.72rem; color: #9CA3AF;">
+                            <i class="fa-solid fa-shield-halved" style="color: var(--color-gold-primary);"></i> Retensi 7 Hari Terakhir
+                        </div>
+                    </div>
+                    <div class="chat-room-container" style="border: none; border-radius: 0; flex: 1; height: auto; display: flex; flex-direction: column;">
+                        <div class="chat-messages-stream" id="chat-messages-stream" style="flex: 1;">
+                            <!-- Messages rendered dynamically -->
+                        </div>
+                        <!-- WhatsApp Style Reply Preview Bar -->
+                        <div class="chat-reply-preview-bar" id="chat-reply-preview-bar" style="display: none;">
+                            <div class="reply-preview-left-bar"></div>
+                            <div class="reply-preview-content">
+                                <div class="reply-preview-sender" id="reply-preview-sender">Ustadz Ridwan</div>
+                                <div class="reply-preview-text" id="reply-preview-text">Cuplikan pesan...</div>
+                            </div>
+                            <button type="button" class="btn-cancel-reply" onclick="cancelReply()" title="Batal balas">&times;</button>
+                        </div>
+                        <!-- Floating Mention Autocomplete Popup -->
+                        <div class="mention-autocomplete-popup" id="mention-autocomplete-popup">
+                            <!-- Mention items populated dynamically -->
+                        </div>
+                        <!-- Hidden Media File Input -->
+                        <input type="file" id="chat-media-input" accept="image/*,video/*" style="display: none;" onchange="handleChatMediaUpload(event)">
+                        <form class="chat-composer-bar" onsubmit="handleSendChatMessage(event)">
+                            <button type="button" class="btn-shift" style="width: 38px; height: 38px; flex-shrink: 0;" onclick="document.getElementById('chat-media-input').click()" title="Lampirkan Gambar atau Video">
+                                <i class="fa-solid fa-paperclip"></i>
+                            </button>
+                            <textarea id="chat-composer-input" class="chat-input" rows="1" placeholder="Ketik pesan koordinasi atau @ untuk tag PJ..." oninput="handleChatInput(event)" onkeydown="handleChatKeyDown(event)" autocomplete="off" required></textarea>
+                            <button type="submit" class="btn-action-gold" style="flex-shrink: 0; height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;">
+                                <i class="fa-solid fa-paper-plane"></i> Kirim
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
 
             <!-- Tab 4: Feedback & Complaints Panel -->
@@ -2400,6 +2499,23 @@
             return raw.charAt(0).toUpperCase() + raw.slice(1).replace(/[._]/g, ' ');
         }
 
+        function toggleSidebarCollapse() {
+            const sidebar = document.getElementById('admin-sidebar');
+            const main = document.querySelector('.admin-main');
+            if (!sidebar) return;
+
+            const isMobile = window.innerWidth <= 900;
+            if (isMobile) {
+                sidebar.classList.toggle('open');
+            } else {
+                const isCollapsed = sidebar.classList.toggle('collapsed');
+                if (main) main.classList.toggle('sidebar-collapsed', isCollapsed);
+                try {
+                    localStorage.setItem('masjid_sophia_sidebar_collapsed', isCollapsed ? '1' : '0');
+                } catch (e) {}
+            }
+        }
+
         function showAdminDashboard(user) {
             currentUser = user;
             document.getElementById('auth-screen').style.display = 'none';
@@ -2409,6 +2525,16 @@
             const role = getUserRole();
             const roleElem = document.getElementById('display-user-role');
             if (roleElem) roleElem.textContent = getUserRoleLabel(role);
+
+            // Restore sidebar collapsed state
+            try {
+                if (localStorage.getItem('masjid_sophia_sidebar_collapsed') === '1' && window.innerWidth > 900) {
+                    const sidebar = document.getElementById('admin-sidebar');
+                    const main = document.querySelector('.admin-main');
+                    if (sidebar) sidebar.classList.add('collapsed');
+                    if (main) main.classList.add('sidebar-collapsed');
+                }
+            } catch (e) {}
 
             // Auto-focus division filter for PJ role
             const userDiv = getUserDivision();
@@ -2453,6 +2579,8 @@
                 'overview': ['Ringkasan Operasional Masjid', 'Pemantauan real-time arus infaq, tugas tim, dan layanan musafir 24 jam'],
                 'donations': ['Manajemen Donasi & Infaq Masuk', 'Daftar transaksi infaq via QRIS dan Transfer Bank BSI'],
                 'tasks': ['Manajemen Tugas Pengurus DKM', 'Papan koordinasi dan pembagian tugas antar-divisi'],
+                'history': ['Riwayat Aktivitas Portal DKM', 'Log riwayat aksi tugas, pembaruan status, dan audit trail pengurus secara real-time'],
+                'chat': ['Ruang Koordinasi Pengurus DKM Sophia', 'Saluran komunikasi multi-arah antar 10 peran DKM (Live WhatsApp-Style tanpa refresh)'],
                 'feedback': ['Pusat Pengaduan & Kotak Saran', 'Aspirasi, kritik, dan laporan kenyamanan dari jamaah/musafir'],
                 'articles': ['Content Studio Warta & Dakwah', 'Penerbitan artikel, jadwal kajian, dan dokumentasi kegiatan'],
                 'health': ['Pemantauan Kesehatan Sistem', 'Status real-time 7 pilar arsitektur web aplikasi']
@@ -2463,10 +2591,21 @@
                 document.getElementById('panel-heading-desc').textContent = titles[tabId][1];
             }
 
-            // Restore subview if on tasks tab
+            // Close mobile sidebar drawer if open
+            const sidebar = document.getElementById('admin-sidebar');
+            if (sidebar && window.innerWidth <= 900) {
+                sidebar.classList.remove('open');
+            }
+
+            // Route tab actions
             if (tabId === 'tasks') {
                 const savedSubView = localStorage.getItem('masjid_sophia_task_subview') || 'kanban';
                 switchTaskView(savedSubView);
+            } else if (tabId === 'history') {
+                renderTaskHistory();
+            } else if (tabId === 'chat') {
+                renderTaskChat();
+                markMentionsAsRead();
             }
         }
 
@@ -2971,13 +3110,15 @@
         }
 
         // ==========================================================================
-        // VIEW SWITCHER & FILTERING
-        // ==========================================================================
-        // ==========================================================================
-        // VIEW SWITCHER & FILTERING
+        // VIEW SWITCHER & FILTERING (5 CORE TASK VIEWS)
         // ==========================================================================
         function switchTaskView(viewName) {
-            if (!viewName) viewName = 'kanban';
+            const validViews = ['kanban', 'gantt', 'calendar', 'table', 'archive'];
+            if (!validViews.includes(viewName)) {
+                if (viewName === 'history') { switchTab('history'); return; }
+                if (viewName === 'chat') { switchTab('chat'); return; }
+                viewName = 'kanban';
+            }
             currentTaskView = viewName;
             
             // Persist active subview in localStorage
@@ -2994,16 +3135,6 @@
             document.querySelectorAll('.task-subview').forEach(v => v.style.display = 'none');
             const targetView = document.getElementById(`task-subview-${viewName}`);
             if (targetView) targetView.style.display = 'block';
-
-            // Sembunyikan bar search/filter tugas saat di ruang chat koordinasi (Gambar 5)
-            const toolbar = document.querySelector('.task-toolbar');
-            if (toolbar) {
-                toolbar.style.display = (viewName === 'chat') ? 'none' : 'flex';
-            }
-
-            if (viewName === 'chat') {
-                markMentionsAsRead();
-            }
 
             renderActiveTaskView();
         }
@@ -4397,10 +4528,10 @@
             return Array.from(tags);
         }
 
-        // Mention Count Badge Logic (Gambar 5 - Hanya akun yang di-mention yang mendapat badge)
+        // Mention Count Badge Logic (Hanya akun yang di-mention yang mendapat badge)
         function updateMentionBadgeCount() {
             const badgeSubnav = document.getElementById('badge-chat-mentions');
-            const badgeSidebar = document.getElementById('badge-sidebar-tasks-mentions');
+            const badgeSidebar = document.getElementById('badge-sidebar-chat-mentions');
             if (!currentUser) return;
 
             const myTags = getMentionTagsForUser(currentUser);
@@ -4454,7 +4585,7 @@
                 localStorage.setItem(`masjid_sophia_read_mentions_${userEmailKey}`, JSON.stringify(allMsgIds));
             } catch (e) {}
             const badgeSubnav = document.getElementById('badge-chat-mentions');
-            const badgeSidebar = document.getElementById('badge-sidebar-tasks-mentions');
+            const badgeSidebar = document.getElementById('badge-sidebar-chat-mentions');
             if (badgeSubnav) badgeSubnav.style.display = 'none';
             if (badgeSidebar) badgeSidebar.style.display = 'none';
         }
