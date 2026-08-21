@@ -72,23 +72,25 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ---
 
 ### Fase 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS
-- **Tujuan:** Merancang skema PostgreSQL, sistem autentikasi pengurus, penyimpanan media, dan keamanan Row Level Security (RLS) bertingkat.
+- **Tujuan:** Merancang skema PostgreSQL, sistem autentikasi pengurus, penyimpanan media, Serverless Functions, dan keamanan Row Level Security (RLS) bertingkat.
+- **Status:** Dalam Proses (Master SQL Suite `database/schema.sql` & Serverless Functions Terimplementasi)
 - **Daftar Tugas:**
-  - [ ] **Skema Tabel Inti PostgreSQL:**
-    - `prayer_settings`: Parameter hisab, koordinat (-6.310391, 106.921264), dan offset menit ikhtiyat per waktu shalat.
-    - `duty_rosters`: Jadwal rotasi harian/mingguan Imam Rawatib, Muadzin, Khatib Jumat, dan Penceramah Kajian.
-    - `form_submissions`: Data formulir konfirmasi donasi & doa jamaah via Incognito Form.
-    - `donations_cashflow`: Catatan mutasi kas donasi masuk/keluar terverifikasi dan kategori alokasi program.
-    - `articles`: Konten dakwah, berita kegiatan, panduan ibadah, slug unik, tag, dan status publikasi.
-    - `tasks`: Manajemen tugas DKM (judul, deskripsi, status Kanban, tenggat waktu, PIC, prioritas).
-    - `task_comments`: Riwayat diskusi/chat koordinasi internal antar-pengurus pada setiap tugas.
-    - `santri_profiles`: Data santri tahfidz, progres hafalan juz/surah, dan rekap kehadiran.
-    - `user_profiles`: Profil akun pengurus terikat dengan `auth.users` dan penugasan peran RBAC.
-    - `audit_logs`: Pencatatan aktivitas sensitif admin (perubahan data kas, rotasi petugas, perubahan ikhtiyat).
-  - [ ] **Kebijakan Row Level Security (Zero-Trust):**
-    - Publik (`anon`): Akses SELECT hanya pada artikel terbit, jadwal shalat, profil santri publik, dan jadwal petugas. Diizinkan INSERT pada formulir donasi tanpa akses SELECT/UPDATE/DELETE.
-    - Terautentikasi (`authenticated`): Pembatasan akses CRUD berdasarkan peran RBAC pada JWT profile.
-  - [ ] **Konfigurasi Supabase Storage:**
+  - [x] **Master Skema PostgreSQL (`database/schema.sql`):**
+    - `media_checklists`: Pelacak kurasi 18 aset dokumentasi foto & video terhubung Google Drive dengan Real-Time WebSocket.
+    - `donations`: Perekaman formulir donasi incognito, sedekah makan siang gratis, dan infaq operasional dengan kode unik verifikasi.
+    - `jadwal_petugas`: Jadwal rotasi harian/mingguan Imam Rawatib, Muadzin, Khatib Jumat, dan Penceramah Kajian.
+    - `artikel_berita`: CMS warta kegiatan dan artikel dakwah dengan slug unik dan status publikasi.
+    - `team_tasks`: Manajemen produktivitas tugas DKM (tenggat waktu, PIC, divisi, status Kanban).
+    - `system_health_logs`: Monitoring kesehatan sistem (Supabase latency, Vercel Edge, ImageKit 20GB quota, Resend gateway).
+    - `admin_users`: Manajemen hak akses pengurus terikat peran RBAC (Super Admin, Ketua DKM, PJ Media, Bendahara, Staff).
+  - [x] **Kebijakan Row Level Security (Zero-Trust Hardening):**
+    - Publik (`anon`): Akses SELECT pada artikel, jadwal shalat, petugas, status checklist media, dan donasi terverifikasi. Akses INSERT pada formulir donasi dan system health.
+    - Terautentikasi (`authenticated`): Hak akses penuh CRUD untuk modul administratif dan manajemen tugas.
+  - [x] **Vercel Serverless Functions Suite (`/api`):**
+    - `/api/health.js`: Pemeriksaan kesehatan sistem, latensi koneksi Supabase, kuota ImageKit 20GB, dan status Vercel Edge.
+    - `/api/donasi.js`: Ingestion konfirmasi donasi instan dengan generator kode unik acak 3-digit ke Supabase.
+    - `/api/send-receipt.js`: Pengiriman kuitansi donasi resmi secara instan ke email donatur melalui Resend API.
+  - [ ] **Konfigurasi Supabase Storage & Bucket:**
     - Bucket `article-media`: Media publik untuk konten berita dan flyer kegiatan.
     - Bucket `donation-receipts`: Bukti transfer donasi dengan akses terbatas bagi divisi keuangan.
     - Bucket `dkm-avatars`: Foto profil pengurus DKM.

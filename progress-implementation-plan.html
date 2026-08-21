@@ -1174,70 +1174,60 @@
         </div>
 
         <!-- Fase 2 Card -->
-        <div class="phase-card collapsed" id="card-fase-2">
+        <div class="phase-card" id="card-fase-2">
             <div class="phase-header" onclick="togglePhase('card-fase-2')">
                 <div class="phase-title-group">
-                    <div class="phase-badge">2</div>
+                    <div class="phase-badge done"><i class="fa-solid fa-check"></i></div>
                     <div class="phase-name">
-                        <h3>Fase 2: Database Supabase, Auth & Keamanan RLS</h3>
-                        <p>Skema PostgreSQL, autentikasi pengurus DKM, dan proteksi Zero-Trust RLS</p>
+                        <h3>Fase 2: Database Supabase, Auth, Serverless API & Keamanan RLS</h3>
+                        <p>Skema PostgreSQL, Serverless Functions, dan proteksi Zero-Trust RLS</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-pending">Siap Dijalankan</span>
+                    <span class="status-tag status-done">Siap Dijalankan (100%)</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
             <div class="phase-body">
                 <div class="task-list">
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Skema Tabel Waktu Shalat & Ikhtiyat (prayer_settings)
+                                Master Skema SQL PostgreSQL (database/schema.sql)
                                 <span class="task-badge-pill">SQL Migration</span>
                             </div>
-                            <div class="task-desc">Penyimpanan koordinat Jatiwarna (-6.310391, 106.921264) dan offset menit ikhtiyat.</div>
+                            <div class="task-desc">8 tabel master: donations, jadwal_petugas, artikel_berita, team_tasks, system_health_logs, admin_users, media_checklists.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Skema Tabel Rotasi Petugas Ibadah (duty_rosters)
-                                <span class="task-badge-pill">SQL Migration</span>
-                            </div>
-                            <div class="task-desc">Jadwal Imam Rawatib, Muadzin, Khatib Jumat, dan Penceramah Kajian Tematik.</div>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Skema Donasi Incognito & Kas (form_submissions, donations_cashflow)
-                                <span class="task-badge-pill">SQL Migration</span>
-                            </div>
-                            <div class="task-desc">Penerimaan donasi tanpa login, WhatsApp +62, dan rekonsiliasi transfer.</div>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Skema Task Management & Chat Internal (tasks, task_comments)
-                                <span class="task-badge-pill">SQL Migration</span>
-                            </div>
-                            <div class="task-desc">Data Kanban board, tenggat waktu, PIC, dan obrolan koordinasi antar-pengurus.</div>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Penerapan Zero-Trust Row Level Security (RLS Hardening)
                                 <span class="task-badge-pill">RLS Security</span>
                             </div>
-                            <div class="task-desc">Isolasi akses baca publik vs admin demi keamanan mutlak data donatur.</div>
+                            <div class="task-desc">Isolasi akses anonim (INSERT donasi & SELECT artikel) vs akses penuh terautentikasi DKM.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Serverless API Suite Vercel (/api/health, /api/donasi, /api/send-receipt)
+                                <span class="task-badge-pill">Vercel Serverless</span>
+                            </div>
+                            <div class="task-desc">Pemantauan kesehatan sistem, pencatatan donasi kode unik, dan email kuitansi Resend otomatis.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Real-Time Replication & WebSocket Channel
+                                <span class="task-badge-pill">Supabase Realtime</span>
+                            </div>
+                            <div class="task-desc">Sinkronisasi otomatis checklist media, donasi masuk, dan tugas tim tanpa refresh halaman.</div>
                         </div>
                     </div>
                 </div>

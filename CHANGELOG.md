@@ -21,10 +21,9 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 - `[FEAT]` Mobile-First Navigation & Floating WhatsApp Hotline: Penambahan *off-canvas drawer* sentuh untuk navigasi smartphone dan tombol melayang WhatsApp langsung ke Hotline DKM 24 jam (`0851-8835-2432`).
 - `[FEAT]` Penyesuaian tata letak responsif jadwal shalat hisab Kemenag (grid 2 kolom di ponsel dengan sorotan aktif otomatis) dan box salin rekening BSI 1-Click Copy yang ramah sentuhan.
 - `[MEDIA]` Penyusunan berkas acuan `assets-media-checklist.csv` berisi 18 item kebutuhan foto & video (minimum qty, rasio aspek, format) terhubung ke folder Google Drive sementara.
-- `[FEAT]` Pembuatan portal mandiri `media-checklist.html` (dapat diakses via `progdev.masjidsophiajatiwarna.com/media-checklist`) dengan integrasi tombol Google Drive, panduan penamaan file, filter kategori, auto-save status centang, dan kalkulasi progres live.
-- `[ARCH]` Desain arsitektur *Self-Sustain No-Code Page & Media Builder*: Memungkinkan tim pengurus DKM awam (PJ Media & PJ Divisi) menambah halaman mandiri, mengatur banner slider beranda, dan mengunggah video/foto tanpa ketergantungan developer.
-- `[ARCH]` Integrasi ImageKit.io Video CDN (kuota lega 20GB), pemantauan kesehatan sistem (*System Health*), monitoring produktivitas tugas DKM (*Task Health*), dan ekspor laporan PDF mandiri per anggota tim.
-- `[ARCH]` Penegasan pemisahan arsitektur (*Decoupling*): Halaman depan publik murni melayani jamaah dan musafir tanpa mengekspos tombol atau tautan portal admin. Portal Admin DKM diisolasi tertutup melalui subdomain `admin.masjidsophiajatiwarna.com`.
+- `[BACKEND]` Pembuatan master migrasi SQL `database/schema.sql` (8 tabel PostgreSQL: `donations`, `jadwal_petugas`, `artikel_berita`, `team_tasks`, `system_health_logs`, `admin_users`, `media_checklists`) lengkap dengan proteksi Row Level Security (RLS) Zero-Trust dan Realtime Replication.
+- `[SERVERLESS]` Implementasi suite Vercel Edge Serverless Functions: `/api/health` (pemantauan kesehatan sistem), `/api/donasi` (pencatatan donasi kode unik), dan `/api/send-receipt` (pengiriman kuitansi instan via Resend).
+- `[ARCH]` Integrasi arsitektur 7 Pilar: GitHub, Vercel, Supabase, ImageKit.io (20GB Video CDN), Resend Email Gateway, Gmail Kustom, dan Google Drive.
 
 ---
 
