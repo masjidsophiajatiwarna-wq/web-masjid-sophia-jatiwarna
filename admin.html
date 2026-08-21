@@ -1898,6 +1898,315 @@
             }
         }
 
+        /* ==========================================================================
+           10. ACCOUNT CONTROL & RBAC STYLING
+           ========================================================================== */
+        .account-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .account-stat-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.15rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .account-stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .account-stat-icon.gold { background: #FAF6E8; color: var(--color-gold-deep); }
+        .account-stat-icon.emerald { background: #ECFDF5; color: #059669; }
+        .account-stat-icon.blue { background: #EFF6FF; color: #2563EB; }
+        .account-stat-icon.slate { background: #F1F5F9; color: #475569; }
+
+        .account-stat-val {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            line-height: 1.2;
+        }
+
+        .account-stat-lbl {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--color-charcoal-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .account-user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #FAF6E8;
+            border: 2px solid var(--color-gold-light);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--color-gold-deep);
+            flex-shrink: 0;
+            overflow: hidden;
+            object-fit: cover;
+        }
+
+        .account-user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge-role {
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .badge-role.super-admin { background: #4C1D95; color: #FFFFFF; }
+        .badge-role.super-user { background: #1E293B; color: #94A3B8; border: 1px solid #475569; }
+        .badge-role.ketua-dkm { background: var(--color-gold-deep); color: #FFFFFF; }
+        .badge-role.pj-divisi { background: #E0E7FF; color: #3730A3; }
+        .badge-role.staff { background: #F1F5F9; color: #475569; }
+
+        .badge-status-online {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #059669;
+            background: #ECFDF5;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            border: 1px solid #A7F3D0;
+        }
+
+        .badge-status-offline {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #64748B;
+            background: #F8FAFC;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+            display: inline-block;
+        }
+
+        .btn-table-action {
+            padding: 0.35rem 0.65rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-white);
+            color: var(--color-charcoal);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: var(--transition-fast);
+        }
+
+        .btn-table-action:hover {
+            background: #FAF8F2;
+            border-color: var(--color-gold-deep);
+            color: var(--color-gold-deep);
+        }
+
+        .btn-table-action.danger:hover {
+            background: #FEF2F2;
+            border-color: #DC2626;
+            color: #DC2626;
+        }
+
+        .btn-table-action.warning:hover {
+            background: #FFFBEB;
+            border-color: #D97706;
+            color: #D97706;
+        }
+
+        /* RBAC Granular Matrix Table in Modal */
+        .rbac-matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .rbac-matrix-table th {
+            background: #F8FAFC;
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            border-bottom: 2px solid var(--color-border);
+            font-size: 0.75rem;
+        }
+
+        .rbac-matrix-table td {
+            padding: 0.55rem 0.75rem;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-charcoal);
+        }
+
+        .rbac-matrix-table tr:hover td {
+            background: #FAF9F5;
+        }
+
+        .select-rbac-perm {
+            padding: 0.35rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-white);
+            color: var(--color-charcoal);
+            width: 100%;
+        }
+
+        .select-rbac-perm.perm-penuh {
+            background: #ECFDF5;
+            color: #065F46;
+            border-color: #A7F3D0;
+        }
+
+        .select-rbac-perm.perm-baca, .select-rbac-perm.perm-laporan, .select-rbac-perm.perm-review, .select-rbac-perm.perm-kajian, .select-rbac-perm.perm-persetujuan {
+            background: #EFF6FF;
+            color: #1E40AF;
+            border-color: #BFDBFE;
+        }
+
+        .select-rbac-perm.perm-request {
+            background: #FFFBEB;
+            color: #92400E;
+            border-color: #FDE68A;
+        }
+
+        .select-rbac-perm.perm-none {
+            background: #F1F5F9;
+            color: #94A3B8;
+            border-color: #CBD5E1;
+        }
+
+        /* 2-Tab Self Profile Modal (Gambar 5 Standard) */
+        .self-profile-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--color-border);
+            margin-bottom: 1.25rem;
+            gap: 0.5rem;
+        }
+
+        .self-profile-tab-btn {
+            padding: 0.65rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            color: var(--color-charcoal-muted);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-fast);
+        }
+
+        .self-profile-tab-btn.active {
+            color: var(--color-gold-deep);
+            border-bottom-color: var(--color-gold-deep);
+            font-weight: 800;
+        }
+
+        .avatar-uploader-box {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 1rem;
+            background: #FAF8F2;
+            border: 1px dashed var(--color-gold-primary);
+            border-radius: var(--radius-md);
+            margin-bottom: 1.25rem;
+        }
+
+        .avatar-preview-lg {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--color-bg-white);
+            border: 2px solid var(--color-gold-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: var(--color-gold-deep);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .avatar-preview-lg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-security-logout {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #111827;
+            color: #FFFFFF;
+            border: 1px solid #374151;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: var(--transition-fast);
+            margin-top: 0.75rem;
+        }
+
+        .btn-security-logout:hover {
+            background: #000000;
+            border-color: var(--color-gold-deep);
+            color: var(--color-gold-primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 900px) {
             .admin-sidebar {
@@ -2011,14 +2320,25 @@
                             <i class="fa-solid fa-server"></i> <span>System Health</span>
                         </button>
                     </li>
+                    <li id="sidebar-nav-item-accounts" style="display: none;">
+                        <button class="nav-item-btn" id="btn-nav-accounts" onclick="switchTab('accounts', this)">
+                            <i class="fa-solid fa-users-gear"></i> <span>Manajemen Pengguna</span>
+                        </button>
+                    </li>
                 </ul>
             </div>
 
             <div class="sidebar-footer">
-                <div class="user-profile-box">
-                    <div>
-                        <div class="user-info-name" id="display-user-email">admin@dkm.com</div>
-                        <div class="user-info-role" id="display-user-role">Pengurus Resmi DKM</div>
+                <div class="user-profile-box" onclick="openSelfProfileModal()" style="cursor: pointer; transition: background 0.15s ease;" title="Klik untuk membuka pengaturan profil & keamanan">
+                    <div style="display: flex; align-items: center; gap: 0.65rem; width: 100%;">
+                        <div class="account-user-avatar" id="display-user-avatar" style="width: 34px; height: 34px; font-size: 0.75rem;">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div style="min-width: 0; flex: 1;">
+                            <div class="user-info-name" id="display-user-email" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">admin@dkm.com</div>
+                            <div class="user-info-role" id="display-user-role">Pengurus Resmi DKM</div>
+                        </div>
+                        <i class="fa-solid fa-gear" style="font-size: 0.75rem; color: var(--color-charcoal-muted); opacity: 0.7;"></i>
                     </div>
                 </div>
                 <button class="btn-logout" onclick="handleLogout()">
@@ -2589,6 +2909,111 @@
                 </div>
             </div>
 
+            <!-- Tab 9: Account Control (SUPER_ADMIN & KETUA_DKM Only) -->
+            <div id="tab-accounts" class="tab-content-panel" style="display: none;">
+                <!-- Stat Cards Grid -->
+                <div class="account-stat-grid">
+                    <div class="account-stat-card">
+                        <div class="account-stat-icon gold">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div>
+                            <div class="account-stat-val" id="stat-total-users">11</div>
+                            <div class="account-stat-lbl">Total Pengurus Terdaftar</div>
+                        </div>
+                    </div>
+                    <div class="account-stat-card">
+                        <div class="account-stat-icon emerald">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <div>
+                            <div class="account-stat-val" id="stat-active-users">11</div>
+                            <div class="account-stat-lbl">Akun Pengurus Aktif</div>
+                        </div>
+                    </div>
+                    <div class="account-stat-card">
+                        <div class="account-stat-icon blue">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div>
+                            <div class="account-stat-val" id="stat-online-users">1</div>
+                            <div class="account-stat-lbl">Sesi Aktif Realtime</div>
+                        </div>
+                    </div>
+                    <div class="account-stat-card">
+                        <div class="account-stat-icon slate">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                        <div>
+                            <div class="account-stat-val" style="font-size: 1rem; color: var(--color-gold-deep);">Supabase CDC</div>
+                            <div class="account-stat-lbl">Live RBAC Synchronization</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Accounts Section Panel -->
+                <div class="section-panel">
+                    <div class="panel-header" style="flex-wrap: wrap; gap: 0.75rem;">
+                        <div>
+                            <div class="panel-title">
+                                <i class="fa-solid fa-users-gear" style="color: var(--color-gold-deep);"></i> Direktori & Manajemen Pengguna DKM
+                            </div>
+                            <div style="font-size: 0.78rem; color: var(--color-charcoal-muted); margin-top: 0.2rem;">
+                                Kontrol hak akses multi-divisi, riwayat login live, reset kredensial baku, dan manajemen sesi pengurus.
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                            <div style="position: relative;">
+                                <input type="text" id="filter-account-search" class="form-input" style="padding-left: 2rem; font-size: 0.78rem; width: 220px;" placeholder="Cari nama, email, role..." oninput="handleAccountSearchFilter()">
+                                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: var(--color-charcoal-muted);"></i>
+                            </div>
+                            <select id="filter-account-division" class="form-input" style="font-size: 0.78rem; width: 170px;" onchange="handleAccountSearchFilter()">
+                                <option value="ALL">Semua Divisi</option>
+                                <option value="IT & Ekosistem Digital">IT & Digital</option>
+                                <option value="Pimpinan DKM">Pimpinan DKM</option>
+                                <option value="Media & Dakwah">Media & Dakwah</option>
+                                <option value="Logistik & Sarpras">Logistik & Sarpras</option>
+                                <option value="Santri & Tahfidz">Santri Tahfidz</option>
+                                <option value="Pelayanan Musafir">Layanan Musafir</option>
+                                <option value="Peribadatan & Acara">Peribadatan & Acara</option>
+                                <option value="Keuangan & Akuntansi">Keuangan</option>
+                                <option value="Keamanan & Ketertiban">Keamanan</option>
+                                <option value="Kebersihan & Sanitasi">Kebersihan</option>
+                                <option value="Quality Assurance & Audit">QA & Audit</option>
+                            </select>
+                            <button class="btn-action-gold" onclick="openAddUserModal()" style="font-size: 0.78rem;">
+                                <i class="fa-solid fa-user-plus"></i> Tambah Pengurus Baru
+                            </button>
+                            <button class="btn-table-action" onclick="loadAdminUsers(true)" title="Refresh data pengurus dari database">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="admin-table" id="admin-users-table">
+                            <thead>
+                                <tr>
+                                    <th>Pengurus / PIC</th>
+                                    <th>Email Login Resmi</th>
+                                    <th>Divisi & Role</th>
+                                    <th>Status Akun</th>
+                                    <th>Login Terakhir (Realtime)</th>
+                                    <th style="text-align: right;">Aksi & Kontrol</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-tbody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">
+                                        <i class="fa-solid fa-spinner fa-spin" style="margin-right: 0.5rem;"></i> Memuat direktori pengurus dari Supabase...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -2696,8 +3121,307 @@
                 <h3 id="detail-task-title-header"><i class="fa-solid fa-circle-info" style="color: var(--color-gold-deep);"></i> Rincian Tugas Pengurus</h3>
                 <button class="btn-modal-close" onclick="closeTaskDetailModal()">&times;</button>
             </div>
-            <div id="task-detail-body">
-                <!-- Loaded dynamically -->
+    <!-- Modal 1: Tambah Pengurus Baru (Pattern-based Auto Generator) -->
+    <div class="modal-overlay" id="modal-admin-add-user" style="display: none;">
+        <div class="modal-box" style="max-width: 580px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-plus" style="color: var(--color-gold-deep);"></i> Tambah Akun Pengurus Baru</h3>
+                <button class="btn-modal-close" onclick="closeAddUserModal()">&times;</button>
+            </div>
+            <form onsubmit="handleSaveNewUser(event)">
+                <div class="form-group">
+                    <label class="form-label">Divisi Penanggung Jawab <span style="color: var(--color-danger);">*</span></label>
+                    <select id="new-user-division" class="form-input" required onchange="handleDivisionChangeForAddUser()">
+                        <option value="Media & Dakwah">Divisi Media & Dakwah</option>
+                        <option value="Logistik & Sarpras">Divisi Logistik & Sarpras</option>
+                        <option value="Santri & Tahfidz">Divisi Pembinaan Santri Tahfidz</option>
+                        <option value="Pelayanan Musafir">Divisi Pelayanan Musafir</option>
+                        <option value="Peribadatan & Acara">Divisi Peribadatan & Acara</option>
+                        <option value="Keuangan & Akuntansi">Divisi Keuangan & Akuntansi</option>
+                        <option value="Keamanan & Ketertiban">Divisi Keamanan & Ketertiban</option>
+                        <option value="Kebersihan & Sanitasi">Divisi Kebersihan & Sanitasi</option>
+                        <option value="IT & Ekosistem Digital">IT & Ekosistem Digital</option>
+                        <option value="Pimpinan DKM">Pimpinan DKM</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap Pengurus <span style="color: var(--color-danger);">*</span></label>
+                    <input type="text" id="new-user-fullname" class="form-input" placeholder="Misal: Cindy / Penanggung Jawab Media 2" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Login Terpola (Otomatis & Terstandarisasi) <span style="color: var(--color-danger);">*</span></label>
+                    <input type="email" id="new-user-email" class="form-input" placeholder="media2@masjidsophiajatiwarna.com" required>
+                    <div style="font-size: 0.72rem; color: var(--color-charcoal-muted); margin-top: 0.25rem;">
+                        Pola email digenerate otomatis berdasarkan urutan nomor staf pada divisi terkait.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password Awal Baku</label>
+                    <input type="text" id="new-user-password" class="form-input" value="SophiaJatiwarna2026!" readonly style="background: #F8FAFC; font-weight: 700; color: var(--color-charcoal);">
+                    <div style="font-size: 0.72rem; color: var(--color-charcoal-muted); margin-top: 0.25rem;">
+                        Kredensial awal baku sesuai SOP DKM Sophia. Pengurus dapat mengubah kata sandi mandiri setelah login.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nomor WhatsApp / Kontak</label>
+                    <input type="text" id="new-user-phone" class="form-input" placeholder="+6281234567890">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeAddUserModal()">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.25rem;">
+                        <i class="fa-solid fa-user-plus"></i> Daftarkan Pengurus
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Edit Akun & Granular RBAC (DKM & Super Administrator) -->
+    <div class="modal-overlay" id="modal-admin-edit-user" style="display: none;">
+        <div class="modal-box" style="max-width: 720px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <div>
+                    <h3 id="edit-user-modal-title"><i class="fa-solid fa-user-gear" style="color: var(--color-gold-deep);"></i> Edit & Otorisasi Akun Pengurus</h3>
+                    <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); margin-top: 0.15rem;" id="edit-user-modal-subtitle">Konfigurasi data profil dan matriks hak akses per modul</div>
+                </div>
+                <button class="btn-modal-close" onclick="closeEditUserModal()">&times;</button>
+            </div>
+            <form onsubmit="handleSaveUserRBAC(event)">
+                <input type="hidden" id="edit-user-id" value="">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap Pengurus</label>
+                        <input type="text" id="edit-user-fullname" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Alamat Email Login</label>
+                        <input type="email" id="edit-user-email" class="form-input" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Divisi</label>
+                        <select id="edit-user-division" class="form-input">
+                            <option value="Media & Dakwah">Divisi Media & Dakwah</option>
+                            <option value="Logistik & Sarpras">Divisi Logistik & Sarpras</option>
+                            <option value="Santri & Tahfidz">Divisi Pembinaan Santri Tahfidz</option>
+                            <option value="Pelayanan Musafir">Divisi Pelayanan Musafir</option>
+                            <option value="Peribadatan & Acara">Divisi Peribadatan & Acara</option>
+                            <option value="Keuangan & Akuntansi">Divisi Keuangan & Akuntansi</option>
+                            <option value="Keamanan & Ketertiban">Divisi Keamanan & Ketertiban</option>
+                            <option value="Kebersihan & Sanitasi">Divisi Kebersihan & Sanitasi</option>
+                            <option value="IT & Ekosistem Digital">IT & Ekosistem Digital</option>
+                            <option value="Pimpinan DKM">Pimpinan DKM</option>
+                            <option value="Quality Assurance & Audit">QA & Audit</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status Keaktifan Akun</label>
+                        <select id="edit-user-status" class="form-input">
+                            <option value="true">Aktif (Dapat Login)</option>
+                            <option value="false">Nonaktif / Ditangguhkan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: center; padding: 0.85rem; background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-sm); margin-bottom: 1.25rem;">
+                    <div>
+                        <div style="font-size: 0.8rem; font-weight: 800; color: var(--color-charcoal);">Reset Kata Sandi Akun</div>
+                        <div style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Masukkan kata sandi baru untuk akun ini jika diperlukan.</div>
+                    </div>
+                    <input type="password" id="edit-user-new-password" class="form-input" placeholder="Kosongkan jika tidak diubah" style="font-size: 0.78rem;">
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <label class="form-label" style="margin-bottom: 0; font-size: 0.85rem; font-weight: 800;">
+                            <i class="fa-solid fa-table-cells" style="color: var(--color-gold-deep);"></i> Matriks Hak Akses Modul Operasional (RBAC)
+                        </label>
+                        <button type="button" class="btn-table-action" onclick="applyDivisionRBACTemplate()" style="font-size: 0.72rem;">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Terapkan Template Divisi
+                        </button>
+                    </div>
+                    
+                    <div class="table-responsive" style="max-height: 280px; overflow-y: auto; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+                        <table class="rbac-matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Modul / Fitur Sistem</th>
+                                    <th style="width: 220px;">Tingkat Hak Akses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rbac-matrix-tbody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                    <button type="button" class="btn-table-action danger" onclick="handleForceLogoutFromModal()" id="btn-modal-force-logout">
+                        <i class="fa-solid fa-right-from-bracket"></i> End Session (Paksa Logout)
+                    </button>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeEditUserModal()">
+                            Batal
+                        </button>
+                        <button type="submit" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.25rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Hak Akses
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3: Konfirmasi Reset Akun ke Default (Skenario Resign) -->
+    <div class="modal-overlay" id="modal-confirm-reset-user" style="display: none;">
+        <div class="modal-box" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-arrow-rotate-left" style="color: var(--color-gold-deep);"></i> Konfirmasi Reset Akun Pengurus</h3>
+                <button class="btn-modal-close" onclick="closeResetUserModal()">&times;</button>
+            </div>
+            <div style="padding: 0.5rem 0;">
+                <div style="padding: 0.85rem; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-sm); margin-bottom: 1rem;">
+                    <div style="font-weight: 800; font-size: 0.82rem; color: #92400E; margin-bottom: 0.25rem;">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Skenario Pergantian / Resign PIC
+                    </div>
+                    <div style="font-size: 0.75rem; color: #78350F; line-height: 1.45;">
+                        Akun ini akan dikembalikan persis ke kredensial baku awal di SOP DKM. Seluruh sesi aktif PIC lama akan diputus seketika.
+                    </div>
+                </div>
+
+                <div style="font-size: 0.8rem; line-height: 1.6; color: var(--color-charcoal); margin-bottom: 1.25rem;">
+                    <div>Target Akun: <strong id="reset-target-name">-</strong> (<span id="reset-target-current-email">-</span>)</div>
+                    <hr style="border: 0; border-top: 1px dashed var(--color-border); margin: 0.6rem 0;">
+                    <div>Nilai Default yang Akan Diterapkan:</div>
+                    <ul style="margin: 0.35rem 0 0 1.2rem; font-size: 0.78rem; color: var(--color-charcoal-muted);">
+                        <li>Email Resmi: <code id="reset-target-default-email" style="font-weight: 800; color: var(--color-charcoal);">-</code></li>
+                        <li>Password Baku: <code style="font-weight: 800; color: var(--color-charcoal);">SophiaJatiwarna2026!</code></li>
+                        <li>Nama Pengurus: <span id="reset-target-default-name" style="font-weight: 700;">-</span></li>
+                        <li>Sesi Aktif: <strong>Dipaksa Keluar (Force Logout)</strong></li>
+                    </ul>
+                </div>
+
+                <input type="hidden" id="reset-user-id" value="">
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeResetUserModal()">
+                        Batal
+                    </button>
+                    <button type="button" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.25rem; background: #D97706;" onclick="executeResetUserToDefault()">
+                        <i class="fa-solid fa-arrow-rotate-left"></i> Ya, Reset Akun ke Default
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Profil & Keamanan Mandiri Pengurus (Self-Service - Gambar 5 Standard) -->
+    <div class="modal-overlay" id="modal-user-self-profile" style="display: none;">
+        <div class="modal-box" style="max-width: 520px; background: #18181B; color: #F4F4F5; border: 1px solid #27272A;">
+            <div class="modal-header" style="border-bottom: 1px solid #27272A;">
+                <h3 style="color: #FFFFFF; font-size: 1rem; letter-spacing: 0.5px;">ACCOUNT PROFILE &amp; SECURITY</h3>
+                <button class="btn-modal-close" style="color: #A1A1AA;" onclick="closeSelfProfileModal()">&times;</button>
+            </div>
+
+            <!-- 2-Tab Bar (Gambar 5) -->
+            <div class="self-profile-tabs" style="border-bottom-color: #27272A; margin-top: 1rem;">
+                <button type="button" class="self-profile-tab-btn active" id="btn-self-tab-general" onclick="switchSelfProfileTab('general')">
+                    <i class="fa-regular fa-user"></i> General Profile
+                </button>
+                <button type="button" class="self-profile-tab-btn" id="btn-self-tab-security" onclick="switchSelfProfileTab('security')" style="border: 1px solid #EAB308; border-radius: 4px; padding: 0.4rem 0.85rem; color: #EAB308;">
+                    <i class="fa-solid fa-lock"></i> Security &amp; Login
+                </button>
+            </div>
+
+            <!-- Tab 1: General Profile Content -->
+            <div id="self-tab-general-content">
+                <form onsubmit="handleSaveSelfProfile(event)">
+                    <div class="avatar-uploader-box" style="background: #27272A; border-color: #3F3F46;">
+                        <div class="avatar-preview-lg" id="self-avatar-preview" style="background: #18181B; border-color: #EAB308; color: #EAB308;">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 0.82rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.25rem;">Foto Profil Pengurus</div>
+                            <div style="font-size: 0.72rem; color: #A1A1AA; margin-bottom: 0.5rem;">Unggah gambar WebP (Maks 2MB)</div>
+                            <input type="file" id="self-avatar-file-input" accept="image/*" style="display: none;" onchange="handleSelfAvatarUpload(event)">
+                            <button type="button" class="btn-table-action" onclick="document.getElementById('self-avatar-file-input').click()" style="background: #3F3F46; color: #FFFFFF; border-color: #52525B;">
+                                <i class="fa-solid fa-camera"></i> Ganti Foto Profil
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="color: #D4D4D8;">Nama Lengkap Pengurus</label>
+                        <input type="text" id="self-fullname-input" class="form-input" style="background: #09090B; border-color: #27272A; color: #FFFFFF;" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="color: #D4D4D8;">Alamat Email Resmi</label>
+                        <input type="email" id="self-email-display" class="form-input" style="background: #18181B; border-color: #27272A; color: #A1A1AA;" readonly>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label class="form-label" style="color: #D4D4D8;">Divisi &amp; Peran</label>
+                        <input type="text" id="self-role-display" class="form-input" style="background: #18181B; border-color: #27272A; color: #A1A1AA;" readonly>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                        <button type="button" class="btn-action-gold" style="background: #27272A; color: #FFFFFF; border-color: #3F3F46;" onclick="closeSelfProfileModal()">
+                            Tutup
+                        </button>
+                        <button type="submit" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.25rem; background: #EAB308; color: #000000; font-weight: 800;">
+                            Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 2: Security & Login Content (Gambar 5 Rule: Update & Logout) -->
+            <div id="self-tab-security-content" style="display: none;">
+                <!-- Section A: Change Password -->
+                <div style="margin-bottom: 1.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid #27272A;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.25rem;">
+                        <i class="fa-solid fa-lock"></i> Change Password
+                    </div>
+                    <div style="font-size: 0.72rem; color: #A1A1AA; line-height: 1.4; margin-bottom: 0.85rem;">
+                        Updating your password will automatically end active sessions and require re-login.
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0.5rem;">
+                        <label class="form-label" style="color: #A1A1AA; font-size: 0.7rem; letter-spacing: 0.5px;">NEW PASSWORD</label>
+                        <input type="password" id="self-new-password-input" class="form-input" style="background: #09090B; border-color: #27272A; color: #FFFFFF;" placeholder="Minimum 6 characters">
+                    </div>
+                    <button type="button" class="btn-security-logout" onclick="handleSelfUpdatePasswordAndLogout()">
+                        UPDATE PASSWORD &amp; LOGOUT &rarr;
+                    </button>
+                </div>
+
+                <!-- Section B: Change Email Address -->
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.25rem;">
+                        <i class="fa-regular fa-envelope"></i> Change Email Address
+                    </div>
+                    <div style="font-size: 0.72rem; color: #A1A1AA; line-height: 1.4; margin-bottom: 0.85rem;">
+                        Changing your email requires confirmation and will log you out.
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0.5rem;">
+                        <label class="form-label" style="color: #A1A1AA; font-size: 0.7rem; letter-spacing: 0.5px;">NEW EMAIL ADDRESS</label>
+                        <input type="email" id="self-new-email-input" class="form-input" style="background: #09090B; border-color: #27272A; color: #FFFFFF;" placeholder="newemail@company.com">
+                    </div>
+                    <button type="button" class="btn-security-logout" onclick="handleSelfUpdateEmailAndLogout()">
+                        UPDATE EMAIL &amp; LOGOUT &rarr;
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -2823,6 +3547,31 @@
             const roleElem = document.getElementById('display-user-role');
             if (roleElem) roleElem.textContent = getUserRoleLabel(role);
 
+            // Update user avatar in sidebar
+            const avatarBox = document.getElementById('display-user-avatar');
+            if (avatarBox) {
+                if (user.avatar_url) {
+                    avatarBox.innerHTML = `<img src="${escapeHtml(user.avatar_url)}" alt="Avatar">`;
+                } else {
+                    const initials = getUserDisplayName(user).substring(0, 2).toUpperCase();
+                    avatarBox.innerHTML = `<span>${initials}</span>`;
+                }
+            }
+
+            // Record Last Login in Supabase DB
+            if (sbClient && user && user.email) {
+                sbClient.from('admin_users').update({ 
+                    last_login: new Date().toISOString() 
+                }).eq('email', user.email.toLowerCase()).then(() => {});
+            }
+
+            // Strict Role-Based Visibility: Manajemen Pengguna DKM (SUPER_ADMIN & KETUA_DKM Only)
+            const navAccounts = document.getElementById('sidebar-nav-item-accounts');
+            if (navAccounts) {
+                const canAccessAccounts = ['SUPER_ADMIN', 'KETUA_DKM'].includes(role);
+                navAccounts.style.display = canAccessAccounts ? 'block' : 'none';
+            }
+
             // Restore sidebar collapsed state
             try {
                 if (localStorage.getItem('masjid_sophia_sidebar_collapsed') === '1' && window.innerWidth > 900) {
@@ -2848,11 +3597,22 @@
             switchTab(savedTab);
 
             loadAllAdminData();
+            loadAdminUsers();
         }
 
         // Switch Navigation Tabs with Browser Memory & URL Hash Persistence
         function switchTab(tabId, btn = null) {
             if (!tabId) tabId = 'overview';
+
+            // Strict Gate: Account Control Tab
+            if (tabId === 'accounts') {
+                const role = getUserRole();
+                if (!['SUPER_ADMIN', 'KETUA_DKM'].includes(role)) {
+                    alert('Akses Ditolak: Modul Manajemen Pengguna DKM hanya dapat diakses oleh Super Administrator dan Ketua DKM.');
+                    switchTab('overview');
+                    return;
+                }
+            }
 
             // Save to localStorage & URL Hash
             try {
@@ -2882,7 +3642,8 @@
                 'chat': ['Ruang Koordinasi Pengurus DKM Sophia', 'Saluran komunikasi multi-arah antar 10 peran DKM (Live WhatsApp-Style tanpa refresh)'],
                 'feedback': ['Pusat Pengaduan & Kotak Saran', 'Aspirasi, kritik, dan laporan kenyamanan dari jamaah/musafir'],
                 'articles': ['Content Studio Warta & Dakwah', 'Penerbitan artikel, jadwal kajian, dan dokumentasi kegiatan'],
-                'health': ['Pemantauan Kesehatan Sistem', 'Status real-time 7 pilar arsitektur web aplikasi']
+                'health': ['Pemantauan Kesehatan Sistem', 'Status real-time 7 pilar arsitektur web aplikasi'],
+                'accounts': ['Direktori & Manajemen Pengguna DKM', 'Kontrol hak akses multi-divisi, riwayat login live, reset kredensial baku, dan manajemen sesi pengurus']
             };
 
             if (titles[tabId]) {
@@ -2905,6 +3666,8 @@
             } else if (tabId === 'chat') {
                 renderTaskChat();
                 markMentionsAsRead();
+            } else if (tabId === 'accounts') {
+                loadAdminUsers();
             }
         }
 
@@ -3337,6 +4100,10 @@
                             updateMentionBadgeCount();
                         }
                     })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'admin_users' }, payload => {
+                        console.log('[Realtime CDC] admin_users:', payload);
+                        handleRealtimeAdminUserChange(payload);
+                    })
                     // 2. Broadcast Channel (Ultra Fast Multi-Tab / Multi-Client Realtime Sync)
                     .on('broadcast', { event: 'TASK_SYNC' }, ({ payload }) => {
                         console.log('[Realtime Broadcast] TASK_SYNC received:', payload);
@@ -3368,6 +4135,22 @@
                                 renderTaskChat();
                                 updateMentionBadgeCount();
                             }
+                        }
+                    })
+                    .on('broadcast', { event: 'FORCE_LOGOUT' }, ({ payload }) => {
+                        console.log('[Realtime Broadcast] FORCE_LOGOUT received:', payload);
+                        if (payload && currentUser) {
+                            const targetEmail = (payload.target_email || '').toLowerCase().trim();
+                            const currentEmail = (currentUser.email || '').toLowerCase().trim();
+                            if (targetEmail === currentEmail || String(payload.target_id) === String(currentUser.id)) {
+                                alert('Sesi Anda telah diakhiri oleh Pengurus DKM. Harap login kembali.');
+                                handleLogout();
+                            }
+                        }
+                    })
+                    .on('broadcast', { event: 'USER_SYNC' }, ({ payload }) => {
+                        if (payload) {
+                            handleRealtimeAdminUserChange({ eventType: 'UPDATE', new: payload });
                         }
                     })
                     .subscribe((status) => {
@@ -5865,8 +6648,933 @@
             }
         }
 
+        // ==========================================================================
+        // 11. ACCOUNT CONTROL, USER MANAGEMENT & GRANULAR RBAC ENGINE
+        // ==========================================================================
+        const DEFAULT_ADMIN_USERS_SEED = [
+            {
+                id: "5f439559-74ae-4406-bac6-1d5b2ce0a90d",
+                email: "superadmin@masjidsophiajatiwarna.com",
+                full_name: "Super Administrator Sophia",
+                role: "SUPER_ADMIN",
+                division: "IT & Ekosistem Digital",
+                phone_number: "+6281234567890",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "6a937ea3-1372-4eb9-924b-026cb32652d4",
+                email: "superuser@masjidsophiajatiwarna.com",
+                full_name: "Super User Testing Sophia",
+                role: "SUPER_USER",
+                division: "Quality Assurance & Audit",
+                phone_number: "+6281234567891",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "77380ff1-42bd-4285-b727-79803a7e9d97",
+                email: "dkm@masjidsophiajatiwarna.com",
+                full_name: "Ketua DKM Masjid Sophia",
+                role: "KETUA_DKM",
+                division: "Pimpinan DKM",
+                phone_number: "+6281234567892",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "38d46664-7070-41b2-a7c5-3c4e4fe91688",
+                email: "media@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Media & Dakwah",
+                role: "PJ_MEDIA",
+                division: "Media & Dakwah",
+                phone_number: "+6281234567893",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "a32b9a78-39f4-40a9-8769-661940333fb6",
+                email: "logistik@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Logistik & Sarpras",
+                role: "PJ_LOGISTIK",
+                division: "Logistik & Sarpras",
+                phone_number: "+6281234567894",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "146ddfbc-81d4-4dc8-b783-799a1c8621b4",
+                email: "santri@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Santri Tahfidz",
+                role: "PJ_SANTRI",
+                division: "Santri & Tahfidz",
+                phone_number: "+6281234567895",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "cc146860-c400-4408-8135-c710f739ba88",
+                email: "musafir@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Layanan Musafir",
+                role: "PJ_MUSAFIR",
+                division: "Pelayanan Musafir",
+                phone_number: "+6281234567896",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "7260075c-ae31-48ed-944e-1b1984e808da",
+                email: "ibadah@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Peribadatan & Acara",
+                role: "PJ_IBADAH",
+                division: "Peribadatan & Acara",
+                phone_number: "+6281234567897",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "e9084be8-1f18-4380-a31f-65f0024a6225",
+                email: "keuangan@masjidsophiajatiwarna.com",
+                full_name: "Bendahara & Akuntansi DKM",
+                role: "PJ_KEUANGAN",
+                division: "Keuangan & Akuntansi",
+                phone_number: "+6281234567898",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "9ff7cd7f-eaf6-42e2-8d8e-4aec8508ab5d",
+                email: "keamanan@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Keamanan & Ketertiban",
+                role: "PJ_KEAMANAN",
+                division: "Keamanan & Ketertiban",
+                phone_number: "+6281234567899",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "8aae0c0a-3beb-4b43-af49-bfd91d94db91",
+                email: "kebersihan@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Kebersihan & Sanitasi",
+                role: "PJ_KEBERSIHAN",
+                division: "Kebersihan & Sanitasi",
+                phone_number: "+6281234567800",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            }
+        ];
+
+        const SYSTEM_MODULES = [
+            { key: "system_config", name: "Konfigurasi Sistem & API", icon: "fa-sliders" },
+            { key: "account_control", name: "Manajemen Pengguna DKM (Account Control)", icon: "fa-users-gear" },
+            { key: "tasks", name: "Task Management (5 Tampilan)", icon: "fa-list-check" },
+            { key: "history", name: "Riwayat Pengelolaan Realtime", icon: "fa-clock-rotate-left" },
+            { key: "chat", name: "Chat Koordinasi Multi-Arah", icon: "fa-comments" },
+            { key: "leave_requests", name: "Pengajuan Izin & Cuti Pengurus", icon: "fa-calendar-day" },
+            { key: "articles", name: "Penerbitan Artikel & Berita (CMS)", icon: "fa-newspaper" },
+            { key: "home_curation", name: "Pengatur Beranda (Self-Sustain)", icon: "fa-house-laptop" },
+            { key: "sarpras_logistics", name: "Logistik Makan & Aset Masjid", icon: "fa-utensils" },
+            { key: "santri", name: "Data Santri & Mutaba'ah Tahfidz", icon: "fa-graduation-cap" },
+            { key: "musafir", name: "Buku Tamu Musafir & Loker 24 Jam", icon: "fa-bed" },
+            { key: "prayer_calibration", name: "Kalibrasi Shalat & Rotasi Petugas", icon: "fa-kaaba" },
+            { key: "finance", name: "Akuntansi, Kas & Laporan Keuangan", icon: "fa-hand-holding-dollar" },
+            { key: "security", name: "Report Keamanan & Upload Bukti", icon: "fa-shield-halved" },
+            { key: "sanitation", name: "Report Kebersihan & Upload Bukti", icon: "fa-broom" },
+            { key: "health", name: "Monitor 7 Pilar Cloud", icon: "fa-server" },
+            { key: "pwa_mobile", name: "PWA & Akses Mobile App APK", icon: "fa-mobile-screen-button" }
+        ];
+
+        const ROLE_PERMISSION_TEMPLATES = {
+            "SUPER_ADMIN": {
+                system_config: "Penuh", account_control: "Penuh", tasks: "Penuh", history: "Penuh", chat: "Penuh",
+                leave_requests: "Penuh", articles: "Penuh", home_curation: "Penuh", sarpras_logistics: "Penuh",
+                santri: "Penuh", musafir: "Penuh", prayer_calibration: "Penuh", finance: "Penuh", security: "Penuh",
+                sanitation: "Penuh", health: "Penuh", pwa_mobile: "Penuh"
+            },
+            "KETUA_DKM": {
+                system_config: "Baca", account_control: "Baca", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Penuh", articles: "Review", home_curation: "Review", sarpras_logistics: "Laporan",
+                santri: "Laporan", musafir: "Laporan", prayer_calibration: "Persetujuan", finance: "Penuh",
+                security: "Laporan", sanitation: "Laporan", health: "Baca", pwa_mobile: "Penuh"
+            },
+            "SUPER_USER": {
+                system_config: "Baca", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "Baca", home_curation: "Baca", sarpras_logistics: "Baca",
+                santri: "Baca", musafir: "Baca", prayer_calibration: "Baca", finance: "Request", security: "Baca",
+                sanitation: "Baca", health: "Baca", pwa_mobile: "Penuh"
+            },
+            "PJ_MEDIA": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "Penuh", home_curation: "Penuh", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "Baca", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_LOGISTIK": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "Penuh",
+                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_SANTRI": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "Penuh", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_MUSAFIR": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "TIDAK_ADA_AKSES", musafir: "Penuh", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_IBADAH": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "Kajian", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "Penuh", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_KEUANGAN": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "Laporan",
+                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Penuh",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_KEAMANAN": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "TIDAK_ADA_AKSES", musafir: "Baca", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
+                security: "Penuh", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_KEBERSIHAN": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "TIDAK_ADA_AKSES", musafir: "Baca", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "Penuh", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            }
+        };
+
+        let adminUsersList = [];
+        let tempSelfAvatarUrl = null;
+
+        function getDivisionPrefix(division) {
+            const map = {
+                "Media & Dakwah": "media",
+                "Logistik & Sarpras": "logistik",
+                "Santri & Tahfidz": "santri",
+                "Pelayanan Musafir": "musafir",
+                "Peribadatan & Acara": "ibadah",
+                "Keuangan & Akuntansi": "keuangan",
+                "Keamanan & Ketertiban": "keamanan",
+                "Kebersihan & Sanitasi": "kebersihan",
+                "IT & Ekosistem Digital": "it",
+                "Pimpinan DKM": "dkm",
+                "Quality Assurance & Audit": "superuser"
+            };
+            return map[division] || "pengurus";
+        }
+
+        function getRoleFromDivision(division) {
+            const map = {
+                "Media & Dakwah": "PJ_MEDIA",
+                "Logistik & Sarpras": "PJ_LOGISTIK",
+                "Santri & Tahfidz": "PJ_SANTRI",
+                "Pelayanan Musafir": "PJ_MUSAFIR",
+                "Peribadatan & Acara": "PJ_IBADAH",
+                "Keuangan & Akuntansi": "PJ_KEUANGAN",
+                "Keamanan & Ketertiban": "PJ_KEAMANAN",
+                "Kebersihan & Sanitasi": "PJ_KEBERSIHAN",
+                "IT & Ekosistem Digital": "SUPER_ADMIN",
+                "Pimpinan DKM": "KETUA_DKM",
+                "Quality Assurance & Audit": "SUPER_USER"
+            };
+            return map[division] || "STAFF";
+        }
+
+        async function loadAdminUsers(forceRefresh = false) {
+            try {
+                if (sbClient) {
+                    const { data, error } = await sbClient.from('admin_users').select('*').order('created_at', { ascending: true });
+                    if (!error && data && data.length > 0) {
+                        adminUsersList = data;
+                    } else {
+                        adminUsersList = [...DEFAULT_ADMIN_USERS_SEED];
+                    }
+                } else {
+                    adminUsersList = [...DEFAULT_ADMIN_USERS_SEED];
+                }
+            } catch (e) {
+                console.warn("Load admin users notice:", e);
+                adminUsersList = [...DEFAULT_ADMIN_USERS_SEED];
+            }
+
+            renderAdminUsersTable();
+        }
+
+        function formatLastLoginRelative(timestamp) {
+            if (!timestamp) return '<span style="color: var(--color-charcoal-muted); font-size: 0.75rem;">Belum pernah login</span>';
+            const date = new Date(timestamp);
+            if (isNaN(date.getTime())) return '<span style="color: var(--color-charcoal-muted); font-size: 0.75rem;">Belum pernah login</span>';
+
+            const now = new Date();
+            const diffMs = now.getTime() - date.getTime();
+            const diffMin = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMin / 60);
+
+            if (diffMin < 2) return '<span class="badge-status-online"><span class="live-dot"></span> Sedang Online</span>';
+            if (diffMin < 60) return `<span style="font-weight: 700; color: #047857;">${diffMin} menit yang lalu</span>`;
+            if (diffHours < 24) return `<span style="font-weight: 700; color: var(--color-charcoal);">Hari ini, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}</span>`;
+
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            return `<span style="font-size: 0.75rem; color: var(--color-charcoal);">${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}</span>`;
+        }
+
+        function renderAdminUsersTable() {
+            const tbody = document.getElementById('admin-users-tbody');
+            if (!tbody) return;
+
+            const q = (document.getElementById('filter-account-search')?.value || '').toLowerCase().trim();
+            const divFilter = document.getElementById('filter-account-division')?.value || 'ALL';
+
+            const filtered = adminUsersList.filter(u => {
+                const matchQ = !q || (u.full_name || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q) || (u.role || '').toLowerCase().includes(q);
+                const matchDiv = divFilter === 'ALL' || (u.division || '') === divFilter;
+                return matchQ && matchDiv;
+            });
+
+            // Update Stat Cards
+            const totalUsersEl = document.getElementById('stat-total-users');
+            const activeUsersEl = document.getElementById('stat-active-users');
+            const onlineUsersEl = document.getElementById('stat-online-users');
+
+            if (totalUsersEl) totalUsersEl.textContent = adminUsersList.length;
+            if (activeUsersEl) activeUsersEl.textContent = adminUsersList.filter(u => u.is_active !== false).length;
+            if (onlineUsersEl) {
+                const onlineCount = adminUsersList.filter(u => {
+                    if (!u.last_login) return false;
+                    const diffMin = (Date.now() - new Date(u.last_login).getTime()) / 60000;
+                    return diffMin <= 60;
+                }).length;
+                onlineUsersEl.textContent = Math.max(1, onlineCount);
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">Tidak ada data pengurus yang sesuai filter pencarian.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(u => {
+                const initials = (u.full_name || 'DKM').substring(0, 2).toUpperCase();
+                const avatarHtml = u.avatar_url 
+                    ? `<div class="account-user-avatar"><img src="${escapeHtml(u.avatar_url)}" alt="${escapeHtml(u.full_name)}"></div>`
+                    : `<div class="account-user-avatar">${initials}</div>`;
+
+                const roleClass = (u.role || '').toLowerCase().replace(/_/g, '-');
+                const roleLabel = getUserRoleLabel(u.role || 'STAFF');
+                const isActive = u.is_active !== false;
+
+                const statusBadge = isActive 
+                    ? `<span class="badge-status-online"><span class="live-dot"></span> Aktif</span>`
+                    : `<span class="badge-status-offline"><i class="fa-solid fa-ban" style="font-size: 0.65rem;"></i> Nonaktif</span>`;
+
+                return `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                ${avatarHtml}
+                                <div>
+                                    <strong style="color: var(--color-charcoal); font-size: 0.85rem;">${escapeHtml(u.full_name || 'Pengurus')}</strong>
+                                    <div style="font-size: 0.72rem; color: var(--color-charcoal-muted);">${escapeHtml(u.division || 'Umum')}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <code style="font-size: 0.78rem; font-weight: 700; color: var(--color-charcoal); background: #F8FAFC; padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid var(--color-border);">${escapeHtml(u.email || '-')}</code>
+                        </td>
+                        <td>
+                            <span class="badge-role ${roleClass}">${roleLabel}</span>
+                        </td>
+                        <td>
+                            ${statusBadge}
+                        </td>
+                        <td>
+                            ${formatLastLoginRelative(u.last_login)}
+                        </td>
+                        <td style="text-align: right;">
+                            <div style="display: inline-flex; gap: 0.35rem; align-items: center;">
+                                <button type="button" class="btn-table-action" onclick="openEditUserModal('${u.id}')" title="Edit Data & Hak Akses Modul (RBAC)">
+                                    <i class="fa-solid fa-user-gear"></i> Hak Akses
+                                </button>
+                                <button type="button" class="btn-table-action warning" onclick="openResetUserConfirmModal('${u.id}')" title="Reset Akun ke Kredensial Default (Skenario Resign PIC)">
+                                    <i class="fa-solid fa-arrow-rotate-left"></i> Reset
+                                </button>
+                                <button type="button" class="btn-table-action danger" onclick="handleForceLogoutUser('${u.id}')" title="End Session / Paksa Logout Pengurus">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function handleAccountSearchFilter() {
+            renderAdminUsersTable();
+        }
+
+        // ==========================================================================
+        // MODAL 1: TAMBAH PENGURUS BARU (PATTERN-BASED AUTO GENERATOR)
+        // ==========================================================================
+        function openAddUserModal() {
+            document.getElementById('modal-admin-add-user').style.display = 'flex';
+            handleDivisionChangeForAddUser();
+        }
+
+        function closeAddUserModal() {
+            document.getElementById('modal-admin-add-user').style.display = 'none';
+        }
+
+        function handleDivisionChangeForAddUser() {
+            const div = document.getElementById('new-user-division').value;
+            const prefix = getDivisionPrefix(div);
+
+            // Count existing accounts matching this prefix
+            const matching = adminUsersList.filter(u => (u.email || '').toLowerCase().startsWith(prefix));
+            let nextNum = matching.length === 0 ? "" : String(matching.length + 1);
+            if (matching.length === 1 && matching[0].email.toLowerCase() === `${prefix}@masjidsophiajatiwarna.com`) {
+                nextNum = "2";
+            }
+
+            const emailInput = document.getElementById('new-user-email');
+            const fullnameInput = document.getElementById('new-user-fullname');
+
+            if (emailInput) {
+                emailInput.value = `${prefix}${nextNum}@masjidsophiajatiwarna.com`;
+            }
+            if (fullnameInput && !fullnameInput.value.trim()) {
+                fullnameInput.value = nextNum ? `Penanggung Jawab ${div} ${nextNum}` : `Penanggung Jawab ${div}`;
+            }
+        }
+
+        async function handleSaveNewUser(e) {
+            e.preventDefault();
+            const div = document.getElementById('new-user-division').value;
+            const fullname = document.getElementById('new-user-fullname').value.trim();
+            const email = document.getElementById('new-user-email').value.trim().toLowerCase();
+            const phone = document.getElementById('new-user-phone').value.trim() || "+6281234567890";
+            const role = getRoleFromDivision(div);
+
+            const newUser = {
+                id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : ('user_' + Date.now()),
+                email: email,
+                full_name: fullname,
+                role: role,
+                division: div,
+                phone_number: phone,
+                is_active: true,
+                avatar_url: null,
+                last_login: null,
+                permissions: ROLE_PERMISSION_TEMPLATES[role] || ROLE_PERMISSION_TEMPLATES['PJ_MEDIA'],
+                created_at: new Date().toISOString()
+            };
+
+            try {
+                if (sbClient) {
+                    await sbClient.from('admin_users').upsert(newUser);
+                }
+            } catch (err) {
+                console.warn("Supabase upsert user notice:", err);
+            }
+
+            // Also keep in memory
+            const existingIdx = adminUsersList.findIndex(u => u.email.toLowerCase() === email);
+            if (existingIdx !== -1) {
+                adminUsersList[existingIdx] = newUser;
+            } else {
+                adminUsersList.push(newUser);
+            }
+
+            // Realtime Broadcast
+            if (realtimeHub) {
+                realtimeHub.send({
+                    type: 'broadcast',
+                    event: 'USER_SYNC',
+                    payload: newUser
+                });
+            }
+
+            closeAddUserModal();
+            renderAdminUsersTable();
+            alert(`Akun pengurus baru (${email}) berhasil didaftarkan dengan password baku SophiaJatiwarna2026!`);
+        }
+
+        // ==========================================================================
+        // MODAL 2: EDIT AKUN & GRANULAR RBAC MATRIX
+        // ==========================================================================
+        function openEditUserModal(userId) {
+            const user = adminUsersList.find(u => String(u.id) === String(userId));
+            if (!user) return;
+
+            document.getElementById('edit-user-id').value = user.id;
+            document.getElementById('edit-user-fullname').value = user.full_name || '';
+            document.getElementById('edit-user-email').value = user.email || '';
+            document.getElementById('edit-user-division').value = user.division || 'Media & Dakwah';
+            document.getElementById('edit-user-status').value = String(user.is_active !== false);
+            document.getElementById('edit-user-new-password').value = '';
+
+            document.getElementById('edit-user-modal-title').innerHTML = `<i class="fa-solid fa-user-gear" style="color: var(--color-gold-deep);"></i> Edit & Otorisasi: ${escapeHtml(user.full_name || user.email)}`;
+            document.getElementById('edit-user-modal-subtitle').textContent = `Role: ${getUserRoleLabel(user.role || 'STAFF')} • Email: ${user.email}`;
+
+            // Populate RBAC Matrix Table
+            const tbody = document.getElementById('rbac-matrix-tbody');
+            if (tbody) {
+                const userPerms = user.permissions || ROLE_PERMISSION_TEMPLATES[user.role] || ROLE_PERMISSION_TEMPLATES['PJ_MEDIA'];
+                tbody.innerHTML = SYSTEM_MODULES.map(mod => {
+                    const currentVal = userPerms[mod.key] || 'TIDAK_ADA_AKSES';
+                    const permClass = 'perm-' + currentVal.toLowerCase().replace(/_/g, '-');
+                    return `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="fa-solid ${mod.icon}" style="color: var(--color-gold-deep); width: 18px; text-align: center;"></i>
+                                    <strong>${escapeHtml(mod.name)}</strong>
+                                </div>
+                            </td>
+                            <td>
+                                <select class="select-rbac-perm ${permClass}" data-module-key="${mod.key}" onchange="this.className = 'select-rbac-perm perm-' + this.value.toLowerCase().replace(/_/g, '-')">
+                                    <option value="Penuh" ${currentVal === 'Penuh' ? 'selected' : ''}>Penuh (Tulis &amp; Akses Lengkap)</option>
+                                    <option value="Baca" ${currentVal === 'Baca' ? 'selected' : ''}>Baca (Lihat Saja)</option>
+                                    <option value="Request" ${currentVal === 'Request' ? 'selected' : ''}>Request (Pengajuan / Bon)</option>
+                                    <option value="Review" ${currentVal === 'Review' ? 'selected' : ''}>Review (Kurasi &amp; Persetujuan)</option>
+                                    <option value="Laporan" ${currentVal === 'Laporan' ? 'selected' : ''}>Laporan (Akses Laporan Saja)</option>
+                                    <option value="Kajian" ${currentVal === 'Kajian' ? 'selected' : ''}>Kajian (Jadwal &amp; Acara)</option>
+                                    <option value="Persetujuan" ${currentVal === 'Persetujuan' ? 'selected' : ''}>Persetujuan (Approval Pimpinan)</option>
+                                    <option value="TIDAK_ADA_AKSES" ${currentVal === 'TIDAK_ADA_AKSES' ? 'selected' : ''}>Tidak Ada Akses (Terkunci)</option>
+                                </select>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('modal-admin-edit-user').style.display = 'flex';
+        }
+
+        function closeEditUserModal() {
+            document.getElementById('modal-admin-edit-user').style.display = 'none';
+        }
+
+        function applyDivisionRBACTemplate() {
+            const div = document.getElementById('edit-user-division').value;
+            const role = getRoleFromDivision(div);
+            const template = ROLE_PERMISSION_TEMPLATES[role] || ROLE_PERMISSION_TEMPLATES['PJ_MEDIA'];
+
+            document.querySelectorAll('#rbac-matrix-tbody select[data-module-key]').forEach(select => {
+                const key = select.getAttribute('data-module-key');
+                if (template[key]) {
+                    select.value = template[key];
+                    select.className = 'select-rbac-perm perm-' + template[key].toLowerCase().replace(/_/g, '-');
+                }
+            });
+        }
+
+        async function handleSaveUserRBAC(e) {
+            e.preventDefault();
+            const userId = document.getElementById('edit-user-id').value;
+            const user = adminUsersList.find(u => String(u.id) === String(userId));
+            if (!user) return;
+
+            const fullname = document.getElementById('edit-user-fullname').value.trim();
+            const email = document.getElementById('edit-user-email').value.trim().toLowerCase();
+            const div = document.getElementById('edit-user-division').value;
+            const isActive = document.getElementById('edit-user-status').value === 'true';
+            const newPass = document.getElementById('edit-user-new-password').value.trim();
+            const role = getRoleFromDivision(div);
+
+            // Collect Permissions Object
+            const permissions = {};
+            document.querySelectorAll('#rbac-matrix-tbody select[data-module-key]').forEach(select => {
+                const key = select.getAttribute('data-module-key');
+                permissions[key] = select.value;
+            });
+
+            user.full_name = fullname;
+            user.email = email;
+            user.division = div;
+            user.role = role;
+            user.is_active = isActive;
+            user.permissions = permissions;
+
+            try {
+                if (sbClient) {
+                    await sbClient.from('admin_users').update({
+                        full_name: fullname,
+                        email: email,
+                        division: div,
+                        role: role,
+                        is_active: isActive,
+                        permissions: permissions
+                    }).eq('id', userId);
+                }
+            } catch (err) {
+                console.warn("Save user RBAC notice:", err);
+            }
+
+            // Realtime Broadcast
+            if (realtimeHub) {
+                realtimeHub.send({
+                    type: 'broadcast',
+                    event: 'USER_SYNC',
+                    payload: user
+                });
+            }
+
+            if (newPass) {
+                alert(`Data hak akses dan kata sandi baru untuk (${email}) berhasil diperbarui.`);
+            } else {
+                alert(`Konfigurasi hak akses RBAC (${email}) berhasil diperbarui.`);
+            }
+
+            closeEditUserModal();
+            renderAdminUsersTable();
+        }
+
+        function handleForceLogoutFromModal() {
+            const userId = document.getElementById('edit-user-id').value;
+            if (userId) {
+                handleForceLogoutUser(userId);
+                closeEditUserModal();
+            }
+        }
+
+        // ==========================================================================
+        // MODAL 3: KONFIRMASI RESET AKUN KE DEFAULT (SKENARIO RESIGN PIC)
+        // ==========================================================================
+        function openResetUserConfirmModal(userId) {
+            const user = adminUsersList.find(u => String(u.id) === String(userId));
+            if (!user) return;
+
+            // Find matching default ground truth from seed
+            const seed = DEFAULT_ADMIN_USERS_SEED.find(s => s.role === user.role) || {
+                email: user.email,
+                full_name: `Penanggung Jawab ${user.division || 'Divisi'}`,
+                role: user.role
+            };
+
+            document.getElementById('reset-user-id').value = user.id;
+            document.getElementById('reset-target-name').textContent = user.full_name || user.email;
+            document.getElementById('reset-target-current-email').textContent = user.email;
+            document.getElementById('reset-target-default-email').textContent = seed.email;
+            document.getElementById('reset-target-default-name').textContent = seed.full_name;
+
+            document.getElementById('modal-confirm-reset-user').style.display = 'flex';
+        }
+
+        function closeResetUserModal() {
+            document.getElementById('modal-confirm-reset-user').style.display = 'none';
+        }
+
+        async function executeResetUserToDefault() {
+            const userId = document.getElementById('reset-user-id').value;
+            const user = adminUsersList.find(u => String(u.id) === String(userId));
+            if (!user) return;
+
+            const seed = DEFAULT_ADMIN_USERS_SEED.find(s => s.role === user.role) || {
+                email: user.email,
+                full_name: `Penanggung Jawab ${user.division || 'Divisi'}`,
+                role: user.role,
+                division: user.division
+            };
+
+            const oldEmail = user.email;
+            user.email = seed.email;
+            user.full_name = seed.full_name;
+            user.avatar_url = null;
+            user.is_active = true;
+            user.permissions = ROLE_PERMISSION_TEMPLATES[user.role] || ROLE_PERMISSION_TEMPLATES['PJ_MEDIA'];
+
+            try {
+                if (sbClient) {
+                    await sbClient.from('admin_users').update({
+                        email: seed.email,
+                        full_name: seed.full_name,
+                        avatar_url: null,
+                        is_active: true,
+                        permissions: user.permissions
+                    }).eq('id', userId);
+                }
+            } catch (err) {
+                console.warn("Reset user DB notice:", err);
+            }
+
+            // Send Force Logout Broadcast to disconnect the old PIC
+            if (realtimeHub) {
+                realtimeHub.send({
+                    type: 'broadcast',
+                    event: 'FORCE_LOGOUT',
+                    payload: {
+                        target_id: user.id,
+                        target_email: oldEmail
+                    }
+                });
+                realtimeHub.send({
+                    type: 'broadcast',
+                    event: 'USER_SYNC',
+                    payload: user
+                });
+            }
+
+            closeResetUserModal();
+            renderAdminUsersTable();
+            alert(`Akun (${seed.email}) berhasil direset ke kredensial baku awal. Password kembali ke: SophiaJatiwarna2026! dan sesi aktif PIC lama telah diputus.`);
+        }
+
+        // ==========================================================================
+        // FORCE LOGOUT / END SESSION
+        // ==========================================================================
+        function handleForceLogoutUser(userId) {
+            const user = adminUsersList.find(u => String(u.id) === String(userId));
+            if (!user) return;
+
+            if (confirm(`Apakah Anda yakin ingin memutuskan sesi aktif pengurus (${user.full_name || user.email})? Pengguna akan dipaksa keluar dan harus login kembali.`)) {
+                if (realtimeHub) {
+                    realtimeHub.send({
+                        type: 'broadcast',
+                        event: 'FORCE_LOGOUT',
+                        payload: {
+                            target_id: user.id,
+                            target_email: user.email
+                        }
+                    });
+                }
+                alert(`Sinyal pemutusan sesi berhasil dikirim ke perangkat (${user.email}).`);
+            }
+        }
+
+        // ==========================================================================
+        // MODAL 4: PROFIL & KEAMANAN MANDIRI PENGURUS (SELF-SERVICE)
+        // ==========================================================================
+        function openSelfProfileModal() {
+            if (!currentUser) return;
+            const modal = document.getElementById('modal-user-self-profile');
+            if (!modal) return;
+
+            const name = getUserDisplayName(currentUser);
+            const email = currentUser.email || 'admin@dkm.com';
+            const role = getUserRole();
+            const roleLabel = getUserRoleLabel(role);
+
+            document.getElementById('self-fullname-input').value = name;
+            document.getElementById('self-email-display').value = email;
+            document.getElementById('self-role-display').value = `${roleLabel} (${getUserDivision()})`;
+            document.getElementById('self-new-password-input').value = '';
+            document.getElementById('self-new-email-input').value = '';
+
+            const preview = document.getElementById('self-avatar-preview');
+            if (preview) {
+                if (currentUser.avatar_url) {
+                    preview.innerHTML = `<img src="${escapeHtml(currentUser.avatar_url)}" alt="Avatar">`;
+                } else {
+                    const initials = name.substring(0, 2).toUpperCase();
+                    preview.innerHTML = `<span>${initials}</span>`;
+                }
+            }
+
+            switchSelfProfileTab('general');
+            modal.style.display = 'flex';
+        }
+
+        function closeSelfProfileModal() {
+            const modal = document.getElementById('modal-user-self-profile');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function switchSelfProfileTab(tab) {
+            const btnGen = document.getElementById('btn-self-tab-general');
+            const btnSec = document.getElementById('btn-self-tab-security');
+            const cGen = document.getElementById('self-tab-general-content');
+            const cSec = document.getElementById('self-tab-security-content');
+
+            if (tab === 'general') {
+                if (btnGen) btnGen.classList.add('active');
+                if (btnSec) btnSec.classList.remove('active');
+                if (cGen) cGen.style.display = 'block';
+                if (cSec) cSec.style.display = 'none';
+            } else {
+                if (btnGen) btnGen.classList.remove('active');
+                if (btnSec) btnSec.classList.add('active');
+                if (cGen) cGen.style.display = 'none';
+                if (cSec) cSec.style.display = 'block';
+            }
+        }
+
+        function handleSelfAvatarUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert('Harap pilih file gambar (JPG, PNG, WebP).');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const size = 400;
+                    canvas.width = size;
+                    canvas.height = size;
+
+                    // Cover crop
+                    let sw = img.width;
+                    let sh = img.height;
+                    let sx = 0;
+                    let sy = 0;
+
+                    if (sw > sh) {
+                        sx = (sw - sh) / 2;
+                        sw = sh;
+                    } else {
+                        sy = (sh - sw) / 2;
+                        sh = sw;
+                    }
+
+                    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, size, size);
+                    const webpData = canvas.toDataURL('image/webp', 0.85);
+
+                    tempSelfAvatarUrl = webpData;
+                    const preview = document.getElementById('self-avatar-preview');
+                    if (preview) {
+                        preview.innerHTML = `<img src="${webpData}" alt="Avatar Preview">`;
+                    }
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function handleSaveSelfProfile(e) {
+            e.preventDefault();
+            const newName = document.getElementById('self-fullname-input').value.trim();
+            if (!newName) return;
+
+            if (currentUser) {
+                currentUser.full_name = newName;
+                if (tempSelfAvatarUrl) {
+                    currentUser.avatar_url = tempSelfAvatarUrl;
+                }
+
+                // Update in Supabase
+                try {
+                    if (sbClient && currentUser.email) {
+                        await sbClient.from('admin_users').update({
+                            full_name: newName,
+                            avatar_url: currentUser.avatar_url
+                        }).eq('email', currentUser.email.toLowerCase());
+                    }
+                } catch (err) {
+                    console.warn("Save self profile notice:", err);
+                }
+
+                // Update UI in sidebar
+                document.getElementById('display-user-email').textContent = newName;
+                const avatarBox = document.getElementById('display-user-avatar');
+                if (avatarBox) {
+                    if (currentUser.avatar_url) {
+                        avatarBox.innerHTML = `<img src="${escapeHtml(currentUser.avatar_url)}" alt="Avatar">`;
+                    } else {
+                        const initials = newName.substring(0, 2).toUpperCase();
+                        avatarBox.innerHTML = `<span>${initials}</span>`;
+                    }
+                }
+
+                if (realtimeHub) {
+                    realtimeHub.send({
+                        type: 'broadcast',
+                        event: 'USER_SYNC',
+                        payload: currentUser
+                    });
+                }
+
+                alert('Data profil Anda berhasil diperbarui.');
+                closeSelfProfileModal();
+            }
+        }
+
+        async function handleSelfUpdatePasswordAndLogout() {
+            const pass = document.getElementById('self-new-password-input').value;
+            if (!pass || pass.length < 6) {
+                alert('Kata sandi baru minimal harus 6 karakter.');
+                return;
+            }
+
+            try {
+                if (sbClient) {
+                    const { error } = await sbClient.auth.updateUser({ password: pass });
+                    if (error) {
+                        alert('Gagal memperbarui kata sandi: ' + error.message);
+                        return;
+                    }
+                }
+                alert('Kata sandi berhasil diperbarui! Demi keamanan akun, Anda akan dikeluarkan dari sesi ini untuk login ulang.');
+                handleLogout();
+            } catch (err) {
+                alert('Terjadi kesalahan saat memperbarui kata sandi.');
+            }
+        }
+
+        async function handleSelfUpdateEmailAndLogout() {
+            const newEmail = document.getElementById('self-new-email-input').value.trim().toLowerCase();
+            if (!newEmail || !newEmail.includes('@')) {
+                alert('Harap masukkan format email yang valid.');
+                return;
+            }
+
+            try {
+                if (sbClient) {
+                    const { error } = await sbClient.auth.updateUser({ email: newEmail });
+                    if (error) {
+                        alert('Gagal memperbarui email: ' + error.message);
+                        return;
+                    }
+                }
+                alert(`Alamat email berhasil diperbarui ke (${newEmail})! Anda akan dialihkan ke halaman login.`);
+                handleLogout();
+            } catch (err) {
+                alert('Terjadi kesalahan saat memperbarui email.');
+            }
+        }
+
+        function handleRealtimeAdminUserChange(payload) {
+            if (!payload) return;
+            const updatedUser = payload.new || payload;
+            if (!updatedUser || !updatedUser.id) return;
+
+            const idx = adminUsersList.findIndex(u => String(u.id) === String(updatedUser.id) || (u.email && u.email.toLowerCase() === (updatedUser.email || '').toLowerCase()));
+            if (idx !== -1) {
+                adminUsersList[idx] = { ...adminUsersList[idx], ...updatedUser };
+            } else {
+                adminUsersList.push(updatedUser);
+            }
+
+            renderAdminUsersTable();
+        }
+
         function refreshAdminData() {
             loadAllAdminData();
+            loadAdminUsers(true);
         }
     </script>
 </body>

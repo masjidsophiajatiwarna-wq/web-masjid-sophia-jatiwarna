@@ -6,18 +6,20 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 
 ## [1.7.0] - 2026-08-22
 
-### Modul User Accounts & Access Control, Dynamic RBAC Permissions, dan Profil Mandiri Pengurus
+### Modul Manajemen Pengguna DKM (Account Control), Dynamic RBAC Matrix, dan Profil Mandiri Pengurus
 
 #### Penambahan & Pembaruan (Added & Updated)
-- `[ACCOUNT_CONTROL]` Menambahkan modul **User Accounts & Access Control** eksklusif untuk **Super Admin & Ketua DKM**:
-  - **Tabel Pengurus Realtime (Supabase CDC WebSocket):** Menampilkan daftar akun aktif, email, role, divisi, dan riwayat status login terakhir (*last active*) tanpa perlu refresh halaman.
-  - **Modal Override Akun (Super Admin / DKM):** Kemampuan reset kata sandi, ganti email/nama, dan fitur **Paksa Akhiri Sesi (*Force End Session / Logout*)** yang membatalkan sesi aktif pengurus seketika.
-  - **Matriks Hak Akses Dinamis (`permissions JSONB`):** Pengaturan izin akses akun per modul (Baca / Tulis / Tidak Ada Akses) yang merender navigasi sidebar secara dinamis dan fleksibel (tidak lagi hardcoded kaku di kode HTML).
-- `[SELF_SERVICE_PROFILE]` Menambahkan **Modal Profil & Keamanan Mandiri** untuk seluruh PJ Divisi:
-  - **Tab General Profile:** Mengubah Nama Lengkap, No WhatsApp, dan **Upload Foto Profil (Avatar)** dari galeri HP/Laptop yang otomatis dikompresi dan disimpan ke **ImageKit.io CDN**.
-  - **Tab Security & Login:** Ganti kata sandi dan ganti email dengan aturan keamanan ketat: **Sesi lama otomatis diakhiri dan wajib login ulang**.
-- `[DATABASE_MIGRATION]` Penambahan kolom `avatar_url`, `permissions JSONB`, `session_version INT`, dan fungsi `force_end_user_session` pada tabel `public.admin_users` di berkas `database/schema.sql` dan `database/migration_account_control.sql`.
-- `[ROADMAP_SYNC]` Sinkronisasi Master Implementation Plan v5.1 di `implementation-plan.md` dan `progress-implementation-plan.html` pada subdomain `progdev.masjidsophiajatiwarna.com`.
+- `[ACCOUNT_CONTROL]` Menambahkan modul **Manajemen Pengguna DKM (Account Control)** eksklusif untuk **Super Admin (Akses Penuh)** dan **Ketua DKM (Akses Baca & Kelola)**:
+  - **Isolasi Ketat:** Akun `SUPER_USER` (Testing/QA) dan seluruh akun PJ Divisi (Media, Logistik, dll.) **terkunci 100%** dari menu dan tabel Manajemen Pengguna, baik via desktop maupun PWA seluler.
+  - **Tabel Direktori Master (`public.admin_users`):** Menggunakan tabel database Supabase yang sudah ada (tidak dihapus/replace) dengan live CDC WebSocket untuk melacak status aktif dan waktu login terakhir secara realtime (*zero refresh*).
+  - **Fitur Reset Akun ke Default:** Mengembalikan akun target (misal saat PIC lama mengundurkan diri/resign) persis ke kredensial baku awal di `AKUN_PENGURUS_DKM.txt` (`media@masjidsophiajatiwarna.com`, password `SophiaJatiwarna2026!`, nama baku) serta memutus sesi aktif PIC lama seketika (*Force Logout*).
+  - **Auto-Pattern Generator Akun Multi-PJ:** Form penambahan akun secara otomatis menghasilkan pola email terstandarisasi (`media2@...`, `logistik2@...`, dst.) dan password default `SophiaJatiwarna2026!`.
+  - **Matriks Hak Akses Granular 17 Modul (Gambar 1):** Pengaturan izin per modul (`Penuh`, `Baca`, `Request`, `Review`, `Laporan`, `Kajian`, `Persetujuan`, `Tidak Ada Akses`) yang tersimpan dinamis dalam kolom `permissions` JSONB.
+  - **End Session / Paksa Logout Realtime:** Mengirim siaran WebSocket `FORCE_LOGOUT` untuk mengakhiri sesi aktif pengurus secara instan.
+- `[SELF_SERVICE_PROFILE]` Menambahkan **Modal Profil & Keamanan Mandiri** (Standar Gambar 5) untuk seluruh pengurus DKM:
+  - **Tab General Profile:** Mengubah Nama Lengkap dan Upload Foto Profil (Avatar) yang dikompresi ke WebP 400x400.
+  - **Tab Security & Login:** Ganti kata sandi (`UPDATE PASSWORD & LOGOUT`) dan ganti email (`UPDATE EMAIL & LOGOUT`) dengan aturan keamanan wajib: **Sesi otomatis diakhiri dan dialihkan ke layar login**.
+- `[ROADMAP_SYNC]` Sinkronisasi paralel ke `implementation-plan.md` dan `progress-implementation-plan.html`.
 
 ---
 
