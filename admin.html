@@ -1562,8 +1562,9 @@
                         </button>
                     </li>
                     <li>
-                        <button class="nav-item-btn" onclick="switchTab('tasks', this)">
-                            <i class="fa-solid fa-list-check"></i> Tugas & Task Health
+                        <button class="nav-item-btn" onclick="switchTab('tasks', this)" style="display: flex; align-items: center; justify-content: space-between;">
+                            <span><i class="fa-solid fa-list-check"></i> Tugas & Task Health</span>
+                            <span id="badge-sidebar-tasks-mentions" class="mention-count-badge" style="display: none; margin-left: 0.5rem;">0</span>
                         </button>
                     </li>
                     <li>
@@ -2812,7 +2813,9 @@
                     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'task_chat_messages' }, payload => {
                         if (payload.new && !taskChatMessages.some(c => c.id === payload.new.id)) {
                             taskChatMessages.push(payload.new);
+                            persistLocalChats(taskChatMessages);
                             renderTaskChat();
+                            updateMentionBadgeCount();
                         }
                     })
                     // 2. Broadcast Channel (Ultra Fast Multi-Tab / Multi-Client Realtime Sync)
@@ -2831,7 +2834,9 @@
                     .on('broadcast', { event: 'CHAT_SYNC' }, ({ payload }) => {
                         if (payload && !taskChatMessages.some(c => c.id === payload.id)) {
                             taskChatMessages.push(payload);
+                            persistLocalChats(taskChatMessages);
                             renderTaskChat();
+                            updateMentionBadgeCount();
                         }
                     })
                     .subscribe((status) => {
@@ -4190,37 +4195,83 @@
             broadcastEvent('CHAT_SYNC', chatEntry);
 
             if (sbClient) {
-                sbClient.from('task_chat_messages').insert({
-                    id: chatEntry.id,
-                    sender_name: sender,
-                    sender_role: role,
-                    sender_division: chatEntry.sender_division,
-                    message: chatEntry.message,
-                    attachment_url: url,
-                    attachment_type: type,
-                    reply_to: chatEntry.reply_to
-                }).catch(e => console.debug('Chat media insert info:', e));
+                try {
+                    await sbClient.from('task_chat_messages').insert({
+                        id: chatEntry.id,
+                        sender_name: sender,
+                        sender_role: role,
+                        sender_division: chatEntry.sender_division,
+                        message: chatEntry.message,
+                        attachment_url: url,
+                        attachment_type: type,
+                        reply_to: chatEntry.reply_to
+                    });
+                } catch (err) {
+                    console.debug('Chat media insert notice:', err);
+                }
             }
+        }
+
+        // Helper to get all possible mention variations for a user
+        function getMentionTagsForUser(user) {
+            if (!user) return [];
+            const role = getUserRole();
+            const name = getUserDisplayName(user);
+            const email = (user.email || '').toLowerCase();
+            const emailPrefix = email.split('@')[0];
+
+            const tags = new Set([
+                '@semua_pengurus',
+                '@semuapengurus',
+                '@all',
+                '@pengurus',
+                `@${role.toLowerCase()}`,
+                `@${role.replace(/_/g, '').toLowerCase()}`,
+                `@${role.replace('pj_', '').toLowerCase()}`,
+                `@${role.replace('pj_', '').replace(/_/g, '').toLowerCase()}`,
+                `@${name.toLowerCase().replace(/\s+/g, '_')}`,
+                `@${name.toLowerCase().replace(/\s+/g, '')}`,
+                `@${emailPrefix.replace(/[^a-z0-9]/g, '')}`,
+                `@${emailPrefix}`
+            ]);
+
+            if (role === 'SUPER_ADMIN' || email.includes('superadmin') || email.includes('habib')) {
+                tags.add('@superadmin');
+                tags.add('@super_admin');
+                tags.add('@admin');
+                tags.add('@habib');
+                tags.add('@habibmaulana');
+                tags.add('@habib_maulana');
+            }
+            if (role === 'SUPER_USER' || email.includes('superuser')) {
+                tags.add('@superuser');
+                tags.add('@super_user');
+                tags.add('@pimpinan');
+            }
+            if (role === 'KETUA_DKM' || email.includes('dkm') || email.includes('ketua')) {
+                tags.add('@ketuadkm');
+                tags.add('@ketua_dkm');
+                tags.add('@ketua');
+                tags.add('@dkm');
+            }
+
+            return Array.from(tags);
         }
 
         // Mention Count Badge Logic (Gambar 5 - Hanya akun yang di-mention yang mendapat badge)
         function updateMentionBadgeCount() {
-            const badge = document.getElementById('badge-chat-mentions');
-            if (!badge || !currentUser) return;
+            const badgeSubnav = document.getElementById('badge-chat-mentions');
+            const badgeSidebar = document.getElementById('badge-sidebar-tasks-mentions');
+            if (!currentUser) return;
 
-            const myRole = getUserRole();
+            const myTags = getMentionTagsForUser(currentUser);
             const myName = getUserDisplayName(currentUser);
-            const myMentionTags = [
-                `@${myRole}`,
-                `@${myRole.replace('PJ_', '')}`,
-                `@${myName.replace(/\s+/g, '_')}`,
-                `@Semua_Pengurus`
-            ];
+            const myEmail = (currentUser.email || '').toLowerCase();
 
-            const userEmail = currentUser.email || 'anon';
+            const userEmailKey = currentUser.email || 'anon';
             let readMentionIds = [];
             try {
-                readMentionIds = JSON.parse(localStorage.getItem(`masjid_sophia_read_mentions_${userEmail}`) || '[]');
+                readMentionIds = JSON.parse(localStorage.getItem(`masjid_sophia_read_mentions_${userEmailKey}`) || '[]');
             } catch (e) {}
             const readSet = new Set(readMentionIds);
 
@@ -4229,27 +4280,43 @@
             const unreadMentions = taskChatMessages.filter(msg => {
                 if (new Date(msg.created_at).getTime() < sevenDaysAgo) return false;
                 if (readSet.has(msg.id)) return false;
-                if (msg.sender_name === myName) return false; // Don't count self
-                return myMentionTags.some(tag => msg.message && msg.message.toLowerCase().includes(tag.toLowerCase()));
+                
+                // Don't count self
+                if (msg.sender_name === myName || msg.sender_name === myEmail || (msg.sender_name && myEmail.includes(msg.sender_name.toLowerCase()))) {
+                    return false;
+                }
+                
+                const cleanMsg = (msg.message || '').toLowerCase();
+                return myTags.some(tag => cleanMsg.includes(tag.toLowerCase()));
             });
 
-            if (unreadMentions.length > 0) {
-                badge.textContent = unreadMentions.length;
-                badge.style.display = 'inline-flex';
+            const count = unreadMentions.length;
+            if (count > 0) {
+                if (badgeSubnav) {
+                    badgeSubnav.textContent = count;
+                    badgeSubnav.style.display = 'inline-flex';
+                }
+                if (badgeSidebar) {
+                    badgeSidebar.textContent = count;
+                    badgeSidebar.style.display = 'inline-flex';
+                }
             } else {
-                badge.style.display = 'none';
+                if (badgeSubnav) badgeSubnav.style.display = 'none';
+                if (badgeSidebar) badgeSidebar.style.display = 'none';
             }
         }
 
         function markMentionsAsRead() {
             if (!currentUser) return;
-            const userEmail = currentUser.email || 'anon';
+            const userEmailKey = currentUser.email || 'anon';
             const allMsgIds = taskChatMessages.map(m => m.id);
             try {
-                localStorage.setItem(`masjid_sophia_read_mentions_${userEmail}`, JSON.stringify(allMsgIds));
+                localStorage.setItem(`masjid_sophia_read_mentions_${userEmailKey}`, JSON.stringify(allMsgIds));
             } catch (e) {}
-            const badge = document.getElementById('badge-chat-mentions');
-            if (badge) badge.style.display = 'none';
+            const badgeSubnav = document.getElementById('badge-chat-mentions');
+            const badgeSidebar = document.getElementById('badge-sidebar-tasks-mentions');
+            if (badgeSubnav) badgeSubnav.style.display = 'none';
+            if (badgeSidebar) badgeSidebar.style.display = 'none';
         }
 
         function renderTaskChat() {
@@ -4365,14 +4432,18 @@
             broadcastEvent('CHAT_SYNC', chatEntry);
 
             if (sbClient) {
-                await sbClient.from('task_chat_messages').insert({
-                    id: chatEntry.id,
-                    sender_name: sender,
-                    sender_role: role,
-                    sender_division: chatEntry.sender_division,
-                    message: message,
-                    reply_to: chatEntry.reply_to
-                }).catch(e => console.debug('Chat insert info:', e));
+                try {
+                    await sbClient.from('task_chat_messages').insert({
+                        id: chatEntry.id,
+                        sender_name: sender,
+                        sender_role: role,
+                        sender_division: chatEntry.sender_division,
+                        message: message,
+                        reply_to: chatEntry.reply_to
+                    });
+                } catch (err) {
+                    console.debug('Chat insert notice:', err);
+                }
             }
         }
 
