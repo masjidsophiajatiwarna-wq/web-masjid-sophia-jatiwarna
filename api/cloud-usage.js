@@ -197,6 +197,37 @@ export default async function handler(req, res) {
         }
     } catch (e) {}
 
+    // 4. ImageKit.io API Live Query (if IMAGEKIT_PRIVATE_KEY is available in Vercel)
+    const ikKey = process.env.IMAGEKIT_PRIVATE_KEY;
+    if (ikKey) {
+        try {
+            const authHeader = 'Basic ' + Buffer.from(ikKey + ':').toString('base64');
+            const ikRes = await fetch('https://api.imagekit.io/v1/files?limit=1', {
+                headers: { 'Authorization': authHeader }
+            });
+            if (ikRes.ok) {
+                cloudMetrics.pillars.imagekit.status = "SAFE";
+            }
+        } catch (e) {}
+    }
+
+    // 5. Vercel API Live Query (if VERCEL_ACCESS_TOKEN is available in Vercel)
+    const vercelToken = process.env.VERCEL_ACCESS_TOKEN;
+    if (vercelToken) {
+        try {
+            const vRes = await fetch('https://api.vercel.com/v6/deployments?limit=1', {
+                headers: { 'Authorization': `Bearer ${vercelToken}` }
+            });
+            if (vRes.ok) {
+                const vData = await vRes.json();
+                if (vData && vData.deployments && vData.deployments.length > 0) {
+                    const dep = vData.deployments[0];
+                    cloudMetrics.pillars.vercel.branch = `main (${dep.state || 'READY'})`;
+                }
+            }
+        } catch (e) {}
+    }
+
     cloudMetrics.latency_total_ms = Date.now() - startTime;
 
     return res.status(200).json(cloudMetrics);
