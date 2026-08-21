@@ -363,3 +363,11 @@ BEGIN
     END;
 END $$;
 
+-- Enable REPLICA IDENTITY FULL for proper CDC WebSocket payload broadcast
+ALTER TABLE public.team_tasks REPLICA IDENTITY FULL;
+ALTER TABLE public.task_activity_logs REPLICA IDENTITY FULL;
+ALTER TABLE public.task_chat_messages REPLICA IDENTITY FULL;
+ALTER TABLE public.donations REPLICA IDENTITY FULL;
+ALTER TABLE public.feedback_complaints REPLICA IDENTITY FULL;
+ALTER TABLE public.dkm_leave_requests REPLICA IDENTITY FULL;
+

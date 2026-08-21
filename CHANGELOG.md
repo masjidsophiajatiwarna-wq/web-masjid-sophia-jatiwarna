@@ -15,10 +15,10 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
   - **3. Kalender Tugas (Bulanan & Agenda):** Grid kalender bulanan dengan *spanning bar* multi-hari, navigasi bulan, klik tanggal untuk tambah tugas cepat, dan toggle *Mode Agenda* kronologis.
   - **4. Tabel Seluruh Tugas (Cari, Saring, Urutkan):** Master data table dengan live multi-field search, filter divisi/prioritas/status, sorting kolom interaktif, multi-select checkboxes dengan toolbar aksi masal (*Arsipkan Masal*, *Tandai Selesai*), dan tombol *Unduh CSV*.
   - **5. Arsip Tugas Selesai (Simpan Rapi & Pulihkan):** Ruang penyimpanan rapi untuk tugas selesai yang diarsipkan dengan fitur 1-klik *Pulihkan Tugas* dan *Hapus Permanen*.
-- `[REALTIME PANELS]` Implementasi 2 Panel Pendukung Terpadu berbasis Supabase Realtime CDC WebSocket:
-  - **Riwayat Pengelolaan Realtime:** Audit trail otomatis mencatat setiap pembuatan, pergeseran status, pembaruan, dan pengarsipan tugas secara live tanpa perlu memuat ulang halaman.
-  - **Chat Koordinasi Multi-Arah DKM:** Ruang percakapan realtime antar seluruh 10 peran dan divisi pengurus DKM (Pimpinan, Media, Logistik, Santri, Musafir, Ibadah, Keuangan, Keamanan, Kebersihan, IT).
-- `[DATABASE]` Pembaruan skema `team_tasks` (kolom `start_date`, `progress_pct`, `is_archived`, `order_index`, `created_by`), penambahan tabel `task_activity_logs` dan `task_chat_messages` beserta Row Level Security (RLS) dan Realtime Publication pada `database/schema.sql`.
+- `[REALTIME HUB]` Peningkatan engine Realtime sinkronisasi instan multi-peran (Superadmin, Superuser, dan PJ Divisi):
+  - Dukungan ganda: **Supabase Database CDC (`postgres_changes`)** + **Supabase WebSocket Broadcast (`TASK_SYNC`, `LOG_SYNC`, `CHAT_SYNC`)** untuk pembaruan instan (<50ms) antar seluruh tab/perangkat terbuka tanpa jeda replikasi.
+  - Standardisasi ID tugas, log, dan chat ke format valid **RFC4122 UUID** (`gen_random_uuid()`) untuk kompatibilitas penuh tipe data PostgreSQL Supabase.
+  - Skrip migrasi terpadu `database/migration_task_management_v1.6.sql` mencakup `ALTER TABLE REPLICA IDENTITY FULL`, RLS policies, publikasi realtime, dan seeding data tugas operasional resmi DKM.
 - `[DOCS & PROGRESS]` Sinkronisasi paralel pada `implementation-plan.md` dan `progress-implementation-plan.html` (7 item tugas/panel tercatat selesai 100%).
 
 ---

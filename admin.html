@@ -2078,12 +2078,31 @@
         let selectedTaskIds = new Set();
         let masterTableSort = { column: 'due_date', direction: 'asc' };
         let draggedTaskId = null;
-        let realtimeChannels = {};
+        let realtimeHub = null;
 
-        // Default Authentic Seed Data (Masjid Sophia Jatiwarna Operational Tasks)
+        // Helper UUID generator (RFC4122 compliant)
+        function generateUUID() {
+            if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+                return crypto.randomUUID();
+            }
+            return 'a0000000-0000-4000-8000-' + String(Date.now()).slice(-12).padStart(12, '0');
+        }
+
+        // Helper Broadcast Sender (Ultra Fast Real-Time Multi-Window Sync)
+        function broadcastEvent(channelEvent, payload) {
+            if (realtimeHub) {
+                realtimeHub.send({
+                    type: 'broadcast',
+                    event: channelEvent,
+                    payload: payload
+                }).catch(err => console.debug('Broadcast info:', err));
+            }
+        }
+
+        // Default Authentic Seed Data (Masjid Sophia Jatiwarna Operational Tasks with RFC UUIDs)
         const DEFAULT_SEED_TASKS = [
             {
-                id: 'task-sophia-01',
+                id: 'a0000000-0000-0000-0000-000000000001',
                 title: 'Persiapan 70+ Porsi Sedekah Makan Siang Dzuhur',
                 description: 'Memastikan kecukupan bahan baku (beras, lauk, sayur) dan higienitas dapur untuk jamaah Dzuhur dan musafir.',
                 division: 'Divisi Logistik & Sarpras',
@@ -2098,7 +2117,7 @@
                 created_at: new Date(Date.now() - 3600000 * 4).toISOString()
             },
             {
-                id: 'task-sophia-02',
+                id: 'a0000000-0000-0000-0000-000000000002',
                 title: 'Pembersihan & Sterilisasi Area Wudhu & Kamar Mandi Musafir 24 Jam',
                 description: 'Pengecekan sabun, pengharum ruangan, dan sanitasi lantai toilet serta tempat wudhu pria & wanita.',
                 division: 'Divisi Kebersihan & Sanitasi',
@@ -2113,7 +2132,7 @@
                 created_at: new Date(Date.now() - 86400000).toISOString()
             },
             {
-                id: 'task-sophia-03',
+                id: 'a0000000-0000-0000-0000-000000000003',
                 title: 'Setoran Mutabaah Hafalan Santri Tahfidz Ba\'da Subuh',
                 description: 'Pencatatan setoran hafalan Juz 30 dan surat pilihan santri binaan Masjid Sophia beserta penilaian tajwid.',
                 division: 'Divisi Pembinaan Santri Tahfidz',
@@ -2128,7 +2147,7 @@
                 created_at: new Date(Date.now() - 3600000 * 12).toISOString()
             },
             {
-                id: 'task-sophia-04',
+                id: 'a0000000-0000-0000-0000-000000000004',
                 title: 'Pemeriksaan Filter Air Minum RO & Dispenser Musafir',
                 description: 'Pengecekan TDS meter dan penggantian filter sedimen pada dispenser air minum gratis jamaah.',
                 division: 'Divisi Pelayanan Musafir & Sosial',
@@ -2143,7 +2162,7 @@
                 created_at: new Date().toISOString()
             },
             {
-                id: 'task-sophia-05',
+                id: 'a0000000-0000-0000-0000-000000000005',
                 title: 'Penerbitan Artikel Warta "Keutamaan Memberi Makan Jamaah"',
                 description: 'Penyusunan naskah artikel dakwah, kurasi foto ImageKit WebP, dan pengajuan review ke Ketua DKM.',
                 division: 'Divisi Media & Dakwah',
@@ -2158,7 +2177,7 @@
                 created_at: new Date(Date.now() - 86400000).toISOString()
             },
             {
-                id: 'task-sophia-06',
+                id: 'a0000000-0000-0000-0000-000000000006',
                 title: 'Kalibrasi Menit Ikhtiyat Jadwal Shalat Kemenag Bekasi',
                 description: 'Verifikasi hisab astronomis jadwal shalat Jatiwarna dan penyesuaian running text jam digital masjid.',
                 division: 'Divisi Ibadah & Acara',
@@ -2173,7 +2192,7 @@
                 created_at: new Date().toISOString()
             },
             {
-                id: 'task-sophia-07',
+                id: 'a0000000-0000-0000-0000-000000000007',
                 title: 'Rekonsiliasi Kas Masuk Donasi QRIS & Rekening BSI',
                 description: 'Pencocokan mutasi bank harian dengan entri data infaq portal donasi masjid.',
                 division: 'Divisi Keuangan & ZISWAF',
@@ -2188,7 +2207,7 @@
                 created_at: new Date().toISOString()
             },
             {
-                id: 'task-sophia-08',
+                id: 'a0000000-0000-0000-0000-000000000008',
                 title: 'Piket Ronda Malam & Pengecekan CCTV Area Parkiran',
                 description: 'Patroli berkala area parkir kendaraan musafir samping UMAR Travel dan gerbang masuk Hankam.',
                 division: 'Divisi Keamanan',
@@ -2203,7 +2222,7 @@
                 created_at: new Date().toISOString()
             },
             {
-                id: 'task-sophia-09',
+                id: 'a0000000-0000-0000-0000-000000000009',
                 title: 'Pemantauan Arsitektur 7 Pilar Cloud & Keep-Alive Cron',
                 description: 'Audit utilisasi kuota Vercel, Supabase DB, ImageKit, dan Resend API.',
                 division: 'IT & Ekosistem Digital',
@@ -2219,10 +2238,10 @@
             }
         ];
 
-        // Seed Activity Logs
+        // Seed Activity Logs (RFC UUIDs)
         const DEFAULT_SEED_LOGS = [
             {
-                id: 'log-01',
+                id: 'b0000000-0000-0000-0000-000000000001',
                 task_title: 'Persiapan 70+ Porsi Sedekah Makan Siang Dzuhur',
                 user_name: 'Ustadz Ridwan',
                 user_role: 'PJ_LOGISTIK',
@@ -2231,7 +2250,7 @@
                 created_at: new Date(Date.now() - 3600000 * 2).toISOString()
             },
             {
-                id: 'log-02',
+                id: 'b0000000-0000-0000-0000-000000000002',
                 task_title: 'Penerbitan Artikel Warta "Keutamaan Memberi Makan Jamaah"',
                 user_name: 'Habib Maulana',
                 user_role: 'PJ_MEDIA',
@@ -2240,7 +2259,7 @@
                 created_at: new Date(Date.now() - 3600000 * 3).toISOString()
             },
             {
-                id: 'log-03',
+                id: 'b0000000-0000-0000-0000-000000000003',
                 task_title: 'Pembersihan & Sterilisasi Area Wudhu & Kamar Mandi Musafir 24 Jam',
                 user_name: 'Pak Marwan',
                 user_role: 'PJ_KEBERSIHAN',
@@ -2250,10 +2269,10 @@
             }
         ];
 
-        // Seed Chat Messages
+        // Seed Chat Messages (RFC UUIDs)
         const DEFAULT_SEED_CHATS = [
             {
-                id: 'chat-01',
+                id: 'c0000000-0000-0000-0000-000000000001',
                 sender_name: 'Ketua DKM Sophia',
                 sender_role: 'KETUA_DKM',
                 sender_division: 'Pimpinan DKM',
@@ -2261,7 +2280,7 @@
                 created_at: new Date(Date.now() - 3600000 * 3).toISOString()
             },
             {
-                id: 'chat-02',
+                id: 'c0000000-0000-0000-0000-000000000002',
                 sender_name: 'Ustadz Ridwan',
                 sender_role: 'PJ_LOGISTIK',
                 sender_division: 'Logistik & Sarpras',
@@ -2269,7 +2288,7 @@
                 created_at: new Date(Date.now() - 3600000 * 2).toISOString()
             },
             {
-                id: 'chat-03',
+                id: 'c0000000-0000-0000-0000-000000000003',
                 sender_name: 'Habib Maulana',
                 sender_role: 'PJ_MEDIA',
                 sender_division: 'Media & Dakwah',
@@ -2301,12 +2320,16 @@
                 if (!taskErr && tasks && tasks.length > 0) {
                     allTasksList = tasks.map(t => ({
                         ...t,
-                        is_archived: t.is_archived || false,
-                        progress_pct: t.progress_pct || (t.status === 'COMPLETED' ? 100 : (t.status === 'IN_PROGRESS' ? 50 : 0)),
+                        is_archived: Boolean(t.is_archived),
+                        progress_pct: t.progress_pct !== undefined && t.progress_pct !== null ? t.progress_pct : (t.status === 'COMPLETED' ? 100 : (t.status === 'IN_PROGRESS' ? 50 : 0)),
                         start_date: t.start_date || (t.created_at ? t.created_at.split('T')[0] : new Date().toISOString().split('T')[0])
                     }));
                 } else {
                     allTasksList = [...DEFAULT_SEED_TASKS];
+                    // Auto-seed to Supabase if database table is empty
+                    if (!taskErr && (!tasks || tasks.length === 0)) {
+                        sbClient.from('team_tasks').upsert(DEFAULT_SEED_TASKS).catch(e => console.debug('Seeding info:', e));
+                    }
                 }
 
                 // 3. Fetch Task Activity Logs
@@ -2336,7 +2359,7 @@
                 // 7. System Health
                 fetchSystemHealth();
 
-                // Setup Realtime Subscriptions (Once)
+                // Setup Realtime Subscriptions (Unified Hub)
                 setupRealtimeSubscriptions();
 
                 // Render Task Views
@@ -2352,52 +2375,93 @@
         }
 
         function setupRealtimeSubscriptions() {
-            if (!sbClient || realtimeChannels.tasks) return;
+            if (!sbClient || realtimeHub) return;
 
             try {
-                // Channel for team_tasks
-                realtimeChannels.tasks = sbClient.channel('realtime_tasks_channel')
+                realtimeHub = sbClient.channel('masjid_sophia_sync_hub', {
+                    config: {
+                        broadcast: { self: false }
+                    }
+                });
+
+                realtimeHub
+                    // 1. Database CDC (Postgres Changes)
                     .on('postgres_changes', { event: '*', schema: 'public', table: 'team_tasks' }, payload => {
+                        console.log('[Realtime CDC] team_tasks:', payload);
                         handleRealtimeTaskChange(payload);
                     })
-                    .subscribe();
-
-                // Channel for task_activity_logs
-                realtimeChannels.logs = sbClient.channel('realtime_logs_channel')
                     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'task_activity_logs' }, payload => {
-                        if (payload.new) {
+                        if (payload.new && !taskActivityLogs.some(l => l.id === payload.new.id)) {
                             taskActivityLogs.unshift(payload.new);
                             renderTaskHistory();
                         }
                     })
-                    .subscribe();
-
-                // Channel for task_chat_messages
-                realtimeChannels.chat = sbClient.channel('realtime_chat_channel')
                     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'task_chat_messages' }, payload => {
-                        if (payload.new) {
+                        if (payload.new && !taskChatMessages.some(c => c.id === payload.new.id)) {
                             taskChatMessages.push(payload.new);
                             renderTaskChat();
                         }
                     })
-                    .subscribe();
+                    // 2. Broadcast Channel (Ultra Fast Multi-Tab / Multi-Client Realtime Sync)
+                    .on('broadcast', { event: 'TASK_SYNC' }, ({ payload }) => {
+                        console.log('[Realtime Broadcast] TASK_SYNC received:', payload);
+                        if (payload && payload.action) {
+                            handleBroadcastTaskSync(payload);
+                        }
+                    })
+                    .on('broadcast', { event: 'LOG_SYNC' }, ({ payload }) => {
+                        if (payload && !taskActivityLogs.some(l => l.id === payload.id)) {
+                            taskActivityLogs.unshift(payload);
+                            renderTaskHistory();
+                        }
+                    })
+                    .on('broadcast', { event: 'CHAT_SYNC' }, ({ payload }) => {
+                        if (payload && !taskChatMessages.some(c => c.id === payload.id)) {
+                            taskChatMessages.push(payload);
+                            renderTaskChat();
+                        }
+                    })
+                    .subscribe((status) => {
+                        console.log('[Realtime Hub Status]:', status);
+                    });
 
             } catch (e) {
                 console.warn("Realtime sub warning:", e);
             }
         }
 
+        function handleBroadcastTaskSync(payload) {
+            const { action, task, taskList } = payload;
+            if (action === 'UPSERT' || action === 'STATUS_UPDATE') {
+                if (!task) return;
+                const idx = allTasksList.findIndex(t => String(t.id) === String(task.id));
+                if (idx !== -1) {
+                    allTasksList[idx] = { ...allTasksList[idx], ...task };
+                } else {
+                    allTasksList.unshift(task);
+                }
+            } else if (action === 'BULK_UPDATE' && Array.isArray(taskList)) {
+                taskList.forEach(ut => {
+                    const idx = allTasksList.findIndex(t => String(t.id) === String(ut.id));
+                    if (idx !== -1) allTasksList[idx] = { ...allTasksList[idx], ...ut };
+                });
+            } else if (action === 'DELETE' && task) {
+                allTasksList = allTasksList.filter(t => String(t.id) !== String(task.id));
+            }
+            renderAllTaskViews();
+        }
+
         function handleRealtimeTaskChange(payload) {
             const { eventType, new: newRec, old: oldRec } = payload;
             if (eventType === 'INSERT' && newRec) {
-                const exists = allTasksList.find(t => t.id === newRec.id);
+                const exists = allTasksList.find(t => String(t.id) === String(newRec.id));
                 if (!exists) allTasksList.unshift(newRec);
             } else if (eventType === 'UPDATE' && newRec) {
-                const idx = allTasksList.findIndex(t => t.id === newRec.id);
-                if (idx !== -1) allTasksList[idx] = newRec;
+                const idx = allTasksList.findIndex(t => String(t.id) === String(newRec.id));
+                if (idx !== -1) allTasksList[idx] = { ...allTasksList[idx], ...newRec };
                 else allTasksList.unshift(newRec);
             } else if (eventType === 'DELETE' && oldRec) {
-                allTasksList = allTasksList.filter(t => t.id !== oldRec.id);
+                allTasksList = allTasksList.filter(t => String(t.id) !== String(oldRec.id));
             }
             renderAllTaskViews();
         }
@@ -2645,6 +2709,7 @@
             task.status = newStatus;
             if (newStatus === 'COMPLETED') task.progress_pct = 100;
             else if (newStatus === 'PENDING' && task.progress_pct === 100) task.progress_pct = 0;
+            task.updated_at = new Date().toISOString();
 
             const statusLabels = {
                 'PENDING': 'Menunggu',
@@ -2655,12 +2720,30 @@
 
             logTaskActivity('STATUS_CHANGED', task.title, `Mengubah status dari "${statusLabels[oldStatus] || oldStatus}" ke "${statusLabels[newStatus] || newStatus}".`);
 
+            // 1. Instant Real-Time Broadcast across all open windows/devices
+            broadcastEvent('TASK_SYNC', { action: 'STATUS_UPDATE', task: task });
+
+            // 2. Persist to Supabase Database
             if (sbClient) {
-                await sbClient.from('team_tasks').update({
-                    status: newStatus,
-                    progress_pct: task.progress_pct,
-                    updated_at: new Date().toISOString()
-                }).eq('id', taskId);
+                try {
+                    await sbClient.from('team_tasks').upsert({
+                        id: task.id,
+                        title: task.title,
+                        description: task.description,
+                        division: task.division,
+                        assigned_to: task.assigned_to,
+                        assigned_role: task.assigned_role,
+                        priority: task.priority,
+                        status: newStatus,
+                        progress_pct: task.progress_pct,
+                        is_archived: Boolean(task.is_archived),
+                        start_date: task.start_date,
+                        due_date: task.due_date,
+                        updated_at: task.updated_at
+                    });
+                } catch (err) {
+                    console.warn("Supabase update warning:", err);
+                }
             }
 
             renderAllTaskViews();
@@ -3044,19 +3127,29 @@
         async function handleBulkStatusUpdate(status) {
             if (selectedTaskIds.size === 0) return;
             const ids = Array.from(selectedTaskIds);
+            const updatedTasks = [];
 
             ids.forEach(id => {
                 const t = getTaskById(id);
                 if (t) {
                     t.status = status;
                     if (status === 'COMPLETED') t.progress_pct = 100;
+                    t.updated_at = new Date().toISOString();
+                    updatedTasks.push(t);
                 }
             });
 
             logTaskActivity('STATUS_CHANGED', `${ids.length} Tugas`, `Mengubah status masal menjadi ${status}.`);
 
+            // Broadcast bulk update
+            broadcastEvent('TASK_SYNC', { action: 'BULK_UPDATE', taskList: updatedTasks });
+
             if (sbClient) {
-                await sbClient.from('team_tasks').update({ status: status, progress_pct: 100, updated_at: new Date().toISOString() }).in('id', ids);
+                try {
+                    await sbClient.from('team_tasks').update({ status: status, progress_pct: 100, updated_at: new Date().toISOString() }).in('id', ids);
+                } catch (err) {
+                    console.warn("Supabase bulk status warning:", err);
+                }
             }
 
             selectedTaskIds.clear();
@@ -3066,16 +3159,28 @@
         async function handleBulkArchive() {
             if (selectedTaskIds.size === 0) return;
             const ids = Array.from(selectedTaskIds);
+            const updatedTasks = [];
 
             ids.forEach(id => {
                 const t = getTaskById(id);
-                if (t) t.is_archived = true;
+                if (t) {
+                    t.is_archived = true;
+                    t.updated_at = new Date().toISOString();
+                    updatedTasks.push(t);
+                }
             });
 
             logTaskActivity('ARCHIVED', `${ids.length} Tugas`, `Mengarsipkan ${ids.length} tugas secara masal.`);
 
+            // Broadcast bulk archive
+            broadcastEvent('TASK_SYNC', { action: 'BULK_UPDATE', taskList: updatedTasks });
+
             if (sbClient) {
-                await sbClient.from('team_tasks').update({ is_archived: true, updated_at: new Date().toISOString() }).in('id', ids);
+                try {
+                    await sbClient.from('team_tasks').update({ is_archived: true, updated_at: new Date().toISOString() }).in('id', ids);
+                } catch (err) {
+                    console.warn("Supabase bulk archive warning:", err);
+                }
             }
 
             selectedTaskIds.clear();
@@ -3157,10 +3262,18 @@
             if (!task) return;
 
             task.is_archived = true;
+            task.updated_at = new Date().toISOString();
             logTaskActivity('ARCHIVED', task.title, 'Memindahkan tugas ke ruang arsip.');
 
+            // Broadcast archive event
+            broadcastEvent('TASK_SYNC', { action: 'STATUS_UPDATE', task: task });
+
             if (sbClient) {
-                await sbClient.from('team_tasks').update({ is_archived: true, updated_at: new Date().toISOString() }).eq('id', taskId);
+                try {
+                    await sbClient.from('team_tasks').update({ is_archived: true, updated_at: task.updated_at }).eq('id', taskId);
+                } catch (err) {
+                    console.warn("Supabase archive warning:", err);
+                }
             }
 
             renderAllTaskViews();
@@ -3171,10 +3284,18 @@
             if (!task) return;
 
             task.is_archived = false;
+            task.updated_at = new Date().toISOString();
             logTaskActivity('RESTORED', task.title, 'Memulihkan tugas dari arsip kembali ke papan aktif.');
 
+            // Broadcast restore event
+            broadcastEvent('TASK_SYNC', { action: 'STATUS_UPDATE', task: task });
+
             if (sbClient) {
-                await sbClient.from('team_tasks').update({ is_archived: false, updated_at: new Date().toISOString() }).eq('id', taskId);
+                try {
+                    await sbClient.from('team_tasks').update({ is_archived: false, updated_at: task.updated_at }).eq('id', taskId);
+                } catch (err) {
+                    console.warn("Supabase restore warning:", err);
+                }
             }
 
             renderAllTaskViews();
@@ -3189,8 +3310,15 @@
             allTasksList = allTasksList.filter(t => String(t.id) !== String(taskId));
             logTaskActivity('DELETED', task.title, 'Menghapus tugas secara permanen dari sistem.');
 
+            // Broadcast delete event
+            broadcastEvent('TASK_SYNC', { action: 'DELETE', task: { id: taskId } });
+
             if (sbClient) {
-                await sbClient.from('team_tasks').delete().eq('id', taskId);
+                try {
+                    await sbClient.from('team_tasks').delete().eq('id', taskId);
+                } catch (err) {
+                    console.warn("Supabase delete warning:", err);
+                }
             }
 
             renderAllTaskViews();
@@ -3202,7 +3330,7 @@
         function logTaskActivity(actionType, taskTitle, details) {
             const user = currentUser?.email ? currentUser.email.split('@')[0] : 'Pengurus DKM';
             const logEntry = {
-                id: 'log-' + Date.now(),
+                id: generateUUID(),
                 task_title: taskTitle,
                 user_name: user,
                 user_role: 'STAFF',
@@ -3214,14 +3342,18 @@
             taskActivityLogs.unshift(logEntry);
             if (taskActivityLogs.length > 50) taskActivityLogs.pop();
 
+            // Broadcast log event
+            broadcastEvent('LOG_SYNC', logEntry);
+
             if (sbClient) {
                 sbClient.from('task_activity_logs').insert({
+                    id: logEntry.id,
                     task_title: taskTitle,
                     user_name: user,
                     user_role: 'STAFF',
                     action_type: actionType,
                     details: details
-                }).then(() => {});
+                }).then(() => {}).catch(e => console.debug('Log insert info:', e));
             }
 
             renderTaskHistory();
@@ -3297,7 +3429,7 @@
 
             const sender = currentUser?.email ? currentUser.email.split('@')[0] : 'Pengurus DKM';
             const chatEntry = {
-                id: 'chat-' + Date.now(),
+                id: generateUUID(),
                 sender_name: sender,
                 sender_role: 'STAFF',
                 sender_division: 'Pengurus DKM',
@@ -3309,13 +3441,17 @@
             input.value = '';
             renderTaskChat();
 
+            // Broadcast chat event
+            broadcastEvent('CHAT_SYNC', chatEntry);
+
             if (sbClient) {
                 await sbClient.from('task_chat_messages').insert({
+                    id: chatEntry.id,
                     sender_name: sender,
                     sender_role: 'STAFF',
                     sender_division: 'Pengurus DKM',
                     message: message
-                });
+                }).catch(e => console.debug('Chat insert info:', e));
             }
         }
 
@@ -3391,34 +3527,51 @@
 
                     logTaskActivity('UPDATED', title, `Memperbarui rincian tugas (Status: ${status}, Progres: ${progressPct}%).`);
 
+                    // Broadcast update
+                    broadcastEvent('TASK_SYNC', { action: 'UPSERT', task: task });
+
                     if (sbClient) {
-                        await sbClient.from('team_tasks').update({
-                            title, division, assigned_to: pic, priority, status,
-                            start_date: startDate, due_date: dueDate, progress_pct: progressPct,
-                            description: desc, updated_at: new Date().toISOString()
-                        }).eq('id', id);
+                        try {
+                            await sbClient.from('team_tasks').upsert({
+                                id: task.id,
+                                title, division, assigned_to: pic, priority, status,
+                                start_date: startDate, due_date: dueDate, progress_pct: progressPct,
+                                description: desc, is_archived: Boolean(task.is_archived),
+                                updated_at: task.updated_at
+                            });
+                        } catch (err) {
+                            console.warn("Supabase save task warning:", err);
+                        }
                     }
                 }
             } else {
                 // Create
                 const newTask = {
-                    id: 'task-' + Date.now(),
+                    id: generateUUID(),
                     title, division, assigned_to: pic, priority, status,
                     start_date: startDate, due_date: dueDate, progress_pct: progressPct,
                     description: desc, is_archived: false,
-                    created_at: new Date().toISOString()
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
                 };
 
                 allTasksList.unshift(newTask);
                 logTaskActivity('CREATED', title, `Membuat tugas baru untuk ${division} (PIC: ${pic}).`);
 
+                // Broadcast create
+                broadcastEvent('TASK_SYNC', { action: 'UPSERT', task: newTask });
+
                 if (sbClient) {
-                    const { data } = await sbClient.from('team_tasks').insert({
-                        title, division, assigned_to: pic, priority, status,
-                        start_date: startDate, due_date: dueDate, progress_pct: progressPct,
-                        description: desc, is_archived: false
-                    }).select();
-                    if (data && data[0]) newTask.id = data[0].id;
+                    try {
+                        await sbClient.from('team_tasks').insert({
+                            id: newTask.id,
+                            title, division, assigned_to: pic, priority, status,
+                            start_date: startDate, due_date: dueDate, progress_pct: progressPct,
+                            description: desc, is_archived: false
+                        });
+                    } catch (err) {
+                        console.warn("Supabase insert task warning:", err);
+                    }
                 }
             }
 
