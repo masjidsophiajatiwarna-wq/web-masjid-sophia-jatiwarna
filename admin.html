@@ -3387,7 +3387,7 @@
                                     <div class="pillar-metric-item">
                                         <div class="metric-row">
                                             <span class="metric-name">Verified Domain</span>
-                                            <span class="metric-num">masjidsophiajatiwarna.com (DKIM Active)</span>
+                                            <span class="metric-num" id="cloud-metric-resend-domain">masjidsophiajatiwarna.com (DKIM Active)</span>
                                         </div>
                                     </div>
                                     <div class="pillar-metric-item">
@@ -3445,7 +3445,7 @@
                                     <div class="pillar-metric-item">
                                         <div class="metric-row">
                                             <span class="metric-name">Production Branch</span>
-                                            <span class="metric-num">main (Auto-Deploy)</span>
+                                            <span class="metric-num" id="cloud-metric-vercel-branch">main (Auto-Deploy)</span>
                                         </div>
                                     </div>
                                 </div>
@@ -3546,7 +3546,7 @@
                                     <div class="pillar-metric-item">
                                         <div class="metric-row">
                                             <span class="metric-name">Workflow Status</span>
-                                            <span class="metric-num" style="color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Active Passing</span>
+                                            <span class="metric-num" style="color: var(--color-success);" id="cloud-metric-github-status"><i class="fa-solid fa-circle-check"></i> Active Passing</span>
                                         </div>
                                     </div>
                                 </div>
@@ -7742,6 +7742,22 @@
                 if (elMetricDbPct) elMetricDbPct.textContent = `${dbSizePct}%`;
                 if (elBarDbSize) elBarDbSize.style.width = `${Math.max(1, parseFloat(dbSizePct))}%`;
                 if (elMetricAuthUsers) elMetricAuthUsers.textContent = registeredUsers;
+
+                // Live fields from backend /api/cloud-usage
+                if (liveData && liveData.pillars) {
+                    if (liveData.pillars.resend && liveData.pillars.resend.verified_domain) {
+                        const elResend = document.getElementById('cloud-metric-resend-domain');
+                        if (elResend) elResend.textContent = liveData.pillars.resend.verified_domain;
+                    }
+                    if (liveData.pillars.vercel && liveData.pillars.vercel.branch) {
+                        const elVercel = document.getElementById('cloud-metric-vercel-branch');
+                        if (elVercel) elVercel.textContent = liveData.pillars.vercel.branch;
+                    }
+                    if (liveData.pillars.github && liveData.pillars.github.workflow_status) {
+                        const elGh = document.getElementById('cloud-metric-github-status');
+                        if (elGh) elGh.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${liveData.pillars.github.workflow_status}`;
+                    }
+                }
 
             } catch (e) {
                 console.error('[Cloud Monitor Refresh Error]', e);
