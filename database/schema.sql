@@ -223,6 +223,28 @@ DROP POLICY IF EXISTS "Allow full access feedback for authenticated staff" ON pu
 CREATE POLICY "Allow full access feedback for authenticated staff" 
 ON public.feedback_complaints FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
+-- 10. TABEL PENGAJUAN IZIN & CUTI PENGURUS DKM
+CREATE TABLE IF NOT EXISTS public.dkm_leave_requests (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    applicant_name VARCHAR(150) NOT NULL,
+    applicant_role VARCHAR(50) NOT NULL,
+    division VARCHAR(100) NOT NULL,
+    leave_type VARCHAR(50) NOT NULL, -- 'IZIN_SAKIT', 'KEPERLUAN_PRIBADI', 'TUGAS_LUAR', 'CUTI_OPERASIONAL'
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    total_days INT DEFAULT 1,
+    reason TEXT NOT NULL,
+    attachment_url TEXT, -- Link bukti foto surat dokter / dokumen ImageKit
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING', -- 'PENDING', 'APPROVED', 'REJECTED', 'CANCELLED'
+    approver_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    approver_name VARCHAR(150),
+    approval_notes TEXT,
+    approved_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- ==============================================================================
 -- REALTIME REPLICATION SETUP (SAFE DO BLOCK)
 -- ==============================================================================
@@ -252,4 +274,15 @@ BEGIN
         ALTER PUBLICATION supabase_realtime ADD TABLE public.feedback_complaints;
     EXCEPTION WHEN duplicate_object THEN NULL;
     END;
+
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.admin_users;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.dkm_leave_requests;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
 END $$;
+

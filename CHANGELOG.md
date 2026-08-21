@@ -17,8 +17,9 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
     - *Tingkat 1 (PWA):* Web Manifest (`site.webmanifest`), offline caching Service Worker, dan Add to Homescreen instan.
     - *Tingkat 2 (TWA / WebAPK):* Pembuatan berkas installer mandiri `MasjidSophia-Admin.apk` (Google Bubblewrap / PWABuilder) yang otomatis sinkron pembaruan dari Vercel tanpa perlu instal ulang.
     - *Tingkat 3 (Native Capacitor.js):* Integrasi push notification tugas & chat (Firebase FCM), akses kamera cepat untuk bukti kebersihan/keamanan, dan login biometrik sidik jari.
-  - **Aplikasi Jamaah:** Ditetapkan berstatus *Coming Soon / Pasca-Peluncuran* (web publik `index.html` sudah mobile-friendly).
-- `[DASHBOARD]` Dashboard pelacak progres visual `progress-implementation-plan.html` pada subdomain `progdev.masjidsophiajatiwarna.com` diperbarui ke Total 8 Fase (Fase 0 - Fase 7) lengkap dengan kartu Fase 7 dan task mobile-first.
+  - **Modul Pengajuan Izin & Cuti Pengurus DKM (`dkm_leave_requests`):** Formulir izin sakit/keperluan pribadi/cuti bagi seluruh pengurus (Request) dengan alur persetujuan terpusat (*Approval*) khusus Ketua DKM & Super Admin, serta sinkronisasi jadwal tugas otomatis.
+- `[DASHBOARD]` Dashboard pelacak progres visual `progress-implementation-plan.html` pada subdomain `progdev.masjidsophiajatiwarna.com` diperbarui ke Total 8 Fase (Fase 0 - Fase 7) lengkap dengan kartu Fase 7, sub-grup permohonan izin pengurus, dan matriks RBAC 10 peran.
+- `[DATABASE]` Penambahan tabel `dkm_leave_requests` beserta proteksi RLS dan Realtime Publication WebSocket pada `database/schema.sql`.
 
 ---
 
