@@ -161,8 +161,8 @@ export default async function handler(req, res) {
         console.error('[Supabase Live Count Error]', err);
     }
 
-    // 2. Resend API Live Query (if RESEND_API_KEY is available in Vercel)
-    const resendKey = process.env.RESEND_API_KEY;
+    // 2. Resend API Live Query (if RESEND_API_KEY / RESEND_API_KEY_FOR_MONITORING is available in Vercel)
+    const resendKey = process.env.RESEND_API_KEY_FOR_MONITORING || process.env.RESEND_API_KEY;
     if (resendKey) {
         try {
             const resendRes = await fetch('https://api.resend.com/domains', {
