@@ -13,7 +13,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Supabase JS Client v2 -->
+    <!-- Supabase JS Client v2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- Favicon -->
@@ -736,17 +736,17 @@
     const GDRIVE_VIDEO_URL = "https://drive.google.com/drive/folders/13FUgFZV8w9tQT7loG9VrGIimFNo6_TJo?usp=sharing";
 
     // Supabase Configuration
-    const SUPABASE_URL = "https://fcwajbemkbhkogwtqcmx.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjd2FqYmVta2Joa29nd3RxY214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzg2ODMsImV4cCI6MjEwMjcxNDY4M30.SdkWOVO8TyWzQn_96SCLUzryv-blvKKCi1poXlPk5Y4";
+    const SUPABASE_PROJECT_URL = "https://fcwajbemkbhkogwtqcmx.supabase.co";
+    const SUPABASE_ANON_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjd2FqYmVta2Joa29nd3RxY214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzg2ODMsImV4cCI6MjEwMjcxNDY4M30.SdkWOVO8TyWzQn_96SCLUzryv-blvKKCi1poXlPk5Y4";
     
-    let supabase = null;
+    let sbClient = null;
     let checkedState = {};
     let currentFilter = 'all';
 
-    // Initialize Supabase Client
+    // Initialize Supabase Client safely
     try {
-        if (window.supabase) {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        if (window.supabase && typeof window.supabase.createClient === 'function') {
+            sbClient = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_PUBLIC_KEY);
         }
     } catch (e) {
         console.warn("Supabase init notice:", e);
@@ -805,9 +805,9 @@
 
     // Fetch initial state from Supabase Cloud
     async function loadCloudState() {
-        if (!supabase) return;
+        if (!sbClient) return;
         try {
-            const { data, error } = await supabase
+            const { data, error } = await sbClient
                 .from('media_checklists')
                 .select('*');
 
@@ -871,10 +871,10 @@
         updateProgressStats();
 
         // Save to Supabase Cloud
-        if (supabase) {
+        if (sbClient) {
             try {
                 const item = MEDIA_ITEMS.find(m => m.id === id);
-                await supabase
+                await sbClient
                     .from('media_checklists')
                     .upsert({
                         id: id,
@@ -926,9 +926,9 @@
 
     // Subscribe to Realtime WebSocket changes
     function initRealtime() {
-        if (!supabase) return;
+        if (!sbClient) return;
         try {
-            supabase
+            sbClient
                 .channel('realtime-media-checklists')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'media_checklists' }, payload => {
                     if (payload.new && payload.new.id) {
