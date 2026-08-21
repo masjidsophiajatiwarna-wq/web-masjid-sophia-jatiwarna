@@ -922,25 +922,65 @@
             position: absolute;
             top: 2px;
             bottom: 2px;
-            background: linear-gradient(90deg, var(--color-gold-deep), var(--color-gold-primary));
             border-radius: 4px;
             display: flex;
             align-items: center;
             padding: 0 0.5rem;
-            color: var(--color-charcoal);
             font-size: 0.7rem;
             font-weight: 800;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             cursor: pointer;
             transition: var(--transition);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Gantt Status Color Differentiation */
+        .gantt-bar.pending {
+            background: #E2E8F0;
+            color: #334155;
+            border: 1px solid #94A3B8;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .gantt-bar.in-progress, .gantt-bar.review {
+            background: linear-gradient(90deg, #D97706, #F59E0B);
+            color: #1E293B;
+            box-shadow: 0 1px 3px rgba(217, 119, 6, 0.3);
+        }
+
+        .gantt-bar.completed {
+            background: linear-gradient(90deg, #059669, #10B981);
+            color: #FFFFFF;
+            box-shadow: 0 1px 3px rgba(5, 150, 105, 0.35);
         }
 
         .gantt-bar:hover {
             filter: brightness(1.08);
             transform: scaleY(1.05);
+            z-index: 5;
         }
 
-        /* 3. Calendar View */
+        .gantt-today-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--color-gold-deep);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .gantt-grid-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #E2E8F0;
+            pointer-events: none;
+        }
+
+        /* 3. Calendar View (Portosiabe Pro Style) */
         .calendar-wrapper {
             background: var(--color-bg-white);
             border: 1px solid var(--color-border);
@@ -991,13 +1031,14 @@
 
         .calendar-day-cell {
             background: var(--color-bg-white);
-            min-height: 110px;
-            padding: 0.5rem;
+            min-height: 115px;
+            padding: 0.45rem;
             display: flex;
             flex-direction: column;
-            gap: 0.35rem;
+            gap: 0.25rem;
             cursor: pointer;
             transition: background 0.15s ease;
+            position: relative;
         }
 
         .calendar-day-cell:hover {
@@ -1011,26 +1052,55 @@
 
         .calendar-day-cell.today {
             background: #FAF6E8;
+            border: 1px solid var(--color-gold-light);
         }
 
         .calendar-day-number {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 800;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 0.2rem;
         }
 
-        .calendar-task-pill {
-            padding: 0.2rem 0.45rem;
+        .calendar-task-card {
+            padding: 0.25rem 0.45rem;
             border-radius: 4px;
             font-size: 0.68rem;
             font-weight: 700;
-            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+            transition: transform 0.1s ease;
+            cursor: pointer;
+            border-left: 3px solid transparent;
             overflow: hidden;
             text-overflow: ellipsis;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            white-space: nowrap;
         }
+
+        .calendar-task-card:hover {
+            transform: translateY(-1px);
+            filter: brightness(0.96);
+        }
+
+        .calendar-task-card.multi-day {
+            border-style: solid;
+            border-width: 1px 1px 1px 3px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-dot.completed { background: #10B981; }
+        .status-dot.in_progress, .status-dot.review { background: #F59E0B; }
+        .status-dot.pending { background: #94A3B8; }
 
         /* Agenda View List */
         .agenda-container {
@@ -1123,15 +1193,16 @@
             flex-shrink: 0;
         }
 
-        /* Chat Room */
+        /* Chat Room & WhatsApp Style Reply + Mention */
         .chat-room-container {
             display: flex;
             flex-direction: column;
-            height: 380px;
-            background: #F9FAFB;
+            height: 480px;
+            background: #F8FAFC;
             border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
             overflow: hidden;
+            position: relative;
         }
 
         .chat-messages-stream {
@@ -1144,11 +1215,14 @@
         }
 
         .chat-bubble {
-            max-width: 80%;
+            max-width: 82%;
             padding: 0.65rem 0.85rem;
             border-radius: var(--radius-md);
             font-size: 0.78rem;
             position: relative;
+            cursor: pointer;
+            user-select: text;
+            transition: background 0.2s ease, transform 0.1s ease;
         }
 
         .chat-bubble.mine {
@@ -1166,11 +1240,205 @@
             border-bottom-left-radius: 2px;
         }
 
+        .chat-bubble.highlight-flash {
+            animation: flashHighlight 1.5s ease-out;
+        }
+
+        @keyframes flashHighlight {
+            0% { transform: scale(1.03); box-shadow: 0 0 15px rgba(212, 160, 23, 0.8); }
+            100% { transform: scale(1); box-shadow: none; }
+        }
+
         .chat-bubble-sender {
             font-size: 0.68rem;
             font-weight: 800;
             color: var(--color-gold-primary);
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-bubble-reply {
+            background: transparent;
+            border: none;
+            color: inherit;
+            opacity: 0.6;
+            cursor: pointer;
+            font-size: 0.7rem;
+            padding: 0 0.25rem;
+            transition: opacity 0.15s;
+        }
+
+        .btn-bubble-reply:hover {
+            opacity: 1;
+            color: var(--color-gold-primary);
+        }
+
+        /* Quoted Box inside Bubble (WhatsApp Style) */
+        .chat-quoted-box {
+            background: rgba(0, 0, 0, 0.06);
+            border-left: 3.5px solid var(--color-gold-deep);
+            border-radius: 4px;
+            padding: 0.35rem 0.55rem;
+            margin-bottom: 0.4rem;
+            font-size: 0.72rem;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .chat-bubble.mine .chat-quoted-box {
+            background: rgba(255, 255, 255, 0.12);
+            border-left-color: var(--color-gold-primary);
+        }
+
+        .chat-quoted-box:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .quoted-sender {
+            font-weight: 800;
+            color: var(--color-gold-deep);
+            font-size: 0.68rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .chat-bubble.mine .quoted-sender {
+            color: var(--color-gold-primary);
+        }
+
+        .quoted-text {
+            color: inherit;
+            opacity: 0.85;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 320px;
+        }
+
+        /* Reply Context Preview Bar Above Input */
+        .chat-reply-preview-bar {
+            display: flex;
+            align-items: center;
+            background: #F1F5F9;
+            border-top: 1px solid var(--color-border);
+            padding: 0.5rem 0.75rem;
+            gap: 0.65rem;
+            position: relative;
+        }
+
+        .reply-preview-left-bar {
+            width: 3.5px;
+            align-self: stretch;
+            background: var(--color-gold-deep);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .reply-preview-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .reply-preview-sender {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--color-gold-deep);
+        }
+
+        .reply-preview-text {
+            font-size: 0.72rem;
+            color: var(--color-charcoal);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-cancel-reply {
+            background: transparent;
+            border: none;
+            font-size: 1.1rem;
+            color: var(--color-charcoal-muted);
+            cursor: pointer;
+            padding: 0 0.4rem;
+            line-height: 1;
+        }
+
+        .btn-cancel-reply:hover {
+            color: #DC2626;
+        }
+
+        /* Mention Autocomplete Popup */
+        .mention-autocomplete-popup {
+            position: absolute;
+            bottom: 60px;
+            left: 1rem;
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-height: 180px;
+            overflow-y: auto;
+            width: 240px;
+            z-index: 100;
+            display: none;
+        }
+
+        .mention-item {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--color-charcoal);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .mention-item:hover, .mention-item.active {
+            background: #FAF6E8;
+            color: var(--color-gold-deep);
+        }
+
+        /* Mention Tag Pill in Message */
+        .mention-tag {
+            background: rgba(212, 160, 23, 0.2);
+            color: var(--color-gold-deep);
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            font-weight: 800;
+        }
+
+        .chat-bubble.mine .mention-tag {
+            background: rgba(255, 255, 255, 0.25);
+            color: var(--color-gold-primary);
+        }
+
+        /* Mention Count Badge on Subnav Button */
+        .mention-count-badge {
+            background: #DC2626;
+            color: #FFFFFF;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 0.1rem 0.4rem;
+            border-radius: 9999px;
+            margin-left: 0.35rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        /* Chat Media Attachment Preview */
+        .chat-media-preview {
+            max-width: 220px;
+            max-height: 160px;
+            border-radius: 6px;
+            margin-top: 0.35rem;
+            cursor: pointer;
+            display: block;
+            border: 1px solid rgba(0,0,0,0.1);
         }
 
         .chat-composer-bar {
@@ -1179,6 +1447,7 @@
             padding: 0.75rem;
             background: var(--color-bg-white);
             border-top: 1px solid var(--color-border);
+            align-items: center;
         }
 
         .chat-input {
@@ -1483,7 +1752,7 @@
                         <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Realtime
                     </button>
                     <button class="task-view-btn" id="btn-view-chat" onclick="switchTaskView('chat')">
-                        <i class="fa-solid fa-comments"></i> Chat Koordinasi DKM
+                        <i class="fa-solid fa-comments"></i> Chat Koordinasi DKM <span id="badge-chat-mentions" class="mention-count-badge" style="display: none;">0</span>
                     </button>
                 </div>
 
@@ -1652,12 +1921,15 @@
                             <i class="fa-solid fa-check-double" style="color: var(--color-gold-primary);"></i>
                             <span id="bulk-selected-count">0 tugas terpilih</span>
                         </div>
-                        <div style="display: flex; gap: 0.5rem;">
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                             <button class="btn-action-gold" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #FFFFFF;" onclick="handleBulkStatusUpdate('COMPLETED')">
                                 <i class="fa-solid fa-check"></i> Tandai Selesai
                             </button>
                             <button class="btn-action-gold" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #FFFFFF;" onclick="handleBulkArchive()">
                                 <i class="fa-solid fa-box-archive"></i> Arsipkan Terpilih
+                            </button>
+                            <button class="btn-action-gold" style="background: rgba(220, 38, 38, 0.9); border-color: rgba(220, 38, 38, 1); color: #FFFFFF;" onclick="handleBulkDelete()">
+                                <i class="fa-solid fa-trash"></i> Hapus Terpilih
                             </button>
                             <button class="btn-shift" style="background: transparent; border-color: rgba(255,255,255,0.3); color: #FFFFFF;" onclick="deselectAllTasks()">
                                 <i class="fa-solid fa-xmark"></i>
@@ -1769,9 +2041,27 @@
                             <div class="chat-messages-stream" id="chat-messages-stream">
                                 <!-- Messages rendered dynamically -->
                             </div>
+                            <!-- WhatsApp Style Reply Preview Bar -->
+                            <div class="chat-reply-preview-bar" id="chat-reply-preview-bar" style="display: none;">
+                                <div class="reply-preview-left-bar"></div>
+                                <div class="reply-preview-content">
+                                    <div class="reply-preview-sender" id="reply-preview-sender">Ustadz Ridwan</div>
+                                    <div class="reply-preview-text" id="reply-preview-text">Cuplikan pesan...</div>
+                                </div>
+                                <button type="button" class="btn-cancel-reply" onclick="cancelReply()" title="Batal balas">&times;</button>
+                            </div>
+                            <!-- Floating Mention Autocomplete Popup -->
+                            <div class="mention-autocomplete-popup" id="mention-autocomplete-popup">
+                                <!-- Mention items populated dynamically -->
+                            </div>
+                            <!-- Hidden Media File Input -->
+                            <input type="file" id="chat-media-input" accept="image/*,video/*" style="display: none;" onchange="handleChatMediaUpload(event)">
                             <form class="chat-composer-bar" onsubmit="handleSendChatMessage(event)">
-                                <input type="text" id="chat-composer-input" class="chat-input" placeholder="Ketik pesan koordinasi tugas atau instruksi DKM..." required>
-                                <button type="submit" class="btn-action-gold">
+                                <button type="button" class="btn-shift" style="width: 38px; height: 38px; flex-shrink: 0;" onclick="document.getElementById('chat-media-input').click()" title="Lampirkan Gambar atau Video">
+                                    <i class="fa-solid fa-paperclip"></i>
+                                </button>
+                                <input type="text" id="chat-composer-input" class="chat-input" placeholder="Ketik pesan koordinasi atau ketik @ untuk mention PJ..." oninput="handleChatInput(event)" onkeydown="handleChatKeyDown(event)" autocomplete="off" required>
+                                <button type="submit" class="btn-action-gold" style="flex-shrink: 0;">
                                     <i class="fa-solid fa-paper-plane"></i> Kirim
                                 </button>
                             </form>
@@ -2033,11 +2323,31 @@
             document.getElementById('admin-app').style.display = 'none';
         }
 
+        function getUserDisplayName(user) {
+            if (!user || !user.email) return 'Pengurus DKM';
+            const email = user.email.toLowerCase();
+            if (email.includes('superadmin')) return 'Super Administrator';
+            if (email.includes('superuser')) return 'Super User (Pimpinan)';
+            if (email === 'habibmaulana@masjidsophiajatiwarna.com' || email.includes('habib')) return 'Habib Maulana';
+            if (email.includes('dkm') || email.includes('ketua')) return 'Ketua DKM Sophia';
+            if (email.includes('media')) return 'PJ Media & Dakwah';
+            if (email.includes('logistik')) return 'Ustadz Ridwan (Logistik)';
+            if (email.includes('santri')) return 'Ustadz Fajar (Santri)';
+            if (email.includes('musafir')) return 'Pak Bambang (Musafir)';
+            if (email.includes('ibadah')) return 'Ustadz Hilman (Ibadah)';
+            if (email.includes('keuangan')) return 'Pak Hendra (Keuangan)';
+            if (email.includes('keamanan')) return 'Pak Agus (Keamanan)';
+            if (email.includes('kebersihan')) return 'Pak Marwan (Kebersihan)';
+            
+            const raw = user.email.split('@')[0];
+            return raw.charAt(0).toUpperCase() + raw.slice(1).replace(/[._]/g, ' ');
+        }
+
         function showAdminDashboard(user) {
             currentUser = user;
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('admin-app').style.display = 'block';
-            document.getElementById('display-user-email').textContent = user.email || 'Pengurus DKM';
+            document.getElementById('display-user-email').textContent = getUserDisplayName(user);
 
             const role = getUserRole();
             const roleElem = document.getElementById('display-user-role');
@@ -2572,6 +2882,9 @@
         // ==========================================================================
         // VIEW SWITCHER & FILTERING
         // ==========================================================================
+        // ==========================================================================
+        // VIEW SWITCHER & FILTERING
+        // ==========================================================================
         function switchTaskView(viewName) {
             if (!viewName) viewName = 'kanban';
             currentTaskView = viewName;
@@ -2590,6 +2903,16 @@
             document.querySelectorAll('.task-subview').forEach(v => v.style.display = 'none');
             const targetView = document.getElementById(`task-subview-${viewName}`);
             if (targetView) targetView.style.display = 'block';
+
+            // Sembunyikan bar search/filter tugas saat di ruang chat koordinasi (Gambar 5)
+            const toolbar = document.querySelector('.task-toolbar');
+            if (toolbar) {
+                toolbar.style.display = (viewName === 'chat') ? 'none' : 'flex';
+            }
+
+            if (viewName === 'chat') {
+                markMentionsAsRead();
+            }
 
             renderActiveTaskView();
         }
@@ -2647,6 +2970,7 @@
             renderActiveTaskView();
             renderTaskHistory();
             renderTaskChat();
+            updateMentionBadgeCount();
         }
 
         function renderActiveTaskView() {
@@ -2932,7 +3256,7 @@
         }
 
         // ==========================================================================
-        // 2. GANTT TIMELINE RENDERER
+        // 2. GANTT TIMELINE RENDERER (GAMBAR 2 - SKALA DINAMIS & WARNA STATUS)
         // ==========================================================================
         function setGanttScale(scale) {
             ganttScale = scale;
@@ -2944,6 +3268,7 @@
 
         function renderGantt() {
             const container = document.getElementById('gantt-chart-container');
+            if (!container) return;
             const tasks = getFilteredTasks(false);
 
             if (tasks.length === 0) {
@@ -2951,37 +3276,79 @@
                 return;
             }
 
-            // Calculate Date Windows
             const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            let columns = [];
             let startDate = new Date(today);
             let endDate = new Date(today);
 
             if (ganttScale === 'day') {
+                // 14 Hari Berkelanjutan (3 hari lalu hingga 10 hari ke depan)
                 startDate.setDate(today.getDate() - 3);
-                endDate.setDate(today.getDate() + 10);
+                for (let i = 0; i < 14; i++) {
+                    const d = new Date(startDate);
+                    d.setDate(startDate.getDate() + i);
+                    const isToday = d.getTime() === today.getTime();
+                    const label = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+                    columns.push({ date: d, label: isToday ? `${label} (Hari Ini)` : label, isToday });
+                }
+                endDate = new Date(columns[columns.length - 1].date);
+                endDate.setDate(endDate.getDate() + 1);
             } else if (ganttScale === 'week') {
+                // 6 Pekan Operasional
                 startDate.setDate(today.getDate() - 14);
-                endDate.setDate(today.getDate() + 28);
+                for (let i = 0; i < 6; i++) {
+                    const dStart = new Date(startDate);
+                    dStart.setDate(startDate.getDate() + (i * 7));
+                    const dEnd = new Date(dStart);
+                    dEnd.setDate(dStart.getDate() + 6);
+                    const isCurrentWeek = today >= dStart && today <= dEnd;
+                    columns.push({
+                        date: dStart,
+                        label: `W${i + 1} (${dStart.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })})`,
+                        isToday: isCurrentWeek
+                    });
+                }
+                endDate = new Date(startDate);
+                endDate.setDate(startDate.getDate() + 42);
             } else {
-                startDate.setMonth(today.getMonth() - 1);
-                endDate.setMonth(today.getMonth() + 2);
+                // 3 Bulan Penuh
+                startDate.setMonth(today.getMonth() - 1, 1);
+                for (let i = 0; i < 3; i++) {
+                    const d = new Date(startDate);
+                    d.setMonth(startDate.getMonth() + i, 1);
+                    const isCurrentMonth = today.getMonth() === d.getMonth() && today.getFullYear() === d.getFullYear();
+                    columns.push({
+                        date: d,
+                        label: d.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }),
+                        isToday: isCurrentMonth
+                    });
+                }
+                endDate = new Date(startDate);
+                endDate.setMonth(startDate.getMonth() + 3, 0);
             }
 
-            const totalDurationMs = endDate.getTime() - startDate.getTime();
+            const totalDurationMs = Math.max(86400000, endDate.getTime() - startDate.getTime());
+
+            // Render Header Grid Columns
+            let headerColsHtml = columns.map(c => `
+                <th style="text-align: center; min-width: ${ganttScale === 'day' ? '65px' : (ganttScale === 'week' ? '120px' : '160px')}; ${c.isToday ? 'background: #FAF6E8; color: var(--color-gold-deep); font-weight: 800;' : ''}">
+                    ${c.label}
+                </th>
+            `).join('');
 
             let tableHtml = `
                 <table class="gantt-table">
                     <thead>
                         <tr>
-                            <th style="width: 220px;">Tugas & Penanggung Jawab</th>
+                            <th style="width: 230px; position: sticky; left: 0; background: #F9FAFB; z-index: 10;">Tugas & Penanggung Jawab</th>
                             <th style="width: 140px;">Divisi</th>
-                            <th style="width: 100px;">Durasi</th>
-                            <th>
-                                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--color-charcoal-muted);">
-                                    <span>${startDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span>
-                                    <span style="font-weight: 800; color: var(--color-gold-deep);">Hari Ini (${today.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })})</span>
-                                    <span>${endDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span>
-                                </div>
+                            <th style="width: 110px;">Jadwal</th>
+                            <th style="padding: 0;">
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>${headerColsHtml}</tr>
+                                </table>
                             </th>
                         </tr>
                     </thead>
@@ -2990,31 +3357,45 @@
 
             tasks.forEach(t => {
                 const tStart = t.start_date ? new Date(t.start_date) : new Date(t.created_at || today);
+                tStart.setHours(0, 0, 0, 0);
                 const tDue = t.due_date ? new Date(t.due_date) : new Date(tStart.getTime() + 86400000);
+                tDue.setHours(23, 59, 59, 999);
 
                 let leftPct = ((tStart.getTime() - startDate.getTime()) / totalDurationMs) * 100;
                 let widthPct = ((tDue.getTime() - tStart.getTime()) / totalDurationMs) * 100;
 
-                leftPct = Math.max(0, Math.min(95, leftPct));
-                widthPct = Math.max(6, Math.min(100 - leftPct, widthPct));
+                leftPct = Math.max(0, Math.min(96, leftPct));
+                widthPct = Math.max(4, Math.min(100 - leftPct, widthPct));
 
                 const divClass = getDivisionBadgeClass(t.division);
-                const pct = t.progress_pct || (t.status === 'COMPLETED' ? 100 : 0);
+                const pct = t.progress_pct !== undefined && t.progress_pct !== null ? t.progress_pct : (t.status === 'COMPLETED' ? 100 : (t.status === 'IN_PROGRESS' ? 50 : 0));
+
+                // Gambar 2: Diferensiasi Warna Bar Status (Pending -> Abu, In Progress -> Emas, Completed -> Hijau Zamrud)
+                let statusClass = 'pending';
+                if (t.status === 'COMPLETED' || pct === 100) {
+                    statusClass = 'completed';
+                } else if (pct > 0 || t.status === 'IN_PROGRESS' || t.status === 'REVIEW') {
+                    statusClass = 'in-progress';
+                }
+
+                // Calculate today line position
+                const todayLeftPct = ((today.getTime() - startDate.getTime()) / totalDurationMs) * 100;
 
                 tableHtml += `
                     <tr>
-                        <td>
+                        <td style="position: sticky; left: 0; background: var(--color-bg-white); z-index: 10; box-shadow: 2px 0 5px rgba(0,0,0,0.02);">
                             <div style="font-weight: 700; font-size: 0.8rem; color: var(--color-charcoal); cursor: pointer;" onclick="openTaskDetailModal('${t.id}')">${t.title}</div>
                             <div style="font-size: 0.72rem; color: var(--color-charcoal-muted);"><i class="fa-solid fa-user"></i> ${t.assigned_to || 'Pengurus'}</div>
                         </td>
                         <td><span class="div-badge ${divClass}">${t.division.replace('Divisi ', '')}</span></td>
-                        <td style="font-size: 0.72rem; font-weight: 600;">
+                        <td style="font-size: 0.72rem; font-weight: 600; color: var(--color-charcoal-muted);">
                             ${tStart.toLocaleDateString('id-ID', { day: 'numeric', month: 'numeric' })} - ${tDue.toLocaleDateString('id-ID', { day: 'numeric', month: 'numeric' })}
                         </td>
-                        <td class="gantt-bar-cell">
+                        <td class="gantt-bar-cell" style="padding: 0.5rem 0.75rem;">
                             <div class="gantt-track">
-                                <div class="gantt-bar" style="left: ${leftPct}%; width: ${widthPct}%;" onclick="openTaskDetailModal('${t.id}')" title="${t.title} (${pct}%)">
-                                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${pct}% • ${t.title}</span>
+                                ${todayLeftPct >= 0 && todayLeftPct <= 100 ? `<div class="gantt-today-line" style="left: ${todayLeftPct}%;"></div>` : ''}
+                                <div class="gantt-bar ${statusClass}" style="left: ${leftPct}%; width: ${widthPct}%;" onclick="openTaskDetailModal('${t.id}')" title="${t.title} (${pct}% • Status: ${t.status})">
+                                    <span>${pct}% • ${t.title}</span>
                                 </div>
                             </div>
                         </td>
@@ -3027,14 +3408,19 @@
         }
 
         // ==========================================================================
-        // 3. CALENDAR VIEW RENDERER (MONTH GRID & AGENDA)
+        // 3. CALENDAR VIEW RENDERER (GAMBAR 3 - GAYA PORTOSIABE PRO & MULTI-DAY)
         // ==========================================================================
         function setCalendarMode(mode) {
             calendarMode = mode;
-            document.getElementById('btn-cal-month').classList.toggle('active', mode === 'month');
-            document.getElementById('btn-cal-agenda').classList.toggle('active', mode === 'agenda');
-            document.getElementById('calendar-month-view').style.display = mode === 'month' ? 'block' : 'none';
-            document.getElementById('calendar-agenda-view').style.display = mode === 'agenda' ? 'block' : 'none';
+            const btnMonth = document.getElementById('btn-cal-month');
+            const btnAgenda = document.getElementById('btn-cal-agenda');
+            if (btnMonth) btnMonth.classList.toggle('active', mode === 'month');
+            if (btnAgenda) btnAgenda.classList.toggle('active', mode === 'agenda');
+            
+            const vMonth = document.getElementById('calendar-month-view');
+            const vAgenda = document.getElementById('calendar-agenda-view');
+            if (vMonth) vMonth.style.display = mode === 'month' ? 'block' : 'none';
+            if (vAgenda) vAgenda.style.display = mode === 'agenda' ? 'block' : 'none';
             renderCalendar();
         }
 
@@ -3058,7 +3444,8 @@
             const year = calendarCurrentDate.getFullYear();
             const month = calendarCurrentDate.getMonth();
 
-            document.getElementById('calendar-title-display').textContent = `${monthNames[month]} ${year}`;
+            const titleDisplay = document.getElementById('calendar-title-display');
+            if (titleDisplay) titleDisplay.textContent = `${monthNames[month]} ${year}`;
 
             if (calendarMode === 'month') {
                 renderMonthGrid(year, month);
@@ -3069,6 +3456,7 @@
 
         function renderMonthGrid(year, month) {
             const grid = document.getElementById('calendar-grid-container');
+            if (!grid) return;
             const dayHeaders = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Ahad'];
 
             let html = dayHeaders.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
@@ -3089,36 +3477,46 @@
 
             const tasks = getFilteredTasks(false);
             const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
 
             for (let d = 1; d <= daysInMonth; d++) {
                 const cellDate = new Date(year, month, d);
-                const cellDateStr = cellDate.toISOString().split('T')[0];
-                const isToday = cellDate.toDateString() === today.toDateString();
+                const cellDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                const isToday = cellDateStr === todayStr;
 
-                // Find tasks matching this date
+                // Find tasks active on this specific date
                 const dayTasks = tasks.filter(t => {
-                    const due = t.due_date;
-                    const start = t.start_date || t.created_at?.split('T')[0];
+                    const due = t.due_date ? t.due_date.split('T')[0] : null;
+                    const start = t.start_date ? t.start_date.split('T')[0] : (t.created_at ? t.created_at.split('T')[0] : null);
+                    
                     if (due === cellDateStr) return true;
+                    if (start === cellDateStr) return true;
                     if (start && due && cellDateStr >= start && cellDateStr <= due) return true;
                     return false;
                 });
 
                 html += `
-                    <div class="calendar-day-cell ${isToday ? 'today' : ''}" onclick="openTaskModal(null, '${cellDateStr}')" title="Klik untuk tambah tugas pada tanggal ini">
+                    <div class="calendar-day-cell ${isToday ? 'today' : ''}" onclick="openTaskModal(null, '${cellDateStr}')" title="Klik untuk tambah tugas pada tanggal ${cellDateStr}">
                         <div class="calendar-day-number">
                             <span>${d}</span>
                             ${isToday ? '<span style="font-size: 0.65rem; color: var(--color-gold-deep); font-weight: 800;">Hari Ini</span>' : ''}
                         </div>
                         ${dayTasks.slice(0, 3).map(t => {
                             const divClass = getDivisionBadgeClass(t.division);
+                            const stKey = (t.status || 'PENDING').toLowerCase();
+                            const isMultiDay = t.start_date && t.due_date && t.start_date.split('T')[0] !== t.due_date.split('T')[0];
+                            const picShort = t.assigned_to ? t.assigned_to.split(' ')[0] : 'PIC';
+                            
                             return `
-                                <div class="calendar-task-pill div-badge ${divClass}" onclick="event.stopPropagation(); openTaskDetailModal('${t.id}')">
-                                    <i class="fa-solid fa-circle-dot" style="font-size: 0.5rem;"></i> ${t.title}
+                                <div class="calendar-task-card div-badge ${divClass} ${isMultiDay ? 'multi-day' : ''}" onclick="event.stopPropagation(); openTaskDetailModal('${t.id}')" title="${t.title} (${t.division} • ${t.assigned_to || '-'})">
+                                    <span class="status-dot ${stKey}"></span>
+                                    <span style="font-weight: 800; opacity: 0.85;">[${picShort}]</span>
+                                    <span style="flex: 1; overflow: hidden; text-overflow: ellipsis;">${t.title}</span>
+                                    ${isMultiDay ? '<i class="fa-solid fa-arrows-left-right" style="font-size: 0.55rem; opacity: 0.7;"></i>' : ''}
                                 </div>
                             `;
                         }).join('')}
-                        ${dayTasks.length > 3 ? `<div style="font-size: 0.65rem; color: var(--color-charcoal-muted); font-weight: 700;">+${dayTasks.length - 3} lainnya</div>` : ''}
+                        ${dayTasks.length > 3 ? `<div style="font-size: 0.65rem; color: var(--color-charcoal-muted); font-weight: 800; text-align: center;">+${dayTasks.length - 3} tugas lagi</div>` : ''}
                     </div>
                 `;
             }
@@ -3128,6 +3526,7 @@
 
         function renderAgendaList() {
             const container = document.getElementById('calendar-agenda-container');
+            if (!container) return;
             const tasks = getFilteredTasks(false);
 
             if (tasks.length === 0) {
@@ -3135,7 +3534,6 @@
                 return;
             }
 
-            // Sort chronological
             const sorted = [...tasks].sort((a,b) => new Date(a.due_date || a.created_at) - new Date(b.due_date || b.created_at));
 
             const groups = {
@@ -3149,7 +3547,7 @@
             const nextWeekMs = now.getTime() + 86400000 * 7;
 
             sorted.forEach(t => {
-                const d = t.due_date;
+                const d = t.due_date ? t.due_date.split('T')[0] : null;
                 if (!d || d === todayStr) {
                     groups['Hari Ini'].push(t);
                 } else if (new Date(d).getTime() <= nextWeekMs) {
@@ -3194,7 +3592,7 @@
         }
 
         // ==========================================================================
-        // 4. MASTER ALL TASKS TABLE RENDERER & BULK ACTIONS
+        // 4. MASTER ALL TASKS TABLE RENDERER & BULK ACTIONS (GAMBAR 4 - HAPUS TERPILIH)
         // ==========================================================================
         function sortMasterTasks(column) {
             if (masterTableSort.column === column) {
@@ -3208,9 +3606,9 @@
 
         function renderMasterTable() {
             const tbody = document.getElementById('task-master-tbody');
+            if (!tbody) return;
             let tasks = getFilteredTasks(false);
 
-            // Sort
             tasks.sort((a, b) => {
                 let vA = a[masterTableSort.column] || '';
                 let vB = b[masterTableSort.column] || '';
@@ -3231,7 +3629,7 @@
                 const isSelected = selectedTaskIds.has(t.id);
                 const divClass = getDivisionBadgeClass(t.division);
                 const prioClass = (t.priority || 'MEDIUM').toLowerCase();
-                const pct = t.progress_pct || (t.status === 'COMPLETED' ? 100 : 0);
+                const pct = t.progress_pct !== undefined && t.progress_pct !== null ? t.progress_pct : (t.status === 'COMPLETED' ? 100 : 0);
 
                 return `
                     <tr style="${isSelected ? 'background: #FEF9E7;' : ''}">
@@ -3318,8 +3716,6 @@
             });
 
             logTaskActivity('STATUS_CHANGED', `${ids.length} Tugas`, `Mengubah status masal menjadi ${status}.`);
-
-            // Broadcast bulk update
             broadcastEvent('TASK_SYNC', { action: 'BULK_UPDATE', taskList: updatedTasks });
 
             if (sbClient) {
@@ -3349,8 +3745,6 @@
             });
 
             logTaskActivity('ARCHIVED', `${ids.length} Tugas`, `Mengarsipkan ${ids.length} tugas secara masal.`);
-
-            // Broadcast bulk archive
             broadcastEvent('TASK_SYNC', { action: 'BULK_UPDATE', taskList: updatedTasks });
 
             if (sbClient) {
@@ -3358,6 +3752,35 @@
                     await sbClient.from('team_tasks').update({ is_archived: true, updated_at: new Date().toISOString() }).in('id', ids);
                 } catch (err) {
                     console.warn("Supabase bulk archive warning:", err);
+                }
+            }
+
+            selectedTaskIds.clear();
+            renderAllTaskViews();
+        }
+
+        // Gambar 4: Aksi Masal "Hapus Task Terpilih"
+        async function handleBulkDelete() {
+            if (selectedTaskIds.size === 0) return;
+            if (!canApproveTask()) {
+                alert('Otorisasi Terbatas: Hanya Super Admin, Super User, atau Pimpinan DKM yang berwenang menghapus tugas secara masal.');
+                return;
+            }
+
+            const ids = Array.from(selectedTaskIds);
+            if (!confirm(`Apakah Anda yakin ingin menghapus permanen ${ids.length} tugas terpilih? Tindakan ini tidak dapat dibatalkan.`)) return;
+
+            allTasksList = allTasksList.filter(t => !selectedTaskIds.has(t.id));
+            logTaskActivity('DELETED', `${ids.length} Tugas`, `Menghapus ${ids.length} tugas terpilih secara masal.`);
+
+            // Broadcast bulk delete event
+            broadcastEvent('TASK_SYNC', { action: 'BULK_DELETE', taskIds: ids });
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('team_tasks').delete().in('id', ids);
+                } catch (err) {
+                    console.warn("Supabase bulk delete warning:", err);
                 }
             }
 
@@ -3404,7 +3827,8 @@
         // ==========================================================================
         function renderArchive() {
             const tbody = document.getElementById('archive-tasks-tbody');
-            const tasks = getFilteredTasks(true); // get archived
+            if (!tbody) return;
+            const tasks = getFilteredTasks(true);
 
             if (tasks.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">Arsip tugas kosong. Tugas yang telah selesai dan diarsipkan akan tersimpan rapi di sini.</td></tr>`;
@@ -3442,8 +3866,6 @@
             task.is_archived = true;
             task.updated_at = new Date().toISOString();
             logTaskActivity('ARCHIVED', task.title, 'Memindahkan tugas ke ruang arsip.');
-
-            // Broadcast archive event
             broadcastEvent('TASK_SYNC', { action: 'STATUS_UPDATE', task: task });
 
             if (sbClient) {
@@ -3464,8 +3886,6 @@
             task.is_archived = false;
             task.updated_at = new Date().toISOString();
             logTaskActivity('RESTORED', task.title, 'Memulihkan tugas dari arsip kembali ke papan aktif.');
-
-            // Broadcast restore event
             broadcastEvent('TASK_SYNC', { action: 'STATUS_UPDATE', task: task });
 
             if (sbClient) {
@@ -3492,8 +3912,6 @@
 
             allTasksList = allTasksList.filter(t => String(t.id) !== String(taskId));
             logTaskActivity('DELETED', task.title, 'Menghapus tugas secara permanen dari sistem.');
-
-            // Broadcast delete event
             broadcastEvent('TASK_SYNC', { action: 'DELETE', task: { id: taskId } });
 
             if (sbClient) {
@@ -3508,15 +3926,33 @@
         }
 
         // ==========================================================================
-        // 6. SUPPORT PANELS: RIWAYAT REALTIME & CHAT KOORDINASI
+        // 6. SUPPORT PANELS: RIWAYAT REALTIME & CHAT KOORDINASI PRO (WHATSAPP REPLY & MENTION)
         // ==========================================================================
+        let replyingToMessage = null;
+        let pendingChatAttachment = null;
+        let touchPressTimer = null;
+
+        const DKM_MENTION_TARGETS = [
+            { tag: '@Ketua_DKM', name: 'Ketua DKM (Pimpinan)', icon: 'fa-user-tie' },
+            { tag: '@PJ_Media', name: 'PJ Media & Dakwah', icon: 'fa-bullhorn' },
+            { tag: '@PJ_Logistik', name: 'PJ Logistik & Sarpras', icon: 'fa-truck-ramp-box' },
+            { tag: '@PJ_Santri', name: 'PJ Pembinaan Santri', icon: 'fa-graduation-cap' },
+            { tag: '@PJ_Musafir', name: 'PJ Pelayanan Musafir', icon: 'fa-hand-holding-heart' },
+            { tag: '@PJ_Kebersihan', name: 'PJ Kebersihan & Sanitasi', icon: 'fa-broom' },
+            { tag: '@PJ_Keamanan', name: 'PJ Keamanan & Ketertiban', icon: 'fa-shield-halved' },
+            { tag: '@PJ_Keuangan', name: 'PJ Keuangan & ZISWAF', icon: 'fa-coins' },
+            { tag: '@PJ_Ibadah', name: 'PJ Ibadah & Acara', icon: 'fa-mosque' },
+            { tag: '@SuperAdmin', name: 'Super Administrator', icon: 'fa-key' },
+            { tag: '@Semua_Pengurus', name: 'Semua Pengurus DKM', icon: 'fa-users' }
+        ];
+
         function logTaskActivity(actionType, taskTitle, details) {
-            const user = currentUser?.email ? currentUser.email.split('@')[0] : 'Pengurus DKM';
+            const user = currentUser ? getUserDisplayName(currentUser) : 'Pengurus DKM';
             const logEntry = {
                 id: generateUUID(),
                 task_title: taskTitle,
                 user_name: user,
-                user_role: 'STAFF',
+                user_role: getUserRole(),
                 action_type: actionType,
                 details: details,
                 created_at: new Date().toISOString()
@@ -3525,7 +3961,6 @@
             taskActivityLogs.unshift(logEntry);
             if (taskActivityLogs.length > 50) taskActivityLogs.pop();
 
-            // Broadcast log event
             broadcastEvent('LOG_SYNC', logEntry);
 
             if (sbClient) {
@@ -3533,7 +3968,7 @@
                     id: logEntry.id,
                     task_title: taskTitle,
                     user_name: user,
-                    user_role: 'STAFF',
+                    user_role: getUserRole(),
                     action_type: actionType,
                     details: details
                 }).then(() => {}).catch(e => console.debug('Log insert info:', e));
@@ -3576,26 +4011,296 @@
             `).join('');
         }
 
+        // WhatsApp-Style Reply Handlers
+        function setReplyToMessage(msgId) {
+            const msg = taskChatMessages.find(m => String(m.id) === String(msgId));
+            if (!msg) return;
+
+            replyingToMessage = msg;
+            const bar = document.getElementById('chat-reply-preview-bar');
+            const senderEl = document.getElementById('reply-preview-sender');
+            const textEl = document.getElementById('reply-preview-text');
+
+            if (bar && senderEl && textEl) {
+                senderEl.textContent = `${msg.sender_name} • ${msg.sender_division || msg.sender_role || 'DKM'}`;
+                textEl.textContent = msg.message || (msg.attachment_url ? '[Lampiran Media]' : 'Pesan...');
+                bar.style.display = 'flex';
+            }
+
+            const input = document.getElementById('chat-composer-input');
+            if (input) input.focus();
+        }
+
+        function cancelReply() {
+            replyingToMessage = null;
+            const bar = document.getElementById('chat-reply-preview-bar');
+            if (bar) bar.style.display = 'none';
+        }
+
+        function scrollToMessage(msgId) {
+            const target = document.getElementById(`chat-msg-${msgId}`);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                target.classList.add('highlight-flash');
+                setTimeout(() => target.classList.remove('highlight-flash'), 1500);
+            }
+        }
+
+        // Autocomplete Mention '@'
+        function handleChatInput(e) {
+            const input = e.target;
+            const val = input.value;
+            const popup = document.getElementById('mention-autocomplete-popup');
+            if (!popup) return;
+
+            const cursor = input.selectionStart;
+            const textBeforeCursor = val.slice(0, cursor);
+            const words = textBeforeCursor.split(/\s+/);
+            const lastWord = words[words.length - 1];
+
+            if (lastWord.startsWith('@')) {
+                const query = lastWord.slice(1).toLowerCase();
+                const matched = DKM_MENTION_TARGETS.filter(m => 
+                    m.tag.toLowerCase().includes(query) || m.name.toLowerCase().includes(query)
+                );
+
+                if (matched.length > 0) {
+                    popup.innerHTML = matched.map(m => `
+                        <div class="mention-item" onclick="insertMention('${m.tag}')">
+                            <i class="fa-solid ${m.icon}" style="color: var(--color-gold-deep); width: 16px;"></i>
+                            <div>
+                                <div style="font-weight: 800;">${m.tag}</div>
+                                <div style="font-size: 0.68rem; color: var(--color-charcoal-muted);">${m.name}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                    popup.style.display = 'block';
+                } else {
+                    popup.style.display = 'none';
+                }
+            } else {
+                popup.style.display = 'none';
+            }
+        }
+
+        function handleChatKeyDown(e) {
+            const popup = document.getElementById('mention-autocomplete-popup');
+            if (popup && popup.style.display === 'block') {
+                if (e.key === 'Escape') {
+                    popup.style.display = 'none';
+                }
+            }
+        }
+
+        function insertMention(tag) {
+            const input = document.getElementById('chat-composer-input');
+            const popup = document.getElementById('mention-autocomplete-popup');
+            if (!input) return;
+
+            const val = input.value;
+            const cursor = input.selectionStart;
+            const textBefore = val.slice(0, cursor);
+            const textAfter = val.slice(cursor);
+            const words = textBefore.split(/\s+/);
+            words[words.length - 1] = tag + ' ';
+            input.value = words.join(' ') + textAfter;
+            if (popup) popup.style.display = 'none';
+            input.focus();
+        }
+
+        function formatChatMessageText(text) {
+            if (!text) return '';
+            // Escape HTML
+            let escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            // Highlight Mention tags
+            escaped = escaped.replace(/(@[A-Za-z0-9_]+)/g, '<span class="mention-tag">$1</span>');
+            return escaped;
+        }
+
+        // ImageKit Media Upload Handler
+        async function handleChatMediaUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const isImage = file.type.startsWith('image/');
+            const isVideo = file.type.startsWith('video/');
+
+            if (!isImage && !isVideo) {
+                alert('Format file tidak didukung. Harap upload gambar atau video.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                let mediaUrl = event.target.result;
+
+                // Compress image to WebP format via Canvas if Image
+                if (isImage) {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        let w = img.width;
+                        let h = img.height;
+                        const maxDim = 1200;
+                        if (w > maxDim || h > maxDim) {
+                            if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+                            else { w = Math.round((w * maxDim) / h); h = maxDim; }
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        ctx.drawImage(img, 0, 0, w, h);
+                        mediaUrl = canvas.toDataURL('image/webp', 0.82);
+                        
+                        sendChatMessageWithAttachment(mediaUrl, 'IMAGE');
+                    };
+                    img.src = mediaUrl;
+                } else {
+                    sendChatMessageWithAttachment(mediaUrl, 'VIDEO');
+                }
+            };
+            reader.readAsDataURL(file);
+            e.target.value = '';
+        }
+
+        function sendChatMessageWithAttachment(url, type) {
+            const sender = currentUser ? getUserDisplayName(currentUser) : 'Pengurus DKM';
+            const role = getUserRole();
+            const div = getUserDivision();
+
+            const chatEntry = {
+                id: generateUUID(),
+                sender_name: sender,
+                sender_role: role,
+                sender_division: div !== 'ALL' ? div : 'Pengurus Resmi DKM',
+                message: type === 'IMAGE' ? '📷 [Lampiran Foto Dokumentasi]' : '🎥 [Lampiran Video Dokumentasi]',
+                attachment_url: url,
+                attachment_type: type,
+                reply_to: replyingToMessage ? {
+                    id: replyingToMessage.id,
+                    sender: replyingToMessage.sender_name,
+                    text: replyingToMessage.message ? replyingToMessage.message.substring(0, 80) : '[Lampiran]'
+                } : null,
+                created_at: new Date().toISOString()
+            };
+
+            taskChatMessages.push(chatEntry);
+            cancelReply();
+            renderTaskChat();
+            broadcastEvent('CHAT_SYNC', chatEntry);
+
+            if (sbClient) {
+                sbClient.from('task_chat_messages').insert({
+                    id: chatEntry.id,
+                    sender_name: sender,
+                    sender_role: role,
+                    sender_division: chatEntry.sender_division,
+                    message: chatEntry.message,
+                    attachment_url: url,
+                    attachment_type: type,
+                    reply_to: chatEntry.reply_to
+                }).catch(e => console.debug('Chat media insert info:', e));
+            }
+        }
+
+        // Mention Count Badge Logic (Gambar 5 - Hanya akun yang di-mention yang mendapat badge)
+        function updateMentionBadgeCount() {
+            const badge = document.getElementById('badge-chat-mentions');
+            if (!badge || !currentUser) return;
+
+            const myRole = getUserRole();
+            const myName = getUserDisplayName(currentUser);
+            const myMentionTags = [
+                `@${myRole}`,
+                `@${myRole.replace('PJ_', '')}`,
+                `@${myName.replace(/\s+/g, '_')}`,
+                `@Semua_Pengurus`
+            ];
+
+            const userEmail = currentUser.email || 'anon';
+            let readMentionIds = [];
+            try {
+                readMentionIds = JSON.parse(localStorage.getItem(`masjid_sophia_read_mentions_${userEmail}`) || '[]');
+            } catch (e) {}
+            const readSet = new Set(readMentionIds);
+
+            // 7-day retention filter
+            const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+            const unreadMentions = taskChatMessages.filter(msg => {
+                if (new Date(msg.created_at).getTime() < sevenDaysAgo) return false;
+                if (readSet.has(msg.id)) return false;
+                if (msg.sender_name === myName) return false; // Don't count self
+                return myMentionTags.some(tag => msg.message && msg.message.toLowerCase().includes(tag.toLowerCase()));
+            });
+
+            if (unreadMentions.length > 0) {
+                badge.textContent = unreadMentions.length;
+                badge.style.display = 'inline-flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function markMentionsAsRead() {
+            if (!currentUser) return;
+            const userEmail = currentUser.email || 'anon';
+            const allMsgIds = taskChatMessages.map(m => m.id);
+            try {
+                localStorage.setItem(`masjid_sophia_read_mentions_${userEmail}`, JSON.stringify(allMsgIds));
+            } catch (e) {}
+            const badge = document.getElementById('badge-chat-mentions');
+            if (badge) badge.style.display = 'none';
+        }
+
         function renderTaskChat() {
+            // 7-Day Rolling Retention Window
+            const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+            taskChatMessages = taskChatMessages.filter(m => new Date(m.created_at).getTime() >= sevenDaysAgo);
+
             persistLocalChats(taskChatMessages);
             const stream = document.getElementById('chat-messages-stream');
             if (!stream) return;
 
             if (taskChatMessages.length === 0) {
-                stream.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--color-charcoal-muted);">Ruang chat koordinasi aktif. Silakan tulis pesan atau instruksi tugas.</div>`;
+                stream.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--color-charcoal-muted);">Ruang chat koordinasi aktif (Retensi 7 hari terakhir). Silakan tulis pesan atau tag pengurus.</div>`;
                 return;
             }
 
-            const currentSender = currentUser?.email || 'admin@dkm.com';
+            const currentSenderName = currentUser ? getUserDisplayName(currentUser) : 'Pengurus DKM';
+            const currentSenderEmail = currentUser?.email || 'admin@dkm.com';
 
             stream.innerHTML = taskChatMessages.map(msg => {
-                const isMine = msg.sender_name === currentSender || msg.sender_name.includes(currentSender.split('@')[0]);
+                const isMine = msg.sender_name === currentSenderName || msg.sender_name === currentSenderEmail || (msg.sender_name && currentSenderEmail.includes(msg.sender_name));
+                const formattedText = formatChatMessageText(msg.message);
+
                 return `
-                    <div class="chat-bubble ${isMine ? 'mine' : 'other'}">
+                    <div class="chat-bubble ${isMine ? 'mine' : 'other'}" id="chat-msg-${msg.id}" ondblclick="setReplyToMessage('${msg.id}')" oncontextmenu="event.preventDefault(); setReplyToMessage('${msg.id}')" title="Double click (PC) atau tekan tahan (HP) untuk balas pesan">
                         <div class="chat-bubble-sender">
-                            <i class="fa-solid fa-user"></i> ${msg.sender_name} • <span style="opacity: 0.8;">${msg.sender_division || msg.sender_role}</span>
+                            <span><i class="fa-solid fa-user"></i> ${msg.sender_name} • <span style="opacity: 0.85;">${msg.sender_division || msg.sender_role || 'DKM'}</span></span>
+                            <button type="button" class="btn-bubble-reply" onclick="event.stopPropagation(); setReplyToMessage('${msg.id}')" title="Balas Pesan">
+                                <i class="fa-solid fa-reply"></i>
+                            </button>
                         </div>
-                        <div>${msg.message}</div>
+
+                        ${msg.reply_to ? `
+                            <div class="chat-quoted-box" onclick="event.stopPropagation(); scrollToMessage('${msg.reply_to.id}')" title="Klik untuk scroll ke pesan asli">
+                                <div class="quoted-sender">${msg.reply_to.sender || 'Pengurus'}</div>
+                                <div class="quoted-text">${msg.reply_to.text || '...'}</div>
+                            </div>
+                        ` : ''}
+
+                        <div>${formattedText}</div>
+
+                        ${msg.attachment_url ? `
+                            <div style="margin-top: 0.35rem;">
+                                ${msg.attachment_type === 'VIDEO' ? `
+                                    <video src="${msg.attachment_url}" controls class="chat-media-preview"></video>
+                                ` : `
+                                    <img src="${msg.attachment_url}" alt="Attachment" class="chat-media-preview" onclick="event.stopPropagation(); window.open('${msg.attachment_url}', '_blank')">
+                                `}
+                            </div>
+                        ` : ''}
+
                         <div style="text-align: right; font-size: 0.65rem; opacity: 0.7; margin-top: 0.25rem;">
                             ${new Date(msg.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
                         </div>
@@ -3603,7 +4308,27 @@
                 `;
             }).join('');
 
+            // Add touch long-press listener for mobile
+            stream.querySelectorAll('.chat-bubble').forEach(b => {
+                b.addEventListener('touchstart', (e) => {
+                    touchPressTimer = setTimeout(() => {
+                        const msgId = b.id.replace('chat-msg-', '');
+                        setReplyToMessage(msgId);
+                        if (navigator.vibrate) navigator.vibrate(50);
+                    }, 500);
+                }, { passive: true });
+
+                b.addEventListener('touchend', () => {
+                    if (touchPressTimer) clearTimeout(touchPressTimer);
+                }, { passive: true });
+
+                b.addEventListener('touchmove', () => {
+                    if (touchPressTimer) clearTimeout(touchPressTimer);
+                }, { passive: true });
+            });
+
             stream.scrollTop = stream.scrollHeight;
+            updateMentionBadgeCount();
         }
 
         async function handleSendChatMessage(e) {
@@ -3612,30 +4337,41 @@
             const message = input.value.trim();
             if (!message) return;
 
-            const sender = currentUser?.email ? currentUser.email.split('@')[0] : 'Pengurus DKM';
+            const sender = currentUser ? getUserDisplayName(currentUser) : 'Pengurus DKM';
+            const role = getUserRole();
+            const div = getUserDivision();
+
             const chatEntry = {
                 id: generateUUID(),
                 sender_name: sender,
-                sender_role: 'STAFF',
-                sender_division: 'Pengurus DKM',
+                sender_role: role,
+                sender_division: div !== 'ALL' ? div : 'Pengurus Resmi DKM',
                 message: message,
+                reply_to: replyingToMessage ? {
+                    id: replyingToMessage.id,
+                    sender: replyingToMessage.sender_name,
+                    text: replyingToMessage.message ? replyingToMessage.message.substring(0, 80) : '[Lampiran]'
+                } : null,
                 created_at: new Date().toISOString()
             };
 
             taskChatMessages.push(chatEntry);
             input.value = '';
-            renderTaskChat();
+            cancelReply();
+            const popup = document.getElementById('mention-autocomplete-popup');
+            if (popup) popup.style.display = 'none';
 
-            // Broadcast chat event
+            renderTaskChat();
             broadcastEvent('CHAT_SYNC', chatEntry);
 
             if (sbClient) {
                 await sbClient.from('task_chat_messages').insert({
                     id: chatEntry.id,
                     sender_name: sender,
-                    sender_role: 'STAFF',
-                    sender_division: 'Pengurus DKM',
-                    message: message
+                    sender_role: role,
+                    sender_division: chatEntry.sender_division,
+                    message: message,
+                    reply_to: chatEntry.reply_to
                 }).catch(e => console.debug('Chat insert info:', e));
             }
         }

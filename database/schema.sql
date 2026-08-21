@@ -133,6 +133,8 @@ CREATE TABLE IF NOT EXISTS public.task_chat_messages (
     sender_division VARCHAR(100) NOT NULL DEFAULT 'Umum',
     message TEXT NOT NULL,
     attachment_url TEXT,
+    attachment_type VARCHAR(20) DEFAULT 'IMAGE', -- 'IMAGE', 'VIDEO'
+    reply_to JSONB DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

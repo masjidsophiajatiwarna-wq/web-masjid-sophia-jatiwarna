@@ -31,8 +31,14 @@ CREATE TABLE IF NOT EXISTS public.task_chat_messages (
     sender_division VARCHAR(100) NOT NULL DEFAULT 'Umum',
     message TEXT NOT NULL,
     attachment_url TEXT,
+    attachment_type VARCHAR(20) DEFAULT 'IMAGE', -- 'IMAGE', 'VIDEO'
+    reply_to JSONB DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Penambahan kolom jika tabel task_chat_messages sudah ada sebelumnya
+ALTER TABLE public.task_chat_messages ADD COLUMN IF NOT EXISTS attachment_type VARCHAR(20) DEFAULT 'IMAGE';
+ALTER TABLE public.task_chat_messages ADD COLUMN IF NOT EXISTS reply_to JSONB DEFAULT NULL;
 
 -- 4. IZIN HAK AKSES POSTGRESQL & ROW LEVEL SECURITY (RLS)
 GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;

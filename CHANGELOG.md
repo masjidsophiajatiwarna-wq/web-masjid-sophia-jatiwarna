@@ -4,6 +4,33 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.6.1] - 2026-08-21
+
+### Penyempurnaan Modul Tugas & Chat Koordinasi Pro DKM (WhatsApp-Style Reply, Mention Eksklusif & Skala Dinamis)
+
+#### Peningkatan & Penyempurnaan (Enhanced & Fixed)
+- `[SIDEBAR PROFILE]` Mengganti teks email panjang menjadi **Nama Pengguna & Peran Resmi** yang bersih dan santun (misal: *"Super Administrator"*, *"Super User"*, *"Habib Maulana"*, *"Ustadz Ridwan"*, *"Pak Marwan"*), dengan badge peran resmi di bawahnya.
+- `[GANTT TIMELINE]`
+  - **Diferensiasi Warna Status:** Menambahkan pembeda visual kontras antara `0%` / *Pending* (Slate Gray `#E2E8F0` / `#94A3B8`), `1%-99%` / *In Progress* & *Review* (Amber Gold Gradient), dan `100%` / *Selesai* (Emerald Green `#10B981`).
+  - **Skala Waktu Dinamis:** Tombol *Skala Hari* (grid harian 14 hari + penanda *Today* vertikal), *Skala Minggu* (grid 6 pekan W1-W6), dan *Skala Bulan* (grid 3 bulan) aktif 100% menghitung rentang tanggal dan posisi bar secara presisi.
+- `[KALENDER TUGAS PRO]`
+  - **Gaya Portosiabe & Multi-Day Spanning:** Menampilkan bar tugas memanjang rapi melintasi rentang hari (*multi-day span*) dengan icon `<i class="fa-solid fa-arrows-left-right"></i>`, badge warna 10 divisi, inisial PIC, dan status dot/pill yang kontras.
+  - **Navigasi Kalender Interaktif:** Tombol `<` (Bulan Sebelumnya), `>` (Bulan Berikutnya), dan `Hari Ini` aktif memperbarui grid bulan secara dinamis, serta klik tanggal kosong untuk tambah tugas cepat.
+- `[MASTER TABLE]` Penambahan tombol aksi masal merah elegan **"Hapus Task Terpilih"** pada toolbar seleksi untuk menghapus tugas terpilih sekaligus dari database Supabase, realtime broadcast, dan local cache.
+- `[CHAT KOORDINASI PRO]`
+  - **Pembersihan UI:** Menyembunyikan bar pencarian & filter tugas khusus saat berada di panel Chat Koordinasi agar layar percakapan fokus dan lapang.
+  - **Fitur Balas Pesan (WhatsApp-Style Reply / Quote):**
+    - *Desktop/PC:* Double click pada gelembung chat (atau tombol reply hover) untuk mengutip pesan yang ingin dibalas.
+    - *Mobile/Smartphone:* Long-press (tekan tahan 500ms) pada gelembung pesan.
+    - *Reply Context Bar:* Muncul bilah kutipan di atas input chat dengan garis vertikal aksen emas dan tombol batalkan (`X`).
+    - *Quoted Message Box:* Pesan balasan menampilkan kotak kutipan WhatsApp di dalam bubble. Klik kotak kutipan otomatis melakukan *smooth scroll* dan animasi kedip (*highlight flash*) ke pesan aslinya.
+  - **Fitur Mention `@` & Autocomplete:** Mengetik `@` memunculkan autocomplete 10 peran PJ DKM (`@Ketua_DKM`, `@PJ_Media`, `@PJ_Logistik`, dll.) dan me-render tag mention emas di chat bubble.
+  - **Bubble Badge Count Eksklusif:** Badge notifikasi mention di tab Chat Koordinasi hanya muncul pada akun pengurus yang di-tag secara spesifik (tidak muncul pada akun lain), dan otomatis reset saat tab chat dibuka.
+  - **Lampiran Media ImageKit:** Mendukung upload foto (auto-convert/compress WebP) dan video (WebM/MP4) dengan preview thumbnail di chat.
+  - **Retensi 7 Hari:** Pembatasan memori dan query pesan hanya untuk 1 pekan terakhir demi efisiensi kuota dan memori browser.
+
+---
+
 ## [1.6.0] - 2026-08-21
 
 ### Modul Manajemen Tugas Pengurus (5 Tampilan Kerja + 2 Panel Realtime Terpadu)
