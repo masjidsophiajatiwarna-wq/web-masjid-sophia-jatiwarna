@@ -4,6 +4,30 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.6.2] - 2026-08-22
+
+### Penyempurnaan Format Markup WhatsApp & Hapus Pesan untuk Semua (Delete for Everyone)
+
+#### Peningkatan & Penyempurnaan (Enhanced & Fixed)
+- `[CHAT COMPOSER MULTILINE]` Mengganti elemen single-line `<input>` menjadi `<textarea>` dengan kemampuan *auto-grow* (tinggi otomatis mengembang dinamis 38px s/d 120px) dan perilaku tombol Enter adaptif:
+  - **Desktop / PC:** Menekan `Enter` otomatis mengirim pesan, menekan `Shift + Enter` membuat baris baru (*multiline*).
+  - **Android / Layar Sentuh:** Menekan `Enter` di keyboard HP otomatis membuat baris baru (loncat ke bawah persis seperti aplikasi WhatsApp), pengiriman pesan dilakukan melalui tombol *Kirim*.
+- `[WHATSAPP MARKDOWN PARSER]` Implementasi parser markup teks WhatsApp pada fungsi `formatChatMessageText()`:
+  - `*teks*` $\rightarrow$ **Teks Tebal** (*Bold*)
+  - `_teks_` $\rightarrow$ *Teks Miring* (*Italic*)
+  - `~teks~` $\rightarrow$ ~~Teks Coret~~ (*Strikethrough*)
+  - `` `teks` `` $\rightarrow$ `Kode Berderet / Monospace`
+  - `\n` $\rightarrow$ Baris baru rapi (*Line Break*)
+- `[CURSOR-AWARE MENTION]` Perbaikan total algoritma `insertMention(tag)`:
+  - Penempatan mention `@PJ_Nama` kini presisi di posisi kursor aktif (bisa di awal, di tengah, maupun di akhir kalimat), tanpa merusak atau memotong teks yang telah diketik sebelumnya.
+- `[DELETE FOR EVERYONE]` Implementasi fitur *Hapus Pesan untuk Semua*:
+  - Pengirim pesan dapat menghapus pesannya sendiri secara permanen dari seluruh layar pengurus melalui tombol hapus (`fa-trash`).
+  - Pesan yang dihapus berubah menjadi gelembung placeholder resmi WhatsApp (*"Anda telah menghapus pesan ini"* untuk pengirim, dan *"Pesan ini telah dihapus"* untuk penerima).
+  - Sinkronisasi realtime instan via WebSocket Broadcast (`CHAT_DELETE`) dan Supabase CDC `UPDATE`.
+- `[SERVER-SIDE 7-DAY QUERY FILTER]` Optimasi query Supabase pada `loadAllTaskData()` menggunakan filter `.gte('created_at', sevenDaysAgoISO)` untuk menghemat kuota bandwidth database sehingga hanya pesan 7 hari terakhir yang dimuat.
+
+---
+
 ## [1.6.1] - 2026-08-21
 
 ### Penyempurnaan Modul Tugas & Chat Koordinasi Pro DKM (WhatsApp-Style Reply, Mention Eksklusif & Skala Dinamis)

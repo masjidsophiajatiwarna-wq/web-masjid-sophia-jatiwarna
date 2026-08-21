@@ -39,6 +39,8 @@ CREATE TABLE IF NOT EXISTS public.task_chat_messages (
 -- Penambahan kolom jika tabel task_chat_messages sudah ada sebelumnya
 ALTER TABLE public.task_chat_messages ADD COLUMN IF NOT EXISTS attachment_type VARCHAR(20) DEFAULT 'IMAGE';
 ALTER TABLE public.task_chat_messages ADD COLUMN IF NOT EXISTS reply_to JSONB DEFAULT NULL;
+ALTER TABLE public.task_chat_messages ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN DEFAULT FALSE;
+ALTER TABLE public.task_chat_messages ADD COLUMN IF NOT EXISTS deleted_by VARCHAR(150) DEFAULT NULL;
 
 -- 4. IZIN HAK AKSES POSTGRESQL & ROW LEVEL SECURITY (RLS)
 GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;

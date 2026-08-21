@@ -1259,6 +1259,12 @@
             align-items: center;
         }
 
+        .chat-bubble-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
         .btn-bubble-reply {
             background: transparent;
             border: none;
@@ -1273,6 +1279,48 @@
         .btn-bubble-reply:hover {
             opacity: 1;
             color: var(--color-gold-primary);
+        }
+
+        .btn-bubble-delete {
+            background: transparent;
+            border: none;
+            color: inherit;
+            opacity: 0.6;
+            cursor: pointer;
+            font-size: 0.7rem;
+            padding: 0 0.25rem;
+            transition: opacity 0.15s, color 0.15s;
+        }
+
+        .btn-bubble-delete:hover {
+            opacity: 1;
+            color: #EF4444;
+        }
+
+        .chat-bubble.deleted-msg {
+            background: transparent !important;
+            border: 1px dashed rgba(128, 128, 128, 0.3) !important;
+            color: var(--color-charcoal-muted) !important;
+            font-style: italic;
+            font-size: 0.76rem;
+            opacity: 0.75;
+            user-select: none;
+            box-shadow: none !important;
+            cursor: default;
+        }
+
+        .chat-inline-code {
+            font-family: 'Courier New', Courier, monospace;
+            background: rgba(180, 180, 180, 0.22);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            color: inherit;
+        }
+
+        .chat-bubble.mine .chat-inline-code {
+            background: rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
         }
 
         /* Quoted Box inside Bubble (WhatsApp Style) */
@@ -1444,24 +1492,32 @@
         .chat-composer-bar {
             display: flex;
             gap: 0.5rem;
-            padding: 0.75rem;
+            padding: 0.65rem 0.75rem;
             background: var(--color-bg-white);
             border-top: 1px solid var(--color-border);
-            align-items: center;
+            align-items: flex-end;
         }
 
-        .chat-input {
+        textarea.chat-input, .chat-input {
             flex: 1;
-            padding: 0.6rem 0.85rem;
+            padding: 0.55rem 0.85rem;
             border: 1px solid var(--color-border);
             border-radius: var(--radius-sm);
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-family: inherit;
+            resize: none;
+            overflow-y: auto;
+            max-height: 120px;
+            min-height: 38px;
+            height: 38px;
+            line-height: 1.45;
+            transition: border-color var(--transition-fast);
         }
 
-        .chat-input:focus {
+        textarea.chat-input:focus, .chat-input:focus {
             outline: none;
             border-color: var(--color-gold-deep);
+            box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.15);
         }
 
         /* Mobile Responsive for Task Views */
@@ -2061,8 +2117,8 @@
                                 <button type="button" class="btn-shift" style="width: 38px; height: 38px; flex-shrink: 0;" onclick="document.getElementById('chat-media-input').click()" title="Lampirkan Gambar atau Video">
                                     <i class="fa-solid fa-paperclip"></i>
                                 </button>
-                                <input type="text" id="chat-composer-input" class="chat-input" placeholder="Ketik pesan koordinasi atau ketik @ untuk mention PJ..." oninput="handleChatInput(event)" onkeydown="handleChatKeyDown(event)" autocomplete="off" required>
-                                <button type="submit" class="btn-action-gold" style="flex-shrink: 0;">
+                                <textarea id="chat-composer-input" class="chat-input" rows="1" placeholder="Ketik pesan koordinasi atau @ untuk tag PJ..." oninput="handleChatInput(event)" onkeydown="handleChatKeyDown(event)" autocomplete="off" required></textarea>
+                                <button type="submit" class="btn-action-gold" style="flex-shrink: 0; height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;">
                                     <i class="fa-solid fa-paper-plane"></i> Kirim
                                 </button>
                             </form>
@@ -2758,8 +2814,13 @@
                     persistLocalLogs(taskActivityLogs);
                 }
 
-                // 4. Fetch Chat Messages
-                const { data: chats, error: chatErr } = await sbClient.from('task_chat_messages').select('*').order('created_at', { ascending: true }).limit(100);
+                // 4. Fetch Chat Messages (7-Day Rolling Retention Window)
+                const sevenDaysAgoISO = new Date(Date.now() - 7 * 86400000).toISOString();
+                const { data: chats, error: chatErr } = await sbClient
+                    .from('task_chat_messages')
+                    .select('*')
+                    .gte('created_at', sevenDaysAgoISO)
+                    .order('created_at', { ascending: true });
                 if (!chatErr && chats && chats.length > 0) {
                     taskChatMessages = chats;
                     persistLocalChats(taskChatMessages);
@@ -2818,6 +2879,19 @@
                             updateMentionBadgeCount();
                         }
                     })
+                    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'task_chat_messages' }, payload => {
+                        if (payload.new) {
+                            const idx = taskChatMessages.findIndex(c => String(c.id) === String(payload.new.id));
+                            if (idx !== -1) {
+                                taskChatMessages[idx] = { ...taskChatMessages[idx], ...payload.new };
+                            } else {
+                                taskChatMessages.push(payload.new);
+                            }
+                            persistLocalChats(taskChatMessages);
+                            renderTaskChat();
+                            updateMentionBadgeCount();
+                        }
+                    })
                     // 2. Broadcast Channel (Ultra Fast Multi-Tab / Multi-Client Realtime Sync)
                     .on('broadcast', { event: 'TASK_SYNC' }, ({ payload }) => {
                         console.log('[Realtime Broadcast] TASK_SYNC received:', payload);
@@ -2837,6 +2911,18 @@
                             persistLocalChats(taskChatMessages);
                             renderTaskChat();
                             updateMentionBadgeCount();
+                        }
+                    })
+                    .on('broadcast', { event: 'CHAT_DELETE' }, ({ payload }) => {
+                        if (payload && payload.id) {
+                            const target = taskChatMessages.find(m => String(m.id) === String(payload.id));
+                            if (target) {
+                                target.is_deleted = true;
+                                target.deleted_by = payload.deleted_by || 'Pengurus';
+                                persistLocalChats(taskChatMessages);
+                                renderTaskChat();
+                                updateMentionBadgeCount();
+                            }
                         }
                     })
                     .subscribe((status) => {
@@ -4061,42 +4147,76 @@
             const cursor = input.selectionStart;
             const textBeforeCursor = val.slice(0, cursor);
             const words = textBeforeCursor.split(/\s+/);
-            const lastWord = words[words.length - 1];
+        // Autocomplete Mention '@' & Textarea Auto-Grow
+        function handleChatInput(e) {
+            const input = e.target;
+            
+            // Auto-grow textarea height (min 38px, max 120px)
+            input.style.height = 'auto';
+            input.style.height = Math.min(input.scrollHeight, 120) + 'px';
 
-            if (lastWord.startsWith('@')) {
-                const query = lastWord.slice(1).toLowerCase();
-                const matched = DKM_MENTION_TARGETS.filter(m => 
-                    m.tag.toLowerCase().includes(query) || m.name.toLowerCase().includes(query)
-                );
+            const val = input.value;
+            const popup = document.getElementById('mention-autocomplete-popup');
+            if (!popup) return;
 
-                if (matched.length > 0) {
-                    popup.innerHTML = matched.map(m => `
-                        <div class="mention-item" onclick="insertMention('${m.tag}')">
-                            <i class="fa-solid ${m.icon}" style="color: var(--color-gold-deep); width: 16px;"></i>
-                            <div>
-                                <div style="font-weight: 800;">${m.tag}</div>
-                                <div style="font-size: 0.68rem; color: var(--color-charcoal-muted);">${m.name}</div>
+            const cursor = input.selectionStart;
+            const textBeforeCursor = val.slice(0, cursor);
+            const atIndex = textBeforeCursor.lastIndexOf('@');
+
+            if (atIndex !== -1) {
+                const query = textBeforeCursor.slice(atIndex + 1).toLowerCase();
+                // Hanya cari mention jika belum ada spasi atau baris baru setelah '@'
+                if (!query.includes(' ') && !query.includes('\n')) {
+                    const matched = DKM_MENTION_TARGETS.filter(m => 
+                        m.tag.toLowerCase().includes(query) || m.name.toLowerCase().includes(query)
+                    );
+
+                    if (matched.length > 0) {
+                        popup.innerHTML = matched.map(m => `
+                            <div class="mention-item" onclick="insertMention('${m.tag}')">
+                                <i class="fa-solid ${m.icon}" style="color: var(--color-gold-deep); width: 16px;"></i>
+                                <div>
+                                    <div style="font-weight: 800;">${m.tag}</div>
+                                    <div style="font-size: 0.68rem; color: var(--color-charcoal-muted);">${m.name}</div>
+                                </div>
                             </div>
-                        </div>
-                    `).join('');
-                    popup.style.display = 'block';
-                } else {
-                    popup.style.display = 'none';
+                        `).join('');
+                        popup.style.display = 'block';
+                        return;
+                    }
                 }
-            } else {
-                popup.style.display = 'none';
             }
+            popup.style.display = 'none';
         }
 
+        // Perilaku Tombol Enter Adaptif (Sama Persis Seperti WhatsApp Web & Android)
         function handleChatKeyDown(e) {
             const popup = document.getElementById('mention-autocomplete-popup');
             if (popup && popup.style.display === 'block') {
                 if (e.key === 'Escape') {
                     popup.style.display = 'none';
+                    return;
+                }
+            }
+
+            const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+            if (e.key === 'Enter') {
+                if (isMobile) {
+                    // Android / Layar Sentuh: Enter selalu baris baru (default textarea)
+                    return;
+                } else {
+                    // Desktop / PC: Shift+Enter = baris baru, Enter tanpa Shift = Kirim Pesan
+                    if (e.shiftKey) {
+                        return; // Biarkan textarea menangani baris baru
+                    } else {
+                        e.preventDefault();
+                        handleSendChatMessage(e);
+                    }
                 }
             }
         }
 
+        // Penempatan Mention Presisi pada Posisi Kursor
         function insertMention(tag) {
             const input = document.getElementById('chat-composer-input');
             const popup = document.getElementById('mention-autocomplete-popup');
@@ -4106,19 +4226,46 @@
             const cursor = input.selectionStart;
             const textBefore = val.slice(0, cursor);
             const textAfter = val.slice(cursor);
-            const words = textBefore.split(/\s+/);
-            words[words.length - 1] = tag + ' ';
-            input.value = words.join(' ') + textAfter;
+
+            const atIndex = textBefore.lastIndexOf('@');
+            if (atIndex !== -1) {
+                const newBefore = textBefore.slice(0, atIndex) + tag + ' ';
+                input.value = newBefore + textAfter;
+                const newPos = newBefore.length;
+                input.selectionStart = newPos;
+                input.selectionEnd = newPos;
+            } else {
+                input.value = val + ' ' + tag + ' ';
+            }
+
             if (popup) popup.style.display = 'none';
             input.focus();
         }
 
+        // WhatsApp-Style Text Markup Parser (*bold*, _italic_, ~strikethrough~, `code`, @mention, \n)
         function formatChatMessageText(text) {
             if (!text) return '';
-            // Escape HTML
+            // 1. Escape HTML entities
             let escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            // Highlight Mention tags
+            
+            // 2. Monospace / Inline Code: `code`
+            escaped = escaped.replace(/`([^`\n]+)`/g, '<code class="chat-inline-code">$1</code>');
+            
+            // 3. Bold: *bold*
+            escaped = escaped.replace(/\*([^\*\n]+)\*/g, '<strong>$1</strong>');
+            
+            // 4. Italic: _italic_
+            escaped = escaped.replace(/(?<![a-zA-Z0-9])_([^_\n]+)_(?![a-zA-Z0-9])/g, '<em>$1</em>');
+            
+            // 5. Strikethrough: ~strikethrough~
+            escaped = escaped.replace(/~([^~\n]+)~/g, '<del>$1</del>');
+            
+            // 6. Mention tags
             escaped = escaped.replace(/(@[A-Za-z0-9_]+)/g, '<span class="mention-tag">$1</span>');
+            
+            // 7. Line Breaks (Shift+Enter / Multiline)
+            escaped = escaped.replace(/\n/g, '<br>');
+            
             return escaped;
         }
 
@@ -4186,6 +4333,7 @@
                     sender: replyingToMessage.sender_name,
                     text: replyingToMessage.message ? replyingToMessage.message.substring(0, 80) : '[Lampiran]'
                 } : null,
+                is_deleted: false,
                 created_at: new Date().toISOString()
             };
 
@@ -4204,7 +4352,8 @@
                         message: chatEntry.message,
                         attachment_url: url,
                         attachment_type: type,
-                        reply_to: chatEntry.reply_to
+                        reply_to: chatEntry.reply_to,
+                        is_deleted: false
                     });
                 } catch (err) {
                     console.debug('Chat media insert notice:', err);
@@ -4278,6 +4427,7 @@
             // 7-day retention filter
             const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
             const unreadMentions = taskChatMessages.filter(msg => {
+                if (msg.is_deleted) return false;
                 if (new Date(msg.created_at).getTime() < sevenDaysAgo) return false;
                 if (readSet.has(msg.id)) return false;
                 
@@ -4319,6 +4469,33 @@
             if (badgeSidebar) badgeSidebar.style.display = 'none';
         }
 
+        // Hapus Pesan untuk Semua (WhatsApp-Style "Delete for Everyone")
+        async function deleteChatMessage(msgId) {
+            const msg = taskChatMessages.find(m => String(m.id) === String(msgId));
+            if (!msg) return;
+
+            if (!confirm('Hapus pesan ini untuk semua orang di ruang koordinasi?')) return;
+
+            const deleterName = currentUser ? getUserDisplayName(currentUser) : 'Pengurus';
+            msg.is_deleted = true;
+            msg.deleted_by = deleterName;
+
+            persistLocalChats(taskChatMessages);
+            renderTaskChat();
+            broadcastEvent('CHAT_DELETE', { id: msgId, deleted_by: deleterName });
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('task_chat_messages').update({
+                        is_deleted: true,
+                        deleted_by: deleterName
+                    }).eq('id', msgId);
+                } catch (err) {
+                    console.debug('Chat delete error:', err);
+                }
+            }
+        }
+
         function renderTaskChat() {
             // 7-Day Rolling Retention Window
             const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
@@ -4338,15 +4515,40 @@
 
             stream.innerHTML = taskChatMessages.map(msg => {
                 const isMine = msg.sender_name === currentSenderName || msg.sender_name === currentSenderEmail || (msg.sender_name && currentSenderEmail.includes(msg.sender_name));
+                const canDelete = isMine || canApproveTask();
+                const timeStr = new Date(msg.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+                // Render Deleted Message (WhatsApp Style)
+                if (msg.is_deleted) {
+                    return `
+                        <div class="chat-bubble ${isMine ? 'mine' : 'other'} deleted-msg" id="chat-msg-${msg.id}">
+                            <div style="display: flex; align-items: center; gap: 0.4rem;">
+                                <i class="fa-solid fa-ban" style="font-size: 0.85rem; opacity: 0.65;"></i>
+                                <span>${isMine ? 'Anda telah menghapus pesan ini' : 'Pesan ini telah dihapus'}</span>
+                            </div>
+                            <div style="text-align: right; font-size: 0.65rem; opacity: 0.6; margin-top: 0.2rem;">
+                                ${timeStr}
+                            </div>
+                        </div>
+                    `;
+                }
+
                 const formattedText = formatChatMessageText(msg.message);
 
                 return `
                     <div class="chat-bubble ${isMine ? 'mine' : 'other'}" id="chat-msg-${msg.id}" ondblclick="setReplyToMessage('${msg.id}')" oncontextmenu="event.preventDefault(); setReplyToMessage('${msg.id}')" title="Double click (PC) atau tekan tahan (HP) untuk balas pesan">
                         <div class="chat-bubble-sender">
                             <span><i class="fa-solid fa-user"></i> ${msg.sender_name} • <span style="opacity: 0.85;">${msg.sender_division || msg.sender_role || 'DKM'}</span></span>
-                            <button type="button" class="btn-bubble-reply" onclick="event.stopPropagation(); setReplyToMessage('${msg.id}')" title="Balas Pesan">
-                                <i class="fa-solid fa-reply"></i>
-                            </button>
+                            <div class="chat-bubble-actions">
+                                <button type="button" class="btn-bubble-reply" onclick="event.stopPropagation(); setReplyToMessage('${msg.id}')" title="Balas Pesan">
+                                    <i class="fa-solid fa-reply"></i>
+                                </button>
+                                ${canDelete ? `
+                                    <button type="button" class="btn-bubble-delete" onclick="event.stopPropagation(); deleteChatMessage('${msg.id}')" title="Hapus pesan untuk semua orang">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
                         </div>
 
                         ${msg.reply_to ? `
@@ -4369,7 +4571,7 @@
                         ` : ''}
 
                         <div style="text-align: right; font-size: 0.65rem; opacity: 0.7; margin-top: 0.25rem;">
-                            ${new Date(msg.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                            ${timeStr}
                         </div>
                     </div>
                 `;
@@ -4399,8 +4601,10 @@
         }
 
         async function handleSendChatMessage(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             const input = document.getElementById('chat-composer-input');
+            if (!input) return;
+
             const message = input.value.trim();
             if (!message) return;
 
@@ -4419,11 +4623,13 @@
                     sender: replyingToMessage.sender_name,
                     text: replyingToMessage.message ? replyingToMessage.message.substring(0, 80) : '[Lampiran]'
                 } : null,
+                is_deleted: false,
                 created_at: new Date().toISOString()
             };
 
             taskChatMessages.push(chatEntry);
             input.value = '';
+            input.style.height = '38px'; // Reset textarea height
             cancelReply();
             const popup = document.getElementById('mention-autocomplete-popup');
             if (popup) popup.style.display = 'none';
@@ -4439,7 +4645,8 @@
                         sender_role: role,
                         sender_division: chatEntry.sender_division,
                         message: message,
-                        reply_to: chatEntry.reply_to
+                        reply_to: chatEntry.reply_to,
+                        is_deleted: false
                     });
                 } catch (err) {
                     console.debug('Chat insert notice:', err);

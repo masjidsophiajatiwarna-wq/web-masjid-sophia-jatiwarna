@@ -135,6 +135,8 @@ CREATE TABLE IF NOT EXISTS public.task_chat_messages (
     attachment_url TEXT,
     attachment_type VARCHAR(20) DEFAULT 'IMAGE', -- 'IMAGE', 'VIDEO'
     reply_to JSONB DEFAULT NULL,
+    is_deleted BOOLEAN DEFAULT FALSE,
+    deleted_by VARCHAR(150) DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
