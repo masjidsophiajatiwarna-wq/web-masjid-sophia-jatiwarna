@@ -4,6 +4,18 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.14] - 2026-08-22
+
+### Penyederhanaan Aksi Tabel & Pemindahan Tombol Hapus Akun ke Dalam Modal Edit
+
+#### Penyempurnaan & Keamanan UX (Improved & UX Safety)
+- `[USER_DELETE_UX_REFINEMENT]` Memindahkan tombol **Hapus Akun** secara eksklusif ke dalam dialog modal **Edit & Otorisasi Pengurus** (`#modal-admin-edit-user`):
+  - **Pencegahan Klik Tidak Sengaja (*Accidental Deletion Shield*):** Menghapus tombol Hapus dari baris tabel utama untuk memastikan tindakan penghapusan akun hanya dapat diakses melalui alur inspeksi/edit data terlebih dahulu.
+  - **Tampilan Tabel Rapi & Bersih:** Baris tabel direktori pengguna kembali kompak dan lega dengan 3 tombol utama (`Edit`, `Reset`, dan `End Session`).
+  - **Alur 2 Langkah Aman (*Two-Step Deletion Flow*):** Super Admin / Ketua DKM membuka Edit Akun $\rightarrow$ Menekan tombol *Hapus Akun* di footer modal $\rightarrow$ Dialog Konfirmasi Modal 5 muncul untuk validasi akhir.
+
+---
+
 ## [1.7.13] - 2026-08-22
 
 ### Fitur Hapus Akun Pengurus Permanen & Dialog Konfirmasi Modal 5 (Super Admin & DKM)

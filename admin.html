@@ -8430,10 +8430,6 @@
                 const uEmail = (u.email || '').toLowerCase().trim();
                 const isCurrentLoggedIn = currentUser && currentUser.email && currentUser.email.toLowerCase().trim() === uEmail;
                 const isAppVisible = document.getElementById('admin-app') && document.getElementById('admin-app').style.display !== 'none';
-                const isProtectedRoot = uEmail === 'superadmin@masjidsophiajatiwarna.com' || uEmail === 'dkm@masjidsophiajatiwarna.com';
-                const currentRole = getUserRole();
-                const canManageAndTrash = currentRole === 'SUPER_ADMIN' || currentRole === 'KETUA_DKM';
-                const showTrashBtn = canManageAndTrash && !isProtectedRoot && !isCurrentLoggedIn;
                 
                 // Live presence: only true if active in current browser session OR present in onlineUsersSet
                 const isLiveOnline = (isCurrentLoggedIn && isAppVisible) || onlineUsersSet.has(uEmail);
@@ -8495,10 +8491,6 @@
                                 <button type="button" class="btn-table-action danger" onclick="handleForceLogoutUser('${u.id}')" title="End Session / Paksa Logout Pengurus">
                                     <i class="fa-solid fa-right-from-bracket"></i>
                                 </button>
-                                ${showTrashBtn ? `
-                                <button type="button" class="btn-table-action danger" onclick="openDeleteUserConfirmModal('${u.id}')" title="Hapus Akun Pengurus Secara Permanen" style="background: #FEF2F2; color: #DC2626; border-color: #FECACA;">
-                                    <i class="fa-solid fa-trash-can"></i> Hapus
-                                </button>` : ''}
                             </div>
                         </td>
                     </tr>
