@@ -97,12 +97,16 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 - **Daftar Tugas:**
   - [x] **Master Skema Inti PostgreSQL (`database/schema.sql`):** `donations`, `jadwal_petugas`, `artikel_berita`, `team_tasks`, `system_health_logs`, `admin_users`, `feedback_complaints`, `media_checklists`.
   - [x] **Zero-Trust RLS Policies & Serverless Functions:** `/api/health.js`, `/api/donasi.js`, `/api/send-receipt.js`, `/api/pengaduan.js`.
-  - [x] **Otomasi GitHub Actions Cron Keep-Alive:** Workflow 24/7 `.github/workflows/supabase-keepalive.yml`.
-  - [ ] **Migrasi Skema Tambahan Suite Lengkap Modul PJ & Task Management v2:**
-    - `team_tasks` (ALTER: `start_date`, `is_archived`, `order_index`).
-    - `task_activity_logs`, `task_comments`, `task_chat_messages`.
+  - [x] **Migrasi Skema Tambahan Task Management v2 & Obrolan Realtime (`database/migration_task_management_v1.6.sql`):**
+    - `team_tasks` (ALTER: `start_date`, `is_archived`, `order_index`, `progress_pct`, `created_by`).
+    - `task_activity_logs` (Audit trail riwayat pengelolaan tugas CDC).
+    - `task_chat_messages` (Obrolan koordinasi tim multi-arah pro).
+    - RLS Policies & Publikasi Supabase Realtime WebSocket.
+  - [x] **Migrasi Skema Modul Account & Access Control (`database/migration_account_control.sql`):**
+    - `admin_users` (ALTER: `avatar_url`, `permissions JSONB`, `session_version`).
+    - Fungsi `force_end_user_session()` dan Realtime CDC `admin_users`.
+  - [ ] **Migrasi Skema Lanjutan Suite Modul PJ Operasional (Menyesuaikan Implementasi Modul PJ):**
     - `masjid_assets`, `santri_data`, `santri_mutabaah`, `musafir_logbook`, `financial_journals`, `security_reports`, `cleaning_reports`.
-    - RLS Policies & Realtime Publication untuk seluruh tabel baru.
 
 ---
 
