@@ -6,6 +6,22 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 
 ---
 
+## [1.5.0] - 2026-08-21
+
+### Optimasi Fluid Mobile-First & Pipeline Aplikasi Android APK (Master Roadmap v5.0)
+
+#### Penambahan & Pembaruan (Added & Updated)
+- `[ROADMAP]` Rencana induk teknis `implementation-plan.md` diperbarui ke versi v5.0 mencakup:
+  - **Fluid Desktop & Mobile-First Touch UI (`admin.html`):** Pengalaman desktop leluasa dan adaptasi fluid di layar HP (navigasi bilah bawah, bottom sheet modal drawer, target sentuh min 48px, gestur swipe).
+  - **Fase 7 - Pipeline Aplikasi Mobile Android (.apk) Khusus Pengurus DKM:**
+    - *Tingkat 1 (PWA):* Web Manifest (`site.webmanifest`), offline caching Service Worker, dan Add to Homescreen instan.
+    - *Tingkat 2 (TWA / WebAPK):* Pembuatan berkas installer mandiri `MasjidSophia-Admin.apk` (Google Bubblewrap / PWABuilder) yang otomatis sinkron pembaruan dari Vercel tanpa perlu instal ulang.
+    - *Tingkat 3 (Native Capacitor.js):* Integrasi push notification tugas & chat (Firebase FCM), akses kamera cepat untuk bukti kebersihan/keamanan, dan login biometrik sidik jari.
+  - **Aplikasi Jamaah:** Ditetapkan berstatus *Coming Soon / Pasca-Peluncuran* (web publik `index.html` sudah mobile-friendly).
+- `[DASHBOARD]` Dashboard pelacak progres visual `progress-implementation-plan.html` pada subdomain `progdev.masjidsophiajatiwarna.com` diperbarui ke Total 8 Fase (Fase 0 - Fase 7) lengkap dengan kartu Fase 7 dan task mobile-first.
+
+---
+
 ## [1.4.0] - 2026-08-21
 
 ### Suite Modul Operasional Lengkap Seluruh PJ DKM & Master Roadmap v4.0

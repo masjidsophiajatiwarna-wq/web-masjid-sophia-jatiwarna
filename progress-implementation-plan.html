@@ -902,8 +902,8 @@
                 <span class="metric-label">Total Fase</span>
                 <div class="metric-icon"><i class="fa-solid fa-layer-group"></i></div>
             </div>
-            <div class="metric-value">7</div>
-            <div class="metric-subtext">Fase 0 hingga Fase 6</div>
+            <div class="metric-value">8</div>
+            <div class="metric-subtext">Fase 0 hingga Fase 7</div>
             <div class="progress-track">
                 <div class="progress-bar-inner" style="width: 100%;"></div>
             </div>
@@ -1063,6 +1063,19 @@
             <div class="gantt-bar-box">
                 <div class="gantt-bar-fill fill-40">40% - Email & SEO Dasar Live</div>
             </div>
+        </div>
+
+        <div class="gantt-card-item">
+            <div class="gantt-item-top">
+                <span class="gantt-item-name">
+                    <i class="fa-solid fa-mobile-screen-button" style="color: #0EA5E9;"></i> Fase 7: Aplikasi Android APK & PWA Pengurus DKM
+                </span>
+                <span class="status-tag status-pending">Siap Dijalankan</span>
+            </div>
+            <div class="gantt-bar-box">
+                <div class="gantt-bar-fill fill-0"></div>
+            </div>
+            <span class="gantt-empty-label">Status: PWA Web Manifest & Installer Android APK Mandiri.</span>
         </div>
     </section>
 
@@ -1493,6 +1506,16 @@
                             <div class="task-desc">Verifikasi donasi masuk dan pencatatan biaya makan gratis harian.</div>
                         </div>
                     </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Desain Fluid Responsif Desktop & Ponsel (Mobile-First Touch UI)
+                                <span class="task-badge-pill">Mobile-First</span>
+                            </div>
+                            <div class="task-desc">Tampilan lebar lega di desktop dan adaptasi fluid di layar HP (navigasi bilah bawah, modal geser dari bawah, tombol min 48px, gestur swipe).</div>
+                        </div>
+                    </div>
 
                     <!-- Sub-group: Task Management 5 View -->
                     <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-info-bg); border-left: 3px solid var(--color-info); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
@@ -1894,6 +1917,70 @@
             </div>
         </div>
 
+        <!-- Fase 7 Card -->
+        <div class="phase-card collapsed" id="card-fase-7">
+            <div class="phase-header" onclick="togglePhase('card-fase-7')">
+                <div class="phase-title-group">
+                    <div class="phase-badge">7</div>
+                    <div class="phase-name">
+                        <h3>Fase 7: Aplikasi Mobile Android (.apk) & PWA Khusus Pengurus DKM</h3>
+                        <p>PWA hemat kuota, berkas installer APK mandiri otomatis sinkron, dan integrasi fitur smartphone</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="status-tag status-pending">Siap Dijalankan</span>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+            </div>
+            <div class="phase-body">
+                <div class="task-list">
+                    <div style="margin-bottom: 0.35rem; padding: 0.35rem 0.65rem; background: #F0F9FF; border-left: 3px solid #0EA5E9; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #075985;">
+                        <i class="fa-solid fa-mobile-screen" style="color: #0EA5E9;"></i> Pipeline Aplikasi Mobile (3 Tingkat)
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Tingkat 1: PWA (Progressive Web App) dengan Caching & Ikon Layar Utama
+                                <span class="task-badge-pill">PWA</span>
+                            </div>
+                            <div class="task-desc">Pemasangan instan dari browser ke layar HP dengan mode layar penuh dan penyimpanan cache cepat.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Tingkat 2: Berkas Installer Android (MasjidSophia-Admin.apk) Otomatis Sinkron
+                                <span class="task-badge-pill">APK Installer</span>
+                            </div>
+                            <div class="task-desc">Pembuatan file .apk mandiri yang bisa dibagikan langsung ke grup WhatsApp pengurus dan otomatis ter-update tanpa install ulang.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Tingkat 3: Integrasi Fitur Khusus HP (Notifikasi Tugas/Pesan & Akses Kamera Laporan)
+                                <span class="task-badge-pill">Fitur HP</span>
+                            </div>
+                            <div class="task-desc">Notifikasi pesan/tugas baru langsung ke HP dan akses kamera cepat untuk foto bukti kebersihan/keamanan.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Persiapan Aplikasi Khusus Jamaah (Status: Segera Hadir / Pasca-Peluncuran)
+                                <span class="task-badge-pill">Coming Soon</span>
+                            </div>
+                            <div class="task-desc">Aplikasi khusus jamaah disiapkan untuk fase lanjutan (saat ini jamaah dilayani optimal via web publik).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 
     <!-- View Section 3: RBAC Matrix -->
@@ -2117,6 +2204,19 @@
                     <td><span class="badge-perm none">-</span></td>
                     <td><span class="badge-perm none">-</span></td>
                     <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>PWA & Akses Mobile App APK</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
                 </tr>
             </tbody>
         </table>
