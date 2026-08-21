@@ -81,20 +81,59 @@ CREATE TABLE IF NOT EXISTS public.artikel_berita (
 );
 
 -- ==============================================================================
--- 6. TABEL TUGAS & PRODUKTIVITAS TIM DKM (TASK HEALTH)
+-- 6. TABEL TUGAS & PRODUKTIVITAS TIM DKM (TASK HEALTH V2)
 -- ==============================================================================
 CREATE TABLE IF NOT EXISTS public.team_tasks (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
     assigned_to VARCHAR(150),
-    assigned_role VARCHAR(100), -- 'Ketua DKM', 'PJ Media', 'PJ Divisi Sosial', 'PJ Kebersihan', 'Bendahara'
+    assigned_role VARCHAR(100), -- 'Ketua DKM', 'PJ Media', 'PJ Divisi Sosial', 'PJ Kebersihan', 'Bendahara', dll.
     division VARCHAR(100) NOT NULL DEFAULT 'Umum',
+    start_date DATE DEFAULT CURRENT_DATE,
     due_date DATE,
     priority VARCHAR(20) DEFAULT 'MEDIUM', -- 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL'
-    status VARCHAR(30) DEFAULT 'PENDING', -- 'PENDING', 'IN_PROGRESS', 'COMPLETED', 'BLOCKED'
+    status VARCHAR(30) DEFAULT 'PENDING', -- 'PENDING', 'IN_PROGRESS', 'REVIEW', 'COMPLETED'
+    progress_pct INT DEFAULT 0,
+    is_archived BOOLEAN DEFAULT FALSE,
+    order_index INT DEFAULT 0,
+    created_by VARCHAR(150),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Idempotent column additions for existing team_tasks table
+ALTER TABLE public.team_tasks ADD COLUMN IF NOT EXISTS start_date DATE DEFAULT CURRENT_DATE;
+ALTER TABLE public.team_tasks ADD COLUMN IF NOT EXISTS progress_pct INT DEFAULT 0;
+ALTER TABLE public.team_tasks ADD COLUMN IF NOT EXISTS is_archived BOOLEAN DEFAULT FALSE;
+ALTER TABLE public.team_tasks ADD COLUMN IF NOT EXISTS order_index INT DEFAULT 0;
+ALTER TABLE public.team_tasks ADD COLUMN IF NOT EXISTS created_by VARCHAR(150);
+
+-- ==============================================================================
+-- 6.1. TABEL AUDIT LOG AKTIVITAS TUGAS (TASK ACTIVITY LOGS)
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.task_activity_logs (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    task_id UUID REFERENCES public.team_tasks(id) ON DELETE CASCADE,
+    task_title VARCHAR(255),
+    user_name VARCHAR(150) NOT NULL DEFAULT 'Pengurus DKM',
+    user_role VARCHAR(50) DEFAULT 'STAFF',
+    action_type VARCHAR(50) NOT NULL, -- 'CREATED', 'STATUS_CHANGED', 'UPDATED', 'ARCHIVED', 'RESTORED', 'DELETED'
+    details TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ==============================================================================
+-- 6.2. TABEL CHAT KOORDINASI MULTI-ARAH DKM (TASK & TEAM CHAT)
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.task_chat_messages (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    sender_name VARCHAR(150) NOT NULL,
+    sender_role VARCHAR(50) NOT NULL DEFAULT 'STAFF',
+    sender_division VARCHAR(100) NOT NULL DEFAULT 'Umum',
+    message TEXT NOT NULL,
+    attachment_url TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- ==============================================================================
@@ -223,6 +262,34 @@ DROP POLICY IF EXISTS "Allow full access feedback for authenticated staff" ON pu
 CREATE POLICY "Allow full access feedback for authenticated staff" 
 ON public.feedback_complaints FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
+-- I. task_activity_logs
+ALTER TABLE public.task_activity_logs ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read task activity logs" ON public.task_activity_logs;
+CREATE POLICY "Allow public read task activity logs" 
+ON public.task_activity_logs FOR SELECT TO anon, authenticated USING (true);
+
+DROP POLICY IF EXISTS "Allow insert task activity logs" ON public.task_activity_logs;
+CREATE POLICY "Allow insert task activity logs" 
+ON public.task_activity_logs FOR INSERT TO anon, authenticated WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow full access task activity logs for authenticated" ON public.task_activity_logs;
+CREATE POLICY "Allow full access task activity logs for authenticated" 
+ON public.task_activity_logs FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
+-- J. task_chat_messages
+ALTER TABLE public.task_chat_messages ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow read task chat messages" ON public.task_chat_messages;
+CREATE POLICY "Allow read task chat messages" 
+ON public.task_chat_messages FOR SELECT TO anon, authenticated USING (true);
+
+DROP POLICY IF EXISTS "Allow insert task chat messages" ON public.task_chat_messages;
+CREATE POLICY "Allow insert task chat messages" 
+ON public.task_chat_messages FOR INSERT TO anon, authenticated WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow full access task chat messages for authenticated" ON public.task_chat_messages;
+CREATE POLICY "Allow full access task chat messages for authenticated" 
+ON public.task_chat_messages FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
 -- 10. TABEL PENGAJUAN IZIN & CUTI PENGURUS DKM
 CREATE TABLE IF NOT EXISTS public.dkm_leave_requests (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -262,6 +329,16 @@ BEGIN
 
     BEGIN
         ALTER PUBLICATION supabase_realtime ADD TABLE public.team_tasks;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.task_activity_logs;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.task_chat_messages;
     EXCEPTION WHEN duplicate_object THEN NULL;
     END;
 

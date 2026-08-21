@@ -4,6 +4,23 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.6.0] - 2026-08-21
+
+### Modul Manajemen Tugas Pengurus (5 Tampilan Kerja + 2 Panel Realtime Terpadu)
+
+#### Penambahan & Implementasi (Added & Implemented)
+- `[TASK ENGINE]` Implementasi modul terpadu Manajemen Tugas Pengurus DKM pada `admin.html` mencakup 5 Tampilan Kerja Interaktif:
+  - **1. Papan Kanban (Seret & Lepas Antar Kolom):** 4 kolom status (*Menunggu*, *Dikerjakan*, *Review Pak DKM*, *Selesai*), drag-and-drop HTML5, tombol geser sentuh cepat (*Mobile Shift*) untuk smartphone, indikator prioritas (*Critical, High, Medium, Low*), badge warna 10 divisi, dan bar progres visual.
+  - **2. Garis Waktu Gantt (Jadwal Kerja Visual):** Visualisasi jadwal tugas per PJ dengan skala waktu fleksibel (Hari, Minggu, Bulan), perhitungan durasi otomatis, dan filter divisi.
+  - **3. Kalender Tugas (Bulanan & Agenda):** Grid kalender bulanan dengan *spanning bar* multi-hari, navigasi bulan, klik tanggal untuk tambah tugas cepat, dan toggle *Mode Agenda* kronologis.
+  - **4. Tabel Seluruh Tugas (Cari, Saring, Urutkan):** Master data table dengan live multi-field search, filter divisi/prioritas/status, sorting kolom interaktif, multi-select checkboxes dengan toolbar aksi masal (*Arsipkan Masal*, *Tandai Selesai*), dan tombol *Unduh CSV*.
+  - **5. Arsip Tugas Selesai (Simpan Rapi & Pulihkan):** Ruang penyimpanan rapi untuk tugas selesai yang diarsipkan dengan fitur 1-klik *Pulihkan Tugas* dan *Hapus Permanen*.
+- `[REALTIME PANELS]` Implementasi 2 Panel Pendukung Terpadu berbasis Supabase Realtime CDC WebSocket:
+  - **Riwayat Pengelolaan Realtime:** Audit trail otomatis mencatat setiap pembuatan, pergeseran status, pembaruan, dan pengarsipan tugas secara live tanpa perlu memuat ulang halaman.
+  - **Chat Koordinasi Multi-Arah DKM:** Ruang percakapan realtime antar seluruh 10 peran dan divisi pengurus DKM (Pimpinan, Media, Logistik, Santri, Musafir, Ibadah, Keuangan, Keamanan, Kebersihan, IT).
+- `[DATABASE]` Pembaruan skema `team_tasks` (kolom `start_date`, `progress_pct`, `is_archived`, `order_index`, `created_by`), penambahan tabel `task_activity_logs` dan `task_chat_messages` beserta Row Level Security (RLS) dan Realtime Publication pada `database/schema.sql`.
+- `[DOCS & PROGRESS]` Sinkronisasi paralel pada `implementation-plan.md` dan `progress-implementation-plan.html` (7 item tugas/panel tercatat selesai 100%).
+
 ---
 
 ## [1.5.0] - 2026-08-21

@@ -527,6 +527,694 @@
             color: var(--color-charcoal-muted);
         }
 
+        /* ==========================================================================
+           TASK MANAGEMENT 5 VIEWS & REALTIME SUPPORT PANELS STYLING
+           ========================================================================== */
+        
+        /* Segmented View Switcher Nav */
+        .task-view-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: #F3F4F6;
+            padding: 0.35rem;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            white-space: nowrap;
+            margin-bottom: 1.25rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .task-view-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.5rem 0.9rem;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            color: var(--color-charcoal-muted);
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .task-view-btn:hover {
+            color: var(--color-charcoal);
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .task-view-btn.active {
+            background: var(--color-bg-white);
+            color: var(--color-charcoal);
+            box-shadow: var(--shadow-sm);
+            border-left: 3px solid var(--color-gold-deep);
+        }
+
+        .task-view-badge {
+            padding: 0.1rem 0.45rem;
+            border-radius: var(--radius-full);
+            background: rgba(0,0,0,0.06);
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        /* Filter Toolbar */
+        .task-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1rem;
+        }
+
+        .task-filters-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .task-search-input {
+            padding: 0.5rem 0.85rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-family: inherit;
+            background: #FAFAFA;
+            min-width: 220px;
+            flex: 1;
+        }
+
+        .task-search-input:focus {
+            outline: none;
+            border-color: var(--color-gold-deep);
+            background: #FFFFFF;
+        }
+
+        .task-filter-select {
+            padding: 0.5rem 0.85rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-family: inherit;
+            background: #FAFAFA;
+            color: var(--color-charcoal);
+            cursor: pointer;
+        }
+
+        /* 1. Kanban Board */
+        .kanban-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            align-items: flex-start;
+        }
+
+        .kanban-col {
+            background: #F9FAFB;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kanban-col-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--color-border);
+            margin-bottom: 0.85rem;
+        }
+
+        .kanban-col-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+        }
+
+        .col-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .col-indicator.pending { background: #9CA3AF; }
+        .col-indicator.in_progress { background: #2563EB; }
+        .col-indicator.review { background: #D97706; }
+        .col-indicator.completed { background: #00A651; }
+
+        .kanban-col-count {
+            padding: 0.15rem 0.5rem;
+            border-radius: var(--radius-full);
+            background: #E5E7EB;
+            font-size: 0.725rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+        }
+
+        .kanban-card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            flex: 1;
+            min-height: 120px;
+            padding-bottom: 1rem;
+        }
+
+        .kanban-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 0.95rem;
+            box-shadow: var(--shadow-sm);
+            cursor: grab;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .kanban-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-gold-deep);
+            transform: translateY(-2px);
+        }
+
+        .kanban-card.dragging {
+            opacity: 0.4;
+            border-style: dashed;
+            cursor: grabbing;
+        }
+
+        .kanban-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .kanban-card-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--color-charcoal);
+            margin-bottom: 0.35rem;
+            line-height: 1.35;
+        }
+
+        .kanban-card-desc {
+            font-size: 0.75rem;
+            color: var(--color-charcoal-muted);
+            margin-bottom: 0.65rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Division Color Coding */
+        .div-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: var(--radius-full);
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+        .div-badge.media { background: #F3E8FF; color: #7E22CE; }
+        .div-badge.logistik { background: #FEF3C7; color: #B45309; }
+        .div-badge.santri { background: #ECFDF5; color: #047857; }
+        .div-badge.musafir { background: #E0F2FE; color: #0369A1; }
+        .div-badge.ibadah { background: #FAF6E8; color: #785800; }
+        .div-badge.keuangan { background: #CCFBF1; color: #0F766E; }
+        .div-badge.keamanan { background: #FFE4E6; color: #BE123C; }
+        .div-badge.kebersihan { background: #ECFCCB; color: #4D7C0F; }
+        .div-badge.umum { background: #F3F4F6; color: #4B5563; }
+
+        /* Priority Badge */
+        .prio-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.12rem 0.45rem;
+            border-radius: var(--radius-full);
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .prio-badge.critical { background: #FEE2E2; color: #DC2626; }
+        .prio-badge.high { background: #FEF3C7; color: #D97706; }
+        .prio-badge.medium { background: #EFF6FF; color: #2563EB; }
+        .prio-badge.low { background: #F3F4F6; color: #6B7280; }
+
+        /* Progress Bar */
+        .task-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #E5E7EB;
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin: 0.5rem 0 0.65rem 0;
+        }
+
+        .task-progress-fill {
+            height: 100%;
+            background: var(--color-gold-deep);
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+        }
+        .task-progress-fill.done { background: var(--color-success); }
+
+        .kanban-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 0.5rem;
+            border-top: 1px solid #F3F4F6;
+            font-size: 0.72rem;
+            color: var(--color-charcoal-muted);
+        }
+
+        .kanban-card-pic {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-weight: 600;
+        }
+
+        .card-shift-controls {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .btn-shift {
+            background: #F3F4F6;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            cursor: pointer;
+            color: var(--color-charcoal);
+            transition: var(--transition);
+        }
+
+        .btn-shift:hover {
+            background: var(--color-gold-deep);
+            color: #FFFFFF;
+            border-color: var(--color-gold-deep);
+        }
+
+        /* 2. Gantt Timeline */
+        .gantt-wrapper {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .gantt-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--color-border);
+            background: #FAFAFA;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .gantt-scale-buttons {
+            display: flex;
+            gap: 0.35rem;
+        }
+
+        .btn-gantt-scale {
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-white);
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-gantt-scale.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+        }
+
+        .gantt-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .gantt-table th, .gantt-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--color-border);
+            border-right: 1px solid #F3F4F6;
+            vertical-align: middle;
+        }
+
+        .gantt-table th {
+            background: #F9FAFB;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--color-charcoal-muted);
+            text-align: left;
+        }
+
+        .gantt-bar-cell {
+            position: relative;
+            padding: 0.5rem 0.75rem;
+            min-width: 320px;
+        }
+
+        .gantt-track {
+            background: #F3F4F6;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gantt-bar {
+            position: absolute;
+            top: 2px;
+            bottom: 2px;
+            background: linear-gradient(90deg, var(--color-gold-deep), var(--color-gold-primary));
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 0.5rem;
+            color: var(--color-charcoal);
+            font-size: 0.7rem;
+            font-weight: 800;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .gantt-bar:hover {
+            filter: brightness(1.08);
+            transform: scaleY(1.05);
+        }
+
+        /* 3. Calendar View */
+        .calendar-wrapper {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .calendar-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .calendar-month-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+        }
+
+        .calendar-nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--color-border);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .calendar-day-header {
+            background: #F9FAFB;
+            padding: 0.65rem;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--color-charcoal-muted);
+        }
+
+        .calendar-day-cell {
+            background: var(--color-bg-white);
+            min-height: 110px;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .calendar-day-cell:hover {
+            background: #FAF8F2;
+        }
+
+        .calendar-day-cell.other-month {
+            background: #FAFAFA;
+            color: #9CA3AF;
+        }
+
+        .calendar-day-cell.today {
+            background: #FAF6E8;
+        }
+
+        .calendar-day-number {
+            font-size: 0.8rem;
+            font-weight: 800;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calendar-task-pill {
+            padding: 0.2rem 0.45rem;
+            border-radius: 4px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Agenda View List */
+        .agenda-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .agenda-group {
+            background: #F9FAFB;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+        }
+
+        .agenda-group-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .agenda-task-item {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Bulk Action Bar */
+        .bulk-actions-toolbar {
+            display: none; /* Shown when rows selected */
+            align-items: center;
+            justify-content: space-between;
+            background: var(--color-charcoal);
+            color: #FFFFFF;
+            padding: 0.65rem 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 0.85rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* 2 Support Panels */
+        .support-panels-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .activity-feed-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .activity-feed-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: #F9FAFB;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+        }
+
+        .activity-icon-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--color-gold-light);
+            color: var(--color-gold-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        /* Chat Room */
+        .chat-room-container {
+            display: flex;
+            flex-direction: column;
+            height: 380px;
+            background: #F9FAFB;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .chat-messages-stream {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 0.65rem 0.85rem;
+            border-radius: var(--radius-md);
+            font-size: 0.78rem;
+            position: relative;
+        }
+
+        .chat-bubble.mine {
+            align-self: flex-end;
+            background: var(--color-charcoal);
+            color: #FFFFFF;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-bubble.other {
+            align-self: flex-start;
+            background: var(--color-bg-white);
+            color: var(--color-charcoal);
+            border: 1px solid var(--color-border);
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-bubble-sender {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--color-gold-primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .chat-composer-bar {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: var(--color-bg-white);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.6rem 0.85rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--color-gold-deep);
+        }
+
+        /* Mobile Responsive for Task Views */
+        @media (max-width: 1024px) {
+            .kanban-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .support-panels-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .kanban-grid {
+                grid-template-columns: 1fr;
+            }
+            .calendar-day-cell {
+                min-height: 70px;
+                padding: 0.25rem;
+            }
+        }
+
         /* Mobile Responsive */
         @media (max-width: 900px) {
             .admin-sidebar {
@@ -771,35 +1459,326 @@
                 </div>
             </div>
 
-            <!-- Tab 3: Tasks Panel -->
+            <!-- Tab 3: Tasks Panel (5 Views + 2 Support Panels) -->
             <div id="tab-tasks" class="tab-content-panel" style="display: none;">
-                <div class="section-panel">
-                    <div class="panel-header">
-                        <div class="panel-title">
-                            <i class="fa-solid fa-list-check" style="color: var(--color-gold-deep);"></i> Papan Tugas Pengurus DKM
-                        </div>
+                <!-- View Switcher Segmented Navigation -->
+                <div class="task-view-nav">
+                    <button class="task-view-btn active" id="btn-view-kanban" onclick="switchTaskView('kanban')">
+                        <i class="fa-solid fa-table-columns"></i> Papan Kanban
+                    </button>
+                    <button class="task-view-btn" id="btn-view-gantt" onclick="switchTaskView('gantt')">
+                        <i class="fa-solid fa-bars-progress"></i> Garis Waktu Gantt
+                    </button>
+                    <button class="task-view-btn" id="btn-view-calendar" onclick="switchTaskView('calendar')">
+                        <i class="fa-solid fa-calendar-days"></i> Kalender Tugas
+                    </button>
+                    <button class="task-view-btn" id="btn-view-table" onclick="switchTaskView('table')">
+                        <i class="fa-solid fa-table-list"></i> Tabel Seluruh Tugas
+                    </button>
+                    <button class="task-view-btn" id="btn-view-archive" onclick="switchTaskView('archive')">
+                        <i class="fa-solid fa-box-archive"></i> Arsip Selesai <span class="task-view-badge" id="badge-archive-count">0</span>
+                    </button>
+                    <div style="width: 1px; height: 24px; background: var(--color-border); margin: 0 0.25rem;"></div>
+                    <button class="task-view-btn" id="btn-view-history" onclick="switchTaskView('history')">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Realtime
+                    </button>
+                    <button class="task-view-btn" id="btn-view-chat" onclick="switchTaskView('chat')">
+                        <i class="fa-solid fa-comments"></i> Chat Koordinasi DKM
+                    </button>
+                </div>
+
+                <!-- Unified Task Filter & Action Toolbar -->
+                <div class="task-toolbar">
+                    <div class="task-filters-group">
+                        <input type="text" id="task-search-input" class="task-search-input" placeholder="Cari judul tugas, PIC, atau catatan..." oninput="handleTaskFilterChange()">
+                        
+                        <select id="task-filter-division" class="task-filter-select" onchange="handleTaskFilterChange()">
+                            <option value="ALL">Semua Divisi PJ</option>
+                            <option value="Divisi Media & Dakwah">Media & Dakwah</option>
+                            <option value="Divisi Logistik & Sarpras">Logistik & Sarpras</option>
+                            <option value="Divisi Pembinaan Santri Tahfidz">Santri & Pendidikan</option>
+                            <option value="Divisi Pelayanan Musafir & Sosial">Musafir & Sosial</option>
+                            <option value="Divisi Ibadah & Acara">Ibadah & Acara</option>
+                            <option value="Divisi Keuangan & ZISWAF">Keuangan & ZISWAF</option>
+                            <option value="Divisi Keamanan">Keamanan & Ketertiban</option>
+                            <option value="Divisi Kebersihan & Sanitasi">Kebersihan & Sanitasi</option>
+                            <option value="IT & Ekosistem Digital">IT & Ekosistem Digital</option>
+                        </select>
+
+                        <select id="task-filter-priority" class="task-filter-select" onchange="handleTaskFilterChange()">
+                            <option value="ALL">Semua Prioritas</option>
+                            <option value="CRITICAL">Critical (Mendesak)</option>
+                            <option value="HIGH">High (Penting)</option>
+                            <option value="MEDIUM">Medium (Biasa)</option>
+                            <option value="LOW">Low (Rendah)</option>
+                        </select>
+
+                        <select id="task-filter-status" class="task-filter-select" onchange="handleTaskFilterChange()">
+                            <option value="ALL">Semua Status</option>
+                            <option value="PENDING">Menunggu (Pending)</option>
+                            <option value="IN_PROGRESS">Dikerjakan (In Progress)</option>
+                            <option value="REVIEW">Review Pak DKM</option>
+                            <option value="COMPLETED">Selesai (Completed)</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button class="btn-action-gold" style="background: #FAFAFA; color: var(--color-charcoal); border-color: var(--color-border);" onclick="exportTasksToCSV()">
+                            <i class="fa-solid fa-file-csv"></i> Unduh CSV
+                        </button>
                         <button class="btn-action-gold" onclick="openTaskModal()">
                             <i class="fa-solid fa-plus"></i> Tambah Tugas Baru
                         </button>
                     </div>
-                    <div class="table-responsive">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Judul Tugas</th>
-                                    <th>Divisi</th>
-                                    <th>PIC / Pengurus</th>
-                                    <th>Prioritas</th>
-                                    <th>Tenggat</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="all-tasks-tbody">
-                                <!-- Rendered dynamically -->
-                            </tbody>
-                        </table>
+                </div>
+
+                <!-- VIEW 1: Papan Kanban (Drag & Drop + Touch Shift) -->
+                <div id="task-subview-kanban" class="task-subview">
+                    <div class="kanban-grid">
+                        <!-- Column 1: PENDING -->
+                        <div class="kanban-col" id="col-pending" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'PENDING')">
+                            <div class="kanban-col-header">
+                                <div class="kanban-col-title">
+                                    <span class="col-indicator pending"></span> Menunggu (Pending)
+                                </div>
+                                <span class="kanban-col-count" id="count-kanban-pending">0</span>
+                            </div>
+                            <div class="kanban-card-list" id="kanban-cards-pending">
+                                <!-- Cards rendered dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Column 2: IN_PROGRESS -->
+                        <div class="kanban-col" id="col-in_progress" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'IN_PROGRESS')">
+                            <div class="kanban-col-header">
+                                <div class="kanban-col-title">
+                                    <span class="col-indicator in_progress"></span> Dikerjakan (In Progress)
+                                </div>
+                                <span class="kanban-col-count" id="count-kanban-in_progress">0</span>
+                            </div>
+                            <div class="kanban-card-list" id="kanban-cards-in_progress">
+                                <!-- Cards rendered dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Column 3: REVIEW -->
+                        <div class="kanban-col" id="col-review" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'REVIEW')">
+                            <div class="kanban-col-header">
+                                <div class="kanban-col-title">
+                                    <span class="col-indicator review"></span> Review Pak DKM
+                                </div>
+                                <span class="kanban-col-count" id="count-kanban-review">0</span>
+                            </div>
+                            <div class="kanban-card-list" id="kanban-cards-review">
+                                <!-- Cards rendered dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Column 4: COMPLETED -->
+                        <div class="kanban-col" id="col-completed" ondragover="handleDragOver(event)" ondrop="handleDrop(event, 'COMPLETED')">
+                            <div class="kanban-col-header">
+                                <div class="kanban-col-title">
+                                    <span class="col-indicator completed"></span> Selesai (Completed)
+                                </div>
+                                <span class="kanban-col-count" id="count-kanban-completed">0</span>
+                            </div>
+                            <div class="kanban-card-list" id="kanban-cards-completed">
+                                <!-- Cards rendered dynamically -->
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- VIEW 2: Garis Waktu Gantt (Timeline) -->
+                <div id="task-subview-gantt" class="task-subview" style="display: none;">
+                    <div class="gantt-wrapper">
+                        <div class="gantt-controls">
+                            <div style="font-size: 0.85rem; font-weight: 800; color: var(--color-charcoal);">
+                                <i class="fa-solid fa-chart-gantt" style="color: var(--color-gold-deep);"></i> Timeline Jadwal Pelaksanaan Tugas
+                            </div>
+                            <div class="gantt-scale-buttons">
+                                <button class="btn-gantt-scale active" id="btn-gantt-day" onclick="setGanttScale('day')">Skala Hari</button>
+                                <button class="btn-gantt-scale" id="btn-gantt-week" onclick="setGanttScale('week')">Skala Minggu</button>
+                                <button class="btn-gantt-scale" id="btn-gantt-month" onclick="setGanttScale('month')">Skala Bulan</button>
+                            </div>
+                        </div>
+                        <div id="gantt-chart-container" style="overflow-x: auto; padding: 1rem;">
+                            <!-- Gantt SVG/Table rendered dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 3: Kalender Tugas (Bulanan & Agenda) -->
+                <div id="task-subview-calendar" class="task-subview" style="display: none;">
+                    <div class="calendar-wrapper">
+                        <div class="calendar-header-bar">
+                            <div class="calendar-nav-buttons">
+                                <button class="btn-shift" onclick="prevCalendarMonth()"><i class="fa-solid fa-chevron-left"></i></button>
+                                <button class="btn-shift" onclick="todayCalendarMonth()" style="width: auto; padding: 0 0.65rem; font-weight: 700;">Hari Ini</button>
+                                <button class="btn-shift" onclick="nextCalendarMonth()"><i class="fa-solid fa-chevron-right"></i></button>
+                                <div class="calendar-month-title" id="calendar-title-display" style="margin-left: 0.5rem;">Agustus 2026</div>
+                            </div>
+                            <div style="display: flex; gap: 0.35rem;">
+                                <button class="btn-gantt-scale active" id="btn-cal-month" onclick="setCalendarMode('month')">
+                                    <i class="fa-solid fa-calendar-days"></i> Grid Bulanan
+                                </button>
+                                <button class="btn-gantt-scale" id="btn-cal-agenda" onclick="setCalendarMode('agenda')">
+                                    <i class="fa-solid fa-list-ul"></i> Mode Agenda Kronologis
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Month Grid -->
+                        <div id="calendar-month-view">
+                            <div class="calendar-grid" id="calendar-grid-container">
+                                <!-- Rendered dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Agenda View List -->
+                        <div id="calendar-agenda-view" style="display: none;">
+                            <div class="agenda-container" id="calendar-agenda-container">
+                                <!-- Rendered dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 4: Tabel Seluruh Tugas (Master Table & Bulk Actions) -->
+                <div id="task-subview-table" class="task-subview" style="display: none;">
+                    <!-- Bulk Actions Toolbar -->
+                    <div class="bulk-actions-toolbar" id="table-bulk-toolbar">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-check-double" style="color: var(--color-gold-primary);"></i>
+                            <span id="bulk-selected-count">0 tugas terpilih</span>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn-action-gold" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #FFFFFF;" onclick="handleBulkStatusUpdate('COMPLETED')">
+                                <i class="fa-solid fa-check"></i> Tandai Selesai
+                            </button>
+                            <button class="btn-action-gold" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #FFFFFF;" onclick="handleBulkArchive()">
+                                <i class="fa-solid fa-box-archive"></i> Arsipkan Terpilih
+                            </button>
+                            <button class="btn-shift" style="background: transparent; border-color: rgba(255,255,255,0.3); color: #FFFFFF;" onclick="deselectAllTasks()">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="section-panel" style="padding: 0; overflow: hidden;">
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px; text-align: center;">
+                                            <input type="checkbox" id="check-all-tasks" onchange="toggleSelectAllTasks(this)">
+                                        </th>
+                                        <th onclick="sortMasterTasks('title')" style="cursor: pointer;">
+                                            Judul Tugas <i class="fa-solid fa-sort" style="color: #9CA3AF; font-size: 0.7rem;"></i>
+                                        </th>
+                                        <th onclick="sortMasterTasks('division')" style="cursor: pointer;">
+                                            Divisi <i class="fa-solid fa-sort" style="color: #9CA3AF; font-size: 0.7rem;"></i>
+                                        </th>
+                                        <th onclick="sortMasterTasks('assigned_to')" style="cursor: pointer;">
+                                            PIC / Penanggung Jawab <i class="fa-solid fa-sort" style="color: #9CA3AF; font-size: 0.7rem;"></i>
+                                        </th>
+                                        <th onclick="sortMasterTasks('priority')" style="cursor: pointer;">
+                                            Prioritas <i class="fa-solid fa-sort" style="color: #9CA3AF; font-size: 0.7rem;"></i>
+                                        </th>
+                                        <th onclick="sortMasterTasks('due_date')" style="cursor: pointer;">
+                                            Tenggat Waktu <i class="fa-solid fa-sort" style="color: #9CA3AF; font-size: 0.7rem;"></i>
+                                        </th>
+                                        <th>Progres</th>
+                                        <th onclick="sortMasterTasks('status')" style="cursor: pointer;">
+                                            Status <i class="fa-solid fa-sort" style="color: #9CA3AF; font-size: 0.7rem;"></i>
+                                        </th>
+                                        <th style="text-align: center;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="task-master-tbody">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 5: Arsip Tugas Selesai (Archive View) -->
+                <div id="task-subview-archive" class="task-subview" style="display: none;">
+                    <div class="section-panel">
+                        <div class="panel-header">
+                            <div class="panel-title">
+                                <i class="fa-solid fa-box-archive" style="color: var(--color-gold-deep);"></i> Penyimpanan Arsip Tugas Selesai
+                            </div>
+                            <div style="font-size: 0.78rem; color: var(--color-charcoal-muted);">
+                                Tugas yang diarsipkan disimpan rapi per divisi dan dapat dipulihkan kapan saja ke papan kerja.
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Judul Tugas</th>
+                                        <th>Divisi</th>
+                                        <th>PIC</th>
+                                        <th>Waktu Penyelesaian</th>
+                                        <th>Status Terakhir</th>
+                                        <th style="text-align: center;">Aksi Pemulihan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="archive-tasks-tbody">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUPPORT PANEL 1: Riwayat Pengelolaan Realtime (Activity Logs) -->
+                <div id="task-subview-history" class="task-subview" style="display: none;">
+                    <div class="section-panel">
+                        <div class="panel-header">
+                            <div class="panel-title">
+                                <i class="fa-solid fa-clock-rotate-left" style="color: var(--color-gold-deep);"></i> Log Riwayat Pengelolaan Tugas Real-Time (CDC)
+                            </div>
+                            <div style="font-size: 0.75rem; color: var(--color-success); font-weight: 700;">
+                                <i class="fa-solid fa-circle-dot"></i> Terhubung WebSocket Realtime
+                            </div>
+                        </div>
+                        <div class="activity-feed-list" id="activity-feed-container">
+                            <!-- Rendered dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUPPORT PANEL 2: Chat Koordinasi Multi-Arah DKM -->
+                <div id="task-subview-chat" class="task-subview" style="display: none;">
+                    <div class="section-panel" style="padding: 0; overflow: hidden;">
+                        <div style="padding: 1rem 1.25rem; background: var(--color-charcoal); color: #FFFFFF; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 0.65rem;">
+                                <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--color-gold-primary); color: var(--color-charcoal); display: flex; align-items: center; justify-content: center; font-weight: 800;">
+                                    <i class="fa-solid fa-comments"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.85rem; font-weight: 800;">Ruang Koordinasi Pengurus DKM Sophia</div>
+                                    <div style="font-size: 0.7rem; color: var(--color-gold-primary);">Saluran komunikasi multi-arah antar 10 peran DKM (Live 100% tanpa refresh)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-room-container" style="border: none; border-radius: 0;">
+                            <div class="chat-messages-stream" id="chat-messages-stream">
+                                <!-- Messages rendered dynamically -->
+                            </div>
+                            <form class="chat-composer-bar" onsubmit="handleSendChatMessage(event)">
+                                <input type="text" id="chat-composer-input" class="chat-input" placeholder="Ketik pesan koordinasi tugas atau instruksi DKM..." required>
+                                <button type="submit" class="btn-action-gold">
+                                    <i class="fa-solid fa-paper-plane"></i> Kirim
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Tab 4: Feedback & Complaints Panel -->
@@ -874,49 +1853,113 @@
         </main>
     </div>
 
-    <!-- Modal: Tambah Tugas Baru -->
+    <!-- Modal: Tambah / Edit Tugas DKM -->
     <div class="modal-overlay" id="task-modal">
-        <div class="modal-box">
+        <div class="modal-box" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
             <div class="modal-header">
-                <h3>Tambah Tugas DKM Baru</h3>
+                <h3 id="task-modal-title"><i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Tambah Tugas DKM Baru</h3>
                 <button class="btn-modal-close" onclick="closeTaskModal()">&times;</button>
             </div>
-            <form onsubmit="handleCreateTask(event)">
+            <form onsubmit="handleSaveTask(event)">
+                <input type="hidden" id="task-form-id" value="">
+                
                 <div class="form-group">
-                    <label class="form-label">Judul Tugas</label>
-                    <input type="text" id="task-title" class="form-input" placeholder="Misal: Pengecekan Filter Air Minum Musafir" required>
+                    <label class="form-label">Judul Tugas <span style="color: var(--color-danger);">*</span></label>
+                    <input type="text" id="task-title" class="form-input" placeholder="Misal: Persiapan 70+ Porsi Makan Dzuhur Gratis" required>
                 </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Divisi Penanggung Jawab</label>
+                        <select id="task-division" class="form-input" required>
+                            <option value="Divisi Media & Dakwah">Divisi Media & Dakwah</option>
+                            <option value="Divisi Logistik & Sarpras">Divisi Logistik & Sarpras</option>
+                            <option value="Divisi Pembinaan Santri Tahfidz">Divisi Pembinaan Santri Tahfidz</option>
+                            <option value="Divisi Pelayanan Musafir & Sosial">Divisi Pelayanan Musafir & Sosial</option>
+                            <option value="Divisi Ibadah & Acara">Divisi Ibadah & Acara</option>
+                            <option value="Divisi Keuangan & ZISWAF">Divisi Keuangan & ZISWAF</option>
+                            <option value="Divisi Keamanan">Divisi Keamanan</option>
+                            <option value="Divisi Kebersihan & Sanitasi">Divisi Kebersihan & Sanitasi</option>
+                            <option value="IT & Ekosistem Digital">IT & Ekosistem Digital</option>
+                            <option value="Umum">Umum / Pimpinan DKM</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Nama PIC / Penanggung Jawab <span style="color: var(--color-danger);">*</span></label>
+                        <input type="text" id="task-pic" class="form-input" placeholder="Misal: Ustadz Habib / Tim Dapur" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Tingkat Prioritas</label>
+                        <select id="task-priority" class="form-input">
+                            <option value="MEDIUM">Medium (Biasa)</option>
+                            <option value="HIGH">High (Penting)</option>
+                            <option value="CRITICAL">Critical (Mendesak)</option>
+                            <option value="LOW">Low (Rendah)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Status Pengerjaan</label>
+                        <select id="task-status" class="form-input">
+                            <option value="PENDING">Menunggu (Pending)</option>
+                            <option value="IN_PROGRESS">Dikerjakan (In Progress)</option>
+                            <option value="REVIEW">Review Pak DKM</option>
+                            <option value="COMPLETED">Selesai (Completed)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Tanggal Mulai</label>
+                        <input type="date" id="task-start-date" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tenggat Waktu Selesai</label>
+                        <input type="date" id="task-due-date" class="form-input">
+                    </div>
+                </div>
+
                 <div class="form-group">
-                    <label class="form-label">Divisi</label>
-                    <select id="task-division" class="form-input">
-                        <option value="Divisi Pelayanan Musafir & Sosial">Divisi Pelayanan Musafir & Sosial</option>
-                        <option value="Divisi Sarana Prasarana & Kebersihan">Divisi Sarana Prasarana & Kebersihan</option>
-                        <option value="Divisi Media & Dokumentasi">Divisi Media & Dokumentasi</option>
-                        <option value="Divisi Pembinaan Santri Tahfidz">Divisi Pembinaan Santri Tahfidz</option>
-                        <option value="Divisi Keuangan & ZISWAF">Divisi Keuangan & ZISWAF</option>
-                    </select>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                        <label class="form-label" style="margin-bottom: 0;">Progres Penyelesaian</label>
+                        <span id="task-progress-pct-display" style="font-size: 0.8rem; font-weight: 800; color: var(--color-gold-deep);">0%</span>
+                    </div>
+                    <input type="range" id="task-progress" min="0" max="100" value="0" style="width: 100%; accent-color: var(--color-gold-deep);" oninput="document.getElementById('task-progress-pct-display').textContent = this.value + '%'">
                 </div>
+
                 <div class="form-group">
-                    <label class="form-label">Penanggung Jawab (PIC)</label>
-                    <input type="text" id="task-pic" class="form-input" placeholder="Nama Pengurus DKM" required>
+                    <label class="form-label">Deskripsi & Rincian Instruksi</label>
+                    <textarea id="task-desc" class="form-input" rows="3" placeholder="Tuliskan catatan teknis, checklist kebutuhan, atau arahan dari Ketua DKM..."></textarea>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Prioritas</label>
-                    <select id="task-priority" class="form-input">
-                        <option value="MEDIUM">Medium (Biasa)</option>
-                        <option value="HIGH">High (Penting)</option>
-                        <option value="CRITICAL">Critical (Mendesak)</option>
-                        <option value="LOW">Low (Rendah)</option>
-                    </select>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeTaskModal()">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.25rem;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Tugas
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Tenggat Waktu</label>
-                    <input type="date" id="task-due" class="form-input">
-                </div>
-                <button type="submit" class="btn-auth-primary" style="margin-top: 1rem;">
-                    <i class="fa-solid fa-floppy-disk"></i> Simpan Tugas
-                </button>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal: Detail / Inspeksi Tugas -->
+    <div class="modal-overlay" id="task-detail-modal">
+        <div class="modal-box" style="max-width: 560px;">
+            <div class="modal-header">
+                <h3 id="detail-task-title-header"><i class="fa-solid fa-circle-info" style="color: var(--color-gold-deep);"></i> Rincian Tugas Pengurus</h3>
+                <button class="btn-modal-close" onclick="closeTaskDetailModal()">&times;</button>
+            </div>
+            <div id="task-detail-body">
+                <!-- Loaded dynamically -->
+            </div>
         </div>
     </div>
 
@@ -1022,38 +2065,1445 @@
             }
         }
 
-        // Load All Data from Supabase
+        // ==========================================================================
+        // STATE MANAGEMENT & TASK DATA ENGINE
+        // ==========================================================================
+        let allTasksList = [];
+        let taskActivityLogs = [];
+        let taskChatMessages = [];
+        let currentTaskView = 'kanban';
+        let ganttScale = 'day';
+        let calendarMode = 'month';
+        let calendarCurrentDate = new Date();
+        let selectedTaskIds = new Set();
+        let masterTableSort = { column: 'due_date', direction: 'asc' };
+        let draggedTaskId = null;
+        let realtimeChannels = {};
+
+        // Default Authentic Seed Data (Masjid Sophia Jatiwarna Operational Tasks)
+        const DEFAULT_SEED_TASKS = [
+            {
+                id: 'task-sophia-01',
+                title: 'Persiapan 70+ Porsi Sedekah Makan Siang Dzuhur',
+                description: 'Memastikan kecukupan bahan baku (beras, lauk, sayur) dan higienitas dapur untuk jamaah Dzuhur dan musafir.',
+                division: 'Divisi Logistik & Sarpras',
+                assigned_to: 'Ustadz Ridwan (Tim Dapur)',
+                assigned_role: 'PJ_LOGISTIK',
+                priority: 'CRITICAL',
+                status: 'IN_PROGRESS',
+                start_date: new Date().toISOString().split('T')[0],
+                due_date: new Date().toISOString().split('T')[0],
+                progress_pct: 75,
+                is_archived: false,
+                created_at: new Date(Date.now() - 3600000 * 4).toISOString()
+            },
+            {
+                id: 'task-sophia-02',
+                title: 'Pembersihan & Sterilisasi Area Wudhu & Kamar Mandi Musafir 24 Jam',
+                description: 'Pengecekan sabun, pengharum ruangan, dan sanitasi lantai toilet serta tempat wudhu pria & wanita.',
+                division: 'Divisi Kebersihan & Sanitasi',
+                assigned_to: 'Pak Marwan (Sanitasi)',
+                assigned_role: 'PJ_KEBERSIHAN',
+                priority: 'HIGH',
+                status: 'COMPLETED',
+                start_date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+                due_date: new Date().toISOString().split('T')[0],
+                progress_pct: 100,
+                is_archived: false,
+                created_at: new Date(Date.now() - 86400000).toISOString()
+            },
+            {
+                id: 'task-sophia-03',
+                title: 'Setoran Mutabaah Hafalan Santri Tahfidz Ba\'da Subuh',
+                description: 'Pencatatan setoran hafalan Juz 30 dan surat pilihan santri binaan Masjid Sophia beserta penilaian tajwid.',
+                division: 'Divisi Pembinaan Santri Tahfidz',
+                assigned_to: 'Ustadz Farhan',
+                assigned_role: 'PJ_SANTRI',
+                priority: 'HIGH',
+                status: 'COMPLETED',
+                start_date: new Date().toISOString().split('T')[0],
+                due_date: new Date().toISOString().split('T')[0],
+                progress_pct: 100,
+                is_archived: false,
+                created_at: new Date(Date.now() - 3600000 * 12).toISOString()
+            },
+            {
+                id: 'task-sophia-04',
+                title: 'Pemeriksaan Filter Air Minum RO & Dispenser Musafir',
+                description: 'Pengecekan TDS meter dan penggantian filter sedimen pada dispenser air minum gratis jamaah.',
+                division: 'Divisi Pelayanan Musafir & Sosial',
+                assigned_to: 'Mas Doni (Pelayanan)',
+                assigned_role: 'PJ_MUSAFIR',
+                priority: 'MEDIUM',
+                status: 'PENDING',
+                start_date: new Date().toISOString().split('T')[0],
+                due_date: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
+                progress_pct: 20,
+                is_archived: false,
+                created_at: new Date().toISOString()
+            },
+            {
+                id: 'task-sophia-05',
+                title: 'Penerbitan Artikel Warta "Keutamaan Memberi Makan Jamaah"',
+                description: 'Penyusunan naskah artikel dakwah, kurasi foto ImageKit WebP, dan pengajuan review ke Ketua DKM.',
+                division: 'Divisi Media & Dakwah',
+                assigned_to: 'Habib Maulana (Tim Media)',
+                assigned_role: 'PJ_MEDIA',
+                priority: 'HIGH',
+                status: 'REVIEW',
+                start_date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+                due_date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+                progress_pct: 90,
+                is_archived: false,
+                created_at: new Date(Date.now() - 86400000).toISOString()
+            },
+            {
+                id: 'task-sophia-06',
+                title: 'Kalibrasi Menit Ikhtiyat Jadwal Shalat Kemenag Bekasi',
+                description: 'Verifikasi hisab astronomis jadwal shalat Jatiwarna dan penyesuaian running text jam digital masjid.',
+                division: 'Divisi Ibadah & Acara',
+                assigned_to: 'Ustadz DKM (Imam Rawatib)',
+                assigned_role: 'PJ_IBADAH',
+                priority: 'MEDIUM',
+                status: 'IN_PROGRESS',
+                start_date: new Date().toISOString().split('T')[0],
+                due_date: new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0],
+                progress_pct: 50,
+                is_archived: false,
+                created_at: new Date().toISOString()
+            },
+            {
+                id: 'task-sophia-07',
+                title: 'Rekonsiliasi Kas Masuk Donasi QRIS & Rekening BSI',
+                description: 'Pencocokan mutasi bank harian dengan entri data infaq portal donasi masjid.',
+                division: 'Divisi Keuangan & ZISWAF',
+                assigned_to: 'Bendahara DKM',
+                assigned_role: 'PJ_KEUANGAN',
+                priority: 'HIGH',
+                status: 'IN_PROGRESS',
+                start_date: new Date().toISOString().split('T')[0],
+                due_date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+                progress_pct: 60,
+                is_archived: false,
+                created_at: new Date().toISOString()
+            },
+            {
+                id: 'task-sophia-08',
+                title: 'Piket Ronda Malam & Pengecekan CCTV Area Parkiran',
+                description: 'Patroli berkala area parkir kendaraan musafir samping UMAR Travel dan gerbang masuk Hankam.',
+                division: 'Divisi Keamanan',
+                assigned_to: 'Pak Agus (Keamanan)',
+                assigned_role: 'PJ_KEAMANAN',
+                priority: 'MEDIUM',
+                status: 'PENDING',
+                start_date: new Date().toISOString().split('T')[0],
+                due_date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+                progress_pct: 0,
+                is_archived: false,
+                created_at: new Date().toISOString()
+            },
+            {
+                id: 'task-sophia-09',
+                title: 'Pemantauan Arsitektur 7 Pilar Cloud & Keep-Alive Cron',
+                description: 'Audit utilisasi kuota Vercel, Supabase DB, ImageKit, dan Resend API.',
+                division: 'IT & Ekosistem Digital',
+                assigned_to: 'Super Administrator',
+                assigned_role: 'SUPER_ADMIN',
+                priority: 'LOW',
+                status: 'COMPLETED',
+                start_date: new Date(Date.now() - 86400000 * 3).toISOString().split('T')[0],
+                due_date: new Date().toISOString().split('T')[0],
+                progress_pct: 100,
+                is_archived: false,
+                created_at: new Date(Date.now() - 86400000 * 3).toISOString()
+            }
+        ];
+
+        // Seed Activity Logs
+        const DEFAULT_SEED_LOGS = [
+            {
+                id: 'log-01',
+                task_title: 'Persiapan 70+ Porsi Sedekah Makan Siang Dzuhur',
+                user_name: 'Ustadz Ridwan',
+                user_role: 'PJ_LOGISTIK',
+                action_type: 'STATUS_CHANGED',
+                details: 'Memindahkan status dari "Menunggu" ke "Dikerjakan" (Progres 75%).',
+                created_at: new Date(Date.now() - 3600000 * 2).toISOString()
+            },
+            {
+                id: 'log-02',
+                task_title: 'Penerbitan Artikel Warta "Keutamaan Memberi Makan Jamaah"',
+                user_name: 'Habib Maulana',
+                user_role: 'PJ_MEDIA',
+                action_type: 'STATUS_CHANGED',
+                details: 'Mengajukan tugas ke status "Review Pak DKM".',
+                created_at: new Date(Date.now() - 3600000 * 3).toISOString()
+            },
+            {
+                id: 'log-03',
+                task_title: 'Pembersihan & Sterilisasi Area Wudhu & Kamar Mandi Musafir 24 Jam',
+                user_name: 'Pak Marwan',
+                user_role: 'PJ_KEBERSIHAN',
+                action_type: 'STATUS_CHANGED',
+                details: 'Menyelesaikan tugas sanitasi (Status: Selesai 100%).',
+                created_at: new Date(Date.now() - 3600000 * 5).toISOString()
+            }
+        ];
+
+        // Seed Chat Messages
+        const DEFAULT_SEED_CHATS = [
+            {
+                id: 'chat-01',
+                sender_name: 'Ketua DKM Sophia',
+                sender_role: 'KETUA_DKM',
+                sender_division: 'Pimpinan DKM',
+                message: 'Assalamu\'alaikum warahmatullah. Mohon tim dapur pastikan porsi makan siang hari ini siap tepat pukul 11.45 WIB untuk jamaah Dzuhur dan musafir.',
+                created_at: new Date(Date.now() - 3600000 * 3).toISOString()
+            },
+            {
+                id: 'chat-02',
+                sender_name: 'Ustadz Ridwan',
+                sender_role: 'PJ_LOGISTIK',
+                sender_division: 'Logistik & Sarpras',
+                message: 'Wa\'alaikumussalam Pak DKM. Siap, 75 porsi menu ayam bakar dan sayur segar sudah dalam proses pemorsian higienis di dapur.',
+                created_at: new Date(Date.now() - 3600000 * 2).toISOString()
+            },
+            {
+                id: 'chat-03',
+                sender_name: 'Habib Maulana',
+                sender_role: 'PJ_MEDIA',
+                sender_division: 'Media & Dakwah',
+                message: 'Draf warta dan foto dokumentasi kegiatan sedekah makan sudah kami ajukan ke antrian Review Pak DKM.',
+                created_at: new Date(Date.now() - 3600000 * 1).toISOString()
+            }
+        ];
+
+        // ==========================================================================
+        // DATA LOADER & REALTIME SETUP
+        // ==========================================================================
         async function loadAllAdminData() {
-            if (!sbClient) return;
-
-            // 1. Fetch Donations
-            const { data: donations } = await sbClient.from('donations').select('*').order('created_at', { ascending: false });
-            if (donations) {
-                renderDonations(donations);
+            if (!sbClient) {
+                // Fallback Mock Data
+                allTasksList = [...DEFAULT_SEED_TASKS];
+                taskActivityLogs = [...DEFAULT_SEED_LOGS];
+                taskChatMessages = [...DEFAULT_SEED_CHATS];
+                renderAllTaskViews();
+                return;
             }
 
-            // 2. Fetch Tasks
-            const { data: tasks } = await sbClient.from('team_tasks').select('*').order('created_at', { ascending: false });
-            if (tasks) {
-                renderTasks(tasks);
-            }
+            try {
+                // 1. Fetch Donations
+                const { data: donations } = await sbClient.from('donations').select('*').order('created_at', { ascending: false });
+                if (donations) renderDonations(donations);
 
-            // 3. Fetch Feedback
-            const { data: feedback } = await sbClient.from('feedback_complaints').select('*').order('created_at', { ascending: false });
-            if (feedback) {
-                renderFeedback(feedback);
-            }
+                // 2. Fetch Tasks
+                const { data: tasks, error: taskErr } = await sbClient.from('team_tasks').select('*').order('created_at', { ascending: false });
+                if (!taskErr && tasks && tasks.length > 0) {
+                    allTasksList = tasks.map(t => ({
+                        ...t,
+                        is_archived: t.is_archived || false,
+                        progress_pct: t.progress_pct || (t.status === 'COMPLETED' ? 100 : (t.status === 'IN_PROGRESS' ? 50 : 0)),
+                        start_date: t.start_date || (t.created_at ? t.created_at.split('T')[0] : new Date().toISOString().split('T')[0])
+                    }));
+                } else {
+                    allTasksList = [...DEFAULT_SEED_TASKS];
+                }
 
-            // 4. Fetch Articles
-            const { data: articles } = await sbClient.from('artikel_berita').select('*').order('created_at', { ascending: false });
-            if (articles) {
-                renderArticles(articles);
-            }
+                // 3. Fetch Task Activity Logs
+                const { data: logs } = await sbClient.from('task_activity_logs').select('*').order('created_at', { ascending: false }).limit(50);
+                if (logs && logs.length > 0) {
+                    taskActivityLogs = logs;
+                } else {
+                    taskActivityLogs = [...DEFAULT_SEED_LOGS];
+                }
 
-            // 5. Fetch Health
-            fetchSystemHealth();
+                // 4. Fetch Chat Messages
+                const { data: chats } = await sbClient.from('task_chat_messages').select('*').order('created_at', { ascending: true }).limit(100);
+                if (chats && chats.length > 0) {
+                    taskChatMessages = chats;
+                } else {
+                    taskChatMessages = [...DEFAULT_SEED_CHATS];
+                }
+
+                // 5. Fetch Feedback
+                const { data: feedback } = await sbClient.from('feedback_complaints').select('*').order('created_at', { ascending: false });
+                if (feedback) renderFeedback(feedback);
+
+                // 6. Fetch Articles
+                const { data: articles } = await sbClient.from('artikel_berita').select('*').order('created_at', { ascending: false });
+                if (articles) renderArticles(articles);
+
+                // 7. System Health
+                fetchSystemHealth();
+
+                // Setup Realtime Subscriptions (Once)
+                setupRealtimeSubscriptions();
+
+                // Render Task Views
+                renderAllTaskViews();
+
+            } catch (err) {
+                console.warn("Load data fallback:", err);
+                if (allTasksList.length === 0) allTasksList = [...DEFAULT_SEED_TASKS];
+                if (taskActivityLogs.length === 0) taskActivityLogs = [...DEFAULT_SEED_LOGS];
+                if (taskChatMessages.length === 0) taskChatMessages = [...DEFAULT_SEED_CHATS];
+                renderAllTaskViews();
+            }
         }
 
+        function setupRealtimeSubscriptions() {
+            if (!sbClient || realtimeChannels.tasks) return;
+
+            try {
+                // Channel for team_tasks
+                realtimeChannels.tasks = sbClient.channel('realtime_tasks_channel')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'team_tasks' }, payload => {
+                        handleRealtimeTaskChange(payload);
+                    })
+                    .subscribe();
+
+                // Channel for task_activity_logs
+                realtimeChannels.logs = sbClient.channel('realtime_logs_channel')
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'task_activity_logs' }, payload => {
+                        if (payload.new) {
+                            taskActivityLogs.unshift(payload.new);
+                            renderTaskHistory();
+                        }
+                    })
+                    .subscribe();
+
+                // Channel for task_chat_messages
+                realtimeChannels.chat = sbClient.channel('realtime_chat_channel')
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'task_chat_messages' }, payload => {
+                        if (payload.new) {
+                            taskChatMessages.push(payload.new);
+                            renderTaskChat();
+                        }
+                    })
+                    .subscribe();
+
+            } catch (e) {
+                console.warn("Realtime sub warning:", e);
+            }
+        }
+
+        function handleRealtimeTaskChange(payload) {
+            const { eventType, new: newRec, old: oldRec } = payload;
+            if (eventType === 'INSERT' && newRec) {
+                const exists = allTasksList.find(t => t.id === newRec.id);
+                if (!exists) allTasksList.unshift(newRec);
+            } else if (eventType === 'UPDATE' && newRec) {
+                const idx = allTasksList.findIndex(t => t.id === newRec.id);
+                if (idx !== -1) allTasksList[idx] = newRec;
+                else allTasksList.unshift(newRec);
+            } else if (eventType === 'DELETE' && oldRec) {
+                allTasksList = allTasksList.filter(t => t.id !== oldRec.id);
+            }
+            renderAllTaskViews();
+        }
+
+        // ==========================================================================
+        // VIEW SWITCHER & FILTERING
+        // ==========================================================================
+        function switchTaskView(viewName) {
+            currentTaskView = viewName;
+            
+            // Update Sub-nav buttons
+            document.querySelectorAll('.task-view-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-view-${viewName}`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            // Hide all subviews
+            document.querySelectorAll('.task-subview').forEach(v => v.style.display = 'none');
+            const targetView = document.getElementById(`task-subview-${viewName}`);
+            if (targetView) targetView.style.display = 'block';
+
+            renderActiveTaskView();
+        }
+
+        function handleTaskFilterChange() {
+            renderActiveTaskView();
+        }
+
+        function getFilteredTasks(includeArchived = false) {
+            const query = (document.getElementById('task-search-input')?.value || '').toLowerCase().trim();
+            const divFilter = document.getElementById('task-filter-division')?.value || 'ALL';
+            const prioFilter = document.getElementById('task-filter-priority')?.value || 'ALL';
+            const statusFilter = document.getElementById('task-filter-status')?.value || 'ALL';
+
+            return allTasksList.filter(task => {
+                const isArchived = Boolean(task.is_archived);
+                if (includeArchived) {
+                    if (!isArchived) return false;
+                } else {
+                    if (isArchived) return false;
+                }
+
+                if (divFilter !== 'ALL' && task.division !== divFilter) return false;
+                if (prioFilter !== 'ALL' && task.priority !== prioFilter) return false;
+                if (statusFilter !== 'ALL' && task.status !== statusFilter) return false;
+
+                if (query) {
+                    const matchTitle = (task.title || '').toLowerCase().includes(query);
+                    const matchPic = (task.assigned_to || '').toLowerCase().includes(query);
+                    const matchDesc = (task.description || '').toLowerCase().includes(query);
+                    const matchDiv = (task.division || '').toLowerCase().includes(query);
+                    if (!matchTitle && !matchPic && !matchDesc && !matchDiv) return false;
+                }
+
+                return true;
+            });
+        }
+
+        function renderAllTaskViews() {
+            // Update KPI Tasks Count
+            const activeTasks = allTasksList.filter(t => !t.is_archived);
+            const completedCount = activeTasks.filter(t => t.status === 'COMPLETED').length;
+            const rate = activeTasks.length > 0 ? Math.round((completedCount / activeTasks.length) * 100) : 100;
+            const kpiElem = document.getElementById('kpi-task-rate');
+            if (kpiElem) kpiElem.textContent = `${rate}%`;
+
+            // Update Archive Badge Count
+            const archivedCount = allTasksList.filter(t => t.is_archived).length;
+            const badgeArch = document.getElementById('badge-archive-count');
+            if (badgeArch) badgeArch.textContent = archivedCount;
+
+            renderActiveTaskView();
+            renderTaskHistory();
+            renderTaskChat();
+        }
+
+        function renderActiveTaskView() {
+            if (currentTaskView === 'kanban') renderKanban();
+            else if (currentTaskView === 'gantt') renderGantt();
+            else if (currentTaskView === 'calendar') renderCalendar();
+            else if (currentTaskView === 'table') renderMasterTable();
+            else if (currentTaskView === 'archive') renderArchive();
+            else if (currentTaskView === 'history') renderTaskHistory();
+            else if (currentTaskView === 'chat') renderTaskChat();
+        }
+
+        // Division Color Class Helper
+        function getDivisionBadgeClass(division) {
+            const map = {
+                'Divisi Media & Dakwah': 'media',
+                'Divisi Logistik & Sarpras': 'logistik',
+                'Divisi Pembinaan Santri Tahfidz': 'santri',
+                'Divisi Pelayanan Musafir & Sosial': 'musafir',
+                'Divisi Ibadah & Acara': 'ibadah',
+                'Divisi Keuangan & ZISWAF': 'keuangan',
+                'Divisi Keamanan': 'keamanan',
+                'Divisi Kebersihan & Sanitasi': 'kebersihan',
+                'IT & Ekosistem Digital': 'media',
+                'Umum': 'umum'
+            };
+            return map[division] || 'umum';
+        }
+
+        // ==========================================================================
+        // 1. KANBAN BOARD RENDERER (DRAG & DROP + TOUCH)
+        // ==========================================================================
+        function renderKanban() {
+            const tasks = getFilteredTasks(false);
+            const cols = {
+                'PENDING': document.getElementById('kanban-cards-pending'),
+                'IN_PROGRESS': document.getElementById('kanban-cards-in_progress'),
+                'REVIEW': document.getElementById('kanban-cards-review'),
+                'COMPLETED': document.getElementById('kanban-cards-completed')
+            };
+
+            const counts = { 'PENDING': 0, 'IN_PROGRESS': 0, 'REVIEW': 0, 'COMPLETED': 0 };
+
+            // Clear lists
+            Object.values(cols).forEach(col => { if (col) col.innerHTML = ''; });
+
+            tasks.forEach(task => {
+                const status = cols[task.status] ? task.status : 'PENDING';
+                counts[status]++;
+                const card = createKanbanCardElement(task);
+                if (cols[status]) cols[status].appendChild(card);
+            });
+
+            // Update Header counts
+            document.getElementById('count-kanban-pending').textContent = counts['PENDING'];
+            document.getElementById('count-kanban-in_progress').textContent = counts['IN_PROGRESS'];
+            document.getElementById('count-kanban-review').textContent = counts['REVIEW'];
+            document.getElementById('count-kanban-completed').textContent = counts['COMPLETED'];
+
+            // Empty state placeholders
+            Object.entries(cols).forEach(([st, col]) => {
+                if (col && counts[st] === 0) {
+                    col.innerHTML = `
+                        <div style="text-align: center; padding: 2rem 1rem; color: var(--color-charcoal-muted); font-size: 0.75rem; border: 1px dashed var(--color-border); border-radius: var(--radius-sm);">
+                            <i class="fa-solid fa-inbox" style="font-size: 1.25rem; margin-bottom: 0.35rem; color: #D1D5DB;"></i>
+                            <div>Tidak ada tugas di kolom ini</div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function createKanbanCardElement(task) {
+            const card = document.createElement('div');
+            card.className = 'kanban-card';
+            card.draggable = true;
+            card.id = `card-${task.id}`;
+
+            const divClass = getDivisionBadgeClass(task.division);
+            const prioClass = (task.priority || 'MEDIUM').toLowerCase();
+            const pct = task.progress_pct || (task.status === 'COMPLETED' ? 100 : 0);
+            const isOverdue = task.due_date && new Date(task.due_date) < new Date().setHours(0,0,0,0) && task.status !== 'COMPLETED';
+
+            card.innerHTML = `
+                <div class="kanban-card-top">
+                    <span class="div-badge ${divClass}"><i class="fa-solid fa-tag"></i> ${task.division.replace('Divisi ', '')}</span>
+                    <span class="prio-badge ${prioClass}"><i class="fa-solid fa-fire"></i> ${task.priority}</span>
+                </div>
+                <div class="kanban-card-title" onclick="openTaskDetailModal('${task.id}')" style="cursor: pointer;">
+                    ${task.title}
+                </div>
+                ${task.description ? `<div class="kanban-card-desc">${task.description}</div>` : ''}
+                
+                <div class="task-progress-bar">
+                    <div class="task-progress-fill ${pct === 100 ? 'done' : ''}" style="width: ${pct}%;"></div>
+                </div>
+
+                <div class="kanban-card-footer">
+                    <div class="kanban-card-pic">
+                        <i class="fa-solid fa-user-circle" style="color: var(--color-gold-deep);"></i> ${task.assigned_to || 'Pengurus'}
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        ${task.due_date ? `
+                            <span style="font-size: 0.7rem; font-weight: 700; color: ${isOverdue ? 'var(--color-danger)' : 'var(--color-charcoal-muted)'};">
+                                <i class="fa-solid fa-calendar${isOverdue ? '-xmark' : ''}"></i> ${new Date(task.due_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                            </span>
+                        ` : ''}
+                        <div class="card-shift-controls">
+                            <button class="btn-shift" title="Geser ke Kiri" onclick="event.stopPropagation(); shiftTaskStatus('${task.id}', -1)"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="btn-shift" title="Edit Tugas" onclick="event.stopPropagation(); openTaskModal(getTaskById('${task.id}'))"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-shift" title="Geser ke Kanan" onclick="event.stopPropagation(); shiftTaskStatus('${task.id}', 1)"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Drag Events
+            card.addEventListener('dragstart', (e) => handleDragStart(e, task.id));
+            card.addEventListener('dragend', handleDragEnd);
+
+            return card;
+        }
+
+        function handleDragStart(e, taskId) {
+            draggedTaskId = taskId;
+            e.dataTransfer.setData('text/plain', taskId);
+            e.dataTransfer.effectAllowed = 'move';
+            setTimeout(() => {
+                const el = document.getElementById(`card-${taskId}`);
+                if (el) el.classList.add('dragging');
+            }, 0);
+        }
+
+        function handleDragEnd(e) {
+            if (draggedTaskId) {
+                const el = document.getElementById(`card-${draggedTaskId}`);
+                if (el) el.classList.remove('dragging');
+            }
+            draggedTaskId = null;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleDrop(e, targetStatus) {
+            e.preventDefault();
+            const taskId = e.dataTransfer.getData('text/plain') || draggedTaskId;
+            if (!taskId) return;
+
+            updateTaskStatus(taskId, targetStatus);
+        }
+
+        function shiftTaskStatus(taskId, direction) {
+            const statusFlow = ['PENDING', 'IN_PROGRESS', 'REVIEW', 'COMPLETED'];
+            const task = getTaskById(taskId);
+            if (!task) return;
+
+            const currentIndex = statusFlow.indexOf(task.status);
+            const newIndex = currentIndex + direction;
+            if (newIndex >= 0 && newIndex < statusFlow.length) {
+                updateTaskStatus(taskId, statusFlow[newIndex]);
+            }
+        }
+
+        async function updateTaskStatus(taskId, newStatus) {
+            const task = getTaskById(taskId);
+            if (!task || task.status === newStatus) return;
+
+            const oldStatus = task.status;
+            task.status = newStatus;
+            if (newStatus === 'COMPLETED') task.progress_pct = 100;
+            else if (newStatus === 'PENDING' && task.progress_pct === 100) task.progress_pct = 0;
+
+            const statusLabels = {
+                'PENDING': 'Menunggu',
+                'IN_PROGRESS': 'Dikerjakan',
+                'REVIEW': 'Review Pak DKM',
+                'COMPLETED': 'Selesai'
+            };
+
+            logTaskActivity('STATUS_CHANGED', task.title, `Mengubah status dari "${statusLabels[oldStatus] || oldStatus}" ke "${statusLabels[newStatus] || newStatus}".`);
+
+            if (sbClient) {
+                await sbClient.from('team_tasks').update({
+                    status: newStatus,
+                    progress_pct: task.progress_pct,
+                    updated_at: new Date().toISOString()
+                }).eq('id', taskId);
+            }
+
+            renderAllTaskViews();
+        }
+
+        function getTaskById(id) {
+            return allTasksList.find(t => String(t.id) === String(id));
+        }
+
+        // ==========================================================================
+        // 2. GANTT TIMELINE RENDERER
+        // ==========================================================================
+        function setGanttScale(scale) {
+            ganttScale = scale;
+            document.querySelectorAll('.btn-gantt-scale').forEach(b => b.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-gantt-${scale}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            renderGantt();
+        }
+
+        function renderGantt() {
+            const container = document.getElementById('gantt-chart-container');
+            const tasks = getFilteredTasks(false);
+
+            if (tasks.length === 0) {
+                container.innerHTML = `<div style="text-align: center; padding: 2.5rem; color: var(--color-charcoal-muted);">Tidak ada tugas yang sesuai dengan filter.</div>`;
+                return;
+            }
+
+            // Calculate Date Windows
+            const today = new Date();
+            let startDate = new Date(today);
+            let endDate = new Date(today);
+
+            if (ganttScale === 'day') {
+                startDate.setDate(today.getDate() - 3);
+                endDate.setDate(today.getDate() + 10);
+            } else if (ganttScale === 'week') {
+                startDate.setDate(today.getDate() - 14);
+                endDate.setDate(today.getDate() + 28);
+            } else {
+                startDate.setMonth(today.getMonth() - 1);
+                endDate.setMonth(today.getMonth() + 2);
+            }
+
+            const totalDurationMs = endDate.getTime() - startDate.getTime();
+
+            let tableHtml = `
+                <table class="gantt-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 220px;">Tugas & Penanggung Jawab</th>
+                            <th style="width: 140px;">Divisi</th>
+                            <th style="width: 100px;">Durasi</th>
+                            <th>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--color-charcoal-muted);">
+                                    <span>${startDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span>
+                                    <span style="font-weight: 800; color: var(--color-gold-deep);">Hari Ini (${today.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })})</span>
+                                    <span>${endDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            tasks.forEach(t => {
+                const tStart = t.start_date ? new Date(t.start_date) : new Date(t.created_at || today);
+                const tDue = t.due_date ? new Date(t.due_date) : new Date(tStart.getTime() + 86400000);
+
+                let leftPct = ((tStart.getTime() - startDate.getTime()) / totalDurationMs) * 100;
+                let widthPct = ((tDue.getTime() - tStart.getTime()) / totalDurationMs) * 100;
+
+                leftPct = Math.max(0, Math.min(95, leftPct));
+                widthPct = Math.max(6, Math.min(100 - leftPct, widthPct));
+
+                const divClass = getDivisionBadgeClass(t.division);
+                const pct = t.progress_pct || (t.status === 'COMPLETED' ? 100 : 0);
+
+                tableHtml += `
+                    <tr>
+                        <td>
+                            <div style="font-weight: 700; font-size: 0.8rem; color: var(--color-charcoal); cursor: pointer;" onclick="openTaskDetailModal('${t.id}')">${t.title}</div>
+                            <div style="font-size: 0.72rem; color: var(--color-charcoal-muted);"><i class="fa-solid fa-user"></i> ${t.assigned_to || 'Pengurus'}</div>
+                        </td>
+                        <td><span class="div-badge ${divClass}">${t.division.replace('Divisi ', '')}</span></td>
+                        <td style="font-size: 0.72rem; font-weight: 600;">
+                            ${tStart.toLocaleDateString('id-ID', { day: 'numeric', month: 'numeric' })} - ${tDue.toLocaleDateString('id-ID', { day: 'numeric', month: 'numeric' })}
+                        </td>
+                        <td class="gantt-bar-cell">
+                            <div class="gantt-track">
+                                <div class="gantt-bar" style="left: ${leftPct}%; width: ${widthPct}%;" onclick="openTaskDetailModal('${t.id}')" title="${t.title} (${pct}%)">
+                                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${pct}% • ${t.title}</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += `</tbody></table>`;
+            container.innerHTML = tableHtml;
+        }
+
+        // ==========================================================================
+        // 3. CALENDAR VIEW RENDERER (MONTH GRID & AGENDA)
+        // ==========================================================================
+        function setCalendarMode(mode) {
+            calendarMode = mode;
+            document.getElementById('btn-cal-month').classList.toggle('active', mode === 'month');
+            document.getElementById('btn-cal-agenda').classList.toggle('active', mode === 'agenda');
+            document.getElementById('calendar-month-view').style.display = mode === 'month' ? 'block' : 'none';
+            document.getElementById('calendar-agenda-view').style.display = mode === 'agenda' ? 'block' : 'none';
+            renderCalendar();
+        }
+
+        function prevCalendarMonth() {
+            calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextCalendarMonth() {
+            calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        function todayCalendarMonth() {
+            calendarCurrentDate = new Date();
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const year = calendarCurrentDate.getFullYear();
+            const month = calendarCurrentDate.getMonth();
+
+            document.getElementById('calendar-title-display').textContent = `${monthNames[month]} ${year}`;
+
+            if (calendarMode === 'month') {
+                renderMonthGrid(year, month);
+            } else {
+                renderAgendaList();
+            }
+        }
+
+        function renderMonthGrid(year, month) {
+            const grid = document.getElementById('calendar-grid-container');
+            const dayHeaders = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Ahad'];
+
+            let html = dayHeaders.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+
+            // Shift index so Monday is 0 (Sunday is 6)
+            let startDayIdx = (firstDay.getDay() + 6) % 7;
+            const daysInMonth = lastDay.getDate();
+
+            // Previous month padding
+            const prevMonthLastDay = new Date(year, month, 0).getDate();
+            for (let i = startDayIdx - 1; i >= 0; i--) {
+                const d = prevMonthLastDay - i;
+                html += `<div class="calendar-day-cell other-month"><div class="calendar-day-number">${d}</div></div>`;
+            }
+
+            const tasks = getFilteredTasks(false);
+            const today = new Date();
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const cellDate = new Date(year, month, d);
+                const cellDateStr = cellDate.toISOString().split('T')[0];
+                const isToday = cellDate.toDateString() === today.toDateString();
+
+                // Find tasks matching this date
+                const dayTasks = tasks.filter(t => {
+                    const due = t.due_date;
+                    const start = t.start_date || t.created_at?.split('T')[0];
+                    if (due === cellDateStr) return true;
+                    if (start && due && cellDateStr >= start && cellDateStr <= due) return true;
+                    return false;
+                });
+
+                html += `
+                    <div class="calendar-day-cell ${isToday ? 'today' : ''}" onclick="openTaskModal(null, '${cellDateStr}')" title="Klik untuk tambah tugas pada tanggal ini">
+                        <div class="calendar-day-number">
+                            <span>${d}</span>
+                            ${isToday ? '<span style="font-size: 0.65rem; color: var(--color-gold-deep); font-weight: 800;">Hari Ini</span>' : ''}
+                        </div>
+                        ${dayTasks.slice(0, 3).map(t => {
+                            const divClass = getDivisionBadgeClass(t.division);
+                            return `
+                                <div class="calendar-task-pill div-badge ${divClass}" onclick="event.stopPropagation(); openTaskDetailModal('${t.id}')">
+                                    <i class="fa-solid fa-circle-dot" style="font-size: 0.5rem;"></i> ${t.title}
+                                </div>
+                            `;
+                        }).join('')}
+                        ${dayTasks.length > 3 ? `<div style="font-size: 0.65rem; color: var(--color-charcoal-muted); font-weight: 700;">+${dayTasks.length - 3} lainnya</div>` : ''}
+                    </div>
+                `;
+            }
+
+            grid.innerHTML = html;
+        }
+
+        function renderAgendaList() {
+            const container = document.getElementById('calendar-agenda-container');
+            const tasks = getFilteredTasks(false);
+
+            if (tasks.length === 0) {
+                container.innerHTML = `<div style="text-align: center; padding: 2.5rem; color: var(--color-charcoal-muted);">Tidak ada agenda tugas terdata.</div>`;
+                return;
+            }
+
+            // Sort chronological
+            const sorted = [...tasks].sort((a,b) => new Date(a.due_date || a.created_at) - new Date(b.due_date || b.created_at));
+
+            const groups = {
+                'Hari Ini': [],
+                'Besok & Pekan Ini': [],
+                'Mendatang': []
+            };
+
+            const now = new Date();
+            const todayStr = now.toISOString().split('T')[0];
+            const nextWeekMs = now.getTime() + 86400000 * 7;
+
+            sorted.forEach(t => {
+                const d = t.due_date;
+                if (!d || d === todayStr) {
+                    groups['Hari Ini'].push(t);
+                } else if (new Date(d).getTime() <= nextWeekMs) {
+                    groups['Besok & Pekan Ini'].push(t);
+                } else {
+                    groups['Mendatang'].push(t);
+                }
+            });
+
+            let html = '';
+            Object.entries(groups).forEach(([title, list]) => {
+                if (list.length === 0) return;
+
+                html += `
+                    <div class="agenda-group">
+                        <div class="agenda-group-title">
+                            <i class="fa-solid fa-calendar-check" style="color: var(--color-gold-deep);"></i> ${title} (${list.length} Tugas)
+                        </div>
+                        ${list.map(t => {
+                            const divClass = getDivisionBadgeClass(t.division);
+                            return `
+                                <div class="agenda-task-item" onclick="openTaskDetailModal('${t.id}')" style="cursor: pointer;">
+                                    <div style="flex: 1; min-width: 200px;">
+                                        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.25rem;">
+                                            <span class="div-badge ${divClass}">${t.division.replace('Divisi ', '')}</span>
+                                            <span class="status-badge ${t.status === 'COMPLETED' ? 'completed' : 'pending'}">${t.status}</span>
+                                        </div>
+                                        <div style="font-weight: 800; font-size: 0.85rem; color: var(--color-charcoal);">${t.title}</div>
+                                    </div>
+                                    <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); text-align: right;">
+                                        <div><i class="fa-solid fa-user"></i> ${t.assigned_to || '-'}</div>
+                                        <div><i class="fa-solid fa-clock"></i> Tenggat: ${t.due_date ? new Date(t.due_date).toLocaleDateString('id-ID') : 'Fleksibel'}</div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ==========================================================================
+        // 4. MASTER ALL TASKS TABLE RENDERER & BULK ACTIONS
+        // ==========================================================================
+        function sortMasterTasks(column) {
+            if (masterTableSort.column === column) {
+                masterTableSort.direction = masterTableSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                masterTableSort.column = column;
+                masterTableSort.direction = 'asc';
+            }
+            renderMasterTable();
+        }
+
+        function renderMasterTable() {
+            const tbody = document.getElementById('task-master-tbody');
+            let tasks = getFilteredTasks(false);
+
+            // Sort
+            tasks.sort((a, b) => {
+                let vA = a[masterTableSort.column] || '';
+                let vB = b[masterTableSort.column] || '';
+                if (typeof vA === 'string') vA = vA.toLowerCase();
+                if (typeof vB === 'string') vB = vB.toLowerCase();
+
+                if (vA < vB) return masterTableSort.direction === 'asc' ? -1 : 1;
+                if (vA > vB) return masterTableSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            if (tasks.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">Tidak ada tugas ditemukan.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = tasks.map(t => {
+                const isSelected = selectedTaskIds.has(t.id);
+                const divClass = getDivisionBadgeClass(t.division);
+                const prioClass = (t.priority || 'MEDIUM').toLowerCase();
+                const pct = t.progress_pct || (t.status === 'COMPLETED' ? 100 : 0);
+
+                return `
+                    <tr style="${isSelected ? 'background: #FEF9E7;' : ''}">
+                        <td style="text-align: center;">
+                            <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleSelectTask('${t.id}', this.checked)">
+                        </td>
+                        <td>
+                            <strong style="cursor: pointer;" onclick="openTaskDetailModal('${t.id}')">${t.title}</strong>
+                            ${t.description ? `<div style="font-size: 0.72rem; color: var(--color-charcoal-muted);">${t.description.substring(0, 50)}...</div>` : ''}
+                        </td>
+                        <td><span class="div-badge ${divClass}">${t.division.replace('Divisi ', '')}</span></td>
+                        <td>${t.assigned_to || '-'}</td>
+                        <td><span class="prio-badge ${prioClass}">${t.priority}</span></td>
+                        <td>${t.due_date ? new Date(t.due_date).toLocaleDateString('id-ID') : '-'}</td>
+                        <td style="min-width: 90px;">
+                            <div style="font-size: 0.7rem; font-weight: 700; margin-bottom: 0.15rem;">${pct}%</div>
+                            <div class="task-progress-bar" style="margin: 0;">
+                                <div class="task-progress-fill ${pct === 100 ? 'done' : ''}" style="width: ${pct}%;"></div>
+                            </div>
+                        </td>
+                        <td><span class="status-badge ${t.status === 'COMPLETED' ? 'completed' : 'pending'}">${t.status}</span></td>
+                        <td style="text-align: center;">
+                            <div style="display: inline-flex; gap: 0.35rem;">
+                                <button class="btn-shift" title="Edit" onclick="openTaskModal(getTaskById('${t.id}'))"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn-shift" title="Arsipkan" onclick="archiveTask('${t.id}')"><i class="fa-solid fa-box-archive"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            updateBulkToolbarState();
+        }
+
+        function toggleSelectTask(id, isChecked) {
+            if (isChecked) selectedTaskIds.add(id);
+            else selectedTaskIds.delete(id);
+            updateBulkToolbarState();
+        }
+
+        function toggleSelectAllTasks(checkbox) {
+            const tasks = getFilteredTasks(false);
+            if (checkbox.checked) {
+                tasks.forEach(t => selectedTaskIds.add(t.id));
+            } else {
+                selectedTaskIds.clear();
+            }
+            renderMasterTable();
+        }
+
+        function deselectAllTasks() {
+            selectedTaskIds.clear();
+            const chkAll = document.getElementById('check-all-tasks');
+            if (chkAll) chkAll.checked = false;
+            renderMasterTable();
+        }
+
+        function updateBulkToolbarState() {
+            const bar = document.getElementById('table-bulk-toolbar');
+            const countDisplay = document.getElementById('bulk-selected-count');
+            if (!bar || !countDisplay) return;
+
+            if (selectedTaskIds.size > 0) {
+                bar.style.display = 'flex';
+                countDisplay.textContent = `${selectedTaskIds.size} tugas terpilih`;
+            } else {
+                bar.style.display = 'none';
+            }
+        }
+
+        async function handleBulkStatusUpdate(status) {
+            if (selectedTaskIds.size === 0) return;
+            const ids = Array.from(selectedTaskIds);
+
+            ids.forEach(id => {
+                const t = getTaskById(id);
+                if (t) {
+                    t.status = status;
+                    if (status === 'COMPLETED') t.progress_pct = 100;
+                }
+            });
+
+            logTaskActivity('STATUS_CHANGED', `${ids.length} Tugas`, `Mengubah status masal menjadi ${status}.`);
+
+            if (sbClient) {
+                await sbClient.from('team_tasks').update({ status: status, progress_pct: 100, updated_at: new Date().toISOString() }).in('id', ids);
+            }
+
+            selectedTaskIds.clear();
+            renderAllTaskViews();
+        }
+
+        async function handleBulkArchive() {
+            if (selectedTaskIds.size === 0) return;
+            const ids = Array.from(selectedTaskIds);
+
+            ids.forEach(id => {
+                const t = getTaskById(id);
+                if (t) t.is_archived = true;
+            });
+
+            logTaskActivity('ARCHIVED', `${ids.length} Tugas`, `Mengarsipkan ${ids.length} tugas secara masal.`);
+
+            if (sbClient) {
+                await sbClient.from('team_tasks').update({ is_archived: true, updated_at: new Date().toISOString() }).in('id', ids);
+            }
+
+            selectedTaskIds.clear();
+            renderAllTaskViews();
+        }
+
+        function exportTasksToCSV() {
+            const tasks = getFilteredTasks(false);
+            if (tasks.length === 0) {
+                alert('Tidak ada data tugas untuk diekspor.');
+                return;
+            }
+
+            let csvContent = 'data:text/csv;charset=utf-8,\uFEFF';
+            csvContent += 'Judul Tugas,Divisi,PIC / Penanggung Jawab,Prioritas,Status,Progres,Tanggal Mulai,Tenggat Waktu,Deskripsi\n';
+
+            tasks.forEach(t => {
+                const row = [
+                    `"${(t.title || '').replace(/"/g, '""')}"`,
+                    `"${(t.division || '').replace(/"/g, '""')}"`,
+                    `"${(t.assigned_to || '').replace(/"/g, '""')}"`,
+                    `"${t.priority || ''}"`,
+                    `"${t.status || ''}"`,
+                    `"${t.progress_pct || 0}%"`,
+                    `"${t.start_date || ''}"`,
+                    `"${t.due_date || ''}"`,
+                    `"${(t.description || '').replace(/"/g, '""')}"`
+                ].join(',');
+                csvContent += row + '\n';
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `Daftar_Tugas_DKM_Sophia_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // ==========================================================================
+        // 5. ARCHIVE VIEW RENDERER & ACTIONS
+        // ==========================================================================
+        function renderArchive() {
+            const tbody = document.getElementById('archive-tasks-tbody');
+            const tasks = getFilteredTasks(true); // get archived
+
+            if (tasks.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">Arsip tugas kosong. Tugas yang telah selesai dan diarsipkan akan tersimpan rapi di sini.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = tasks.map(t => {
+                const divClass = getDivisionBadgeClass(t.division);
+                return `
+                    <tr>
+                        <td><strong>${t.title}</strong></td>
+                        <td><span class="div-badge ${divClass}">${t.division.replace('Divisi ', '')}</span></td>
+                        <td>${t.assigned_to || '-'}</td>
+                        <td>${t.updated_at ? new Date(t.updated_at).toLocaleDateString('id-ID') : '-'}</td>
+                        <td><span class="status-badge completed">${t.status}</span></td>
+                        <td style="text-align: center;">
+                            <div style="display: inline-flex; gap: 0.45rem;">
+                                <button class="btn-action-gold" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="restoreArchivedTask('${t.id}')">
+                                    <i class="fa-solid fa-rotate-left"></i> Pulihkan
+                                </button>
+                                <button class="btn-shift" style="background: rgba(220, 38, 38, 0.1); color: var(--color-danger); border-color: rgba(220, 38, 38, 0.3);" title="Hapus Permanen" onclick="deleteTaskPermanently('${t.id}')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function archiveTask(taskId) {
+            const task = getTaskById(taskId);
+            if (!task) return;
+
+            task.is_archived = true;
+            logTaskActivity('ARCHIVED', task.title, 'Memindahkan tugas ke ruang arsip.');
+
+            if (sbClient) {
+                await sbClient.from('team_tasks').update({ is_archived: true, updated_at: new Date().toISOString() }).eq('id', taskId);
+            }
+
+            renderAllTaskViews();
+        }
+
+        async function restoreArchivedTask(taskId) {
+            const task = getTaskById(taskId);
+            if (!task) return;
+
+            task.is_archived = false;
+            logTaskActivity('RESTORED', task.title, 'Memulihkan tugas dari arsip kembali ke papan aktif.');
+
+            if (sbClient) {
+                await sbClient.from('team_tasks').update({ is_archived: false, updated_at: new Date().toISOString() }).eq('id', taskId);
+            }
+
+            renderAllTaskViews();
+        }
+
+        async function deleteTaskPermanently(taskId) {
+            const task = getTaskById(taskId);
+            if (!task) return;
+
+            if (!confirm(`Apakah Anda yakin ingin menghapus permanen tugas: "${task.title}"? Tindakan ini tidak dapat dibatalkan.`)) return;
+
+            allTasksList = allTasksList.filter(t => String(t.id) !== String(taskId));
+            logTaskActivity('DELETED', task.title, 'Menghapus tugas secara permanen dari sistem.');
+
+            if (sbClient) {
+                await sbClient.from('team_tasks').delete().eq('id', taskId);
+            }
+
+            renderAllTaskViews();
+        }
+
+        // ==========================================================================
+        // 6. SUPPORT PANELS: RIWAYAT REALTIME & CHAT KOORDINASI
+        // ==========================================================================
+        function logTaskActivity(actionType, taskTitle, details) {
+            const user = currentUser?.email ? currentUser.email.split('@')[0] : 'Pengurus DKM';
+            const logEntry = {
+                id: 'log-' + Date.now(),
+                task_title: taskTitle,
+                user_name: user,
+                user_role: 'STAFF',
+                action_type: actionType,
+                details: details,
+                created_at: new Date().toISOString()
+            };
+
+            taskActivityLogs.unshift(logEntry);
+            if (taskActivityLogs.length > 50) taskActivityLogs.pop();
+
+            if (sbClient) {
+                sbClient.from('task_activity_logs').insert({
+                    task_title: taskTitle,
+                    user_name: user,
+                    user_role: 'STAFF',
+                    action_type: actionType,
+                    details: details
+                }).then(() => {});
+            }
+
+            renderTaskHistory();
+        }
+
+        function renderTaskHistory() {
+            const container = document.getElementById('activity-feed-container');
+            if (!container) return;
+
+            if (taskActivityLogs.length === 0) {
+                container.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--color-charcoal-muted);">Belum ada riwayat aktivitas tugas.</div>`;
+                return;
+            }
+
+            const actionIcons = {
+                'CREATED': '<i class="fa-solid fa-plus"></i>',
+                'STATUS_CHANGED': '<i class="fa-solid fa-arrows-split-up-and-left"></i>',
+                'UPDATED': '<i class="fa-solid fa-pen"></i>',
+                'ARCHIVED': '<i class="fa-solid fa-box-archive"></i>',
+                'RESTORED': '<i class="fa-solid fa-rotate-left"></i>',
+                'DELETED': '<i class="fa-solid fa-trash"></i>'
+            };
+
+            container.innerHTML = taskActivityLogs.map(l => `
+                <div class="activity-feed-item">
+                    <div class="activity-icon-box">${actionIcons[l.action_type] || '<i class="fa-solid fa-bell"></i>'}</div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.15rem;">
+                            <strong>${l.user_name}</strong>
+                            <span style="color: var(--color-charcoal-muted); font-size: 0.7rem;">${new Date(l.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</span>
+                        </div>
+                        <div style="font-weight: 700; color: var(--color-gold-deep); margin-bottom: 0.1rem;">${l.task_title || 'Tugas DKM'}</div>
+                        <div style="color: var(--color-charcoal);">${l.details}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTaskChat() {
+            const stream = document.getElementById('chat-messages-stream');
+            if (!stream) return;
+
+            if (taskChatMessages.length === 0) {
+                stream.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--color-charcoal-muted);">Ruang chat koordinasi aktif. Silakan tulis pesan atau instruksi tugas.</div>`;
+                return;
+            }
+
+            const currentSender = currentUser?.email || 'admin@dkm.com';
+
+            stream.innerHTML = taskChatMessages.map(msg => {
+                const isMine = msg.sender_name === currentSender || msg.sender_name.includes(currentSender.split('@')[0]);
+                return `
+                    <div class="chat-bubble ${isMine ? 'mine' : 'other'}">
+                        <div class="chat-bubble-sender">
+                            <i class="fa-solid fa-user"></i> ${msg.sender_name} • <span style="opacity: 0.8;">${msg.sender_division || msg.sender_role}</span>
+                        </div>
+                        <div>${msg.message}</div>
+                        <div style="text-align: right; font-size: 0.65rem; opacity: 0.7; margin-top: 0.25rem;">
+                            ${new Date(msg.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            stream.scrollTop = stream.scrollHeight;
+        }
+
+        async function handleSendChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-composer-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const sender = currentUser?.email ? currentUser.email.split('@')[0] : 'Pengurus DKM';
+            const chatEntry = {
+                id: 'chat-' + Date.now(),
+                sender_name: sender,
+                sender_role: 'STAFF',
+                sender_division: 'Pengurus DKM',
+                message: message,
+                created_at: new Date().toISOString()
+            };
+
+            taskChatMessages.push(chatEntry);
+            input.value = '';
+            renderTaskChat();
+
+            if (sbClient) {
+                await sbClient.from('task_chat_messages').insert({
+                    sender_name: sender,
+                    sender_role: 'STAFF',
+                    sender_division: 'Pengurus DKM',
+                    message: message
+                });
+            }
+        }
+
+        // ==========================================================================
+        // 7. TASK MODALS & DETAILS
+        // ==========================================================================
+        function openTaskModal(task = null, defaultDate = null) {
+            const modal = document.getElementById('task-modal');
+            const titleHeader = document.getElementById('task-modal-title');
+            
+            if (task) {
+                titleHeader.innerHTML = `<i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Edit Tugas: ${task.title}`;
+                document.getElementById('task-form-id').value = task.id;
+                document.getElementById('task-title').value = task.title || '';
+                document.getElementById('task-division').value = task.division || 'Divisi Media & Dakwah';
+                document.getElementById('task-pic').value = task.assigned_to || '';
+                document.getElementById('task-priority').value = task.priority || 'MEDIUM';
+                document.getElementById('task-status').value = task.status || 'PENDING';
+                document.getElementById('task-start-date').value = task.start_date || '';
+                document.getElementById('task-due-date').value = task.due_date || '';
+                document.getElementById('task-progress').value = task.progress_pct || 0;
+                document.getElementById('task-progress-pct-display').textContent = (task.progress_pct || 0) + '%';
+                document.getElementById('task-desc').value = task.description || '';
+            } else {
+                titleHeader.innerHTML = `<i class="fa-solid fa-plus" style="color: var(--color-gold-deep);"></i> Tambah Tugas DKM Baru`;
+                document.getElementById('task-form-id').value = '';
+                document.getElementById('task-title').value = '';
+                document.getElementById('task-division').value = 'Divisi Media & Dakwah';
+                document.getElementById('task-pic').value = '';
+                document.getElementById('task-priority').value = 'MEDIUM';
+                document.getElementById('task-status').value = 'PENDING';
+                document.getElementById('task-start-date').value = defaultDate || new Date().toISOString().split('T')[0];
+                document.getElementById('task-due-date').value = defaultDate || '';
+                document.getElementById('task-progress').value = 0;
+                document.getElementById('task-progress-pct-display').textContent = '0%';
+                document.getElementById('task-desc').value = '';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeTaskModal() {
+            document.getElementById('task-modal').style.display = 'none';
+        }
+
+        async function handleSaveTask(e) {
+            e.preventDefault();
+            const id = document.getElementById('task-form-id').value;
+            const title = document.getElementById('task-title').value.trim();
+            const division = document.getElementById('task-division').value;
+            const pic = document.getElementById('task-pic').value.trim();
+            const priority = document.getElementById('task-priority').value;
+            const status = document.getElementById('task-status').value;
+            const startDate = document.getElementById('task-start-date').value || new Date().toISOString().split('T')[0];
+            const dueDate = document.getElementById('task-due-date').value || null;
+            const progressPct = Number(document.getElementById('task-progress').value) || 0;
+            const desc = document.getElementById('task-desc').value.trim();
+
+            if (id) {
+                // Update
+                const task = getTaskById(id);
+                if (task) {
+                    task.title = title;
+                    task.division = division;
+                    task.assigned_to = pic;
+                    task.priority = priority;
+                    task.status = status;
+                    task.start_date = startDate;
+                    task.due_date = dueDate;
+                    task.progress_pct = progressPct;
+                    task.description = desc;
+                    task.updated_at = new Date().toISOString();
+
+                    logTaskActivity('UPDATED', title, `Memperbarui rincian tugas (Status: ${status}, Progres: ${progressPct}%).`);
+
+                    if (sbClient) {
+                        await sbClient.from('team_tasks').update({
+                            title, division, assigned_to: pic, priority, status,
+                            start_date: startDate, due_date: dueDate, progress_pct: progressPct,
+                            description: desc, updated_at: new Date().toISOString()
+                        }).eq('id', id);
+                    }
+                }
+            } else {
+                // Create
+                const newTask = {
+                    id: 'task-' + Date.now(),
+                    title, division, assigned_to: pic, priority, status,
+                    start_date: startDate, due_date: dueDate, progress_pct: progressPct,
+                    description: desc, is_archived: false,
+                    created_at: new Date().toISOString()
+                };
+
+                allTasksList.unshift(newTask);
+                logTaskActivity('CREATED', title, `Membuat tugas baru untuk ${division} (PIC: ${pic}).`);
+
+                if (sbClient) {
+                    const { data } = await sbClient.from('team_tasks').insert({
+                        title, division, assigned_to: pic, priority, status,
+                        start_date: startDate, due_date: dueDate, progress_pct: progressPct,
+                        description: desc, is_archived: false
+                    }).select();
+                    if (data && data[0]) newTask.id = data[0].id;
+                }
+            }
+
+            closeTaskModal();
+            renderAllTaskViews();
+        }
+
+        function openTaskDetailModal(taskId) {
+            const task = getTaskById(taskId);
+            if (!task) return;
+
+            const modal = document.getElementById('task-detail-modal');
+            const body = document.getElementById('task-detail-body');
+            const divClass = getDivisionBadgeClass(task.division);
+            const prioClass = (task.priority || 'MEDIUM').toLowerCase();
+            const pct = task.progress_pct || (task.status === 'COMPLETED' ? 100 : 0);
+
+            body.innerHTML = `
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+                        <span class="div-badge ${divClass}"><i class="fa-solid fa-tag"></i> ${task.division}</span>
+                        <span class="prio-badge ${prioClass}"><i class="fa-solid fa-fire"></i> Prioritas ${task.priority}</span>
+                        <span class="status-badge ${task.status === 'COMPLETED' ? 'completed' : 'pending'}">${task.status}</span>
+                    </div>
+                    <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--color-charcoal); line-height: 1.35; margin-bottom: 0.5rem;">
+                        ${task.title}
+                    </h2>
+                    ${task.description ? `<p style="font-size: 0.825rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 1rem;">${task.description}</p>` : '<p style="font-size: 0.8rem; color: #9CA3AF; font-style: italic;">Tidak ada deskripsi tambahan.</p>'}
+                </div>
+
+                <div style="background: #F9FAFB; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.8rem;">
+                        <div>
+                            <span style="color: var(--color-charcoal-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Penanggung Jawab</span>
+                            <div style="font-weight: 800; color: var(--color-charcoal);"><i class="fa-solid fa-user-circle" style="color: var(--color-gold-deep);"></i> ${task.assigned_to || '-'}</div>
+                        </div>
+                        <div>
+                            <span style="color: var(--color-charcoal-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Tenggat Waktu</span>
+                            <div style="font-weight: 800; color: var(--color-charcoal);"><i class="fa-solid fa-calendar"></i> ${task.due_date ? new Date(task.due_date).toLocaleDateString('id-ID', { dateStyle: 'long' }) : 'Fleksibel'}</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 0.85rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 800; margin-bottom: 0.25rem;">
+                            <span>Progres Pengerjaan</span>
+                            <span style="color: var(--color-gold-deep);">${pct}%</span>
+                        </div>
+                        <div class="task-progress-bar" style="margin: 0;">
+                            <div class="task-progress-fill ${pct === 100 ? 'done' : ''}" style="width: ${pct}%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border); padding-top: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <div style="display: flex; gap: 0.35rem;">
+                        <button class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeTaskDetailModal(); openTaskModal(getTaskById('${task.id}'))">
+                            <i class="fa-solid fa-pen"></i> Edit Tugas
+                        </button>
+                        <button class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeTaskDetailModal(); archiveTask('${task.id}')">
+                            <i class="fa-solid fa-box-archive"></i> Arsipkan
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 0.35rem;">
+                        ${task.status !== 'COMPLETED' ? `
+                            <button class="btn-action-gold" onclick="closeTaskDetailModal(); updateTaskStatus('${task.id}', 'COMPLETED')">
+                                <i class="fa-solid fa-check-circle"></i> Selesaikan Tugas
+                            </button>
+                        ` : `
+                            <button class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeTaskDetailModal(); updateTaskStatus('${task.id}', 'IN_PROGRESS')">
+                                <i class="fa-solid fa-rotate-left"></i> Buka Kembali
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+
+            modal.style.display = 'flex';
+        }
+
+        function closeTaskDetailModal() {
+            document.getElementById('task-detail-modal').style.display = 'none';
+        }
+
+        // ==========================================================================
+        // OTHER TABS & UTILITY FUNCTIONS
+        // ==========================================================================
         function renderDonations(list) {
             const overviewTbody = document.getElementById('overview-donations-tbody');
             const allTbody = document.getElementById('all-donations-tbody');
@@ -1063,68 +3513,51 @@
                 totalAmount += Number(d.total_amount || d.amount || 0);
             });
 
-            document.getElementById('kpi-total-donasi').textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalAmount);
-            document.getElementById('kpi-donasi-count').textContent = `${list.length} Transaksi Terdata`;
+            const kpiDonasi = document.getElementById('kpi-total-donasi');
+            if (kpiDonasi) kpiDonasi.textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalAmount);
+            const kpiCount = document.getElementById('kpi-donasi-count');
+            if (kpiCount) kpiCount.textContent = `${list.length} Transaksi Terdata`;
 
             if (list.length === 0) {
-                overviewTbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada data donasi masuk.</td></tr>`;
-                allTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada data donasi masuk.</td></tr>`;
+                if (overviewTbody) overviewTbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada data donasi masuk.</td></tr>`;
+                if (allTbody) allTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada data donasi masuk.</td></tr>`;
                 return;
             }
 
-            // Overview Table (Top 5)
-            overviewTbody.innerHTML = list.slice(0, 5).map(d => `
-                <tr>
-                    <td>${new Date(d.created_at).toLocaleDateString('id-ID')}</td>
-                    <td><strong>${d.donor_name}</strong></td>
-                    <td>${d.program_category}</td>
-                    <td><strong>Rp ${Number(d.total_amount || d.amount).toLocaleString('id-ID')}</strong></td>
-                    <td><span class="status-badge" style="background: #F3F4F6;">${d.payment_method}</span></td>
-                    <td><span class="status-badge ${d.payment_status === 'VERIFIED' ? 'verified' : 'pending'}">${d.payment_status}</span></td>
-                </tr>
-            `).join('');
-
-            // All Donations Table
-            allTbody.innerHTML = list.map(d => `
-                <tr>
-                    <td>${new Date(d.created_at).toLocaleString('id-ID')}</td>
-                    <td><strong>${d.donor_name}</strong></td>
-                    <td>${d.phone_number || '-'}</td>
-                    <td>${d.program_category}</td>
-                    <td><strong>Rp ${Number(d.total_amount || d.amount).toLocaleString('id-ID')}</strong></td>
-                    <td>${d.prayer_notes || '-'}</td>
-                    <td><span class="status-badge ${d.payment_status === 'VERIFIED' ? 'verified' : 'pending'}">${d.payment_status}</span></td>
-                </tr>
-            `).join('');
-        }
-
-        function renderTasks(list) {
-            const tbody = document.getElementById('all-tasks-tbody');
-            if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada tugas DKM. Klik Tambah Tugas Baru.</td></tr>`;
-                return;
+            if (overviewTbody) {
+                overviewTbody.innerHTML = list.slice(0, 5).map(d => `
+                    <tr>
+                        <td>${new Date(d.created_at).toLocaleDateString('id-ID')}</td>
+                        <td><strong>${d.donor_name}</strong></td>
+                        <td>${d.program_category}</td>
+                        <td><strong>Rp ${Number(d.total_amount || d.amount).toLocaleString('id-ID')}</strong></td>
+                        <td><span class="status-badge" style="background: #F3F4F6;">${d.payment_method}</span></td>
+                        <td><span class="status-badge ${d.payment_status === 'VERIFIED' ? 'verified' : 'pending'}">${d.payment_status}</span></td>
+                    </tr>
+                `).join('');
             }
 
-            const completed = list.filter(t => t.status === 'COMPLETED').length;
-            const rate = list.length > 0 ? Math.round((completed / list.length) * 100) : 100;
-            document.getElementById('kpi-task-rate').textContent = `${rate}%`;
-
-            tbody.innerHTML = list.map(t => `
-                <tr>
-                    <td><strong>${t.title}</strong></td>
-                    <td><span class="status-badge" style="background: #FAF6E8; color: #785800;">${t.division}</span></td>
-                    <td>${t.assigned_to || '-'}</td>
-                    <td><span class="status-badge" style="background: #F3F4F6;">${t.priority}</span></td>
-                    <td>${t.due_date ? new Date(t.due_date).toLocaleDateString('id-ID') : '-'}</td>
-                    <td><span class="status-badge ${t.status === 'COMPLETED' ? 'completed' : 'pending'}">${t.status}</span></td>
-                </tr>
-            `).join('');
+            if (allTbody) {
+                allTbody.innerHTML = list.map(d => `
+                    <tr>
+                        <td>${new Date(d.created_at).toLocaleString('id-ID')}</td>
+                        <td><strong>${d.donor_name}</strong></td>
+                        <td>${d.phone_number || '-'}</td>
+                        <td>${d.program_category}</td>
+                        <td><strong>Rp ${Number(d.total_amount || d.amount).toLocaleString('id-ID')}</strong></td>
+                        <td>${d.prayer_notes || '-'}</td>
+                        <td><span class="status-badge ${d.payment_status === 'VERIFIED' ? 'verified' : 'pending'}">${d.payment_status}</span></td>
+                    </tr>
+                `).join('');
+            }
         }
 
         function renderFeedback(list) {
             const tbody = document.getElementById('all-feedback-tbody');
-            document.getElementById('kpi-feedback-count').textContent = `${list.length} Pesan`;
+            const kpi = document.getElementById('kpi-feedback-count');
+            if (kpi) kpi.textContent = `${list.length} Pesan`;
 
+            if (!tbody) return;
             if (list.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada aspirasi atau saran masuk dari jamaah.</td></tr>`;
                 return;
@@ -1147,6 +3580,7 @@
 
         function renderArticles(list) {
             const tbody = document.getElementById('all-articles-tbody');
+            if (!tbody) return;
             if (list.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada artikel warta terbit.</td></tr>`;
                 return;
@@ -1165,6 +3599,7 @@
 
         async function fetchSystemHealth() {
             const container = document.getElementById('health-cards-container');
+            if (!container) return;
             try {
                 const res = await fetch('/api/health');
                 const data = await res.json();
@@ -1193,37 +3628,6 @@
                 `;
             } catch (e) {
                 container.innerHTML = `<div style="color: var(--color-danger); font-size: 0.85rem;">Gagal memuat status kesehatan server.</div>`;
-            }
-        }
-
-        // Task Modal Functions
-        function openTaskModal() {
-            document.getElementById('task-modal').style.display = 'flex';
-        }
-
-        function closeTaskModal() {
-            document.getElementById('task-modal').style.display = 'none';
-        }
-
-        async function handleCreateTask(e) {
-            e.preventDefault();
-            const title = document.getElementById('task-title').value.trim();
-            const division = document.getElementById('task-division').value;
-            const pic = document.getElementById('task-pic').value.trim();
-            const priority = document.getElementById('task-priority').value;
-            const due = document.getElementById('task-due').value;
-
-            if (sbClient) {
-                await sbClient.from('team_tasks').insert({
-                    title: title,
-                    division: division,
-                    assigned_to: pic,
-                    priority: priority,
-                    due_date: due || null,
-                    status: 'PENDING'
-                });
-                closeTaskModal();
-                loadAllAdminData();
             }
         }
 

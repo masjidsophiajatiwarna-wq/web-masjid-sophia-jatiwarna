@@ -127,14 +127,14 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
       - *Bottom Sheet Drawer* (modal geser dari bawah) untuk formulir input cepat (setoran santri, nota bon, laporan piket).
       - *Target Sentuh Minimal 48x48px* pada tombol dan kontrol checkbox agar anti salah pencet.
       - *Optimasi Touch & Gestur:* Swipe tab ganti view, card touch feedback, pull-to-refresh data.
-  - [ ] **Task Management Terpadu (5 View + 2 Panel):**
-    - Kanban Board (drag-and-drop & tombol cepat Setujui/Revisi).
-    - Gantt Timeline (`frappe-gantt v0.6.1` skala Hari/Minggu/Bulan).
-    - Calendar View (spanning bars multi-hari & mode Agenda).
-    - All Tasks Table (filter pipeline, sorting, bulk archive, CSV).
-    - Archive View per divisi & pemulihan tugas.
-    - Riwayat Pengelolaan Realtime (CDC WebSocket 100% tanpa refresh).
-    - Chat Koordinasi Multi-Arah (semua PJ, Ketua DKM, Super Admin 100% tanpa refresh).
+  - [x] **Task Management Terpadu (5 View + 2 Panel):**
+    - [x] Kanban Board (drag-and-drop HTML5, filter divisi, badge prioritas, dan tombol cepat sentuh status).
+    - [x] Gantt Timeline (visualisasi bar jadwal mulai hingga tenggat per PJ dengan skala Hari/Minggu/Bulan).
+    - [x] Calendar View (grid bulanan dengan multi-hari spanning bar, klik tanggal untuk tambah tugas, dan mode Agenda kronologis).
+    - [x] All Tasks Table (filter multi-kriteria, live search, sorting interaktif, bulk archive, dan unduh CSV).
+    - [x] Archive View (penyimpanan tugas selesai per divisi, 1-klik pulihkan, dan hapus permanen).
+    - [x] Riwayat Pengelolaan Realtime (CDC WebSocket 100% tanpa refresh).
+    - [x] Chat Koordinasi Multi-Arah (semua PJ, Ketua DKM, Super Admin 100% tanpa refresh).
   - [ ] **Suite Modul Khusus per Divisi PJ:**
     - **PJ Media & Dakwah:** Article Studio (Quill.js Rich Text, slug generator, ImageKit cover WebP) & Dynamic Homepage Media Manager (review Ketua DKM).
     - **PJ Logistik & Sarpras:** Porsi Makan Gratis ba'da Dzuhur (70+ porsi/hari, dapur) & Inventaris Aset Fisik Masjid (kode inventaris, lokasi, kondisi, servis).
