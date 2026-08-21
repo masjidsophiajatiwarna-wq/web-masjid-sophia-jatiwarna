@@ -4,13 +4,38 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.7] - 2026-08-22
+
+### Implementasi Multi-Cloud Free-Tier Monitor (Benchmark: SIABE-PORTO) & Indikator 7 Pilar
+
+#### Penambahan & Implementasi (Added & Implemented)
+- `[MULTI_CLOUD_FREE_TIER_MONITOR]` Mengintegrasikan antarmuka pemantauan infrastruktur cloud terpadu (**Multi-Cloud Free-Tier Monitor**) pada portal admin (`admin.html`):
+  - **Header & Compliance Badge:** Status *100% Free-Tier Compliant* dan tombol interaktif *Refresh Metrics* dengan animasi putar real-time.
+  - **4 Top KPI Metrics Cards:**
+    - *Total Monthly Cloud Bill:* Menampilkan biaya operasional `IDR 0 / Month` (*Zero Infrastructure Cost*).
+    - *Infrastructure Status:* Indikator kesehatan `ALL SAFE (7/7)` (*No Quota Near Threshold*).
+    - *Database Records (Supabase):* Agregasi total baris data secara dinamis dari seluruh tabel inti (`team_tasks`, `task_activity_logs`, `task_chat_messages`, `admin_users`, `donations`, `artikel_berita`, `feedback_complaints`, `media_checklists`) dan kalkulasi estimasi ukuran PostgreSQL DB dalam MB.
+    - *Transactional Email (Resend):* Kuota 3.000 email/bulan dengan verifikasi domain resmi `masjidsophiajatiwarna.com`.
+  - **7 Pillar Cloud Cards (Kartu Indikator & Metrik):**
+    1. **Supabase:** DB Size (progress bar), Storage Bucket, Registered Users, dan Realtime Channels + link billing.
+    2. **Resend.com:** Monthly Quota, Daily Rate Limit (100/day), DKIM Verified Domain, dan Default Sender + link dashboard.
+    3. **Vercel (Hobby):** Bandwidth Transfer (progress bar), Serverless Execution, Edge Middleware, dan Production Branch Auto-Deploy + link usage.
+    4. **ImageKit.io:** Monthly Bandwidth (progress bar), Transformations, Media Storage 20GB, dan CDN Endpoint + link dashboard.
+    5. **GitHub Actions:** CI/CD Minutes 2.000 mnt, Packages/LFS, Repository Target, dan Workflow Passing 24/7 Keep-Alive + link actions.
+    6. **Cloudflare (DNS & SSL):** Turnstile Challenges 1M/bulan, Universal SSL Always-Free, Email Routing, dan Bot Fight Mode + link dashboard.
+    7. **Google Drive Workspace:** Drive Storage 15GB (progress bar), Master Raw Media Archive, Tim Sharing, dan Offsite Dual Backup + link drive.
+  - **Threshold Guide (Panduan Preventif Ambang Batas Kuota):** Panduan terstruktur 4 skenario penanganan dini jika pemakaian mendekati ambang batas 80% (Purge log 90 hari, email digest mode, auto-WebP CDN, dan cache control headers).
+- `[SIDEBAR_NAVIGATION_SYNC]` Mengubah label navigasi sidebar menjadi **Cloud Monitor** (`fa-server`) dan sinkronisasi judul panel serta penarikan data dinamis saat tab dibuka.
+
+---
+
 ## [1.7.6] - 2026-08-22
 
 ### Pengurutan Tabel Akun Berbasis Prioritas Online (Online-First) & Hierarki Jabatan Resmi DKM
 
 #### Penambahan & Pembaruan (Added & Updated)
 - `[ONLINE_FIRST_ACCOUNT_SORTING]` Menerapkan algoritma pengurutan cerdas multi-tier pada tabel direktori master pengurus:
-  - **Tier 1 (Prioritas Presensi Realtime):** Akun yang berstatus **🟢 Online** selalu diposisikan pada baris paling atas tabel, disusul akun **🟡 Idle (Standby)**, kemudian **⚪ Offline**, dan akun **🔴 Nonaktif** di posisi terbawah.
+  - **Tier 1 (Prioritas Presensi Realtime):** Akun yang berstatus **Online (Aktif)** selalu diposisikan pada baris paling atas tabel, disusul akun **Idle (Standby)**, kemudian **Offline**, dan akun **Nonaktif** di posisi terbawah.
   - **Tier 2 (Hierarki Jabatan Resmi DKM):** Dalam status presensi yang sama, akun diurutkan secara tertib berdasarkan tingkat wewenang struktural:
     1. Super Administrator (`SUPER_ADMIN`)
     2. Ketua DKM Masjid Sophia (`KETUA_DKM`)

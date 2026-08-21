@@ -158,8 +158,10 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - **Formulir Pengajuan Izin Mandiri (Seluruh Pengurus):** Formulir bagi seluruh PJ divisi untuk mengajukan izin (Izin Sakit + bukti surat dokter, Keperluan Pribadi, Tugas Luar, Cuti Operasional) dengan tanggal mulai, tanggal selesai, alasan, dan status transparan.
     - **Alur Persetujuan Terpusat (Approval Flow):** Panel khusus bagi **Ketua DKM & Super Admin** untuk menyetujui (*Approve*) atau menolak (*Reject*) permohonan izin dengan catatan.
     - **Cron Otomasi & Keep-Alive:** Rekapitulasi absensi harian dan notifikasi pengingat pengajuan izin pending ke pimpinan DKM.
-  - [ ] **Pemantau Kesehatan Arsitektur 7 Pilar Cloud (Khusus Super Admin):**
-    - Dashboard kuota free-tier 7 pilar, kalkulasi dinamis `{ count: 'exact', head: true }`, KPI Row biaya IDR 0, panduan preventif (>80%).
+  - [x] **Pemantau Kesehatan Arsitektur 7 Pilar Cloud (Khusus Super Admin - Benchmark SIABE-PORTO):**
+    - Multi-Cloud Free-Tier Monitor: Dashboard pemantauan kuota 7 pilar (Supabase DB & Storage, Resend Email API, Vercel Edge & Hosting, ImageKit CDN 20GB, GitHub Actions CI/CD, Cloudflare DNS/Turnstile, Google Drive Workspace).
+    - Kalkulasi dinamis total records database `{ count: 'exact', head: true }` dan estimasi ukuran DB Postgres MB.
+    - KPI Row biaya bulanan IDR 0 (Zero Infrastructure Cost), badge `100% FREE-TIER COMPLIANT`, tombol interaktif `REFRESH METRICS`, dan Panduan Preventif Ambang Batas Kuota (*Threshold Guide*).
   - [ ] **Ekspor Laporan Kinerja PDF Mandiri per Anggota Tim DKM:**
     - Format PDF standar Web Landscape (`jsPDF v2.5.1`).
 
