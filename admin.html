@@ -4137,16 +4137,6 @@
             }
         }
 
-        // Autocomplete Mention '@'
-        function handleChatInput(e) {
-            const input = e.target;
-            const val = input.value;
-            const popup = document.getElementById('mention-autocomplete-popup');
-            if (!popup) return;
-
-            const cursor = input.selectionStart;
-            const textBeforeCursor = val.slice(0, cursor);
-            const words = textBeforeCursor.split(/\s+/);
         // Autocomplete Mention '@' & Textarea Auto-Grow
         function handleChatInput(e) {
             const input = e.target;
