@@ -27,7 +27,7 @@ export default async function handler(req, res) {
             est_db_size_mb: 2.70,
             registered_users: 11,
             email_quota_monthly: 3000,
-            email_sender: "dkm@masjidsophiajatiwarna.com"
+            email_sender: "info@masjidsophiajatiwarna.com"
         },
         pillars: {
             supabase: {
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
                 emails_sent_month: 0,
                 daily_limit: 100,
                 verified_domain: "masjidsophiajatiwarna.com (DKIM Active)",
-                default_sender: "dkm@masjidsophiajatiwarna.com",
+                default_sender: "info@masjidsophiajatiwarna.com",
                 is_live_api: false
             },
             vercel: {
