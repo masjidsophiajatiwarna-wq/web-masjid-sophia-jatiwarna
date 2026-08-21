@@ -4,6 +4,31 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.6.5] - 2026-08-22
+
+### Standarisasi ISO 8601 Gantt Timeline, Kalender Continuous Spanning Bar, Drag & Hold Range Selection, dan Validasi Kronologis Tanggal
+
+#### Peningkatan & Penyempurnaan (Enhanced & Fixed)
+- `[ISO 8601 WEEK NUMBERING GANTT]` Standarisasi perhitungan skala mingguan Gantt Chart menggunakan algoritma baku ISO 8601 (`getISOWeekNumber`):
+  - Penomoran pekan dihitung matematis dari 1 Januari (pekan yang memuat hari Kamis pertama / 4 Januari adalah W01).
+  - Kolom mingguan berformat standar internasional: `W33 (10 - 16 Agu)`, `W34 (17 - 23 Agu)`, `W35 (24 - 30 Agu)`, `W36 (31 Agu - 6 Sep)`, dst.
+- `[GANTT NAVIGATION & AUTO-FIT]` Penambahan kontrol navigasi dan skala fleksibel pada toolbar Gantt:
+  - Tombol navigasi periode: `< Prev`, `Hari Ini / Bulan Ini`, dan `Next >`.
+  - Tombol **"Auto-Fit Semua Tugas"**: Otomatis mendeteksi tanggal mulai terawal dan tenggat akhir terjauh dari seluruh tugas aktif (September, Desember, maupun tahun depan) sehingga seluruh jadwal langsung terlihat utuh dalam satu layar tanpa terpotong.
+  - Tiga pilihan skala waktu: Harian (30/31 hari penuh bulan kalender), Mingguan (12 pekan ISO 8601), dan Bulanan (12 bulan kalender tahun berjalan).
+- `[CONTINUOUS MULTI-DAY SPANNING BAR IN CALENDAR]` Restrukturisasi rendering kalender bulanan (Standar Portosiabe Pro):
+  - Tugas berdurasi panjang (*multi-day tasks*, seperti rentang 3 September s/d 1 Oktober) dirender sebagai **satu batang horizontal menyambung (*continuous spanning bar*)** di setiap baris pekan yang dilewati dengan sudut melengkung (*pill styling*) di pangkal & ujung, serta penanda kelanjutan tanpa duplikasi badge chip chip berulang.
+- `[CALENDAR 7-COLUMN GRID LOCK]` Penguncian CSS `.calendar-grid` menggunakan `grid-template-columns: repeat(7, minmax(0, 1fr))` dan `min-width: 0` pada seluruh sel dan header hari:
+  - Menjamin kolom Senin s/d Ahad tampil proporsional 100% (14.28% per kolom) di semua bulan (termasuk Agustus dan September) tanpa ada sel yang tergeser atau terpotong akibat judul tugas yang panjang.
+- `[DRAG & HOLD DATE RANGE SELECTION]` Fitur seleksi tanggal interaktif:
+  - Pengguna dapat melakukan klik, tahan, dan geser (*drag & hold*) melintasi beberapa tanggal di kalender dengan efek visual *gold highlight* (`.selected-range`).
+  - Melepas klik mouse otomatis membuka modal pembuatan tugas dengan *Tanggal Mulai* dan *Tenggat Waktu Selesai* yang langsung terisi sesuai rentang hari yang diseleksi.
+- `[STRICT DATE CHRONOLOGICAL VALIDATION]`
+  - Sinkronisasi batasan real-time: Memilih *Tanggal Mulai* otomatis menetapkan `min` pada *Tenggat Waktu*, dan menyesuaikan tanggal tenggat jika lebih awal dari tanggal mulai.
+  - Pengecekan ketat di `handleSaveTask()` yang menolak penyimpanan dan menampilkan peringatan jika tenggat waktu selesai lebih awal dari tanggal mulai.
+
+---
+
 ## [1.6.4] - 2026-08-22
 
 ### Penyempurnaan Presisi Ikon Sidebar, Diferensiasi Ikon Kotak Saran, dan Tombol Collapse Internal Chevron
