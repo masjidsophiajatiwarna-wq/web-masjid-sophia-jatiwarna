@@ -137,14 +137,16 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - [x] Riwayat Pengelolaan Realtime (CDC WebSocket 100% tanpa refresh + RFC4122 UUID).
     - [x] Chat Koordinasi Multi-Arah Pro (WhatsApp-style reply/quote, WhatsApp markdown bold/italic/strike/code, multiline auto-grow composer, @PJ_Nama cursor-aware mentions & unread badge counters, Delete for Everyone CHAT_DELETE broadcast & Supabase CDC, ImageKit WebP/WebM media attachment, 7-day query filter & cache retention).
   - [x] **Modul User Accounts & Access Control (Khusus Super Admin & Ketua DKM - Benchmark SIABE-PORTO):**
-    - [x] **Tabel Seluruh Akun Pengurus Realtime:** Daftar akun DKM dengan status presisi (Online / Idle / Offline) berbasis 3-Tier Activity Presence SIABE-PORTO, status login terakhir (*last active*), peran, divisi, dan sinkronisasi live tanpa refresh via Supabase Presence & CDC.
+    - [x] **Tabel Seluruh Akun Pengurus Realtime:** Daftar akun DKM dengan status presisi (Online / Idle / Offline) berbasis 3-Tier Activity Presence SIABE-PORTO, status login terakhir (*last active*), peran, divisi, algoritma pengurutan **Online-First Prioritas**, dan sinkronisasi live tanpa refresh via Supabase Presence & CDC.
     - [x] **Modal Override Akun (Super Admin / DKM):** Reset kredensial ke baku awal (1-click reset ke `AKUN_PENGURUS_DKM.txt`), ubah email/nama, auto-pattern multi-PJ generator (`media2@...`), dan tombol **Paksa Akhiri Sesi (*Force End Session / Logout*)** via WebSocket `FORCE_LOGOUT`.
+    - [x] **Fitur Hapus Akun Permanen (Alur Aman 2 Langkah):** Tombol *Hapus Akun* disematkan eksklusif di dalam dialog box modal edit pengurus dengan proteksi akun inti (*root shield*), validasi dialog konfirmasi Modal 5, pembersihan multi-lapisan (DB Supabase + Local Master), dan siaran WebSocket `USER_DELETE_EVENT`.
     - [x] **Matriks Izin Dinamis 17 Modul (`permissions JSONB`):** Pengaturan hak akses granular per modul (Penuh / Baca / Request / Review / Laporan / Kajian / Persetujuan / Tidak Ada Akses) yang merender sidebar secara dinamis dan fleksibel (non-hardcoded).
     - [x] **Lapisan Presensi & Persistensi Hibrida (`masjid_sophia_admin_users_master`):** 3-Tier Activity Presence (Online <1 jam, Idle 1-3 jam, Offline >3 jam/logout, 3-hour inactivity session timeout), Single-Write Login Broadcast (tanpa polling heartbeat berat), dan Local Master Persistence sebagai fail-safe pembatasan Row Level Security (RLS 403 Forbidden).
-  - [x] **Modal Profil & Keamanan Mandiri Pengurus (Self-Service Profile & Security):**
+  - [x] **Modal Profil & Keamanan Mandiri Pengurus (Self-Service Profile & Security - Standar Brand Sophia):**
     - [x] **Akses Mandiri PJ Divisi:** Dibuka lewat klik kartu profil/avatar di pojok kiri bawah sidebar.
-    - [x] **Tab 1 - General Profile:** Ubah Nama Lengkap dan **Upload Foto Profil (Avatar)** dari perangkat lokal langsung teroptimasi (auto WebP 400x400) ke **ImageKit.io CDN**.
-    - [x] **Tab 2 - Security & Login:** Ganti kata sandi dan ganti email dengan **Strict Security Rule: Otomatis Logout & Wajib Login Ulang**.
+    - [x] **Tab 1 - Profil Umum:** Ubah Nama Lengkap dan **Upload Foto Profil (Avatar)** dari perangkat lokal langsung teroptimasi (auto WebP 400x400) ke **ImageKit.io CDN**.
+    - [x] **Tab 2 - Keamanan & Sandi:** Ganti kata sandi dan ganti email dengan **Strict Security Rule: Otomatis Logout & Wajib Login Ulang**.
+    - [x] **Penyelarasan Visual Brand Sophia:** Latar belakang putih bersih `.modal-box`, indikator tab aktif garis bawah emas Sophia Gold tebal, tombol aksi bergradasi *Charcoal Gold Glow*, dan 100% bahasa Indonesia santun & formal.
   - [ ] **Suite Modul Khusus per Divisi PJ:**
     - **PJ Media & Dakwah:** Article Studio (Quill.js Rich Text, slug generator, ImageKit cover WebP) & Dynamic Homepage Media Manager (review Ketua DKM).
     - **PJ Logistik & Sarpras:** Porsi Makan Gratis ba'da Dzuhur (70+ porsi/hari, dapur) & Inventaris Aset Fisik Masjid (kode inventaris, lokasi, kondisi, servis).
