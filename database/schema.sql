@@ -126,6 +126,22 @@ CREATE TABLE IF NOT EXISTS public.admin_users (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- 9. TABEL PUSAT PENGADUAN & KOTAK SARAN JAMAAH
+CREATE TABLE IF NOT EXISTS public.feedback_complaints (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    sender_name VARCHAR(150) NOT NULL DEFAULT 'Hamba Allah',
+    email VARCHAR(150),
+    phone_number VARCHAR(30),
+    category VARCHAR(100) NOT NULL DEFAULT 'Saran & Masukan', 
+    -- 'Saran & Masukan', 'Laporan Fasilitas Rusak', 'Kebersihan & Kenyamanan', 'Pengaduan Layanan', 'Lainnya'
+    subject VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'BARU', -- 'BARU', 'DIPROSES', 'SELESAI', 'DIARSIPKAN'
+    admin_notes TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- ==============================================================================
 -- ==============================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES (IDEMPOTENT)
@@ -197,6 +213,16 @@ DROP POLICY IF EXISTS "Allow public read and update media checklist" ON public.m
 CREATE POLICY "Allow public read and update media checklist" 
 ON public.media_checklists FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
+-- H. feedback_complaints
+ALTER TABLE public.feedback_complaints ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public anonymous insert feedback" ON public.feedback_complaints;
+CREATE POLICY "Allow public anonymous insert feedback" 
+ON public.feedback_complaints FOR INSERT TO anon, authenticated WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow full access feedback for authenticated staff" ON public.feedback_complaints;
+CREATE POLICY "Allow full access feedback for authenticated staff" 
+ON public.feedback_complaints FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
 -- ==============================================================================
 -- REALTIME REPLICATION SETUP (SAFE DO BLOCK)
 -- ==============================================================================
@@ -219,6 +245,11 @@ BEGIN
 
     BEGIN
         ALTER PUBLICATION supabase_realtime ADD TABLE public.system_health_logs;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.feedback_complaints;
     EXCEPTION WHEN duplicate_object THEN NULL;
     END;
 END $$;
