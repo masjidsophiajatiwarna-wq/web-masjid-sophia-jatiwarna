@@ -1319,7 +1319,7 @@
                 <div class="user-profile-box">
                     <div>
                         <div class="user-info-name" id="display-user-email">admin@dkm.com</div>
-                        <div class="user-info-role">Pengurus Resmi DKM</div>
+                        <div class="user-info-role" id="display-user-role">Pengurus Resmi DKM</div>
                     </div>
                 </div>
                 <button class="btn-logout" onclick="handleLogout()">
@@ -2038,6 +2038,17 @@
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('admin-app').style.display = 'block';
             document.getElementById('display-user-email').textContent = user.email || 'Pengurus DKM';
+
+            const role = getUserRole();
+            const roleElem = document.getElementById('display-user-role');
+            if (roleElem) roleElem.textContent = getUserRoleLabel(role);
+
+            // Auto-focus division filter for PJ role
+            const userDiv = getUserDivision();
+            const divSelect = document.getElementById('task-filter-division');
+            if (divSelect && userDiv !== 'ALL') {
+                divSelect.value = userDiv;
+            }
 
             // Restore active tab from URL Hash or localStorage (Memory Browser)
             const hashTab = window.location.hash ? window.location.hash.replace('#', '').trim() : null;
@@ -2820,6 +2831,39 @@
             if (email.includes('keamanan')) return 'PJ_KEAMANAN';
             if (email.includes('kebersihan')) return 'PJ_KEBERSIHAN';
             return 'STAFF';
+        }
+
+        function getUserRoleLabel(role) {
+            const labels = {
+                'SUPER_ADMIN': 'Super Administrator',
+                'SUPER_USER': 'Super User (Pimpinan)',
+                'KETUA_DKM': 'Ketua DKM Sophia',
+                'PJ_MEDIA': 'PJ Media & Dakwah',
+                'PJ_LOGISTIK': 'PJ Logistik & Sarpras',
+                'PJ_KEBERSIHAN': 'PJ Kebersihan & Sanitasi',
+                'PJ_SANTRI': 'PJ Pembinaan Santri',
+                'PJ_MUSAFIR': 'PJ Pelayanan Musafir',
+                'PJ_IBADAH': 'PJ Ibadah & Acara',
+                'PJ_KEUANGAN': 'PJ Keuangan & ZISWAF',
+                'PJ_KEAMANAN': 'PJ Keamanan',
+                'STAFF': 'Pengurus Resmi DKM'
+            };
+            return labels[role] || 'Pengurus Resmi DKM';
+        }
+
+        function getUserDivision() {
+            const role = getUserRole();
+            const map = {
+                'PJ_MEDIA': 'Divisi Media & Dakwah',
+                'PJ_LOGISTIK': 'Divisi Logistik & Sarpras',
+                'PJ_SANTRI': 'Divisi Pembinaan Santri Tahfidz',
+                'PJ_MUSAFIR': 'Divisi Pelayanan Musafir & Sosial',
+                'PJ_IBADAH': 'Divisi Ibadah & Acara',
+                'PJ_KEUANGAN': 'Divisi Keuangan & ZISWAF',
+                'PJ_KEAMANAN': 'Divisi Keamanan',
+                'PJ_KEBERSIHAN': 'Divisi Kebersihan & Sanitasi'
+            };
+            return map[role] || 'ALL';
         }
 
         function canApproveTask() {
