@@ -4,6 +4,23 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.2] - 2026-08-22
+
+### Mobile Grabber Table Engine, 3-Tier Activity Presence, Single-Write Login, dan Modal Scroll-Lock
+
+#### Penambahan & Pembaruan (Added & Updated)
+- `[TABLE_DRAG_GRABBER]` Menambahkan fungsionalitas **Drag-to-Scroll (Grabber Engine)** pada seluruh kontainer tabel `.table-responsive` dengan kursor interaktif `grab` / `grabbing` serta dukungan *fluid native touch scroll* untuk kenyamanan navigasi perangkat seluler (*Mobile-First UI*).
+- `[ACTIVITY_PRESENCE_3TIER]` Mengimplementasikan arsitektur *Activity Event-Listener* berbasis standar SIABE-PORTO (Zero Server Overhead):
+  - **🟢 Online:** Pengurus aktif berinteraksi di portal dalam waktu $< 1$ jam.
+  - **🟡 Idle (Standby):** Tidak ada interaksi selama $1$ hingga $3$ jam.
+  - **⚪ Offline:** Tidak ada aktivitas $> 3$ jam atau belum login.
+  - **Inactivity Timeout:** Sesi otomatis diakhiri dan dipaksa logout setelah 3 jam pasif total demi keamanan data DKM.
+- `[SINGLE_WRITE_LOGIN_BROADCAST]` Menghilangkan *polling/heartbeat* berulang: Pembaruan `last_login` ke database Supabase hanya dieksekusi 1 kali saat proses login, disertai siaran instan WebSocket `USER_LOGIN_EVENT` yang menyinkronkan status online ke seluruh browser/tab pengurus lain secara instan tanpa *refresh*.
+- `[ACTION_BUTTON_SIMPLIFICATION]` Menyederhanakan label tombol aksi tabel akun menjadi **`Edit`** (ikon `fa-user-pen`) untuk tampilan tabel yang lebih ringkas dan proporsional.
+- `[MODAL_BODY_SCROLL_LOCK]` Mengunci scroll latar belakang halaman (`overflow: hidden`) secara serempak saat modal popup mana pun terbuka, dan memulihkannya kembali saat seluruh modal ditutup.
+
+---
+
 ## [1.7.1] - 2026-08-22
 
 ### Perbaikan Modal Dialog Box Account Control, Deteksi Status Online, dan Log Login Terakhir

@@ -538,10 +538,20 @@
             border-color: var(--color-gold-deep);
         }
 
-        /* Data Tables */
+        /* Data Tables & Drag Grabber Mobile-First */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
+            cursor: grab;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-gold-deep) #F1F5F9;
+        }
+
+        .table-responsive.is-grabbing {
+            cursor: grabbing;
+            user-select: none;
         }
 
         .admin-table {
@@ -3564,11 +3574,30 @@
                 }
             }
 
-            // Record Last Login in Supabase DB
-            if (sbClient && user && user.email) {
-                sbClient.from('admin_users').update({ 
-                    last_login: new Date().toISOString() 
-                }).eq('email', user.email.toLowerCase()).then(() => {});
+            // Record Last Login (Single Write to Supabase DB & Broadcast Event)
+            const nowISO = new Date().toISOString();
+            registerUserActivity();
+            if (user && user.email) {
+                const userEmailClean = user.email.toLowerCase().trim();
+                localStorage.setItem('masjid_sophia_last_login_' + userEmailClean, nowISO);
+
+                if (sbClient) {
+                    sbClient.from('admin_users').update({ 
+                        last_login: nowISO 
+                    }).eq('email', userEmailClean).then(() => {});
+                }
+
+                if (realtimeHub) {
+                    realtimeHub.send({
+                        type: 'broadcast',
+                        event: 'USER_LOGIN_EVENT',
+                        payload: {
+                            email: userEmailClean,
+                            timestamp: nowISO,
+                            full_name: getUserDisplayName(user)
+                        }
+                    });
+                }
             }
 
             // Strict Role-Based Visibility: Manajemen Pengguna DKM (SUPER_ADMIN & KETUA_DKM Only)
@@ -4157,6 +4186,18 @@
                     .on('broadcast', { event: 'USER_SYNC' }, ({ payload }) => {
                         if (payload) {
                             handleRealtimeAdminUserChange({ eventType: 'UPDATE', new: payload });
+                        }
+                    })
+                    .on('broadcast', { event: 'USER_LOGIN_EVENT' }, ({ payload }) => {
+                        console.log('[Realtime Broadcast] USER_LOGIN_EVENT received:', payload);
+                        if (payload && payload.email) {
+                            const email = payload.email.toLowerCase().trim();
+                            localStorage.setItem('masjid_sophia_last_login_' + email, payload.timestamp);
+                            const target = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === email);
+                            if (target) {
+                                target.last_login = payload.timestamp;
+                            }
+                            renderAdminUsersTable();
                         }
                     })
                     .subscribe((status) => {
@@ -6355,10 +6396,13 @@
             }
 
             modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function closeTaskModal() {
             document.getElementById('task-modal').style.display = 'none';
+            const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
+            if (!anyOpen) document.body.style.overflow = '';
         }
 
         async function handleSaveTask(e) {
@@ -6518,10 +6562,13 @@
             `;
 
             modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function closeTaskDetailModal() {
             document.getElementById('task-detail-modal').style.display = 'none';
+            const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
+            if (!anyOpen) document.body.style.overflow = '';
         }
 
         // ==========================================================================
@@ -6907,6 +6954,77 @@
             return map[division] || "STAFF";
         }
 
+        // ==========================================================================
+        // ACTIVITY EVENT-LISTENER & INACTIVITY AUTO-LOGOUT (STANDAR SIABE-PORTO)
+        // ==========================================================================
+        let lastUserActivityTimestamp = Date.now();
+        const INACTIVITY_TIMEOUT_MS = 3 * 60 * 60 * 1000; // 3 Jam
+
+        function registerUserActivity() {
+            lastUserActivityTimestamp = Date.now();
+            try {
+                localStorage.setItem('masjid_sophia_last_activity', lastUserActivityTimestamp.toString());
+            } catch (e) {}
+        }
+
+        ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart', 'click'].forEach(evt => {
+            document.addEventListener(evt, () => {
+                if (Date.now() - lastUserActivityTimestamp > 10000) {
+                    registerUserActivity();
+                }
+            }, { passive: true });
+        });
+
+        // Auto-logout setelah 3 jam tidak ada aktivitas
+        setInterval(() => {
+            if (currentUser && document.getElementById('admin-app') && document.getElementById('admin-app').style.display !== 'none') {
+                const idleMs = Date.now() - lastUserActivityTimestamp;
+                if (idleMs >= INACTIVITY_TIMEOUT_MS) {
+                    alert('Sesi Anda telah berakhir karena tidak ada aktivitas selama 3 jam. Silakan masuk kembali.');
+                    handleLogout();
+                }
+            }
+        }, 60000);
+
+        // ==========================================================================
+        // TABLE DRAG GRABBER ENGINE (MOBILE-FIRST UI)
+        // ==========================================================================
+        function initTableGrabbers() {
+            document.querySelectorAll('.table-responsive').forEach(slider => {
+                if (slider._grabberInitialized) return;
+                slider._grabberInitialized = true;
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+
+                slider.addEventListener('mousedown', (e) => {
+                    if (['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA', 'I'].includes(e.target.tagName) || e.target.closest('button, a, select, input, .badge-role')) return;
+                    isDown = true;
+                    slider.classList.add('is-grabbing');
+                    startX = e.pageX - slider.offsetLeft;
+                    scrollLeft = slider.scrollLeft;
+                });
+
+                slider.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    slider.classList.remove('is-grabbing');
+                });
+
+                slider.addEventListener('mouseup', () => {
+                    isDown = false;
+                    slider.classList.remove('is-grabbing');
+                });
+
+                slider.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - slider.offsetLeft;
+                    const walk = (x - startX) * 1.5;
+                    slider.scrollLeft = scrollLeft - walk;
+                });
+            });
+        }
+
         async function loadAdminUsers(forceRefresh = false) {
             try {
                 if (sbClient) {
@@ -6948,11 +7066,16 @@
             renderAdminUsersTable();
         }
 
-        function formatLastLoginRelative(timestamp, isOnline = false) {
+        function formatLastLoginRelative(timestamp, isOnline = false, isIdle = false) {
             if (isOnline) {
                 const now = new Date(timestamp || Date.now());
                 const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
                 return `<span style="font-weight: 800; color: #047857;"><span class="live-dot" style="margin-right: 4px;"></span> Hari ini, ${timeStr} <span style="font-size: 0.72rem; font-weight: 600; color: #059669;">(Sedang Aktif)</span></span>`;
+            }
+            if (isIdle) {
+                const now = new Date(timestamp || Date.now());
+                const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+                return `<span style="font-weight: 800; color: #B45309;"><span class="live-dot" style="background: #F59E0B; margin-right: 4px;"></span> Hari ini, ${timeStr} <span style="font-size: 0.72rem; font-weight: 600; color: #D97706;">(Standby / Idle)</span></span>`;
             }
             if (!timestamp) return '<span style="color: var(--color-charcoal-muted); font-size: 0.75rem;">Belum pernah login</span>';
             const date = new Date(timestamp);
@@ -6963,7 +7086,6 @@
             const diffMin = Math.floor(diffMs / 60000);
             const diffHours = Math.floor(diffMin / 60);
 
-            if (diffMin < 2) return '<span style="font-weight: 800; color: #047857;">Baru saja</span>';
             if (diffMin < 60) return `<span style="font-weight: 700; color: #047857;">${diffMin} menit yang lalu</span>`;
             if (diffHours < 24) return `<span style="font-weight: 700; color: var(--color-charcoal);">Hari ini, ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}</span>`;
 
@@ -6997,13 +7119,14 @@
                     if (isCurrentLoggedIn) return true;
                     if (!u.last_login) return false;
                     const diffMin = (Date.now() - new Date(u.last_login).getTime()) / 60000;
-                    return diffMin <= 15;
+                    return diffMin <= 60;
                 }).length;
                 onlineUsersEl.textContent = Math.max(1, onlineCount);
             }
 
             if (filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">Tidak ada data pengurus yang sesuai filter pencarian.</td></tr>`;
+                initTableGrabbers();
                 return;
             }
 
@@ -7018,13 +7141,25 @@
                 const isActive = u.is_active !== false;
 
                 const isCurrentLoggedIn = currentUser && currentUser.email && currentUser.email.toLowerCase().trim() === (u.email || '').toLowerCase().trim();
-                const isOnline = isCurrentLoggedIn || (u.last_login && ((Date.now() - new Date(u.last_login).getTime()) / 60000) <= 15);
+                let diffMinutes = 999999;
+                if (isCurrentLoggedIn) {
+                    diffMinutes = (Date.now() - lastUserActivityTimestamp) / 60000;
+                } else if (u.last_login) {
+                    diffMinutes = (Date.now() - new Date(u.last_login).getTime()) / 60000;
+                }
 
                 let statusBadge;
+                let isOnline = false;
+                let isIdle = false;
+
                 if (!isActive) {
                     statusBadge = `<span class="badge-status-offline" style="background: #FEF2F2; color: #DC2626; border-color: #FECACA;"><i class="fa-solid fa-ban" style="font-size: 0.65rem;"></i> Nonaktif</span>`;
-                } else if (isOnline) {
+                } else if (diffMinutes < 60) {
+                    isOnline = true;
                     statusBadge = `<span class="badge-status-online"><span class="live-dot"></span> Online</span>`;
+                } else if (diffMinutes <= 180) {
+                    isIdle = true;
+                    statusBadge = `<span class="badge-status-idle" style="background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 800; padding: 0.15rem 0.5rem; border-radius: 9999px;"><span class="live-dot" style="background: #F59E0B; box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);"></span> Idle</span>`;
                 } else {
                     statusBadge = `<span class="badge-status-offline"><i class="fa-solid fa-circle" style="font-size: 0.5rem; color: #94A3B8;"></i> Offline</span>`;
                 }
@@ -7050,12 +7185,12 @@
                             ${statusBadge}
                         </td>
                         <td>
-                            ${formatLastLoginRelative(u.last_login, isOnline)}
+                            ${formatLastLoginRelative(u.last_login, isOnline, isIdle)}
                         </td>
                         <td style="text-align: right;">
                             <div style="display: inline-flex; gap: 0.35rem; align-items: center;">
-                                <button type="button" class="btn-table-action" onclick="openEditUserModal('${u.id}')" title="Edit Data & Hak Akses Modul (RBAC)">
-                                    <i class="fa-solid fa-user-gear"></i> Hak Akses
+                                <button type="button" class="btn-table-action" onclick="openEditUserModal('${u.id}')" title="Edit Data Pengurus & Hak Akses">
+                                    <i class="fa-solid fa-user-pen"></i> Edit
                                 </button>
                                 <button type="button" class="btn-table-action warning" onclick="openResetUserConfirmModal('${u.id}')" title="Reset Akun ke Kredensial Default (Skenario Resign PIC)">
                                     <i class="fa-solid fa-arrow-rotate-left"></i> Reset
@@ -7068,6 +7203,8 @@
                     </tr>
                 `;
             }).join('');
+
+            initTableGrabbers();
         }
 
         function handleAccountSearchFilter() {
@@ -7078,12 +7215,19 @@
         // MODAL 1: TAMBAH PENGURUS BARU (PATTERN-BASED AUTO GENERATOR)
         // ==========================================================================
         function openAddUserModal() {
-            document.getElementById('modal-admin-add-user').style.display = 'flex';
+            const modal = document.getElementById('modal-admin-add-user');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
             handleDivisionChangeForAddUser();
         }
 
         function closeAddUserModal() {
-            document.getElementById('modal-admin-add-user').style.display = 'none';
+            const modal = document.getElementById('modal-admin-add-user');
+            if (modal) modal.style.display = 'none';
+            const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
+            if (!anyOpen) document.body.style.overflow = '';
         }
 
         function handleDivisionChangeForAddUser() {
@@ -7209,11 +7353,18 @@
                 }).join('');
             }
 
-            document.getElementById('modal-admin-edit-user').style.display = 'flex';
+            const modal = document.getElementById('modal-admin-edit-user');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         function closeEditUserModal() {
-            document.getElementById('modal-admin-edit-user').style.display = 'none';
+            const modal = document.getElementById('modal-admin-edit-user');
+            if (modal) modal.style.display = 'none';
+            const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
+            if (!anyOpen) document.body.style.overflow = '';
         }
 
         function applyDivisionRBACTemplate() {
@@ -7319,11 +7470,18 @@
             document.getElementById('reset-target-default-email').textContent = seed.email;
             document.getElementById('reset-target-default-name').textContent = seed.full_name;
 
-            document.getElementById('modal-confirm-reset-user').style.display = 'flex';
+            const modal = document.getElementById('modal-confirm-reset-user');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         function closeResetUserModal() {
-            document.getElementById('modal-confirm-reset-user').style.display = 'none';
+            const modal = document.getElementById('modal-confirm-reset-user');
+            if (modal) modal.style.display = 'none';
+            const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
+            if (!anyOpen) document.body.style.overflow = '';
         }
 
         async function executeResetUserToDefault() {
@@ -7434,11 +7592,14 @@
 
             switchSelfProfileTab('general');
             modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function closeSelfProfileModal() {
             const modal = document.getElementById('modal-user-self-profile');
             if (modal) modal.style.display = 'none';
+            const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
+            if (!anyOpen) document.body.style.overflow = '';
         }
 
         function switchSelfProfileTab(tab) {
@@ -7618,6 +7779,10 @@
             loadAllAdminData();
             loadAdminUsers(true);
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initTableGrabbers();
+        });
     </script>
 </body>
 </html>
