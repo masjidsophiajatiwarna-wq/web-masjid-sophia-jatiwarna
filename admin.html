@@ -4168,7 +4168,7 @@
             e.target.value = '';
         }
 
-        function sendChatMessageWithAttachment(url, type) {
+        async function sendChatMessageWithAttachment(url, type) {
             const sender = currentUser ? getUserDisplayName(currentUser) : 'Pengurus DKM';
             const role = getUserRole();
             const div = getUserDivision();
