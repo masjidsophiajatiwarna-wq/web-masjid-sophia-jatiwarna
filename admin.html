@@ -2802,11 +2802,44 @@
             }
         }
 
+        // ==========================================================================
+        // RBAC PERMISSION HELPERS (APPROVAL RULES & ROLE ENFORCEMENT)
+        // ==========================================================================
+        function getUserRole() {
+            if (!currentUser || !currentUser.email) return 'STAFF';
+            const email = currentUser.email.toLowerCase();
+            if (email.includes('superadmin') || email === 'habibmaulana@masjidsophiajatiwarna.com') return 'SUPER_ADMIN';
+            if (email.includes('superuser')) return 'SUPER_USER';
+            if (email.includes('dkm') || email.includes('ketua')) return 'KETUA_DKM';
+            if (email.includes('media')) return 'PJ_MEDIA';
+            if (email.includes('logistik')) return 'PJ_LOGISTIK';
+            if (email.includes('santri')) return 'PJ_SANTRI';
+            if (email.includes('musafir')) return 'PJ_MUSAFIR';
+            if (email.includes('ibadah')) return 'PJ_IBADAH';
+            if (email.includes('keuangan')) return 'PJ_KEUANGAN';
+            if (email.includes('keamanan')) return 'PJ_KEAMANAN';
+            if (email.includes('kebersihan')) return 'PJ_KEBERSIHAN';
+            return 'STAFF';
+        }
+
+        function canApproveTask() {
+            const role = getUserRole();
+            return ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM'].includes(role);
+        }
+
         async function updateTaskStatus(taskId, newStatus) {
             const task = getTaskById(taskId);
             if (!task || task.status === newStatus) return;
 
             const oldStatus = task.status;
+
+            // Strict Approval Rule: Only Ketua DKM, Super Admin, and Super User can move Review -> Completed
+            if (newStatus === 'COMPLETED' && oldStatus === 'REVIEW' && !canApproveTask()) {
+                alert('Otorisasi Terbatas: Hanya Ketua DKM, Super Admin, atau Super User yang berwenang memberikan persetujuan (Approval) tugas ke status Selesai.');
+                renderAllTaskViews();
+                return;
+            }
+
             task.status = newStatus;
             if (newStatus === 'COMPLETED') task.progress_pct = 100;
             else if (newStatus === 'PENDING' && task.progress_pct === 100) task.progress_pct = 0;
@@ -3403,6 +3436,11 @@
         }
 
         async function deleteTaskPermanently(taskId) {
+            if (!canApproveTask()) {
+                alert('Otorisasi Terbatas: Hanya Super Admin, Super User, atau Pimpinan DKM yang berwenang menghapus tugas secara permanen.');
+                return;
+            }
+
             const task = getTaskById(taskId);
             if (!task) return;
 
