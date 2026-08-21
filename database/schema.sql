@@ -127,54 +127,67 @@ CREATE TABLE IF NOT EXISTS public.admin_users (
 );
 
 -- ==============================================================================
--- ROW LEVEL SECURITY (RLS) POLICIES
+-- ==============================================================================
+-- ROW LEVEL SECURITY (RLS) POLICIES (IDEMPOTENT)
 -- ==============================================================================
 
 -- A. donations
 ALTER TABLE public.donations ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public anonymous insert donation" ON public.donations;
 CREATE POLICY "Allow public anonymous insert donation" 
 ON public.donations FOR INSERT TO anon, authenticated WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Allow public read verified prayers" ON public.donations;
 CREATE POLICY "Allow public read verified prayers" 
 ON public.donations FOR SELECT TO anon, authenticated USING (payment_status = 'VERIFIED');
 
+DROP POLICY IF EXISTS "Allow full access for authenticated staff" ON public.donations;
 CREATE POLICY "Allow full access for authenticated staff" 
 ON public.donations FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- B. jadwal_petugas
 ALTER TABLE public.jadwal_petugas ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read active jadwal" ON public.jadwal_petugas;
 CREATE POLICY "Allow public read active jadwal" 
 ON public.jadwal_petugas FOR SELECT TO anon, authenticated USING (is_active = TRUE);
 
+DROP POLICY IF EXISTS "Allow full access jadwal for authenticated staff" ON public.jadwal_petugas;
 CREATE POLICY "Allow full access jadwal for authenticated staff" 
 ON public.jadwal_petugas FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- C. artikel_berita
 ALTER TABLE public.artikel_berita ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read published articles" ON public.artikel_berita;
 CREATE POLICY "Allow public read published articles" 
 ON public.artikel_berita FOR SELECT TO anon, authenticated USING (is_published = TRUE);
 
+DROP POLICY IF EXISTS "Allow full access articles for authenticated staff" ON public.artikel_berita;
 CREATE POLICY "Allow full access articles for authenticated staff" 
 ON public.artikel_berita FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- D. team_tasks
 ALTER TABLE public.team_tasks ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read team tasks for roadmap" ON public.team_tasks;
 CREATE POLICY "Allow public read team tasks for roadmap" 
 ON public.team_tasks FOR SELECT TO anon, authenticated USING (true);
 
+DROP POLICY IF EXISTS "Allow full access tasks for authenticated staff" ON public.team_tasks;
 CREATE POLICY "Allow full access tasks for authenticated staff" 
 ON public.team_tasks FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- E. system_health_logs
 ALTER TABLE public.system_health_logs ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read system health" ON public.system_health_logs;
 CREATE POLICY "Allow public read system health" 
 ON public.system_health_logs FOR SELECT TO anon, authenticated USING (true);
 
+DROP POLICY IF EXISTS "Allow insert system health logs" ON public.system_health_logs;
 CREATE POLICY "Allow insert system health logs" 
 ON public.system_health_logs FOR INSERT TO anon, authenticated WITH CHECK (true);
 
 -- F. admin_users
 ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow read admin profiles for authenticated" ON public.admin_users;
 CREATE POLICY "Allow read admin profiles for authenticated" 
 ON public.admin_users FOR SELECT TO authenticated USING (true);
 
@@ -185,9 +198,27 @@ CREATE POLICY "Allow public read and update media checklist"
 ON public.media_checklists FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
 -- ==============================================================================
--- REALTIME REPLICATION SETUP
+-- REALTIME REPLICATION SETUP (SAFE DO BLOCK)
 -- ==============================================================================
-ALTER PUBLICATION supabase_realtime ADD TABLE public.media_checklists;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.donations;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.team_tasks;
-ALTER PUBLICATION supabase_realtime ADD TABLE public.system_health_logs;
+DO $$
+BEGIN
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.media_checklists;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.donations;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.team_tasks;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.system_health_logs;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+END $$;
