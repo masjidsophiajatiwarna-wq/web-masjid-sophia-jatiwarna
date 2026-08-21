@@ -7,7 +7,7 @@
 **Domain Utama Produksi:** `https://masjidsophiajatiwarna.com/`  
 **Domain Sekunder (Redirect 301):** `https://masjidsophiajatiwarna.my.id/`, `https://masjidsophia.com/`  
 **Subdomain Pemantauan & Admin:** `https://progdev.masjidsophiajatiwarna.com/`, `https://admin.masjidsophiajatiwarna.com/`  
-**Versi Rencana Induk:** v3.0  
+**Versi Rencana Induk:** v4.0 (Full Operational PJ Suite & Comprehensive Architecture)  
 **Terakhir Diperbarui:** 2026-08-21  
 
 ---
@@ -16,30 +16,47 @@
 
 Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu, dan berstandar tinggi yang melayani dua ranah utama:
 
-1. **Layanan Informasi & Filantropi Terbuka untuk Publik (Benchmark: Masjid Istiqlal Jakarta):** Memberikan kemudahan akses bagi para musafir yang melintas, transparansi penyaluran infaq/sedekah harian (Makan Berjamaah Gratis 70+ porsi/hari ba'da Dzuhur & Pembinaan Santri Tahfidz), jadwal shalat presisi lokal hisab Kemenag RI, rotasi petugas ibadah, galeri multimedia, kolom pengaduan & saran jamaah, serta fasilitas masjid 24 jam.
-2. **Sistem Manajemen Operasional Terpadu DKM (Web Admin & Employee Dashboard, Benchmark: SIABE-PORTO):** Menyediakan platform kolaboratif bagi jajaran pengurus DKM untuk mengelola tugas harian melalui 5 mode tampilan (Kanban/Gantt/Calendar/Table/Archive), riwayat pengelolaan realtime, chat koordinasi internal multi-arah, CMS mandiri tanpa coding (Self-Sustain), pemantauan kesehatan arsitektur 7 pilar cloud, dan pembukuan arus kas donasi masuk.
+1. **Layanan Informasi & Filantropi Terbuka untuk Publik (Benchmark: Masjid Istiqlal Jakarta & Web-UMAR Artikel):**
+   - Portal umat & musafir mandiri bertema terang (*Pure White*, *Soft Cream Sand*, *Charcoal*, dan *Sophia Gold*).
+   - Hisab jadwal shalat presisi lokal Kemenag Jatiwarna dengan *Live Countdown Timer*.
+   - Program Sedekah Makan Dzuhur (70+ porsi/hari) & Pembinaan Santri Tahfidz.
+   - Kanal Donasi 1-Click Copy Rekening BSI `7235464297` & QRIS SEDEKAH MAKAN (NMID `ID2025401816769`).
+   - Direktori Berita & Artikel Dakwah (`artikel.html` & `artikel-detail.html`) dengan pencarian instan, filter kategori, estimasi waktu baca, dan tombol share.
+   - Galeri Multimedia (`galeri.html`) terhubung ke ImageKit CDN 20GB.
+   - Kanal Pengaduan, Kotak Saran, dan Aspirasi Fasilitas Jamaah.
+   - Layanan Musafir 24 Jam: Kamar mandi bersih, area istirahat, dispenser air minum, dan rute lokasi samping UMAR Travel.
+2. **Sistem Manajemen Operasional Terpadu DKM & Employee Dashboard (Benchmark: SIABE-PORTO & Standard Modul Odoo/Masjid):**
+   - **Task Management Karyawan 5 View + 2 Panel:** Kanban, Gantt Timeline (`frappe-gantt`), Calendar Spanning Bars, All Tasks Table (Filter/Sort/Bulk Archive/CSV), Archive View per divisi, Riwayat Pengelolaan Realtime (CDC WebSocket 100% tanpa refresh), dan Chat Koordinasi Multi-Arah antar semua PJ & Ketua DKM.
+   - **Modul Operasional Khusus per Penanggung Jawab (PJ) Divisi:**
+     - **PJ Media & Dakwah:** Content & Article Studio (Quill.js Rich Text, slug generator, ImageKit WebP cover), Dynamic Homepage Media Manager, dan Lightbox Gallery.
+     - **PJ Logistik & Sarpras:** Manajemen Porsi Makan Dzuhur (kebutuhan bahan, porsi terbagi, logistik dapur) & Manajemen Aset/Inventaris Masjid (nomor inventaris, kondisi aset, lokasi, riwayat servis).
+     - **PJ Santri & Pendidikan:** Data Profil Santri Tahfidz, Absensi Halaqah (Subuh & Maghrib), Mutaba'ah Setoran Hafalan Qur'an (Juz/Surat/Ayat/Tajwid), dan Rapor Perkembangan.
+     - **PJ Musafir & Pelayanan:** Buku Tamu Musafir Digital, Log Tamu Menginap/Istirahat Darurat 24 Jam, dan Log Penitipan Kendaraan & Loker Barang.
+     - **PJ Ibadah & Acara:** Kalibrasi Hisab & Menit Ikhtiyat, Rotasi Petugas Harian (Imam 5 waktu, Muadzin, Khatib Jumat, Bilal), dan Kalender Acara/Kajian Tematik/PHBI + Arsip Khutbah.
+     - **PJ Keuangan (Accounting Suite):** Buku Kas Masuk (Infaq, QRIS, BSI, Tunai), Buku Kas Keluar (Operasional, Dapur, Sarpras, Santunan), Rekonsiliasi Donasi Otomatis, Laporan Arus Kas, dan Neraca Kas Transparan (Export CSV & Print PDF).
+     - **PJ Keamanan:** Log Piket Keamanan 24 Jam, Patroli Parkiran, Input Laporan Insiden, dan Unggah Bukti Foto/Video ke ImageKit CDN (auto WebP/WebM).
+     - **PJ Kebersihan:** Checklist Sanitasi Harian (Wudhu, Toilet, Ruang Shalat Utama, Halaman), Input Laporan Kebersihan, Unggah Bukti Foto/Video ke ImageKit CDN (auto WebP/WebM), dan Kontrol Stok Bahan Pembersih.
+   - **Super Admin Multi-Cloud 7 Pilar Monitor:** Pemantauan real-time kuota free-tier (Supabase DB & Storage, Vercel Bandwidth, ImageKit 20GB, Resend Email API, GitHub Actions, Cloudflare, Google Drive) dengan kalkulasi dinamis `{ count: 'exact', head: true }` dan panduan tindakan preventif.
 
 ---
 
 ## 2. Peta Fase Implementasi Teknis
 
 ```text
-[FASE 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid]
+[FASE 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid] (0% - Dikelola Tim Media)
        |
 [FASE 1: Inisialisasi Infrastruktur, Berkas Tata Kelola & Monitoring] (STATUS: SELESAI 100%)
        |
-[FASE 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS] (STATUS: SELESAI 100%)
+[FASE 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS] (STATUS: SELESAI 90%)
        |
-[FASE 3: Pengembangan Frontend Web Portal Publik & Modul Shalat] (STATUS: DALAM PROSES)
+[FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: DALAM PROSES)
        |
-[FASE 4: Pengembangan Web Admin DKM & Dashboard Manajemen Tugas] (STATUS: DALAM PROSES)
+[FASE 4: Web Admin DKM, Employee Dashboard, 5 View Task & Suite Modul PJ] (STATUS: DALAM PROSES)
        |
 [FASE 5: Pengujian Terpadu, Audit Keamanan & User Acceptance Testing]
        |
 [FASE 6: Finalisasi Produksi, SEO, Email Routing, DNS Cutover & Go-Live]
 ```
-
-Catatan: Urutan fase bersifat fleksibel -- eksekusi dapat dilakukan secara paralel dan prioritas fase dapat dipindahkan sesuai keputusan Super Admin.
 
 ---
 
@@ -51,263 +68,192 @@ Catatan: Urutan fase bersifat fleksibel -- eksekusi dapat dilakukan secara paral
 - **Daftar Tugas:**
   - [x] Audit aset logo resmi format vektor SVG (`logo_masjid_black.svg`, `logo_masjid_white.svg`) dan PNG transparan.
   - [x] Verifikasi paket Favicon multi-ukuran (16x16, 32x32, Apple Touch Icon, Android Chrome, site.webmanifest).
-  - [ ] Kurasi galeri foto riil:
-    - Dokumentasi program Makan Berjamaah Gratis ba'da Dzuhur (pemberian makanan kepada musafir dan ojek online).
-    - Dokumentasi fasilitas 24 jam (area wudhu higienis, karpet ruang shalat utama, dispenser air minum, rest area).
-    - Dokumentasi halaqah pembinaan santri tahfidz Al-Qur'an.
+  - [ ] Kurasi galeri foto riil (Makan Siang Gratis, fasilitas 24 jam, santri tahfidz, ruang utama).
   - [ ] Konversi dan kompresi seluruh aset foto ke format WebP teroptimasi untuk performa web.
 
 ---
 
 ### Fase 1: Inisialisasi Infrastruktur, Berkas Tata Kelola & Monitoring
-- **Tujuan:** Membangun fondasi repositori, standarisasi dokumen proyek, dan pelacak progres visual interaktif.
 - **Status:** Selesai (100%)
 - **Daftar Tugas:**
-  - [x] Penyusunan berkas acuan `BRAND_GUIDE.md` (Light Theme: `#FFFFFF`, `#F8F6F0`, `#1D1D1B`, `#E3C466`, `#C9A84C`).
+  - [x] Penyusunan berkas acuan `BRAND_GUIDE.md` (Tema Terang: `#FFFFFF`, `#F8F6F0`, `#1D1D1B`, `#E3C466`, `#C9A84C`).
   - [x] Penyusunan `Master-Fullstack-Web-App-Services-v1.md` (Arsitektur 7 Pilar).
-  - [x] Pembuatan `.gitignore` komprehensif untuk pengamanan kredensial dan eliminasi file cache.
-  - [x] Pembuatan `README.md` terstruktur dengan panduan instalasi, arsitektur, dan matriks RBAC.
-  - [x] Pembuatan `CHANGELOG.md` versi rilis awal v1.0.0.
-  - [x] Pembuatan `implementation-plan.md` (berkas rencana induk ini).
-  - [x] Pembuatan antarmuka visual pelacak progres `progress-implementation-plan.html` (bebas emoji, interaktif, responsif).
-  - [x] Panduan manual konfigurasi Redirect 301 di Cloudflare DNS untuk domain sekunder.
-  - [x] Panduan manual perintah Git step-by-step untuk inisialisasi repositori dan push pertama ke GitHub.
+  - [x] Pembuatan `.gitignore`, `README.md`, dan `CHANGELOG.md`.
+  - [x] Pembuatan `implementation-plan.md` & antarmuka `progress-implementation-plan.html`.
+  - [x] Konfigurasi Redirect 301 di Cloudflare DNS untuk domain sekunder (`masjidsophia.com`, `masjidsophiajatiwarna.my.id`).
 
 ---
 
 ### Fase 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS
-- **Tujuan:** Merancang skema PostgreSQL, sistem autentikasi pengurus, penyimpanan media, Serverless Functions, dan keamanan Row Level Security (RLS) bertingkat.
-- **Status:** Selesai (100%) untuk skema inti. Migrasi tambahan diperlukan untuk modul Task Management v2.
+- **Status:** 90% Selesai (Skema Inti Selesai, Migrasi Skema Lengkap Modul PJ Siap Dijalankan)
 - **Daftar Tugas:**
-  - [x] **Master Skema PostgreSQL (`database/schema.sql`):**
-    - `media_checklists`: Pelacak kurasi 18 aset dokumentasi foto & video terhubung Google Drive dengan Real-Time WebSocket.
-    - `donations`: Perekaman formulir donasi incognito, sedekah makan siang gratis, dan infaq operasional dengan kode unik verifikasi.
-    - `jadwal_petugas`: Jadwal rotasi harian/mingguan Imam Rawatib, Muadzin, Khatib Jumat, dan Penceramah Kajian.
-    - `artikel_berita`: CMS warta kegiatan dan artikel dakwah dengan slug unik dan status publikasi.
-    - `team_tasks`: Manajemen produktivitas tugas DKM (tenggat waktu, PIC, divisi, status Kanban).
-    - `system_health_logs`: Monitoring kesehatan sistem (Supabase latency, Vercel Edge, ImageKit 20GB quota, Resend gateway).
-    - `admin_users`: Manajemen hak akses pengurus terikat peran RBAC (Super Admin, Ketua DKM, PJ Media, Bendahara, Staff).
-    - `feedback_complaints`: Pengaduan & kotak saran jamaah.
-  - [x] **Kebijakan Row Level Security (Zero-Trust Hardening):**
-    - Publik (`anon`): Akses SELECT pada artikel, jadwal shalat, petugas, status checklist media, dan donasi terverifikasi. Akses INSERT pada formulir donasi dan system health.
-    - Terautentikasi (`authenticated`): Hak akses penuh CRUD untuk modul administratif dan manajemen tugas.
-  - [x] **Vercel Serverless Functions Suite (`/api`):**
-    - `/api/health.js`: Pemeriksaan kesehatan sistem, latensi koneksi Supabase, kuota ImageKit 20GB, dan status Vercel Edge.
-    - `/api/donasi.js`: Ingestion konfirmasi donasi instan dengan generator kode unik acak 3-digit ke Supabase.
-    - `/api/send-receipt.js`: Pengiriman kuitansi donasi resmi secara instan ke email donatur melalui Resend API.
-    - `/api/pengaduan.js`: Ingestion pengaduan dan saran jamaah dengan notifikasi email ke DKM.
+  - [x] **Master Skema Inti PostgreSQL (`database/schema.sql`):**
+    - `donations`, `jadwal_petugas`, `artikel_berita`, `team_tasks`, `system_health_logs`, `admin_users`, `feedback_complaints`, `media_checklists`.
+  - [x] **Zero-Trust RLS Policies & Serverless Functions:**
+    - `/api/health.js`, `/api/donasi.js`, `/api/send-receipt.js`, `/api/pengaduan.js`.
   - [x] **Otomasi GitHub Actions Cron Keep-Alive:**
-    - Workflow 24/7 `.github/workflows/supabase-keepalive.yml` untuk mencegah jeda otomatis pada database tier gratis.
-  - [ ] **Migrasi Skema Tambahan Task Management v2:**
-    - ALTER tabel `team_tasks`: Tambah kolom `start_date` (DATE), `is_archived` (BOOLEAN), `order_index` (INT).
-    - CREATE tabel `task_activity_logs`: Audit trail realtime setiap aksi CRUD per PJ (actor_name, action_type, old_value JSONB, new_value JSONB).
-    - CREATE tabel `task_comments`: Komentar dan instruksi kerja per tugas (author_name, author_role, comment_text).
-    - CREATE tabel `task_chat_messages`: Chat koordinasi internal multi-arah antar-pengurus (sender_name, recipient_type: ALL/DIVISION/DIRECT, message_text, is_read).
-    - RLS Policies & Realtime Publication untuk keempat tabel baru.
-  - [ ] **Konfigurasi Supabase Storage & Bucket:**
-    - Bucket `article-media`: Media publik untuk konten berita dan flyer kegiatan.
-    - Bucket `donation-receipts`: Bukti transfer donasi dengan akses terbatas bagi divisi keuangan.
-    - Bucket `dkm-avatars`: Foto profil pengurus DKM.
+    - Workflow 24/7 `.github/workflows/supabase-keepalive.yml` untuk mencegah database sleep.
+  - [ ] **Migrasi Skema Tambahan Suite Lengkap Modul PJ & Task Management v2:**
+    - **Tabel `team_tasks` (ALTER):** Tambah `start_date` (DATE), `is_archived` (BOOLEAN), `order_index` (INT).
+    - **Tabel `task_activity_logs` (CREATE):** Audit trail realtime aksi CRUD per PJ (actor_name, action_type, old_value JSONB, new_value JSONB).
+    - **Tabel `task_comments` (CREATE):** Komentar dan instruksi kerja per tugas.
+    - **Tabel `task_chat_messages` (CREATE):** Chat koordinasi multi-arah (sender, recipient_type: ALL/DIVISION/DIRECT, message_text, is_read).
+    - **Tabel `masjid_assets` (CREATE - PJ Logistik):** Inventaris aset masjid (asset_code, name, category, location, condition: BAIK/RUSAK_RINGAN/RUSAK_BERAT, purchase_date, purchase_cost, notes).
+    - **Tabel `santri_data` (CREATE - PJ Santri):** Biodata santri tahfidz (nis, full_name, birth_date, guardian_name, guardian_phone, enrollment_date, status: AKTIF/ALUMNI).
+    - **Tabel `santri_mutabaah` (CREATE - PJ Santri):** Catatan hafalan Qur'an (santri_id, tanggal, waktu: SUBUH/MAGHRIB, juz, surat, ayat_start, ayat_end, kelancaran, tajwid_score, pengampu).
+    - **Tabel `musafir_logbook` (CREATE - PJ Musafir):** Buku tamu & log menginap/penitipan (guest_name, phone, origin_city, destination, visit_type: SHALAT/REST_AREA/MENGINAP/TITIP_KENDARAAN, vehicle_plate, locker_num, check_in, check_out, notes).
+    - **Tabel `financial_journals` (CREATE - PJ Keuangan):** Jurnal kas masuk & kas keluar (trx_date, trx_type: KAS_MASUK/KAS_KELUAR, category, description, amount, payment_method, proof_url, created_by).
+    - **Tabel `security_reports` (CREATE - PJ Keamanan):** Log piket & insiden keamanan (shift: PAGI/SIANG/MALAM, officer_name, report_type: PATROLI/INSIDEN/KONDISI_AMAN, description, media_url, media_type: IMAGE/VIDEO).
+    - **Tabel `cleaning_reports` (CREATE - PJ Kebersihan):** Checklist sanitasi & kebersihan (shift, cleaner_name, area: WUDHU/TOILET/RUANG_UTAMA/HALAMAN, status: BERSIH/PERLU_TINDAKAN, media_url, supply_used, notes).
+    - **RLS Policies & Supabase Realtime Publication** untuk seluruh tabel baru.
 
 ---
 
-### Fase 3: Pengembangan Frontend Web Portal Publik & Modul Shalat
-- **Tujuan:** Membangun antarmuka portal web publik komprehensif berstandar Masjid Istiqlal Jakarta dengan hisab shalat presisi lokal Jatiwarna, rotasi petugas ibadah, kanal filantropi 1-Click Copy BSI & QRIS, layanan musafir 24 jam, kolom pengaduan & saran, galeri multimedia, dan pemisahan penuh dari dashboard admin DKM.
-- **Benchmark Rujukan:** Website Resmi Masjid Istiqlal Jakarta (`https://www.istiqlal.or.id/`)
-- **Status:** Dalam Proses
+### Fase 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat
+- **Benchmark Rujukan:** Masjid Istiqlal Jakarta (`https://www.istiqlal.or.id/`) & UMAR Travel (`artikel.html`, `artikel-detail.html`)
+- **Status:** 60% Selesai
 - **Daftar Tugas:**
-  - [x] **Design System & Layout Publik (`index.html`):**
-    - Penerapan tema terang resmi (*Pure White* `#FFFFFF`, *Soft Cream Sand* `#F8F6F0`, *Charcoal Text* `#1D1D1B`, *Sophia Gold* `#E3C466` & `#C9A84C`).
-    - Tipografi modern `Plus Jakarta Sans` / `Inter` dan kaligrafi doa Arab `Amiri`.
-    - Navigasi responsif mobile-friendly murni untuk jamaah (tanpa tombol portal admin di navbar/beranda).
-  - [x] **Modul Jadwal Shalat Presisi Jatiwarna (Kemenag Hisab Engine):**
-    - Sinkronisasi koordinat astronomis Masjid Sophia Jatiwarna (`-6.310391, 106.921264`, WIB).
-    - Penyesuaian standar hisab Kemenag (Sudut Subuh -20 derajat, Isya -18 derajat, ikhtiyat +2 menit).
-    - Fitur *Live Countdown Timer* detik demi detik menuju waktu shalat berikutnya.
-    - Penanda visual aktif (*Active Prayer Card Highlight*) pada waktu shalat yang sedang berjalan.
-  - [x] **Modul Rotasi Petugas Ibadah & Kajian:**
-    - Tampilan kartu petugas harian: Imam Rawatib aktif, Muadzin bertugas, Khatib Shalat Jumat, dan Pengisi Kajian Tematik.
-  - [x] **Modul Filantropi & Donasi Umat:**
-    - Program Unggulan Makan Berjamaah Gratis ba'da Dzuhur (70+ porsi/hari).
-    - Program Pembinaan Santri Penghafal Al-Qur'an (Tahfidz) & Operasional 24 Jam.
-    - Box Rekening Bank BSI `7235464297` a.n. Masjid Sophia dengan tombol *1-Click Copy* otomatis.
-    - QRIS Merchant SEDEKAH MAKAN (NMID: `ID2025401816769`).
-    - Formulir konfirmasi donasi & doa jamaah instan (*Dynamic Incognito Form*).
-  - [x] **Modul Fasilitas & Layanan Musafir 24 Jam:**
-    - Showcase kamar mandi & tempat wudhu bersih 24 jam, area istirahat sejuk, air minum higienis gratis, dan lokasi strategis samping UMAR Travel.
-  - [x] **Kanal Berita, Tausiyah & Warta Kegiatan:**
-    - Grid kartu artikel dakwah, laporan penyaluran donasi makan gratis, estimasi waktu baca, dan kategori.
+  - [x] **Design System & Komponen Beranda Inti (`index.html`):**
+    - Tema Terang Resmi, Tipografi Sans-Serif modern & Kaligrafi Amiri Arab.
+    - Hisab Jadwal Shalat Jatiwarna (Kemenag) + Live Countdown Timer + Active Prayer Highlight.
+    - Kartu Petugas Ibadah Harian (Imam, Muadzin, Khatib, Penceramah).
+    - Box Donasi BSI 1-Click Copy `7235464297` & QRIS SEDEKAH MAKAN (NMID `ID2025401816769`).
+    - Dynamic Incognito Form Konfirmasi Donasi & Doa.
+    - Informasi Fasilitas Musafir 24 Jam & Navigasi Mobile-First Drawer.
   - [ ] **Redesign Besar Beranda Publik (Benchmark Istiqlal):**
-    - Hero Banner Slider resolusi tinggi dengan animasi transisi halus dan CTA utama (Donasi, Jadwal Shalat, Layanan).
-    - Kartu Layanan Cepat (Quick Access): Layanan Musafir, ZISWAF, Program Santri Tahfidz, Kajian Rutin.
-    - Widget Kalender Hijriah & Masehi ganda.
-    - Section Agenda & Jadwal Kajian Pekanan.
-    - Galeri Sorotan Carousel (dokumentasi kegiatan, arsitektur masjid, suasana shalat berjamaah).
-    - Sticky Header Navigation dengan smooth scroll.
-    - Animasi scroll-reveal dan micro-interactions pada hover kartu.
-    - Mobile Bottom Navigation Bar (Jadwal Shalat, Donasi, WhatsApp).
-    - Footer 4 kolom (Identitas, Tautan Cepat, Layanan, Kontak & Sosmed).
+    - Hero Banner Slider foto kegiatan resolusi tinggi dengan animasi transisi halus.
+    - Kartu Layanan Cepat (Quick Access): Layanan Musafir, ZISWAF, Santri Tahfidz, Kajian Rutin.
+    - Kalender Ganda Hijriah & Masehi.
+    - Section Agenda & Kalender Kajian Pekanan / PHBI.
+    - Galeri Sorotan Carousel foto & video dokumentasi peribadatan.
+    - Sticky Header Navigation dengan smooth scroll-reveal.
+    - Mobile Bottom Navigation Bar (Jadwal Shalat, Donasi, Hotline WhatsApp).
+    - Footer 4 Kolom (Identitas, Tautan Cepat, Layanan, Kontak & Media Sosial).
   - [ ] **Kolom Pengaduan, Saran & Aspirasi Jamaah di Web Publik:**
-    - Modal/section interaktif di beranda publik terhubung ke `/api/pengaduan` dan tabel `feedback_complaints`.
-    - Kategori aspirasi: Pelayanan, Kebersihan, Keamanan, Fasilitas, Saran Umum.
-    - Proteksi anti-spam (honeypot + rate limiting).
-  - [ ] **Live Chat Jamaah ke Panel Admin (Coming Soon):**
-    - Floating chat widget di sudut kanan bawah web publik.
-    - Pesan jamaah masuk langsung ke panel chat admin dashboard secara realtime.
-    - Status: *Coming Soon* -- implementasi memerlukan sumber daya tambahan signifikan (Supabase Realtime + persistent sessions + queue management).
-  - [ ] **Halaman Berita Terpisah & Detail Artikel (`artikel.html`, `artikel-detail.html`):**
-    - Grid feed artikel dakwah dan kegiatan masjid dengan pencarian instan, filter kategori, pagination, dan halaman baca artikel mandiri.
-    - Tombol bagikan ke WhatsApp, Facebook, dan salin tautan.
-    - Rekomendasi artikel terkait.
+    - Modal interaktif terhubung ke `/api/pengaduan` dan tabel `feedback_complaints`.
+    - Kategori: Pelayanan, Kebersihan, Keamanan, Fasilitas, Saran Umum.
+  - [ ] **Halaman Direktori Berita & Artikel Dakwah (`artikel.html` - Benchmark UMAR):**
+    - Hero Banner Pencarian Berita dengan live text search.
+    - Filter Kategori Berita: Warta Dakwah, Kegiatan Masjid, Kajian Fiqih, Laporan Makan Siang Gratis, Buletin Mimbar Jumat.
+    - Kartu Artikel Utama (Featured Article) & Grid Artikel Terkini dengan thumbnail WebP, tanggal, tag kategori, dan estimasi waktu baca.
+    - Navigasi Pagination halaman.
+  - [ ] **Halaman Detail Artikel Mandiri (`artikel-detail.html` - Benchmark UMAR):**
+    - Header artikel: Judul lengkap, nama penulis/ustadz, tanggal terbit, waktu baca.
+    - Gambar sampul resolusi tinggi WebP teroptimasi ImageKit CDN.
+    - Isi artikel Rich Text dengan tipografi nyaman, kutipan ayat/hadits bergaya kaligrafi, dan sub-heading terstruktur.
+    - Tombol Bagikan ke WhatsApp, Facebook, dan Salin Tautan.
+    - Rekomendasi Artikel Terkait di bagian bawah.
   - [ ] **Halaman Galeri Multimedia (`galeri.html`):**
-    - Grid album foto & video dokumentasi kegiatan per kategori (Shalat Berjamaah, Kajian, Makan Gratis, Fasilitas).
-    - Lightbox penampil foto resolusi penuh.
-    - Integrasi streaming video via ImageKit CDN 20GB.
+    - Grid album foto dokumentasi & video kegiatan (Shalat Berjamaah, Makan Gratis, Santri, Wisata Religi Musafir).
+    - Lightbox pop-up penampil foto layar penuh.
+    - Embed pemutar video streaming ringan via ImageKit.io CDN.
+  - [ ] **Live Chat Jamaah ke Panel Admin (Status: Coming Soon):**
+    - Widget chat melayang di sudut kanan bawah web publik terhubung ke panel chat admin DKM.
 
 ---
 
-### Fase 4: Pengembangan Web Admin DKM, Self-Sustain CMS & Task Health Dashboard
-- **Tujuan:** Membangun dashboard terpusat bagi jajaran pengurus DKM dengan sistem manajemen tugas terpadu 5 View + 2 Panel Pendukung (Benchmark: SIABE-PORTO), CMS mandiri tanpa coding (Self-Sustain), pemantauan kesehatan arsitektur 7 pilar cloud (Benchmark: SIABE-PORTO Multi-Cloud Monitor), chat koordinasi internal multi-arah, dan ekspor laporan PDF.
-- **Benchmark Rujukan:** SIABE-PORTO (`I:\My Drive\GAWE\WEB DEV\SIABE-PORTO`)
-- **Status:** Dalam Proses (Admin Core & KPI selesai, modul lanjutan belum)
+### Fase 4: Web Admin DKM, Employee Dashboard & Suite Modul Lengkap per PJ
+- **Benchmark Rujukan:** SIABE-PORTO (Task Engine & Cloud Monitor), WEB-UMAR Admin (Article Studio), dan Standard Modul Odoo/Masjid (`.unused-modul-web-sophia`)
+- **Status:** 25% Selesai (Admin Core, Auth, KPI & Pengaduan Selesai)
 - **Daftar Tugas:**
-  - [x] **Autentikasi & Guard RBAC (`admin.html`):**
-    - Halaman login aman dengan validasi sesi JWT Supabase.
-    - Sidebar adaptif yang hanya menampilkan menu sesuai kewenangan peran akun (10 peran RBAC).
-  - [x] **Panel KPI Real-Time & Buku Kas Donasi Masuk:**
-    - Monitoring realtime arus infaq/sedekah makan ba'da Dzuhur, kode unik verifikasi, dan rekapitulasi kas.
-  - [x] **Inbox Kotak Saran & Pusat Pengaduan Jamaah:**
-    - Panel pemantauan laporan fasilitas rusak dan masukan jamaah terhubung tabel `feedback_complaints`.
-  - [x] **Rekonsiliasi Kas Masuk & Laporan Keuangan:**
-    - Verifikasi data donasi masuk via form incognito dan pencatatan pengeluaran operasional harian.
-  - [ ] **Modul Task Management Terpadu (5 View + 2 Panel Pendukung):**
-    - **View 1 - Kanban Board:** Papan drag-and-drop 4 kolom (Pending, Dikerjakan, Review Ketua DKM, Selesai) dengan badge timeline health (Overdue H+X / On Track Xd left), tombol cepat Setujui & Revisi di kolom Review.
-    - **View 2 - Gantt Timeline:** Visualisasi bar jadwal `start_date` hingga `due_date` per PJ menggunakan pustaka `frappe-gantt v0.6.1`, toggle skala Hari/Minggu/Bulan, kode warna status.
-    - **View 3 - Calendar View:** Grid kalender bulanan dengan spanning bars multi-hari (algoritma slot vertikal anti-tumpang tindih), sub-mode Agenda kronologis, drag-select rentang tanggal untuk buat tugas baru otomatis.
-    - **View 4 - All Tasks Table:** Tabel master interaktif dengan Summary Metrics Bar (Total/Pending/Dikerjakan/Review/Selesai), filter pipeline multi-kriteria (teks/divisi/status/prioritas/rentang tanggal/scope arsip), sorting per kolom, multi-select bulk archive, export CSV.
-    - **View 5 - Archive View:** Tabel arsip tugas selesai dikelompokkan per divisi, akordion sub-tabel deliverables, metrik persentase penyelesaian, restorasi granular per tugas atau per kelompok divisi.
-    - **Panel 6 - Riwayat Pengelolaan Realtime (Audit Trail):** Timeline kronologis seluruh aksi CRUD per PJ (buat/pindah status/arsipkan/komentar/hapus), 100% realtime tanpa refresh via Supabase WebSocket CDC (Change Data Capture), filter per PJ dan per jenis aksi, badge notifikasi unread.
-    - **Panel 7 - Chat Koordinasi Internal Multi-Arah:** Semua lini pengurus bisa saling berkirim pesan (PJ ke PJ, PJ ke Ketua DKM, langsung ke Super Admin -- bukan satu arah seperti SIABE-PORTO), 3 mode pengiriman (Broadcast ALL / Per Divisi / Direct Message), opsional dikaitkan ke tugas tertentu, 100% realtime tanpa refresh via Supabase WebSocket CDC, badge unread, riwayat percakapan scroll.
-  - [ ] **No-Code Modular CMS & Dynamic Page Builder (Self-Sustain Tim Masjid):**
-    - **Dynamic Homepage Media Manager:** Pengaturan foto/video banner slider hero, galeri kegiatan, dan kartu program yang tampil di beranda tanpa menyentuh kode HTML. RBAC: Khusus PJ Media, Ketua DKM, dan Super Admin. Jalur review wajib sebelum tayang.
-    - **Custom Page / Section Builder:** Modul pembuatan halaman statis mandiri (misal: "Sejarah Masjid", "Profil Pengurus", "Laporan Qurban", "Panduan Ramadhan") dengan form/WYSIWYG sederhana.
-    - **Article & Gallery Studio:** Pengelolaan artikel dakwah, berita penyaluran donasi makan gratis, upload media ImageKit CDN (foto & video streaming 20GB), dan pratinjau cuplikan SEO Google. RBAC: PJ Media akses penuh, Ketua DKM review.
-  - [ ] **Panel Kalibrasi Waktu Shalat & Rotasi Petugas:**
-    - Pengaturan menit ikhtiyat (tambah/kurang menit) yang langsung memperbarui kalkulasi jadwal di landing page publik.
-    - Form penetapan dan rotasi nama Imam, Muadzin, Khatib, dan Penceramah.
+  - [x] **Pondasi Admin Core & Auth Gate (`admin.html`):**
+    - Gerbang login aman Supabase Auth JWT, proteksi rute, dan sidebar adaptif RBAC 10 peran.
+    - Panel KPI Real-Time: Donasi masuk, porsi makan siang gratis, dan task health rate.
+    - Inbox Kotak Saran & Pengaduan Jamaah dari tabel `feedback_complaints`.
+    - Rekonsiliasi donasi masuk dan pencatatan kas harian.
+  - [ ] **Task Management Terpadu (5 View + 2 Panel):**
+    - **View 1 (Kanban Board):** Papan drag-and-drop 4 kolom (`PENDING`, `IN_PROGRESS`, `IN_REVIEW`, `COMPLETED`), badge kesehatan waktu (*Overdue / On Track*), dan tombol aksi cepat Setujui/Revisi.
+    - **View 2 (Gantt Timeline):** Visualisasi bar jadwal `start_date` - `due_date` per PJ menggunakan `frappe-gantt v0.6.1` (skala Hari/Minggu/Bulan).
+    - **View 3 (Calendar View):** Grid bulanan dengan *spanning bars* multi-hari (algoritma slot vertikal anti-tumpang tindih) & mode Agenda kronologis.
+    - **View 4 (All Tasks Table):** Tabel master master filter pipeline (teks/divisi/status/prioritas/tanggal/arsip), sorting kolom, multi-select bulk archive, dan export CSV.
+    - **View 5 (Archive View):** Arsip tugas selesai per divisi, akordion sub-tabel, metrik persentase tuntas, dan tombol pemulihan tugas.
+    - **Panel 6 (Riwayat Pengelolaan Realtime):** Audit trail seluruh aksi CRUD per PJ, **100% tanpa refresh** via Supabase CDC WebSocket.
+    - **Panel 7 (Chat Koordinasi Multi-Arah):** Komunikasi internal antar semua pengurus (Broadcast ALL / Per Divisi / Direct Message ke PJ atau Ketua DKM atau Super Admin), **100% tanpa refresh** via Supabase WebSocket.
+  - [ ] **Modul PJ Media & Dakwah (Content & Article Studio):**
+    - **Article Studio:** Pembuatan & penerbitan artikel dengan Rich Text Editor (Quill.js), slug generator otomatis, upload media sampul ImageKit CDN (auto WebP), kategori, status DRAFT/PUBLISHED, dan pratinjau cuplikan SEO Google.
+    - **Dynamic Homepage Media Manager:** Pengaturan foto/video banner slider hero, galeri kegiatan, dan kartu program beranda publik tanpa menyentuh kode HTML. Jalur persetujuan review Ketua DKM sebelum tayang.
+  - [ ] **Modul PJ Logistik & Sarpras (Makan Gratis & Inventaris Aset):**
+    - **Manajemen Makan Berjamaah Gratis:** Pencatatan porsi makan harian (70+ porsi/hari), logistik belanja bahan dapur, biaya per porsi, dan rekapitulasi distribusi ke musafir/ojol.
+    - **Manajemen Aset & Inventaris Masjid:** Perekaman aset sarpras (sound system, AC, karpet, genset, dispenser, Al-Qur'an), nomor seri inventaris, lokasi penempatan, kondisi aset (Baik, Rusak Ringan, Rusak Berat), dan riwayat perbaikan/servis.
+  - [ ] **Modul PJ Santri & Pendidikan (Tahfidz & Mutaba'ah):**
+    - **Data & Profil Santri:** Direktori santri tahfidz aktif & alumni, biodata, data wali/kontak, kamar/halaqah, dan status beasiswa.
+    - **Log Mutaba'ah Hafalan Qur'an:** Pencatatan setoran hafalan harian (Subuh & Maghrib: Juz/Surat/Ayat), penilaian kelancaran & tajwid, absensi halaqah, dan cetak rapor perkembangan santri.
+  - [ ] **Modul PJ Musafir & Pelayanan (Buku Tamu & Penitipan 24 Jam):**
+    - **Buku Tamu Musafir Digital:** Pencatatan tamu musafir yang singgah (Nama, Asal Kota, Tujuan, No HP).
+    - **Log Tamu Menginap / Istirahat 24 Jam:** Izin menginap istirahat darurat musafir antar-kota, verifikasi identitas, dan fasilitas yang digunakan.
+    - **Log Penitipan Kendaraan & Loker:** Pencatatan plat kendaraan dan nomor loker penitipan barang saat musafir shalat/istirahat.
+  - [ ] **Modul PJ Ibadah & Acara (Kalibrasi Shalat & Rotasi Petugas):**
+    - **Kalibrasi Hisab & Ikhtiyat:** Pengaturan menit ikhtiyat waktu shalat lokal.
+    - **Rotasi Petugas Ibadah:** Penugasan Imam Rawatib (5 waktu), Muadzin, Khatib Jumat, Bilal, dan Penceramah Kuliah Subuh / Akhir Pekan.
+    - **Manajemen Acara & Kajian Tematik:** Jadwal kajian, PHBI (Maulid, Isra Mi'raj, dll), dan arsip naskah khutbah Jumat yang dapat diunduh.
+  - [ ] **Modul PJ Keuangan (Comprehensive Accounting Suite):**
+    - **Buku Kas Masuk:** Infaq Jumat, Infaq Kotak Amal, Donasi QRIS SEDEKAH MAKAN, Transfer Bank BSI, dan Donasi Khusus.
+    - **Buku Kas Keluar:** Biaya operasional dapur makan gratis, listrik/air/wifi, honorarium ustadz/petugas, perawatan sarpras, dan santunan santri.
+    - **Laporan Keuangan & Rekonsiliasi:** Laporan Arus Kas, Neraca Kas Berkala, Verifikasi Donasi Kode Unik, dan Ekspor Laporan Keuangan ke format CSV & Cetak PDF Transparan.
+  - [ ] **Modul PJ Keamanan (Log Piket & Laporan Insiden):**
+    - **Log Piket & Ronda Keamanan 24 Jam:** Jadwal petugas jaga, checklist patroli area masjid & parkiran.
+    - **Input Laporan Keamanan & Upload Bukti:** Formulir pelaporan insiden/kondisi aman dengan unggah foto/video ke ImageKit CDN (auto WebP/WebM).
+  - [ ] **Modul PJ Kebersihan (Checklist Sanitasi & Laporan Kerja):**
+    - **Checklist Sanitasi Harian:** Jadwal pembersihan area wudhu, toilet, karpet ruang utama, dan halaman.
+    - **Input Laporan Kebersihan & Upload Bukti:** Formulir laporan hasil kerja dengan unggah foto/video ke ImageKit CDN (auto WebP/WebM) dan kontrol stok alat/sabun pembersih.
   - [ ] **Pemantau Kesehatan Arsitektur 7 Pilar Cloud (Khusus Super Admin):**
-    - Tab khusus dashboard Super Admin untuk monitoring seluruh infrastruktur agar tetap aman berjalan di free tier.
-    - 7 Kartu Pilar dengan progress bar kuota: Supabase (DB Size/500MB, Auth Users/50K MAU, Realtime Channels), Vercel (Bandwidth/100GB, Serverless Hours), ImageKit (Storage/20GB, Bandwidth/25GB, Transformations/20K), Resend (Emails/3K per bulan), GitHub Actions (CI/CD Minutes/2K), Cloudflare (DNS/SSL/Turnstile), Google Drive (Storage quota).
-    - Top-level KPI Row: Total biaya bulanan IDR 0, status infrastruktur ALL SAFE X/7, estimasi ukuran database.
-    - Panduan tindakan preventif saat kuota mendekati ambang batas (>80%).
-    - Kalkulasi dinamis ukuran Postgres dari jumlah baris tabel menggunakan `{ count: 'exact', head: true }`.
-    - Tombol refresh manual dan deep-link ke dashboard resmi masing-masing penyedia cloud.
-  - [ ] **Ekspor Laporan PDF Mandiri per Anggota Tim DKM:**
-    - Ekspor laporan aktivitas dan kinerja masing-masing anggota tim DKM ke format PDF standar Web Landscape menggunakan pustaka `jsPDF v2.5.1`.
+    - Dashboard monitoring 7 pilar cloud gratis (Supabase DB/Storage, Vercel Bandwidth, ImageKit 20GB, Resend Email API, GitHub Actions, Cloudflare, Google Drive).
+    - Kalkulasi dinamis ukuran Postgres via `{ count: 'exact', head: true }`, progress bar kuota, KPI Row biaya IDR 0/bulan, dan panduan preventif ambang batas (>80%).
+  - [ ] **Ekspor Laporan Kinerja PDF Mandiri per Anggota Tim DKM:**
+    - Ekspor laporan aktivitas dan rekap tugas per anggota ke format PDF standar Web Landscape (`jsPDF v2.5.1`).
 
 ---
 
 ### Fase 5: Pengujian Terpadu, Audit Keamanan & UAT
-- **Tujuan:** Memverifikasi seluruh logika bisnis, kalkulasi astronomis, performa beban, dan pengerasan celah keamanan.
 - **Daftar Tugas:**
-  - [ ] **Unit & Accuracy Testing:**
-    - Verifikasi kesesuaian waktu hisab shalat lokal dengan jadwal resmi Kemenag RI untuk wilayah Kota Bekasi.
-    - Uji presisi live countdown timer saat pergantian waktu shalat dan tengah malam.
-  - [ ] **Form & Security Testing:**
-    - Uji validasi input form (pencegahan injeksi SQL, pembersihan payload XSS, perlindungan honeypot spam).
-    - Audit keamanan RLS Supabase untuk memastikan akun `anon` tidak dapat membaca data donatur lain.
-  - [ ] **Cross-Device & Responsive Testing:**
-    - Uji tampilan antarmuka pada berbagai resolusi layar (Mobile 360px - 430px, Tablet 768px - 1024px, Desktop 1280px+).
-  - [ ] **UAT Pengurus DKM:**
-    - Simulasi alur kerja pengurus (input artikel, rotasi petugas, perubahan status tugas di Kanban, dan ekspor kas).
-    - Uji chat internal multi-arah antar PJ.
-    - Uji riwayat pengelolaan realtime (pastikan muncul instan tanpa refresh).
+  - [ ] **Unit & Accuracy Testing:** Hisab shalat lokal vs kalender resmi Kemenag Kota Bekasi.
+  - [ ] **Form & Security Testing:** Validasi sanitasi form, pencegahan SQLi/XSS, dan audit Zero-Trust RLS Supabase.
+  - [ ] **Cross-Device & Responsive Testing:** Mobile (360px-430px), Tablet, Desktop (1280px+).
+  - [ ] **UAT Pengurus DKM:** Simulasi alur kerja seluruh 10 peran pengurus (Input Artikel, Mutaba'ah Santri, Log Musafir, Kas Masuk/Keluar, Report Keamanan/Kebersihan, Task 5 View, dan Chat Realtime).
 
 ---
 
 ### Fase 6: Finalisasi Produksi, SEO, Email Routing, DNS Cutover & Go-Live
-- **Tujuan:** Peluncuran resmi portal publik dan pengoperasian dashboard admin secara langsung di internet.
+- **Status:** 40% Selesai
 - **Daftar Tugas:**
-  - [x] **Email Gateway & Routing:**
-    - Cloudflare Email Routing aktif (info@, pengaduan@, saran@masjidsophiajatiwarna.com).
-    - Supabase Custom SMTP via Resend.com (DKIM/SPF terverifikasi).
-    - Template email autentikasi HTML bertemakan Sophia Gold.
-  - [x] **Berkas SEO Dasar:**
-    - `robots.txt` dan `sitemap.xml` sudah live.
-  - [ ] **Optimasi Mesin Pencari (SEO) Lanjutan:**
-    - Metadata OpenGraph dan Twitter Card di setiap halaman.
-    - Data terstruktur Schema.org JSON-LD (`Mosque`, `Organization`, `Article`).
-  - [ ] **Halaman Error Kustom:**
-    - Halaman `404.html` bertema terang resmi Masjid Sophia dengan navigasi kembali ke beranda.
-  - [ ] **Konfigurasi Routing Vercel (`vercel.json`):**
-    - Header keamanan (CSP, X-Content-Type-Options, X-Frame-Options).
-  - [ ] **Pendaftaran Mesin Pencari:**
-    - Registrasi properti di Google Search Console dan Bing Webmaster Tools.
+  - [x] **Email Routing & SMTP Gateway:** Cloudflare Email Routing & Resend SMTP aktif (DKIM/SPF valid).
+  - [x] **SEO Dasar:** Berkas `robots.txt` dan `sitemap.xml` terpasang.
+  - [ ] **SEO Lanjutan & Schema.org JSON-LD:** Metadata OpenGraph, Twitter Card, Rich Snippets Mosque/Organization/Article.
+  - [ ] **Halaman Error Kustom:** `404.html` bertema terang resmi Masjid Sophia.
+  - [ ] **Pendaftaran Mesin Pencari:** Google Search Console & Bing Webmaster Tools verification.
 
 ---
 
-## 4. Matriks Kewenangan Fitur Berdasarkan Peran (RBAC)
+## 4. Matriks Kewenangan Fitur Berdasarkan Peran (RBAC 10 Peran)
 
 | Modul / Fitur Sistem | Super Admin | Ketua DKM | PJ Media | PJ Logistik | PJ Santri | PJ Musafir | PJ Ibadah | PJ Keuangan | PJ Keamanan | PJ Kebersihan |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Konfigurasi Sistem & API** | Penuh | Baca | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak |
 | **Manajemen Pengguna DKM** | Penuh | Baca | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak |
 | **Task Management (5 View)** | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh |
-| **Riwayat Pengelolaan** | Penuh+Hapus | Baca | Baca | Baca | Baca | Baca | Baca | Baca | Baca | Baca |
-| **Chat Koordinasi Internal** | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh |
-| **CMS & Page Builder** | Penuh | Review | Penuh | Tidak | Tidak | Tidak | Input Kajian | Tidak | Tidak | Tidak |
-| **Dynamic Homepage Manager** | Penuh | Review | Penuh | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak |
-| **Kalibrasi Shalat & Ikhtiyat** | Penuh | Persetujuan | Tidak | Tidak | Tidak | Tidak | Penuh | Tidak | Tidak | Tidak |
-| **Rotasi Petugas & Imam** | Penuh | Persetujuan | Baca | Tidak | Tidak | Tidak | Penuh | Tidak | Tidak | Tidak |
-| **Logistik & Makan Gratis** | Penuh | Laporan | Tidak | Penuh | Tidak | Tidak | Tidak | Laporan | Tidak | Tidak |
-| **Data Santri & Tahfidz** | Penuh | Laporan | Tidak | Tidak | Penuh | Tidak | Tidak | Tidak | Tidak | Tidak |
-| **Layanan Tamu Musafir** | Penuh | Laporan | Tidak | Tidak | Tidak | Penuh | Tidak | Tidak | Baca | Baca |
-| **Laporan Kas & Donasi** | Penuh | Penuh | Tidak | Request | Request | Request | Request | Penuh | Tidak | Request |
-| **Log Keamanan & Piket** | Penuh | Laporan | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Penuh | Tidak |
-| **Sanitasi & Kebersihan** | Penuh | Laporan | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Penuh |
-| **Monitor Arsitektur 7 Pilar** | Penuh | Baca | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak |
+| **Riwayat Pengelolaan Realtime** | Penuh+Hapus | Baca | Baca | Baca | Baca | Baca | Baca | Baca | Baca | Baca |
+| **Chat Koordinasi Multi-Arah** | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh | Penuh |
+| **Publish Artikel & Berita (CMS)** | Penuh | Review | Penuh | Tidak | Tidak | Tidak | Input Kajian | Tidak | Tidak | Tidak |
+| **Pengatur Beranda (Self-Sustain)** | Penuh | Review | Penuh | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak |
+| **Logistik Makan & Aset Masjid** | Penuh | Laporan | Tidak | Penuh | Tidak | Tidak | Tidak | Laporan | Tidak | Tidak |
+| **Data Santri & Mutaba'ah Tahfidz** | Penuh | Laporan | Tidak | Tidak | Penuh | Tidak | Tidak | Tidak | Tidak | Tidak |
+| **Buku Tamu Musafir & Loker 24 Jam** | Penuh | Laporan | Tidak | Tidak | Tidak | Penuh | Tidak | Tidak | Baca | Baca |
+| **Kalibrasi Shalat & Rotasi Petugas** | Penuh | Persetujuan | Baca | Tidak | Tidak | Tidak | Penuh | Tidak | Tidak | Tidak |
+| **Akuntansi, Kas & Laporan Keuangan** | Penuh | Penuh | Tidak | Request | Request | Request | Request | Penuh | Tidak | Request |
+| **Report Keamanan & Upload Bukti** | Penuh | Laporan | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Penuh | Tidak |
+| **Report Kebersihan & Upload Bukti** | Penuh | Laporan | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Penuh |
+| **Monitor 7 Pilar Cloud (Super Admin)** | Penuh | Baca | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak |
 
 ---
 
 ## 5. Dependensi Pustaka CDN Eksternal
 
-| Pustaka | Versi | Kegunaan |
-| :--- | :--- | :--- |
-| `@supabase/supabase-js` | v2 (jsDelivr) | Auth, DB, Realtime WebSocket CDC |
-| `frappe-gantt` | v0.6.1 (jsDelivr) | Gantt Timeline Chart interaktif |
-| `jsPDF` | v2.5.1 (cdnjs) | Export laporan PDF mandiri |
-| `Plus Jakarta Sans` / `Inter` | Google Fonts | Tipografi UI |
-| `Font Awesome` | 6.5.1 (cdnjs) | Sistem ikon (strict no-emoji) |
-
----
-
-## 6. Rencana Pengujian & Verifikasi
-
-1. **Pengujian Subdomain & Routing Produksi:**
-   - `masjidsophiajatiwarna.com` memuat landing page publik resmi.
-   - `masjidsophia.com` dan `masjidsophiajatiwarna.my.id` secara otomatis dialihkan (Redirect 301) ke domain utama.
-   - `progdev.masjidsophiajatiwarna.com` memuat halaman visual pelacak progres `progress-implementation-plan.html`.
-   - `admin.masjidsophiajatiwarna.com` memuat dashboard operasional `admin.html`.
-
-2. **Pengujian Fungsionalitas Jadwal Shalat:**
-   - Validasi sinkronisasi hisab dengan jadwal shalat resmi Kemenag Kota Bekasi.
-   - Pengujian live countdown timer dan visual highlight waktu shalat aktif.
-   - Pengujian pembaruan instan menit ikhtiyat dari admin panel.
-
-3. **Pengujian Transaksi Donasi & 1-Click Copy:**
-   - Uji penyalinan nomor rekening BSI `7235464297` dengan satu klik tanpa format spasi.
-   - Uji keterbacaan kode QRIS SEDEKAH MAKAN pada berbagai aplikasi perbankan dan e-wallet.
-   - Uji pengiriman formulir konfirmasi donasi tanpa login ke tabel `donations` Supabase.
-
-4. **Pengujian Task Management 5+2 View:**
-   - Uji drag-and-drop Kanban -- status berubah + log tercatat realtime.
-   - Uji Gantt Timeline -- bar muncul sesuai start_date/due_date.
-   - Uji Calendar View -- spanning bars tidak tumpang tindih.
-   - Uji All Tasks Table -- filter, sort, bulk archive, export CSV.
-   - Uji Archive View -- arsipkan dan pulihkan tugas.
-   - Uji Riwayat -- aksi CRUD muncul realtime tanpa refresh.
-   - Uji Chat -- kirim broadcast/divisi/direct, muncul realtime tanpa refresh di browser penerima.
-
-5. **Pengujian Keamanan & Kepatuhan Standar:**
-   - Verifikasi tidak adanya variabel rahasia atau kunci service-role pada JavaScript publik.
-   - Verifikasi kepatuhan seluruh berkas terhadap aturan bebas emoji dan gaya penulisan manusiawi.
+| Pustaka | Versi | Sumber CDN | Kegunaan |
+| :--- | :--- | :--- | :--- |
+| `@supabase/supabase-js` | `v2` | jsDelivr | Autentikasi, Database Postgres, Realtime WebSocket CDC |
+| `frappe-gantt` | `0.6.1` | jsDelivr | Timeline Gantt Chart visual interaktif |
+| `quill` | `1.3.6` | CDNjs | WYSIWYG Rich Text Editor untuk Article Studio |
+| `jsPDF` | `2.5.1` | CDNjs | Generator Dokumen Laporan Kinerja & Keuangan PDF |
+| `Plus Jakarta Sans` / `Inter` | Standar | Google Fonts | Tipografi antarmuka modern |
+| `Amiri` | Standar | Google Fonts | Tipografi ayat Al-Qur'an, hadits, dan doa Arab |
+| `Font Awesome` | `6.5.1` | CDNjs | Sistem ikon vektor monokrom (Strict No-Emoji) |

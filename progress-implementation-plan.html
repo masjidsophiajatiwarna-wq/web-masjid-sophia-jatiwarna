@@ -1438,8 +1438,8 @@
                 <div class="phase-title-group">
                     <div class="phase-badge in-progress">4</div>
                     <div class="phase-name">
-                        <h3>Fase 4: Dashboard Admin DKM & Manajemen Tugas Pengurus</h3>
-                        <p>Papan tugas 5 tampilan, obrolan internal, pengelola konten mandiri, dan pemantau kesehatan sistem</p>
+                        <h3>Fase 4: Dashboard Admin DKM & Manajemen Operasional Pengurus</h3>
+                        <p>Papan tugas 5 tampilan, obrolan realtime, pengelola konten, pembukuan kas, dan suite modul kerja tiap divisi</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -1549,9 +1549,9 @@
                         </div>
                     </div>
 
-                    <!-- Sub-group: Panel Pendukung -->
+                    <!-- Sub-group: Panel Pendukung Realtime -->
                     <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-warning-bg); border-left: 3px solid var(--color-warning); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
-                        <i class="fa-solid fa-bell" style="color: var(--color-warning);"></i> Panel Pendukung Koordinasi
+                        <i class="fa-solid fa-bell" style="color: var(--color-warning);"></i> Panel Koordinasi Realtime
                     </div>
                     <div class="task-item">
                         <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
@@ -1574,44 +1574,209 @@
                         </div>
                     </div>
 
-                    <!-- Sub-group: CMS & Pengelola Konten -->
+                    <!-- Sub-group: PJ Media & Dakwah -->
                     <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-gold-light); border-left: 3px solid var(--color-gold-deep); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #785800;">
-                        <i class="fa-solid fa-paintbrush" style="color: var(--color-gold-deep);"></i> Pengelola Konten Mandiri (Tim Masjid)
+                        <i class="fa-solid fa-newspaper" style="color: var(--color-gold-deep);"></i> Publikasi Dakwah & Media (PJ Media)
                     </div>
                     <div class="task-item">
                         <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Pengatur Tampilan Beranda (Foto, Video, Banner)
-                                <span class="task-badge-pill">Homepage Manager</span>
+                                Studio Penerbitan Berita & Artikel Dakwah
+                                <span class="task-badge-pill">CMS Studio</span>
                             </div>
-                            <div class="task-desc">Tim media mengelola apa yang tampil di beranda publik tanpa menyentuh kode. Melalui jalur review Ketua DKM.</div>
+                            <div class="task-desc">Editor teks lengkap artikel, upload foto sampul, format otomatis, kategori dakwah, dan pratinjau cuplikan pencarian.</div>
                         </div>
                     </div>
                     <div class="task-item">
                         <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Studio Artikel & Galeri dengan Video Streaming
-                                <span class="task-badge-pill">CMS Studio</span>
+                                Pengatur Tampilan Beranda & Galeri (Self-Sustain)
+                                <span class="task-badge-pill">Homepage Manager</span>
                             </div>
-                            <div class="task-desc">Penerbitan warta dakwah, upload foto & video otomatis, dan pratinjau tampilan di mesin pencari.</div>
+                            <div class="task-desc">Pengaturan banner slider foto/video dan sorotan kegiatan yang muncul di beranda publik. Melalui jalur review Ketua DKM.</div>
                         </div>
                     </div>
 
-                    <!-- Sub-group: Panel Lanjutan -->
-                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-bg-sand); border-left: 3px solid var(--color-charcoal-light); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
-                        <i class="fa-solid fa-gears" style="color: var(--color-charcoal-light);"></i> Panel Operasional Lanjutan
+                    <!-- Sub-group: PJ Logistik & Sarpras -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #FEF2F2; border-left: 3px solid #EF4444; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #991B1B;">
+                        <i class="fa-solid fa-boxes-stacked" style="color: #EF4444;"></i> Dapur & Manajemen Aset (PJ Logistik)
                     </div>
                     <div class="task-item">
                         <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Pengaturan Jadwal Shalat & Rotasi Petugas
-                                <span class="task-badge-pill">DKM Panel</span>
+                                Pencatatan Makan Siang Gratis (70+ Porsi/Hari) & Logistik Dapur
+                                <span class="task-badge-pill">Dapur Makan</span>
                             </div>
-                            <div class="task-desc">Pengaturan menit waktu shalat dan penetapan rotasi Imam, Muadzin, Khatib, dan Penceramah.</div>
+                            <div class="task-desc">Perekaman jumlah porsi makan harian, belanja bahan baku dapur, dan rekapitulasi distribusi kepada musafir & ojol.</div>
                         </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Manajemen Inventaris & Kondisi Aset Sarana Prasarana
+                                <span class="task-badge-pill">Aset Masjid</span>
+                            </div>
+                            <div class="task-desc">Pencatatan aset fisik masjid (sound system, AC, karpet, genset, dispenser), kode inventaris, lokasi, dan status kondisi (Baik/Perlu Servis).</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: PJ Santri & Pendidikan -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #F0FDF4; border-left: 3px solid #22C55E; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #166534;">
+                        <i class="fa-solid fa-graduation-cap" style="color: #22C55E;"></i> Pembinaan Santri Tahfidz (PJ Santri)
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Direktori Data & Profil Santri Penghafal Qur'an
+                                <span class="task-badge-pill">Data Santri</span>
+                            </div>
+                            <div class="task-desc">Pencatatan data santri tahfidz aktif & alumni, data wali/kontak, kamar/halaqah, dan status beasiswa.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Catatan Hafalan Qur'an (Mutaba'ah Subuh & Maghrib)
+                                <span class="task-badge-pill">Mutaba'ah</span>
+                            </div>
+                            <div class="task-desc">Perekaman setoran hafalan harian (Juz/Surat/Ayat), nilai kelancaran dan tajwid, absensi halaqah, serta rekap perkembangan santri.</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: PJ Musafir & Pelayanan -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #F0F9FF; border-left: 3px solid #0EA5E9; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #075985;">
+                        <i class="fa-solid fa-person-walking-luggage" style="color: #0EA5E9;"></i> Pelayanan Musafir 24 Jam (PJ Musafir)
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Buku Tamu Musafir Digital
+                                <span class="task-badge-pill">Buku Tamu</span>
+                            </div>
+                            <div class="task-desc">Perekaman tamu musafir yang singgah (Nama, Asal Kota, Tujuan Perjalanan, dan Kontak).</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Izin Menginap / Istirahat 24 Jam & Penitipan Kendaraan/Loker
+                                <span class="task-badge-pill">Rest & Loker</span>
+                            </div>
+                            <div class="task-desc">Pencatatan tamu yang menginap darurat, verifikasi identitas, plat nomor kendaraan titipan, dan nomor loker barang.</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: PJ Ibadah & Acara -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #FAF5FF; border-left: 3px solid #A855F7; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #6B21A8;">
+                        <i class="fa-solid fa-kaaba" style="color: #A855F7;"></i> Ibadah & Kegiatan Masjid (PJ Ibadah)
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pengaturan Waktu Shalat & Rotasi Petugas Ibadah
+                                <span class="task-badge-pill">Jadwal Shalat</span>
+                            </div>
+                            <div class="task-desc">Kalibrasi menit ikhtiyat dan penugasan Imam Rawatib (5 waktu), Muadzin, Khatib Jumat, dan Bilal.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Jadwal Kajian Tematik, Acara Besar & Arsip Khutbah
+                                <span class="task-badge-pill">Kajian & Acara</span>
+                            </div>
+                            <div class="task-desc">Kalender acara dan kajian rutin, peringatan hari besar Islam, serta penyimpanan naskah khutbah Jumat.</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: PJ Keuangan (Accounting Suite) -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #ECFDF5; border-left: 3px solid #10B981; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #065F46;">
+                        <i class="fa-solid fa-calculator" style="color: #10B981;"></i> Pembukuan & Keuangan Lengkap (PJ Keuangan)
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Buku Kas Masuk & Kas Keluar Operasional Lengkap
+                                <span class="task-badge-pill">Buku Kas</span>
+                            </div>
+                            <div class="task-desc">Pencatatan rinci arus penerimaan infaq/donasi dan pengeluaran operasional dapur makan, sarpras, listrik, dan honorarium.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Laporan Arus Kas, Neraca Kas & Transparansi Donasi
+                                <span class="task-badge-pill">Laporan Kas</span>
+                            </div>
+                            <div class="task-desc">Rekapitulasi keuangan transparan, neraca kas harian/bulanan, dan ekspor data kas ke format CSV dan cetak PDF.</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: PJ Keamanan -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #FFFBEB; border-left: 3px solid #F59E0B; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #92400E;">
+                        <i class="fa-solid fa-shield-halved" style="color: #F59E0B;"></i> Keamanan & Log Ronda (PJ Keamanan)
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Log Piket Keamanan 24 Jam & Patroli Area
+                                <span class="task-badge-pill">Piket Keamanan</span>
+                            </div>
+                            <div class="task-desc">Jadwal jaga petugas keamanan 24 jam dan checklist pemantauan ketertiban area ibadah dan parkiran.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Laporan Kejadian Keamanan & Unggah Bukti Lapangan
+                                <span class="task-badge-pill">Lapor Keamanan</span>
+                            </div>
+                            <div class="task-desc">Formulir pelaporan situasi pos/insiden dengan unggah foto atau video bukti dokumentasi yang otomatis dioptimasi.</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: PJ Kebersihan -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #F0FDFA; border-left: 3px solid #14B8A6; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #115E59;">
+                        <i class="fa-solid fa-broom" style="color: #14B8A6;"></i> Sanitasi & Kebersihan (PJ Kebersihan)
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Checklist Sanitasi Harian (Wudhu, Toilet, Ruang Shalat, Halaman)
+                                <span class="task-badge-pill">Sanitasi</span>
+                            </div>
+                            <div class="task-desc">Jadwal inspeksi pembersihan berkala seluruh zona masjid dan pencatatan kebutuhan alat/sabun pembersih.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Laporan Hasil Kerja Kebersihan & Unggah Bukti Lapangan
+                                <span class="task-badge-pill">Lapor Kebersihan</span>
+                            </div>
+                            <div class="task-desc">Formulir pelaporan kondisi kebersihan dengan unggah foto/video bukti sebelum dan sesudah dibersihkan.</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: Super Admin & Ekspor Laporan -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-bg-sand); border-left: 3px solid var(--color-charcoal-light); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
+                        <i class="fa-solid fa-gears" style="color: var(--color-charcoal-light);"></i> Pengawasan Sistem & Cetak Dokumen
                     </div>
                     <div class="task-item">
                         <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
@@ -1620,17 +1785,17 @@
                                 Pemantau Kesehatan Seluruh Infrastruktur (Khusus Super Admin)
                                 <span class="task-badge-pill">Monitor 7 Pilar</span>
                             </div>
-                            <div class="task-desc">Dasbor khusus pemantauan kuota dan status 7 pilar layanan agar tetap aman dan tidak melampaui batas.</div>
+                            <div class="task-desc">Dasbor khusus pemantauan kuota dan status 7 pilar layanan agar tetap aman berjalan di tingkat gratis.</div>
                         </div>
                     </div>
                     <div class="task-item">
                         <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Cetak Laporan Kinerja per Anggota Tim DKM
+                                Cetak Laporan Kinerja per Anggota Tim DKM (Format PDF)
                                 <span class="task-badge-pill">PDF Export</span>
                             </div>
-                            <div class="task-desc">Cetak dan unduh ringkasan aktivitas dan tugas per anggota ke format PDF standar.</div>
+                            <div class="task-desc">Cetak dan unduh ringkasan aktivitas serta tugas per anggota ke format dokumen PDF standar.</div>
                         </div>
                     </div>
                 </div>
@@ -1814,7 +1979,7 @@
                     <td><span class="badge-perm full">Penuh</span></td>
                 </tr>
                 <tr>
-                    <td><strong>CMS & Studio Artikel</strong></td>
+                    <td><strong>Penerbitan Artikel & Berita (CMS)</strong></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm read">Review</span></td>
                     <td><span class="badge-perm full">Penuh</span></td>
@@ -1827,7 +1992,7 @@
                     <td><span class="badge-perm none">-</span></td>
                 </tr>
                 <tr>
-                    <td><strong>Pengatur Beranda & Media (Self-Sustain)</strong></td>
+                    <td><strong>Pengatur Beranda (Self-Sustain)</strong></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm read">Review</span></td>
                     <td><span class="badge-perm full">Penuh</span></td>
@@ -1840,22 +2005,48 @@
                     <td><span class="badge-perm none">-</span></td>
                 </tr>
                 <tr>
-                    <td><strong>Kalibrasi Shalat & Ikhtiyat</strong></td>
+                    <td><strong>Logistik Makan & Aset Masjid</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Laporan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm read">Laporan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Data Santri & Mutaba'ah Tahfidz</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Laporan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Buku Tamu Musafir & Loker 24 Jam</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Laporan</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Kalibrasi Shalat & Rotasi Petugas</strong></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm action">Persetujuan</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm full">Penuh</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Rotasi Petugas Ibadah</strong></td>
-                    <td><span class="badge-perm full">Penuh</span></td>
-                    <td><span class="badge-perm action">Persetujuan</span></td>
                     <td><span class="badge-perm read">Baca</span></td>
                     <td><span class="badge-perm none">-</span></td>
                     <td><span class="badge-perm none">-</span></td>
@@ -1866,46 +2057,7 @@
                     <td><span class="badge-perm none">-</span></td>
                 </tr>
                 <tr>
-                    <td><strong>Logistik & Makan Gratis</strong></td>
-                    <td><span class="badge-perm full">Penuh</span></td>
-                    <td><span class="badge-perm read">Laporan</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm full">Penuh</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm read">Laporan</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Data Santri & Tahfidz</strong></td>
-                    <td><span class="badge-perm full">Penuh</span></td>
-                    <td><span class="badge-perm read">Laporan</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm full">Penuh</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Layanan Fasilitas Musafir</strong></td>
-                    <td><span class="badge-perm full">Penuh</span></td>
-                    <td><span class="badge-perm read">Laporan</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm full">Penuh</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm none">-</span></td>
-                    <td><span class="badge-perm read">Baca</span></td>
-                    <td><span class="badge-perm read">Baca</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Kas & Verifikasi Donasi</strong></td>
+                    <td><strong>Akuntansi, Kas & Laporan Keuangan</strong></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm none">-</span></td>
@@ -1918,7 +2070,7 @@
                     <td><span class="badge-perm action">Request</span></td>
                 </tr>
                 <tr>
-                    <td><strong>Log Keamanan & Piket</strong></td>
+                    <td><strong>Report Keamanan & Upload Bukti</strong></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm read">Laporan</span></td>
                     <td><span class="badge-perm none">-</span></td>
@@ -1931,7 +2083,7 @@
                     <td><span class="badge-perm none">-</span></td>
                 </tr>
                 <tr>
-                    <td><strong>Sanitasi & Kebersihan</strong></td>
+                    <td><strong>Report Kebersihan & Upload Bukti</strong></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm read">Laporan</span></td>
                     <td><span class="badge-perm none">-</span></td>

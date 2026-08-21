@@ -6,6 +6,24 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 
 ---
 
+## [1.4.0] - 2026-08-21
+
+### Suite Modul Operasional Lengkap Seluruh PJ DKM & Master Roadmap v4.0
+
+#### Penambahan & Pembaruan (Added & Updated)
+- `[ROADMAP]` Rencana induk teknis `implementation-plan.md` diperbarui ke versi v4.0 dengan spesifikasi skema dan alur kerja lengkap untuk seluruh Penanggung Jawab (PJ) Divisi DKM:
+  - **PJ Media & Dakwah:** Content & Article Studio (Quill.js Rich Text, slug generator, cover image ImageKit WebP) dengan standar view publik `artikel.html` & `artikel-detail.html`, serta Dynamic Homepage Media Manager.
+  - **PJ Logistik & Sarpras:** Manajemen Makan Berjamaah Gratis ba'da Dzuhur (70+ porsi/hari, logistik dapur) & Manajemen Aset/Inventaris Fisik Masjid (kode inventaris, lokasi, kondisi, servis).
+  - **PJ Santri & Pendidikan:** Direktori Santri Tahfidz Al-Qur'an & Log Mutaba'ah Setoran Hafalan Harian (Subuh & Maghrib: Juz/Surat/Ayat/Tajwid) serta rapor perkembangan.
+  - **PJ Musafir & Pelayanan:** Buku Tamu Musafir Digital, Izin Menginap / Istirahat 24 Jam, dan Log Penitipan Kendaraan & Loker Barang.
+  - **PJ Ibadah & Acara:** Kalibrasi Waktu Shalat & Ikhtiyat, Rotasi Petugas Harian (Imam 5 waktu, Muadzin, Khatib Jumat, Bilal), Kalender Acara/Kajian Tematik & Arsip Khutbah Jumat.
+  - **PJ Keuangan:** Modul Akuntansi Lengkap (Buku Kas Masuk, Buku Kas Keluar Operasional, Laporan Arus Kas, Neraca Kas Berkala, dan Ekspor CSV & Cetak PDF Transparan).
+  - **PJ Keamanan:** Log Piket Keamanan 24 Jam & Formulir Laporan Kejadian/Patroli dengan unggah bukti foto/video ke ImageKit.io CDN (auto WebP/WebM).
+  - **PJ Kebersihan:** Checklist Sanitasi Harian (Wudhu, Toilet, Ruang Utama, Halaman) & Formulir Laporan Kebersihan dengan unggah bukti foto/video ke ImageKit.io CDN (auto WebP/WebM).
+- `[DASHBOARD]` Sinkronisasi dashboard pelacak progres visual `progress-implementation-plan.html` pada subdomain `progdev.masjidsophiajatiwarna.com` memuat seluruh modul operasional tiap PJ dalam sub-grup visual yang elegan dan mudah dipahami pengurus DKM.
+
+---
+
 ## [1.3.0] - 2026-08-21
 
 ### Sinkronisasi Master Roadmap v3.0 (Task Management 5 View, Chat Multi-Arah, Self-Sustain CMS & Monitor 7 Pilar)
