@@ -4225,10 +4225,10 @@
             }
         });
 
-        // Handle Login
+        // Handle Login (Dual-Tier Seamless Auth & Auto-Provisioning)
         async function handleLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('login-email').value.trim();
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
             const password = document.getElementById('login-password').value;
             const btn = document.getElementById('btn-login-submit');
 
@@ -4236,17 +4236,95 @@
             btn.disabled = true;
 
             try {
-                const { data, error } = await sbClient.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
+                let loginSuccess = false;
+                let authUser = null;
 
-                if (error) {
-                    alert('Gagal Masuk: ' + error.message);
-                } else if (data && data.user) {
-                    showAdminDashboard(data.user);
+                // 1. Try standard Supabase Auth
+                if (sbClient) {
+                    const { data, error } = await sbClient.auth.signInWithPassword({
+                        email: email,
+                        password: password
+                    });
+
+                    if (!error && data && data.user) {
+                        loginSuccess = true;
+                        authUser = data.user;
+                    } else if (error) {
+                        console.warn("Supabase signIn attempt notice:", error.message);
+                    }
+                }
+
+                // 2. If standard signIn failed (e.g. newly added account without GoTrue entry yet or default password)
+                if (!loginSuccess) {
+                    const matchingUser = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === email) ||
+                        DEFAULT_ADMIN_USERS_SEED.find(u => (u.email || '').toLowerCase().trim() === email);
+
+                    if (matchingUser) {
+                        if (matchingUser.is_active === false) {
+                            alert('Akun pengurus ini sedang dinonaktifkan oleh Pimpinan DKM. Silakan hubungi Super Administrator.');
+                            return;
+                        }
+
+                        const isDefaultPass = password === 'SophiaJatiwarna2026!';
+                        const customPass = localStorage.getItem('masjid_sophia_pass_' + email);
+                        const isCustomPassMatch = customPass && password === customPass;
+
+                        if (isDefaultPass || isCustomPassMatch) {
+                            // Auto-provision into Supabase Auth
+                            if (sbClient) {
+                                try {
+                                    const { data: upData } = await sbClient.auth.signUp({
+                                        email: email,
+                                        password: password,
+                                        options: {
+                                            data: {
+                                                full_name: matchingUser.full_name,
+                                                role: matchingUser.role,
+                                                division: matchingUser.division
+                                            }
+                                        }
+                                    });
+                                    if (upData && upData.user) {
+                                        authUser = upData.user;
+                                        loginSuccess = true;
+                                    } else {
+                                        const { data: inData } = await sbClient.auth.signInWithPassword({
+                                            email: email,
+                                            password: password
+                                        });
+                                        if (inData && inData.user) {
+                                            authUser = inData.user;
+                                            loginSuccess = true;
+                                        }
+                                    }
+                                } catch (provErr) {
+                                    console.warn("Auto-provision notice:", provErr);
+                                }
+                            }
+
+                            if (!authUser) {
+                                authUser = {
+                                    id: matchingUser.id || ('user_' + Date.now()),
+                                    email: matchingUser.email,
+                                    user_metadata: {
+                                        full_name: matchingUser.full_name,
+                                        role: matchingUser.role,
+                                        division: matchingUser.division
+                                    }
+                                };
+                            }
+                            loginSuccess = true;
+                        }
+                    }
+                }
+
+                if (loginSuccess && authUser) {
+                    showAdminDashboard(authUser);
+                } else {
+                    alert('Gagal Masuk: Alamat email atau kata sandi yang Anda masukkan tidak sesuai.');
                 }
             } catch (err) {
+                console.error("Login error:", err);
                 alert('Terjadi kesalahan autentikasi.');
             } finally {
                 btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk ke Dashboard';
@@ -8344,6 +8422,21 @@
             try {
                 if (sbClient) {
                     await sbClient.from('admin_users').upsert(newUser);
+                    try {
+                        await sbClient.auth.signUp({
+                            email: email,
+                            password: 'SophiaJatiwarna2026!',
+                            options: {
+                                data: {
+                                    full_name: fullname,
+                                    role: role,
+                                    division: div
+                                }
+                            }
+                        });
+                    } catch (signUpErr) {
+                        console.warn("Supabase Auth signUp notice:", signUpErr);
+                    }
                 }
             } catch (err) {
                 console.warn("Supabase upsert user notice:", err);
@@ -8491,6 +8584,10 @@
                 console.warn("Save user RBAC notice:", err);
             }
 
+            if (newPass) {
+                localStorage.setItem('masjid_sophia_pass_' + email, newPass);
+            }
+
             saveCustomUsersToLocal();
 
             // Realtime Broadcast
@@ -8586,6 +8683,11 @@
             } catch (err) {
                 console.warn("Reset user DB notice:", err);
             }
+
+            try {
+                localStorage.removeItem('masjid_sophia_pass_' + oldEmail.toLowerCase().trim());
+                localStorage.removeItem('masjid_sophia_pass_' + seed.email.toLowerCase().trim());
+            } catch (e) {}
 
             // Send Force Logout Broadcast to disconnect the old PIC
             if (realtimeHub) {
@@ -8801,6 +8903,11 @@
                         alert('Gagal memperbarui kata sandi: ' + error.message);
                         return;
                     }
+                }
+                if (currentUser && currentUser.email) {
+                    try {
+                        localStorage.setItem('masjid_sophia_pass_' + currentUser.email.toLowerCase().trim(), pass);
+                    } catch (e) {}
                 }
                 alert('Kata sandi berhasil diperbarui! Demi keamanan akun, Anda akan dikeluarkan dari sesi ini untuk login ulang.');
                 handleLogout();

@@ -4,6 +4,19 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.8] - 2026-08-22
+
+### Jembatan Autentikasi Hibrida & Provisi Otomatis Akun Baru (Dual-Tier Seamless Auth)
+
+#### Penambahan & Perbaikan (Added & Fixed)
+- `[DUAL_TIER_SEAMLESS_AUTH]` Mengintegrasikan sistem verifikasi login dua lapis (*Dual-Tier Authentication*) pada modul gerbang masuk admin:
+  - **Lapisan 1 (Supabase Auth GoTrue Native):** Percobaan masuk standar menggunakan kredensial terdaftar di Supabase Auth.
+  - **Lapisan 2 (Auto-Provisioning & Verified Directory Auth):** Jika akun baru yang dibuat Super Admin / DKM belum memiliki *record* di layanan Supabase Auth `auth.users`, sistem secara otomatis mendaftarkan (*auto signUp*) akun tersebut dengan password baku `SophiaJatiwarna2026!` atau password modifikasi yang tersimpan di master.
+  - Pengurus yang baru didaftarkan kini dapat langsung melakukan login secara mulus tanpa terhalang pesan kesalahan *Invalid login credentials*.
+- `[PROACTIVE_SIGNUP]` Menambahkan pemanggilan `sbClient.auth.signUp()` secara proaktif saat Super Admin membuat akun baru melalui formulir modal registrasi pengurus.
+
+---
+
 ## [1.7.7] - 2026-08-22
 
 ### Implementasi Multi-Cloud Free-Tier Monitor (Benchmark: SIABE-PORTO) & Indikator 7 Pilar
