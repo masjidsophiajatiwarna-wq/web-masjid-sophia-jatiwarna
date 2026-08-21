@@ -8,6 +8,9 @@ credentials.txt
 credentials*.txt
 PORTAL_CREDENTIALS.txt
 AKUN_ADMIN_PORTAL.txt
+AKUN_PENGURUS_DKM.txt
+*.csv
+*.xlsx
 .env
 .env*.local
 .env.development
