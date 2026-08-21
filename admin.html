@@ -2217,14 +2217,14 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
-        /* Multi-Cloud Free-Tier Monitor (SIABE-PORTO Benchmark) */
+        /* Multi-Cloud Free-Tier Monitor (Masjid Sophia Brand Guide - Light, Warm, Clean & Serene) */
         .cloud-monitor-wrapper {
-            background: #0F172A;
-            border: 1px solid #334155;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
             padding: 1.5rem;
-            color: #F8FAFC;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            color: var(--color-charcoal);
+            box-shadow: var(--shadow-sm);
             margin-bottom: 1.5rem;
         }
 
@@ -2235,21 +2235,21 @@
             flex-wrap: wrap;
             gap: 1rem;
             padding-bottom: 1.25rem;
-            border-bottom: 1px solid #1E293B;
+            border-bottom: 1px solid var(--color-border);
         }
 
         .cloud-monitor-title {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 800;
-            letter-spacing: 0.5px;
-            color: #FFFFFF;
+            letter-spacing: 0.3px;
+            color: var(--color-charcoal);
             display: flex;
             align-items: center;
         }
 
         .cloud-monitor-subtitle {
-            font-size: 0.8rem;
-            color: #94A3B8;
+            font-size: 0.82rem;
+            color: var(--color-charcoal-muted);
             margin-top: 0.25rem;
         }
 
@@ -2265,9 +2265,9 @@
             align-items: center;
             gap: 0.45rem;
             padding: 0.35rem 0.85rem;
-            background: rgba(6, 78, 59, 0.7);
-            border: 1px solid #059669;
-            color: #34D399;
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            color: var(--color-success);
             border-radius: 9999px;
             font-size: 0.72rem;
             font-weight: 800;
@@ -2279,22 +2279,24 @@
             display: inline-flex;
             align-items: center;
             gap: 0.45rem;
-            padding: 0.4rem 0.95rem;
-            background: var(--color-gold-primary);
-            border: 1px solid var(--color-gold-deep);
-            color: #1D1D1B;
+            padding: 0.45rem 0.95rem;
+            background: var(--color-charcoal);
+            border: 1px solid var(--color-charcoal);
+            color: var(--color-gold-primary);
             border-radius: var(--radius-sm);
             font-size: 0.75rem;
             font-weight: 800;
             letter-spacing: 0.4px;
             cursor: pointer;
-            transition: var(--transition-fast);
+            transition: var(--transition);
         }
 
         .btn-refresh-metrics:hover {
-            background: #F4D373;
+            background: var(--color-gold-deep);
+            border-color: var(--color-gold-deep);
+            color: #FFFFFF;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(227, 196, 102, 0.3);
+            box-shadow: 0 4px 12px rgba(201, 168, 76, 0.25);
         }
 
         .cloud-kpi-grid {
@@ -2305,13 +2307,19 @@
         }
 
         .cloud-kpi-card {
-            background: #1E293B;
-            border: 1px solid #334155;
+            background: #FAF8F5;
+            border: 1px solid #EDE8DF;
             border-radius: var(--radius-md);
             padding: 1.15rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+
+        .cloud-kpi-card:hover {
+            border-color: var(--color-gold-primary);
+            transform: translateY(-1px);
         }
 
         .cloud-kpi-lbl {
@@ -2319,7 +2327,7 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #94A3B8;
+            color: var(--color-charcoal-muted);
         }
 
         .cloud-kpi-val {
@@ -2327,19 +2335,16 @@
             font-weight: 800;
             margin: 0.35rem 0 0.15rem 0;
             line-height: 1.2;
+            color: var(--color-charcoal);
         }
 
         .cloud-kpi-val.color-emerald {
-            color: #10B981;
-        }
-
-        .cloud-kpi-val.color-white {
-            color: #FFFFFF;
+            color: var(--color-success);
         }
 
         .cloud-kpi-sub {
             font-size: 0.75rem;
-            color: #94A3B8;
+            color: var(--color-charcoal-muted);
         }
 
         .cloud-pillars-grid {
@@ -2350,18 +2355,19 @@
         }
 
         .cloud-pillar-card {
-            background: #1E293B;
-            border: 1px solid #334155;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
             padding: 1.15rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.15s ease, border-color 0.15s ease;
+            transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
         }
 
         .cloud-pillar-card:hover {
-            border-color: #475569;
+            border-color: var(--color-gold-primary);
+            box-shadow: 0 4px 14px rgba(201, 168, 76, 0.15);
             transform: translateY(-2px);
         }
 
@@ -2379,17 +2385,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             flex-shrink: 0;
         }
 
-        .icon-supabase { background: rgba(16, 185, 129, 0.15); color: #34D399; }
-        .icon-resend { background: rgba(59, 130, 246, 0.15); color: #60A5FA; }
-        .icon-vercel { background: rgba(243, 244, 246, 0.15); color: #F9FAFB; }
-        .icon-imagekit { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
-        .icon-github { background: rgba(148, 163, 184, 0.15); color: #E2E8F0; }
-        .icon-cloudflare { background: rgba(249, 115, 22, 0.15); color: #FB923C; }
-        .icon-gdrive { background: rgba(34, 197, 94, 0.15); color: #4ADE80; }
+        .icon-supabase { background: #ECFDF5; color: #059669; border: 1px solid #D1FAE5; }
+        .icon-resend { background: #EFF6FF; color: #2563EB; border: 1px solid #DBEAFE; }
+        .icon-vercel { background: #F3F4F6; color: #111827; border: 1px solid #E5E7EB; }
+        .icon-imagekit { background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A; }
+        .icon-github { background: #F1F5F9; color: #334155; border: 1px solid #E2E8F0; }
+        .icon-cloudflare { background: #FFF7ED; color: #EA580C; border: 1px solid #FFEDD5; }
+        .icon-gdrive { background: #F0FDF4; color: #16A34A; border: 1px solid #DCFCE7; }
 
         .pillar-title-group {
             flex: 1;
@@ -2399,13 +2405,13 @@
         .pillar-name {
             font-size: 0.95rem;
             font-weight: 800;
-            color: #FFFFFF;
+            color: var(--color-charcoal);
             line-height: 1.2;
         }
 
         .pillar-desc {
-            font-size: 0.7rem;
-            color: #94A3B8;
+            font-size: 0.72rem;
+            color: var(--color-charcoal-muted);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -2414,9 +2420,9 @@
 
         .pillar-badge-safe {
             padding: 0.2rem 0.55rem;
-            background: rgba(6, 78, 59, 0.8);
-            border: 1px solid #059669;
-            color: #34D399;
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            color: var(--color-success);
             font-size: 0.65rem;
             font-weight: 800;
             border-radius: 4px;
@@ -2440,28 +2446,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.74rem;
+            font-size: 0.75rem;
         }
 
         .metric-row .metric-name {
-            color: #94A3B8;
+            color: var(--color-charcoal-muted);
         }
 
         .metric-row .metric-num {
-            color: #F1F5F9;
+            color: var(--color-charcoal);
             font-weight: 700;
         }
 
         .pillar-progress-track {
-            height: 4px;
-            background: #334155;
+            height: 5px;
+            background: #F3F4F6;
+            border: 1px solid #E5E7EB;
             border-radius: 9999px;
             overflow: hidden;
         }
 
         .pillar-progress-bar {
             height: 100%;
-            background: #10B981;
+            background: var(--color-gold-deep);
             border-radius: 9999px;
             transition: width 0.3s ease;
         }
@@ -2469,24 +2476,24 @@
         .pillar-footer-link {
             margin-top: 1rem;
             padding-top: 0.75rem;
-            border-top: 1px solid #334155;
+            border-top: 1px solid #F3F4F6;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.74rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            color: #94A3B8;
+            color: var(--color-charcoal-muted);
             text-decoration: none;
             transition: color 0.15s ease;
         }
 
         .pillar-footer-link:hover {
-            color: var(--color-gold-primary);
+            color: var(--color-gold-deep);
         }
 
         .cloud-guide-container {
-            background: #1E293B;
-            border: 1px solid #334155;
+            background: #FAF8F5;
+            border: 1px solid #EDE8DF;
             border-radius: var(--radius-md);
             padding: 1.25rem;
         }
@@ -2495,9 +2502,9 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: 800;
-            color: var(--color-gold-primary);
+            color: var(--color-charcoal);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 1rem;
@@ -2510,24 +2517,25 @@
         }
 
         .guide-card {
-            background: #0F172A;
-            border: 1px solid #334155;
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
             border-radius: var(--radius-sm);
             padding: 0.85rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
         }
 
         .guide-card-title {
-            font-size: 0.74rem;
+            font-size: 0.75rem;
             font-weight: 800;
-            color: #F1F5F9;
+            color: var(--color-charcoal);
             margin-bottom: 0.35rem;
             line-height: 1.35;
         }
 
         .guide-card-text {
-            font-size: 0.72rem;
-            color: #94A3B8;
-            line-height: 1.45;
+            font-size: 0.73rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.5;
         }
 
         @media (max-width: 1100px) {
@@ -3267,25 +3275,25 @@
                     <div class="cloud-kpi-grid">
                         <div class="cloud-kpi-card">
                             <div class="cloud-kpi-lbl">TOTAL MONTHLY CLOUD BILL</div>
-                            <div class="cloud-kpi-val color-emerald">IDR 0 <span style="font-size: 0.82rem; color: #94A3B8; font-weight: 600;">/ Month</span></div>
+                            <div class="cloud-kpi-val color-emerald">IDR 0 <span style="font-size: 0.82rem; color: var(--color-charcoal-muted); font-weight: 600;">/ Month</span></div>
                             <div class="cloud-kpi-sub">Zero Infrastructure Cost</div>
                         </div>
 
                         <div class="cloud-kpi-card">
                             <div class="cloud-kpi-lbl">INFRASTRUCTURE STATUS</div>
-                            <div class="cloud-kpi-val color-emerald">ALL SAFE <span style="font-size: 0.95rem; color: #34D399; font-weight: 700;">(7/7)</span></div>
+                            <div class="cloud-kpi-val color-emerald">ALL SAFE <span style="font-size: 0.95rem; color: var(--color-success); font-weight: 700;">(7/7)</span></div>
                             <div class="cloud-kpi-sub">No Quota Near Threshold</div>
                         </div>
 
                         <div class="cloud-kpi-card">
                             <div class="cloud-kpi-lbl">DATABASE RECORDS (SUPABASE)</div>
-                            <div class="cloud-kpi-val color-white"><span id="cloud-db-total-records">467</span> <span style="font-size: 0.82rem; color: #94A3B8; font-weight: 600;">Records</span></div>
+                            <div class="cloud-kpi-val"><span id="cloud-db-total-records">467</span> <span style="font-size: 0.82rem; color: var(--color-charcoal-muted); font-weight: 600;">Records</span></div>
                             <div class="cloud-kpi-sub">Est. Postgres Size: ~<span id="cloud-db-size">2.70</span> MB</div>
                         </div>
 
                         <div class="cloud-kpi-card">
                             <div class="cloud-kpi-lbl">TRANSACTIONAL EMAIL (RESEND)</div>
-                            <div class="cloud-kpi-val color-white">3.000 <span style="font-size: 0.82rem; color: #94A3B8; font-weight: 600;">Emails/Mo</span></div>
+                            <div class="cloud-kpi-val">3.000 <span style="font-size: 0.82rem; color: var(--color-charcoal-muted); font-weight: 600;">Emails/Mo</span></div>
                             <div class="cloud-kpi-sub">dkm@masjidsophiajatiwarna.com Verified</div>
                         </div>
                     </div>
@@ -3532,7 +3540,7 @@
                                     <div class="pillar-metric-item">
                                         <div class="metric-row">
                                             <span class="metric-name">Workflow Status</span>
-                                            <span class="metric-num" style="color: #34D399;"><i class="fa-solid fa-circle-check"></i> Active Passing</span>
+                                            <span class="metric-num" style="color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Active Passing</span>
                                         </div>
                                     </div>
                                 </div>
