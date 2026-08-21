@@ -4,6 +4,19 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.4] - 2026-08-22
+
+### Persistensi Hibrida Akun Master Pengurus (Local Master + Supabase Sync) & Penanganan RLS 403
+
+#### Perbaikan & Penyempurnaan (Fixed & Improved)
+- `[HYBRID_LOCAL_MASTER_PERSISTENCE]` Menambahkan lapisan penyimpanan persisten hibrida (`masjid_sophia_admin_users_master`):
+  - Akun baru yang didaftarkan atau diperbarui oleh Super Admin / DKM kini otomatis tersimpan di penyimpanan lokal persisten selain dikirim ke Supabase.
+  - Ketika halaman di-refresh (*hard refresh*), akun yang baru ditambahkan tidak akan hilang meskipun database Supabase mengalami pembatasan kebijakan keamanan baris (*Row-Level Security / RLS 403 Forbidden*).
+  - Sinkronisasi realtime `USER_SYNC` otomatis memperbarui memori dan penyimpanan master di seluruh jendela/peramban yang terbuka.
+- `[RLS_POLICY_GUIDANCE]` Menyediakan panduan skrip SQL Supabase untuk membuka izin tulis (*INSERT/UPDATE/ALL*) pada tabel `public.admin_users` untuk role `SUPER_ADMIN` dan `KETUA_DKM`.
+
+---
+
 ## [1.7.3] - 2026-08-22
 
 ### Perbaikan Realtime Presence Channel Sync, Dynamic Logout State, dan Adaptive Color Styling
