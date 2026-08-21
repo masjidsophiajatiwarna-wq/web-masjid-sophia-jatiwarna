@@ -18,7 +18,9 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 - `[REALTIME HUB]` Peningkatan engine Realtime sinkronisasi instan multi-peran (Superadmin, Superuser, dan PJ Divisi):
   - Dukungan ganda: **Supabase Database CDC (`postgres_changes`)** + **Supabase WebSocket Broadcast (`TASK_SYNC`, `LOG_SYNC`, `CHAT_SYNC`)** untuk pembaruan instan (<50ms) antar seluruh tab/perangkat terbuka tanpa jeda replikasi.
   - Standardisasi ID tugas, log, dan chat ke format valid **RFC4122 UUID** (`gen_random_uuid()`) untuk kompatibilitas penuh tipe data PostgreSQL Supabase.
-  - Skrip migrasi terpadu `database/migration_task_management_v1.6.sql` mencakup `ALTER TABLE REPLICA IDENTITY FULL`, RLS policies, publikasi realtime, dan seeding data tugas operasional resmi DKM.
+- `[UI PERSISTENCE]` Implementasi **Browser Navigation Memory & URL Hash Persistence** pada `admin.html`:
+  - Menyimpan menu tab aktif (`#overview`, `#donations`, `#tasks`, `#feedback`, `#articles`, `#health`) dan subview tugas (`kanban`, `gantt`, `calendar`, `table`, `archive`, `history`, `chat`) ke `localStorage` dan URL hash browser.
+  - Saat halaman di-refresh (F5), browser tidak akan lagi mereset ke menu paling atas melainkan langsung tetap membuka tab dan sub-tampilan terakhir yang sedang dikerjakan pengurus.
 - `[DOCS & PROGRESS]` Sinkronisasi paralel pada `implementation-plan.md` dan `progress-implementation-plan.html` (7 item tugas/panel tercatat selesai 100%).
 
 ---

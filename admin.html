@@ -2038,16 +2038,37 @@
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('admin-app').style.display = 'block';
             document.getElementById('display-user-email').textContent = user.email || 'Pengurus DKM';
+
+            // Restore active tab from URL Hash or localStorage (Memory Browser)
+            const hashTab = window.location.hash ? window.location.hash.replace('#', '').trim() : null;
+            const savedTab = hashTab || localStorage.getItem('masjid_sophia_active_tab') || 'overview';
+            switchTab(savedTab);
+
             loadAllAdminData();
         }
 
-        // Switch Navigation Tabs
-        function switchTab(tabId, btn) {
+        // Switch Navigation Tabs with Browser Memory & URL Hash Persistence
+        function switchTab(tabId, btn = null) {
+            if (!tabId) tabId = 'overview';
+
+            // Save to localStorage & URL Hash
+            try {
+                localStorage.setItem('masjid_sophia_active_tab', tabId);
+                if (window.location.hash !== `#${tabId}`) {
+                    history.replaceState(null, null, `#${tabId}`);
+                }
+            } catch (e) {}
+
             document.querySelectorAll('.tab-content-panel').forEach(p => p.style.display = 'none');
             document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
 
             const target = document.getElementById(`tab-${tabId}`);
             if (target) target.style.display = 'block';
+
+            if (!btn) {
+                // Auto-match nav button by onclick attribute
+                btn = document.querySelector(`.nav-item-btn[onclick*="'${tabId}'"]`);
+            }
             if (btn) btn.classList.add('active');
 
             const titles = {
@@ -2063,7 +2084,21 @@
                 document.getElementById('panel-heading-title').textContent = titles[tabId][0];
                 document.getElementById('panel-heading-desc').textContent = titles[tabId][1];
             }
+
+            // Restore subview if on tasks tab
+            if (tabId === 'tasks') {
+                const savedSubView = localStorage.getItem('masjid_sophia_task_subview') || 'kanban';
+                switchTaskView(savedSubView);
+            }
         }
+
+        // Listen for browser Back/Forward navigation
+        window.addEventListener('hashchange', () => {
+            if (currentUser && document.getElementById('admin-app').style.display !== 'none') {
+                const hashTab = window.location.hash ? window.location.hash.replace('#', '').trim() : null;
+                if (hashTab) switchTab(hashTab);
+            }
+        });
 
         // ==========================================================================
         // STATE MANAGEMENT & TASK DATA ENGINE
@@ -2470,7 +2505,13 @@
         // VIEW SWITCHER & FILTERING
         // ==========================================================================
         function switchTaskView(viewName) {
+            if (!viewName) viewName = 'kanban';
             currentTaskView = viewName;
+            
+            // Persist active subview in localStorage
+            try {
+                localStorage.setItem('masjid_sophia_task_subview', viewName);
+            } catch (e) {}
             
             // Update Sub-nav buttons
             document.querySelectorAll('.task-view-btn').forEach(btn => btn.classList.remove('active'));
