@@ -1212,7 +1212,7 @@
             }
         }
 
-        /* 3. Calendar View (Portosiabe Pro Style) */
+        /* 3. CALENDAR VIEW (PORTOSIABE PRO 2-LAYER MATRIX) */
         .calendar-wrapper {
             background: var(--color-bg-white);
             border: 1px solid var(--color-border);
@@ -1242,20 +1242,24 @@
             gap: 0.35rem;
         }
 
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, minmax(0, 1fr));
-            gap: 1px;
-            background: var(--color-border);
+        /* Days Grid Container */
+        .calendar-grid-container {
             border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
             overflow: hidden;
-            width: 100%;
+            background: var(--color-border);
             user-select: none;
+            -webkit-user-select: none;
         }
 
-        .calendar-day-header {
+        .calendar-weekdays-row {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
             background: #F9FAFB;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .cal-weekday {
             padding: 0.65rem 0.25rem;
             text-align: center;
             font-size: 0.75rem;
@@ -1267,128 +1271,194 @@
             white-space: nowrap;
         }
 
-        .calendar-day-cell {
-            background: var(--color-bg-white);
-            min-height: 110px;
-            padding: 0.35rem;
+        .calendar-days-grid {
             display: flex;
             flex-direction: column;
-            gap: 0.2rem;
-            cursor: pointer;
-            transition: background 0.1s ease;
-            position: relative;
-            min-width: 0;
-            overflow: hidden;
-            box-sizing: border-box;
+            gap: 1px;
+            background: var(--color-border);
         }
 
-        .calendar-day-cell:hover {
+        /* Week Row Matrix */
+        .cal-week-row {
+            position: relative;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            background: var(--color-border);
+        }
+
+        /* Layer 1: Background Day Cells */
+        .cal-week-bg-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+            gap: 1px;
+            background: var(--color-border);
+            pointer-events: none;
+        }
+
+        .cal-day-bg-cell {
+            background: var(--color-bg-white);
+            pointer-events: auto;
+            padding: 6px 8px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.1s ease;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        .cal-day-bg-cell:hover {
             background: #FAF8F2;
         }
 
-        .calendar-day-cell.other-month {
+        .cal-day-bg-cell.is-other-month {
             background: #FAFAFA;
             color: #9CA3AF;
         }
 
-        .calendar-day-cell.today {
+        .cal-day-bg-cell.is-today {
             background: #FAF6E8;
-            box-shadow: inset 0 0 0 1px var(--color-gold-deep);
         }
 
-        .calendar-day-cell.selected-range {
+        .cal-day-bg-cell.is-today::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--color-gold-deep);
+        }
+
+        .cal-day-bg-cell.is-dragging-range {
             background: #FAF3D8 !important;
             outline: 2px solid var(--color-gold-deep);
             outline-offset: -2px;
             z-index: 3;
         }
 
-        .calendar-day-number {
-            font-size: 0.75rem;
-            font-weight: 800;
+        .cal-day-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.15rem;
-            min-width: 0;
+            margin-bottom: 2px;
         }
 
-        .calendar-task-card {
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.68rem;
-            font-weight: 700;
-            display: flex;
+        .cal-day-number {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
             align-items: center;
-            gap: 0.25rem;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-            transition: transform 0.1s ease;
-            cursor: pointer;
-            border-left: 3px solid transparent;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            min-width: 0;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .cal-day-bg-cell.is-today .cal-day-number {
+            background: var(--color-gold-deep);
+            color: #FFFFFF;
+        }
+
+        .cal-day-bg-cell.is-other-month .cal-day-number {
+            color: #9CA3AF;
+        }
+
+        /* Layer 2: Spanning Events Grid */
+        .cal-week-events-layer {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            column-gap: 4px;
+            row-gap: 4px;
+            padding: 30px 4px 6px 4px;
+            pointer-events: none;
             width: 100%;
             box-sizing: border-box;
         }
 
-        .calendar-task-card:hover {
+        /* Spanning Bar Elements */
+        .cal-span-bar {
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            padding: 2px 8px;
+            height: 24px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.1s ease, filter 0.1s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-sizing: border-box;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            min-width: 0;
+            width: 100%;
+        }
+
+        .cal-span-bar:hover {
+            filter: brightness(1.08);
             transform: translateY(-1px);
-            filter: brightness(0.96);
-            z-index: 4;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+            z-index: 5;
         }
 
-        /* Continuous Multi-day Spanning Bar Classes */
-        .calendar-task-card.multi-day-start {
-            border-radius: 4px 0 0 4px;
-            border-right: none;
-            margin-right: -0.4rem;
-            width: calc(100% + 0.4rem);
-            z-index: 2;
+        .cal-span-bar.status-PENDING {
+            background: #E2E8F0;
+            color: #334155;
+            border-left: 3px solid #94A3B8;
         }
 
-        .calendar-task-card.multi-day-mid {
-            border-radius: 0;
+        .cal-span-bar.status-IN_PROGRESS, .cal-span-bar.status-REVIEW {
+            background: linear-gradient(90deg, #D97706, #F59E0B);
+            color: #1E293B;
+            border-left: 3px solid #B45309;
+        }
+
+        .cal-span-bar.status-COMPLETED {
+            background: linear-gradient(90deg, #059669, #10B981);
+            color: #FFFFFF;
+            border-left: 3px solid #047857;
+        }
+
+        .cal-span-bar.status-COMPLETED .cal-bar-title {
+            text-decoration: line-through;
+            opacity: 0.85;
+        }
+
+        .cal-span-bar.is-overdue {
+            background: #DC2626 !important;
+            color: #FFFFFF !important;
+            border-left: 3px solid #991B1B !important;
+        }
+
+        .cal-span-bar.continues-prev {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
             border-left: none;
+        }
+
+        .cal-span-bar.continues-next {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
             border-right: none;
-            margin-left: -0.4rem;
-            margin-right: -0.4rem;
-            width: calc(100% + 0.8rem);
-            z-index: 2;
-            padding-left: 0.2rem;
-            opacity: 0.95;
         }
 
-        .calendar-task-card.multi-day-end {
-            border-radius: 0 4px 4px 0;
-            border-left: none;
-            margin-left: -0.4rem;
-            width: calc(100% + 0.4rem);
-            z-index: 2;
-            padding-left: 0.2rem;
+        .cal-bar-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
-
-        .calendar-task-card.multi-day-fullweek {
-            border-radius: 0;
-            border-left: none;
-            border-right: none;
-            margin-left: -0.4rem;
-            margin-right: -0.4rem;
-            width: calc(100% + 0.8rem);
-            z-index: 2;
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .status-dot.completed { background: #10B981; }
-        .status-dot.in_progress, .status-dot.review { background: #F59E0B; }
-        .status-dot.pending { background: #94A3B8; }
 
         /* Agenda View List */
         .agenda-container {
@@ -2264,8 +2334,19 @@
 
                         <!-- Month Grid -->
                         <div id="calendar-month-view">
-                            <div class="calendar-grid" id="calendar-grid-container">
-                                <!-- Rendered dynamically -->
+                            <div class="calendar-grid-container" id="calendar-grid-container">
+                                <div class="calendar-weekdays-row">
+                                    <div class="cal-weekday">Senin</div>
+                                    <div class="cal-weekday">Selasa</div>
+                                    <div class="cal-weekday">Rabu</div>
+                                    <div class="cal-weekday">Kamis</div>
+                                    <div class="cal-weekday">Jumat</div>
+                                    <div class="cal-weekday">Sabtu</div>
+                                    <div class="cal-weekday">Ahad</div>
+                                </div>
+                                <div id="calendar-days-grid" class="calendar-days-grid">
+                                    <!-- Rendered dynamically -->
+                                </div>
                             </div>
                         </div>
 
@@ -4129,160 +4210,238 @@
         }
 
         function renderMonthGrid(year, month) {
-            const grid = document.getElementById('calendar-grid-container');
-            if (!grid) return;
-            const dayHeaders = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Ahad'];
+            const container = document.getElementById('calendar-days-grid');
+            if (!container) return;
+            container.innerHTML = '';
 
-            let html = dayHeaders.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
+            // Monday-first indexing: (day + 6) % 7 gives 0 for Monday, 6 for Sunday
+            const firstDayObj = new Date(year, month, 1);
+            const firstDayIndex = (firstDayObj.getDay() + 6) % 7;
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
 
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
+            const totalCells = Math.ceil((firstDayIndex + daysInMonth) / 7) * 7;
+            const numWeeks = totalCells / 7;
+            const now = new Date();
+            const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
-            // Shift index so Monday is 0 (Sunday is 6)
-            let startDayIdx = (firstDay.getDay() + 6) % 7;
-            const daysInMonth = lastDay.getDate();
+            // Build weeks matrix (7 days per row)
+            const weeks = [];
+            let cellCount = 0;
 
-            // Previous month padding
-            const prevMonthLastDay = new Date(year, month, 0).getDate();
-            for (let i = startDayIdx - 1; i >= 0; i--) {
-                const d = prevMonthLastDay - i;
-                const prevMonthDateStr = new Date(year, month - 1, d).toISOString().split('T')[0];
-                html += `
-                    <div class="calendar-day-cell other-month" data-date="${prevMonthDateStr}">
-                        <div class="calendar-day-number"><span>${d}</span></div>
-                    </div>
-                `;
+            for (let w = 0; w < numWeeks; w++) {
+                const weekDays = [];
+                for (let d = 0; d < 7; d++) {
+                    let dayNum = 0;
+                    let cellYear = year;
+                    let cellMonth = month;
+                    let isOtherMonth = false;
+
+                    if (cellCount < firstDayIndex) {
+                        dayNum = daysInPrevMonth - firstDayIndex + cellCount + 1;
+                        cellMonth = month - 1;
+                        if (cellMonth < 0) { cellMonth = 11; cellYear = year - 1; }
+                        isOtherMonth = true;
+                    } else if (cellCount >= firstDayIndex + daysInMonth) {
+                        dayNum = cellCount - (firstDayIndex + daysInMonth) + 1;
+                        cellMonth = month + 1;
+                        if (cellMonth > 11) { cellMonth = 0; cellYear = year + 1; }
+                        isOtherMonth = true;
+                    } else {
+                        dayNum = cellCount - firstDayIndex + 1;
+                    }
+
+                    const isoDate = `${cellYear}-${String(cellMonth + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+                    const isToday = isoDate === todayStr;
+
+                    weekDays.push({
+                        isoDate,
+                        dayNum,
+                        dayIndex: d,
+                        isOtherMonth,
+                        isToday
+                    });
+
+                    cellCount++;
+                }
+                weeks.push(weekDays);
             }
 
             const tasks = getFilteredTasks(false);
-            const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
 
-            for (let d = 1; d <= daysInMonth; d++) {
-                const cellDate = new Date(year, month, d);
-                const cellDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-                const isToday = cellDateStr === todayStr;
-                const dayOfWeek = (cellDate.getDay() + 6) % 7; // 0 = Monday, 6 = Sunday
+            // Render each Week Row
+            weeks.forEach(weekDays => {
+                const weekStartIso = weekDays[0].isoDate;
+                const weekEndIso = weekDays[6].isoDate;
 
-                // Find tasks active on this specific date
-                const dayTasks = tasks.filter(t => {
-                    const start = t.start_date ? t.start_date.split('T')[0] : (t.created_at ? t.created_at.split('T')[0] : null);
-                    const due = t.due_date ? t.due_date.split('T')[0] : start;
-                    
-                    if (!start && !due) return false;
-                    if (due === cellDateStr) return true;
-                    if (start === cellDateStr) return true;
-                    if (start && due && cellDateStr >= start && cellDateStr <= due) return true;
-                    return false;
+                const weekRow = document.createElement('div');
+                weekRow.className = 'cal-week-row';
+
+                // 1. Background Days Grid (7 columns)
+                const bgGrid = document.createElement('div');
+                bgGrid.className = 'cal-week-bg-grid';
+
+                weekDays.forEach(day => {
+                    const cell = document.createElement('div');
+                    cell.className = `cal-day-bg-cell${day.isOtherMonth ? ' is-other-month' : ''}${day.isToday ? ' is-today' : ''}`;
+                    cell.setAttribute('data-date', day.isoDate);
+
+                    cell.innerHTML = `
+                        <div class="cal-day-header">
+                            <span class="cal-day-number">${day.dayNum}</span>
+                            ${day.isToday ? '<span style="font-size: 0.65rem; color: var(--color-gold-deep); font-weight: 800;">Hari Ini</span>' : ''}
+                        </div>
+                    `;
+
+                    // Interactivity: Drag & Drop range selection & single click
+                    cell.addEventListener('mousedown', (e) => {
+                        if (e.target.closest('.cal-span-bar') || e.target.closest('button')) return;
+                        calendarDragState.isDragging = true;
+                        calendarDragState.startDateStr = day.isoDate;
+                        calendarDragState.currentDateStr = day.isoDate;
+                        updateCalendarRangeHighlight();
+                    });
+
+                    cell.addEventListener('mouseenter', () => {
+                        if (calendarDragState.isDragging) {
+                            calendarDragState.currentDateStr = day.isoDate;
+                            updateCalendarRangeHighlight();
+                        }
+                    });
+
+                    cell.addEventListener('mouseup', () => {
+                        if (calendarDragState.isDragging) {
+                            calendarDragState.isDragging = false;
+                            const d1 = calendarDragState.startDateStr;
+                            const d2 = day.isoDate || calendarDragState.currentDateStr || d1;
+                            const start = d1 <= d2 ? d1 : d2;
+                            const end = d1 <= d2 ? d2 : d1;
+                            clearCalendarRangeHighlight();
+                            openTaskModal(null, start, end);
+                        }
+                    });
+
+                    bgGrid.appendChild(cell);
                 });
 
-                html += `
-                    <div class="calendar-day-cell ${isToday ? 'today' : ''}" 
-                         data-date="${cellDateStr}"
-                         onmousedown="handleCalendarMouseDown(event, '${cellDateStr}')"
-                         onmouseenter="handleCalendarMouseEnter(event, '${cellDateStr}')"
-                         onmouseup="handleCalendarMouseUp(event, '${cellDateStr}')"
-                         title="Klik atau drag rentang tanggal untuk menambah tugas">
-                        <div class="calendar-day-number">
-                            <span>${d}</span>
-                            ${isToday ? '<span style="font-size: 0.65rem; color: var(--color-gold-deep); font-weight: 800;">Hari Ini</span>' : ''}
-                        </div>
-                        ${dayTasks.slice(0, 3).map(t => {
-                            const divClass = getDivisionBadgeClass(t.division);
-                            const stKey = (t.status || 'PENDING').toLowerCase();
-                            const startStr = t.start_date ? t.start_date.split('T')[0] : cellDateStr;
-                            const dueStr = t.due_date ? t.due_date.split('T')[0] : startStr;
-                            const isMultiDay = startStr !== dueStr;
-                            const picShort = t.assigned_to ? t.assigned_to.split(' ')[0] : 'PIC';
-                            
-                            if (!isMultiDay) {
-                                // Single-day Task
-                                return `
-                                    <div class="calendar-task-card div-badge ${divClass}" 
-                                         onclick="event.stopPropagation(); openTaskDetailModal('${t.id}')" 
-                                         title="${t.title} (${t.division} • ${t.assigned_to || '-'})">
-                                        <span class="status-dot ${stKey}"></span>
-                                        <span style="font-weight: 800; opacity: 0.85;">[${picShort}]</span>
-                                        <span style="flex: 1; overflow: hidden; text-overflow: ellipsis;">${t.title}</span>
-                                    </div>
-                                `;
-                            } else {
-                                // Multi-day Spanning Bar Segment
-                                const isStart = cellDateStr === startStr || dayOfWeek === 0; // Starts here or is Monday wrap
-                                const isEnd = cellDateStr === dueStr || dayOfWeek === 6; // Ends here or is Sunday wrap
-                                let spanClass = 'multi-day-mid';
-                                if (isStart && isEnd) spanClass = 'multi-day-fullweek';
-                                else if (isStart) spanClass = 'multi-day-start';
-                                else if (isEnd) spanClass = 'multi-day-end';
+                weekRow.appendChild(bgGrid);
 
-                                return `
-                                    <div class="calendar-task-card div-badge ${divClass} ${spanClass}" 
-                                         onclick="event.stopPropagation(); openTaskDetailModal('${t.id}')" 
-                                         title="${t.title} (${startStr} s/d ${dueStr} • PIC: ${t.assigned_to || '-'})">
-                                        ${isStart ? `
-                                            <span class="status-dot ${stKey}"></span>
-                                            <span style="font-weight: 800; opacity: 0.9;">[${picShort}]</span>
-                                            <span style="flex: 1; overflow: hidden; text-overflow: ellipsis;">${t.title}</span>
-                                            <i class="fa-solid fa-arrow-right" style="font-size: 0.55rem; opacity: 0.7;"></i>
-                                        ` : (isEnd ? `
-                                            <i class="fa-solid fa-arrow-left" style="font-size: 0.55rem; opacity: 0.7;"></i>
-                                            <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; opacity: 0.9;">${t.title}</span>
-                                        ` : `
-                                            <div style="width: 100%; height: 4px; background: currentColor; opacity: 0.4; border-radius: 2px;"></div>
-                                        `)}
-                                    </div>
-                                `;
+                // 2. Spanning Events Grid (7 columns)
+                const eventsLayer = document.createElement('div');
+                eventsLayer.className = 'cal-week-events-layer';
+
+                // Filter tasks active in this week
+                const weekTasks = [];
+                tasks.forEach(t => {
+                    const s = t.start_date ? t.start_date.split('T')[0] : (t.created_at ? t.created_at.split('T')[0] : t.due_date ? t.due_date.split('T')[0] : null);
+                    const e = t.due_date ? t.due_date.split('T')[0] : s;
+                    if (!s && !e) return;
+
+                    const effectiveStart = s || e;
+                    const effectiveEnd = e || s;
+
+                    // Check if task range intersects this week
+                    if (effectiveStart <= weekEndIso && effectiveEnd >= weekStartIso) {
+                        let startCol = 0;
+                        let endCol = 6;
+
+                        if (effectiveStart > weekStartIso) {
+                            startCol = weekDays.findIndex(d => d.isoDate === effectiveStart);
+                            if (startCol === -1) startCol = 0;
+                        } else {
+                            startCol = 0;
+                        }
+
+                        if (effectiveEnd < weekEndIso) {
+                            endCol = weekDays.findIndex(d => d.isoDate === effectiveEnd);
+                            if (endCol === -1) endCol = 6;
+                        } else {
+                            endCol = 6;
+                        }
+
+                        const isOverdue = t.status !== 'COMPLETED' && effectiveEnd < todayStr;
+
+                        weekTasks.push({
+                            task: t,
+                            start: effectiveStart,
+                            end: effectiveEnd,
+                            startCol,
+                            endCol,
+                            spanLength: endCol - startCol + 1,
+                            continuesPrev: effectiveStart < weekStartIso,
+                            continuesNext: effectiveEnd > weekEndIso,
+                            isOverdue
+                        });
+                    }
+                });
+
+                // Sort tasks: longest span first, then overdue, then creation date
+                weekTasks.sort((a, b) => {
+                    if (b.spanLength !== a.spanLength) return b.spanLength - a.spanLength;
+                    if (a.isOverdue && !b.isOverdue) return -1;
+                    if (!a.isOverdue && b.isOverdue) return 1;
+                    return (a.task.created_at || '').localeCompare(b.task.created_at || '');
+                });
+
+                // Slotting algorithm for non-overlapping vertical stacking
+                const slots = [];
+
+                weekTasks.forEach(item => {
+                    let assignedSlot = 0;
+                    while (true) {
+                        if (!slots[assignedSlot]) slots[assignedSlot] = new Array(7).fill(false);
+                        let canFit = true;
+                        for (let col = item.startCol; col <= item.endCol; col++) {
+                            if (slots[assignedSlot][col]) {
+                                canFit = false;
+                                break;
                             }
-                        }).join('')}
-                        ${dayTasks.length > 3 ? `<div style="font-size: 0.65rem; color: var(--color-charcoal-muted); font-weight: 800; text-align: center;">+${dayTasks.length - 3} tugas lagi</div>` : ''}
-                    </div>
-                `;
-            }
+                        }
+                        if (canFit) {
+                            for (let col = item.startCol; col <= item.endCol; col++) {
+                                slots[assignedSlot][col] = true;
+                            }
+                            break;
+                        }
+                        assignedSlot++;
+                    }
 
-            // Next month padding to fill grid
-            const totalCells = startDayIdx + daysInMonth;
-            const remaining = (7 - (totalCells % 7)) % 7;
-            for (let i = 1; i <= remaining; i++) {
-                const nextMonthDateStr = new Date(year, month + 1, i).toISOString().split('T')[0];
-                html += `
-                    <div class="calendar-day-cell other-month" data-date="${nextMonthDateStr}">
-                        <div class="calendar-day-number"><span>${i}</span></div>
-                    </div>
-                `;
-            }
+                    // Render the Spanning Bar Element (Single continuous element across columns)
+                    const bar = document.createElement('div');
+                    const statusClass = item.isOverdue ? 'is-overdue' : `status-${item.task.status || 'PENDING'}`;
+                    const continuesPrevClass = item.continuesPrev ? ' continues-prev' : '';
+                    const continuesNextClass = item.continuesNext ? ' continues-next' : '';
 
-            grid.innerHTML = html;
+                    bar.className = `cal-span-bar ${statusClass}${continuesPrevClass}${continuesNextClass}`;
+                    bar.style.gridColumn = `${item.startCol + 1} / ${item.endCol + 2}`;
+                    bar.style.gridRow = `${assignedSlot + 1}`;
+                    bar.setAttribute('data-task-id', item.task.id);
+
+                    const picShort = item.task.assigned_to ? item.task.assigned_to.split(' ')[0] : 'PIC';
+                    let displayTitle = `[${picShort}] ${escapeHtml(item.task.title)}`;
+                    if (item.continuesPrev) {
+                        displayTitle = `&rarr; ${displayTitle}`;
+                    }
+
+                    bar.innerHTML = `
+                        <span class="cal-bar-title" title="${escapeHtml(item.task.title)} (${item.start} s/d ${item.end} • ${item.task.assigned_to || '-'})">${displayTitle}</span>
+                        ${item.isOverdue ? '<span style="font-size: 0.6rem; font-weight: 800; background: rgba(0,0,0,0.25); padding: 0 4px; border-radius: 2px;">Terlambat</span>' : ''}
+                    `;
+
+                    bar.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openTaskDetailModal(item.task.id);
+                    });
+
+                    eventsLayer.appendChild(bar);
+                });
+
+                weekRow.appendChild(eventsLayer);
+                container.appendChild(weekRow);
+            });
         }
 
         // Drag & Hold Date Range Handlers for Calendar
-        function handleCalendarMouseDown(e, dateStr) {
-            if (e.target.closest('.calendar-task-card') || e.target.closest('button')) return;
-            
-            calendarDragState.isDragging = true;
-            calendarDragState.startDateStr = dateStr;
-            calendarDragState.currentDateStr = dateStr;
-            updateCalendarRangeHighlight();
-        }
-
-        function handleCalendarMouseEnter(e, dateStr) {
-            if (!calendarDragState.isDragging) return;
-            calendarDragState.currentDateStr = dateStr;
-            updateCalendarRangeHighlight();
-        }
-
-        function handleCalendarMouseUp(e, dateStr) {
-            if (!calendarDragState.isDragging) return;
-            calendarDragState.isDragging = false;
-
-            const d1 = calendarDragState.startDateStr;
-            const d2 = dateStr || calendarDragState.currentDateStr || d1;
-            const start = d1 <= d2 ? d1 : d2;
-            const end = d1 <= d2 ? d2 : d1;
-
-            clearCalendarRangeHighlight();
-            openTaskModal(null, start, end);
-        }
-
         function updateCalendarRangeHighlight() {
             if (!calendarDragState.startDateStr || !calendarDragState.currentDateStr) return;
             const d1 = calendarDragState.startDateStr;
@@ -4290,19 +4449,19 @@
             const start = d1 <= d2 ? d1 : d2;
             const end = d1 <= d2 ? d2 : d1;
 
-            document.querySelectorAll('.calendar-day-cell').forEach(cell => {
+            document.querySelectorAll('.cal-day-bg-cell').forEach(cell => {
                 const date = cell.getAttribute('data-date');
                 if (date && date >= start && date <= end) {
-                    cell.classList.add('selected-range');
+                    cell.classList.add('is-dragging-range');
                 } else {
-                    cell.classList.remove('selected-range');
+                    cell.classList.remove('is-dragging-range');
                 }
             });
         }
 
         function clearCalendarRangeHighlight() {
-            document.querySelectorAll('.calendar-day-cell').forEach(cell => {
-                cell.classList.remove('selected-range');
+            document.querySelectorAll('.cal-day-bg-cell').forEach(cell => {
+                cell.classList.remove('is-dragging-range');
             });
         }
 

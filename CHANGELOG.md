@@ -4,6 +4,28 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.6.8] - 2026-08-22
+
+### Implementasi Arsitektur Kalender 2-Layer Matrix & Continuous Spanning Bar Baku (Benchmark: SIABE-PORTO)
+
+#### Peningkatan & Penyempurnaan (Enhanced & Fixed)
+- `[2-LAYER MATRIX CALENDAR ARCHITECTURE]` Restrukturisasi total antarmuka kalender bulanan mengikuti standar arsitektur teruji dari `SIABE-PORTO`:
+  - **Baris Pekan Terpisah (`.cal-week-row`):** Grid bulan kini dipecah menjadi kontainer baris mingguan terpisah (7 hari per baris).
+  - **Lapisan Dasar Latar Belakang (`.cal-week-bg-grid`):** Menampilkan nomor tanggal, penanda Hari Ini, batas sel, interaksi klik tanggal, dan seleksi rentang *drag & hold*.
+  - **Lapisan Acara & Bar Tugas (`.cal-week-events-layer`):** Lapisan transparan di atas background dengan `pointer-events: none` yang memuat seluruh batang tugas.
+- `[SEAMLESS SINGLE-ELEMENT SPANNING BARS]`
+  - Tugas berdurasi multi-hari (misal: 3 September – 1 Oktober) dirender sebagai **1 elemen batang solid bersambung (`.cal-span-bar`)** yang melintang langsung melintasi beberapa kolom menggunakan CSS `grid-column: start / end`.
+  - Tidak ada lagi pemotongan bar menjadi fragmen kecil atau garis tipis di setiap sel perantara.
+- `[COLLISION-FREE VERTICAL SLOTTING ALGORITHM]`
+  - Implementasi algoritma pemetaan slot matriks dari `SIABE-PORTO` untuk menyusun tugas-tugas yang beririsan secara bertingkat (*Slot 1, Slot 2, Slot 3*) via `grid-row: slot` tanpa tumpang tindih.
+- `[ACROSS-WEEK CONTINUATION INDICATORS]`
+  - Tugas yang berlanjut dari pekan sebelumnya secara otomatis menampilkan penanda `&rarr; [PIC] Judul Tugas` dengan sudut kiri rata (`.continues-prev`).
+  - Tugas yang berlanjut ke pekan berikutnya menampilkan sudut kanan rata (`.continues-next`).
+- `[MASJID SOPHIA THEMED COLORING]`
+  - Batang tugas dipadukan dengan palet warna resmi Masjid Sophia (*Pending = Soft Slate #E2E8F0, In Progress/Review = Amber/Gold Gradient, Completed = Emerald Green, Overdue = Crimson Red*).
+
+---
+
 ## [1.6.7] - 2026-08-22
 
 ### Perbaikan CSS Parser Selector dan Pemulihan Utuh Tampilan Grid Kalender Bulanan
