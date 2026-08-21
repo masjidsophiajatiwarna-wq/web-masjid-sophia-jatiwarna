@@ -1,6 +1,6 @@
 -- ==============================================================================
 -- SEED USER ACCOUNTS: 11 AKUN PENGURUS DKM & TESTING MASJID SOPHIA JATIWARNA
--- Target: Supabase Auth (auth.users) & Profil Pengurus (public.admin_users)
+-- Target: Supabase Auth (auth.users, auth.identities) & Profil Pengurus (public.admin_users)
 -- ==============================================================================
 
 -- 1. Pastikan ekstensi pgcrypto aktif untuk enkripsi password bcrypt
@@ -9,7 +9,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 -- 2. Pastikan kolom division ada pada tabel admin_users
 ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS division VARCHAR(100);
 
--- 3. Fungsi Helper untuk membuat/memperbarui akun Supabase Auth secara aman
+-- 3. Fungsi Helper untuk membuat/memperbarui akun Supabase Auth secara aman & lengkap
 CREATE OR REPLACE FUNCTION public.create_dkm_user(
     p_email VARCHAR,
     p_password VARCHAR,
@@ -22,15 +22,17 @@ DECLARE
     v_user_id UUID;
     v_encrypted_pw TEXT;
 BEGIN
+    -- Enkripsi password menggunakan Blowfish (bcrypt) standar Supabase Auth
     v_encrypted_pw := crypt(p_password, gen_salt('bf', 10));
 
-    -- Cek apakah user sudah ada di auth.users
+    -- Cek apakah user sudah ada di auth.users berdasarkan email
     SELECT id INTO v_user_id FROM auth.users WHERE email = p_email;
 
     IF v_user_id IS NULL THEN
-        -- Buat user baru di auth.users dengan email terverifikasi langsung
+        -- Buat UUID baru
         v_user_id := gen_random_uuid();
         
+        -- Insert ke tabel auth.users
         INSERT INTO auth.users (
             instance_id,
             id,
@@ -46,9 +48,10 @@ BEGIN
             confirmation_token,
             email_change,
             email_change_token_new,
-            recovery_token
+            recovery_token,
+            is_super_admin
         ) VALUES (
-            '00000000-00-00-00-000000000000',
+            '00000000-0000-0000-0000-000000000000'::uuid,
             v_user_id,
             'authenticated',
             'authenticated',
@@ -67,10 +70,34 @@ BEGIN
             '',
             '',
             '',
-            ''
+            '',
+            FALSE
         );
+
+        -- Insert identity ke auth.identities agar login email/password Supabase langsung aktif
+        INSERT INTO auth.identities (
+            id,
+            user_id,
+            identity_data,
+            provider,
+            provider_id,
+            last_sign_in_at,
+            created_at,
+            updated_at
+        ) VALUES (
+            v_user_id,
+            v_user_id,
+            jsonb_build_object('sub', v_user_id::text, 'email', p_email),
+            'email',
+            p_email,
+            NOW(),
+            NOW(),
+            NOW()
+        )
+        ON CONFLICT (provider, provider_id) DO NOTHING;
+
     ELSE
-        -- Update password dan metadata jika user sudah ada
+        -- Jika user sudah ada, update password dan metadatanya
         UPDATE auth.users
         SET encrypted_password = v_encrypted_pw,
             email_confirmed_at = COALESCE(email_confirmed_at, NOW()),
@@ -82,9 +109,31 @@ BEGIN
             ),
             updated_at = NOW()
         WHERE id = v_user_id;
+
+        -- Update atau pastikan identity ada
+        INSERT INTO auth.identities (
+            id,
+            user_id,
+            identity_data,
+            provider,
+            provider_id,
+            last_sign_in_at,
+            created_at,
+            updated_at
+        ) VALUES (
+            v_user_id,
+            v_user_id,
+            jsonb_build_object('sub', v_user_id::text, 'email', p_email),
+            'email',
+            p_email,
+            NOW(),
+            NOW(),
+            NOW()
+        )
+        ON CONFLICT (provider, provider_id) DO NOTHING;
     END IF;
 
-    -- Sinkronisasi ke tabel public.admin_users
+    -- Sinkronisasi data profil ke tabel public.admin_users
     INSERT INTO public.admin_users (
         id,
         email,
@@ -232,5 +281,5 @@ BEGIN
         '+6281234567800'
     );
 
-    RAISE NOTICE '11 Akun Pengurus DKM & Super User Testing berhasil dibuat!';
+    RAISE NOTICE '11 Akun Pengurus DKM & Super User Testing berhasil dibuat & disinkronkan!';
 END $$;
