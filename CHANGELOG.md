@@ -4,6 +4,20 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.6.7] - 2026-08-22
+
+### Perbaikan CSS Parser Selector dan Pemulihan Utuh Tampilan Grid Kalender Bulanan
+
+#### Peningkatan & Penyempurnaan (Enhanced & Fixed)
+- `[CSS SELECTOR SYNTAX CLEANUP]` Menghilangkan selektor duplikat `.gantt-wrapper {` yang tidak tertutup di berkas `admin.html` yang sempat menghentikan parser CSS browser untuk blok-blok gaya setelahnya.
+- `[CALENDAR STYLING RESTORATION]` Memulihkan 100% tampilan visual antarmuka **Kalender Tugas Bulanan**:
+  - Header navigasi bulan & tahun (`.calendar-header-bar`) kembali rapi dan proporsional.
+  - Grid 7 kolom terkunci (`.calendar-grid`) dari Senin hingga Ahad tampil presisi dengan batas garis yang bersih.
+  - Sel tanggal, penanda Hari Ini (`.today`), efek seleksi rentang *drag & hold* (`.selected-range`), serta batang *continuous multi-day spanning bars* (`.multi-day-start`, `.multi-day-mid`, `.multi-day-end`) aktif dan berfungsi sempurna.
+- `[AUTOMATED CSS SYNTAX VALIDATION]` Menambahkan skrip verifikasi otomatis Node.js untuk memvalidasi keseimbangan seluruh kurung kurawal `{}` dan sintaksis CSS di seluruh blok `<style>`.
+
+---
+
 ## [1.6.6] - 2026-08-22
 
 ### Split-Pane Gantt Layout, Zero-Leakage Task Sidebar, Interaktif Drag-to-Scroll Pan, dan Auto-Centered Today View
