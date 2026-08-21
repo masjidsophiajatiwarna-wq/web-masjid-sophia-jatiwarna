@@ -4,6 +4,19 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.13] - 2026-08-22
+
+### Fitur Hapus Akun Pengurus Permanen & Dialog Konfirmasi Modal 5 (Super Admin & DKM)
+
+#### Penambahan & Keamanan (Added & Security)
+- `[USER_DELETE_FEATURE]` Menambahkan kapabilitas penghapusan akun pengurus secara permanen untuk mencegah penumpukan data (*anti-spam directory*):
+  - **Otorisasi Terbatas (RBAC Super Admin & DKM):** Tombol aksi Hapus hanya dapat diakses oleh *Super Administrator* (`SUPER_ADMIN`) dan *Ketua DKM* (`KETUA_DKM`).
+  - **Proteksi Akun Inti (*Root Account Shield*):** Akun master sistem (`superadmin@masjidsophiajatiwarna.com` dan `dkm@masjidsophiajatiwarna.com`) serta akun yang sedang aktif login secara otomatis dilindungi dan tidak dapat dihapus.
+  - **Modal 5 (Dialog Konfirmasi Aman):** Menyediakan pop-up konfirmasi destruktif (`#modal-confirm-delete-user`) yang menampilkan rincian nama, email, serta peringatan sifat permanen sebelum penghapusan dieksekusi.
+  - **Sinkronisasi Multi-Lapisan & Realtime:** Penghapusan dieksekusi serentak pada database Supabase (`admin_users`), penyimpanan lokal master (`masjid_sophia_admin_users_master`), memutus sesi aktif (*Force Logout*), dan menyiarkan sinyal WebSocket `USER_DELETE_EVENT` (*Zero Refresh Across Devices*).
+
+---
+
 ## [1.7.12] - 2026-08-22
 
 ### Redesain Modal Profil & Keamanan Pengurus Sesuai Brand Guide Sophia & Normalisasi Tab UX

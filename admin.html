@@ -4051,10 +4051,15 @@
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
-                    <button type="button" class="btn-table-action danger" onclick="handleForceLogoutFromModal()" id="btn-modal-force-logout">
-                        <i class="fa-solid fa-right-from-bracket"></i> End Session (Paksa Logout)
-                    </button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border); flex-wrap: wrap; gap: 0.5rem;">
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <button type="button" class="btn-table-action danger" onclick="handleForceLogoutFromModal()" id="btn-modal-force-logout">
+                            <i class="fa-solid fa-right-from-bracket"></i> End Session
+                        </button>
+                        <button type="button" class="btn-table-action danger" onclick="handleDeleteFromEditModal()" id="btn-modal-delete-user" style="background: #FEF2F2; color: #DC2626; border-color: #FECACA;">
+                            <i class="fa-solid fa-trash-can"></i> Hapus Akun
+                        </button>
+                    </div>
                     <div style="display: flex; gap: 0.5rem;">
                         <button type="button" class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeEditUserModal()">
                             Batal
@@ -4205,6 +4210,41 @@
                     </div>
                     <button type="button" class="btn-security-submit" onclick="handleSelfUpdateEmailAndLogout()">
                         <i class="fa-solid fa-paper-plane" style="color: var(--color-gold-primary);"></i> Perbarui Email &amp; Login Ulang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5: Konfirmasi Hapus Akun Pengurus (Super Admin & DKM Saja) -->
+    <div class="modal-overlay" id="modal-confirm-delete-user" style="display: none;">
+        <div class="modal-box" style="max-width: 480px;">
+            <div class="modal-header">
+                <h3 style="color: var(--color-danger);"><i class="fa-solid fa-triangle-exclamation" style="color: var(--color-danger);"></i> Hapus Akun Pengurus</h3>
+                <button class="btn-modal-close" onclick="closeDeleteUserModal()">&times;</button>
+            </div>
+            <div style="padding: 0.5rem 0;">
+                <p style="font-size: 0.88rem; color: var(--color-charcoal); line-height: 1.5; margin-bottom: 1rem;">
+                    Apakah Anda yakin ingin menghapus akun pengurus <strong id="delete-target-name" style="color: var(--color-danger);">-</strong> (<code id="delete-target-email">-</code>) secara permanen?
+                </p>
+                
+                <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: var(--radius-md); padding: 0.85rem; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.8rem; font-weight: 800; color: #991B1B; margin-bottom: 0.25rem;">
+                        <i class="fa-solid fa-circle-exclamation"></i> Tindakan Bersifat Permanen
+                    </div>
+                    <div style="font-size: 0.75rem; color: #B91C1C; line-height: 1.4;">
+                        Akun ini akan dihapus dari direktori master, seluruh izin akses modul dicabut, dan sesi aktif pada perangkat terkait akan seketika diputus.
+                    </div>
+                </div>
+
+                <input type="hidden" id="delete-user-id">
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeDeleteUserModal()">
+                        Batal
+                    </button>
+                    <button type="button" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.25rem; background: #DC2626; color: #FFFFFF;" onclick="executeDeleteUserPermanently()">
+                        <i class="fa-solid fa-trash-can"></i> Ya, Hapus Akun Permanen
                     </button>
                 </div>
             </div>
@@ -5200,6 +5240,22 @@
                                 idleUsersSet.delete(email);
                             }
                             renderAdminUsersTable();
+                        }
+                    })
+                    .on('broadcast', { event: 'USER_SYNC' }, ({ payload }) => {
+                        handleRealtimeAdminUserChange(payload);
+                    })
+                    .on('broadcast', { event: 'USER_DELETE_EVENT' }, ({ payload }) => {
+                        console.log('[Realtime Broadcast] USER_DELETE_EVENT received:', payload);
+                        if (payload && (payload.deleted_id || payload.deleted_email)) {
+                            const delEmail = (payload.deleted_email || '').toLowerCase().trim();
+                            const delId = String(payload.deleted_id || '');
+                            const idx = adminUsersList.findIndex(u => (delId && String(u.id) === delId) || (delEmail && (u.email || '').toLowerCase().trim() === delEmail));
+                            if (idx !== -1) {
+                                adminUsersList.splice(idx, 1);
+                                saveCustomUsersToLocal();
+                                renderAdminUsersTable();
+                            }
                         }
                     })
                     .subscribe((status) => {
@@ -8374,6 +8430,10 @@
                 const uEmail = (u.email || '').toLowerCase().trim();
                 const isCurrentLoggedIn = currentUser && currentUser.email && currentUser.email.toLowerCase().trim() === uEmail;
                 const isAppVisible = document.getElementById('admin-app') && document.getElementById('admin-app').style.display !== 'none';
+                const isProtectedRoot = uEmail === 'superadmin@masjidsophiajatiwarna.com' || uEmail === 'dkm@masjidsophiajatiwarna.com';
+                const currentRole = getUserRole();
+                const canManageAndTrash = currentRole === 'SUPER_ADMIN' || currentRole === 'KETUA_DKM';
+                const showTrashBtn = canManageAndTrash && !isProtectedRoot && !isCurrentLoggedIn;
                 
                 // Live presence: only true if active in current browser session OR present in onlineUsersSet
                 const isLiveOnline = (isCurrentLoggedIn && isAppVisible) || onlineUsersSet.has(uEmail);
@@ -8435,6 +8495,10 @@
                                 <button type="button" class="btn-table-action danger" onclick="handleForceLogoutUser('${u.id}')" title="End Session / Paksa Logout Pengurus">
                                     <i class="fa-solid fa-right-from-bracket"></i>
                                 </button>
+                                ${showTrashBtn ? `
+                                <button type="button" class="btn-table-action danger" onclick="openDeleteUserConfirmModal('${u.id}')" title="Hapus Akun Pengurus Secara Permanen" style="background: #FEF2F2; color: #DC2626; border-color: #FECACA;">
+                                    <i class="fa-solid fa-trash-can"></i> Hapus
+                                </button>` : ''}
                             </div>
                         </td>
                     </tr>
@@ -8606,6 +8670,14 @@
                 }).join('');
             }
 
+            const delBtn = document.getElementById('btn-modal-delete-user');
+            if (delBtn) {
+                const isRoot = (user.email || '').toLowerCase().trim() === 'superadmin@masjidsophiajatiwarna.com' || (user.email || '').toLowerCase().trim() === 'dkm@masjidsophiajatiwarna.com';
+                const isCurrentSelf = currentUser && currentUser.email && currentUser.email.toLowerCase().trim() === (user.email || '').toLowerCase().trim();
+                const canManage = getUserRole() === 'SUPER_ADMIN' || getUserRole() === 'KETUA_DKM';
+                delBtn.style.display = (canManage && !isRoot && !isCurrentSelf) ? 'inline-flex' : 'none';
+            }
+
             const modal = document.getElementById('modal-admin-edit-user');
             if (modal) {
                 modal.style.display = 'flex';
@@ -8707,6 +8779,107 @@
                 handleForceLogoutUser(userId);
                 closeEditUserModal();
             }
+        }
+
+        function handleDeleteFromEditModal() {
+            const userId = document.getElementById('edit-user-id').value;
+            if (userId) {
+                closeEditUserModal();
+                openDeleteUserConfirmModal(userId);
+            }
+        }
+
+        // ==========================================================================
+        // MODAL 5: KONFIRMASI HAPUS AKUN PENGURUS (SUPER ADMIN & DKM)
+        // ==========================================================================
+        function openDeleteUserConfirmModal(userId) {
+            const user = adminUsersList.find(u => String(u.id) === String(userId));
+            if (!user) return;
+
+            const uEmail = (user.email || '').toLowerCase().trim();
+            if (uEmail === 'superadmin@masjidsophiajatiwarna.com' || uEmail === 'dkm@masjidsophiajatiwarna.com') {
+                alert('Akun Utama DKM / Super Administrator dilindungi dan tidak dapat dihapus.');
+                return;
+            }
+
+            document.getElementById('delete-user-id').value = user.id;
+            document.getElementById('delete-target-name').textContent = user.full_name || user.email;
+            document.getElementById('delete-target-email').textContent = user.email;
+
+            const modal = document.getElementById('modal-confirm-delete-user');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeDeleteUserModal() {
+            const modal = document.getElementById('modal-confirm-delete-user');
+            if (modal) modal.style.display = 'none';
+            const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
+            if (!anyOpen) document.body.style.overflow = '';
+        }
+
+        async function executeDeleteUserPermanently() {
+            const userId = document.getElementById('delete-user-id').value;
+            const userIdx = adminUsersList.findIndex(u => String(u.id) === String(userId));
+            if (userIdx === -1) {
+                closeDeleteUserModal();
+                return;
+            }
+
+            const targetUser = adminUsersList[userIdx];
+            const targetEmail = (targetUser.email || '').toLowerCase().trim();
+
+            if (targetEmail === 'superadmin@masjidsophiajatiwarna.com' || targetEmail === 'dkm@masjidsophiajatiwarna.com') {
+                alert('Akun Utama DKM / Super Administrator dilindungi dan tidak dapat dihapus.');
+                closeDeleteUserModal();
+                return;
+            }
+
+            // 1. Delete from Supabase DB
+            try {
+                if (sbClient) {
+                    await sbClient.from('admin_users').delete().eq('id', targetUser.id);
+                    await sbClient.from('admin_users').delete().eq('email', targetEmail);
+                }
+            } catch (err) {
+                console.warn("Delete user DB notice:", err);
+            }
+
+            // 2. Remove from local array and local master storage
+            adminUsersList.splice(userIdx, 1);
+            saveCustomUsersToLocal();
+
+            // 3. Remove custom password and last login cache
+            try {
+                localStorage.removeItem('masjid_sophia_pass_' + targetEmail);
+                localStorage.removeItem('masjid_sophia_last_login_' + targetEmail);
+            } catch (e) {}
+
+            // 4. Send Force Logout and Delete Broadcast
+            if (realtimeHub) {
+                realtimeHub.send({
+                    type: 'broadcast',
+                    event: 'FORCE_LOGOUT',
+                    payload: {
+                        target_id: targetUser.id,
+                        target_email: targetEmail
+                    }
+                });
+                realtimeHub.send({
+                    type: 'broadcast',
+                    event: 'USER_DELETE_EVENT',
+                    payload: {
+                        deleted_id: targetUser.id,
+                        deleted_email: targetEmail
+                    }
+                });
+            }
+
+            closeDeleteUserModal();
+            renderAdminUsersTable();
+            alert(`Akun pengurus (${targetEmail}) berhasil dihapus secara permanen dari sistem.`);
         }
 
         // ==========================================================================
