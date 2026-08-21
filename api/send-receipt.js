@@ -100,7 +100,7 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                from: 'Masjid Sophia Jatiwarna <onboarding@resend.dev>', // Menggunakan verified sender default Resend atau domain kustom
+                from: 'Masjid Sophia Jatiwarna <dkm@masjidsophiajatiwarna.com>',
                 to: [email],
                 subject: `Kuitansi Tanda Terima Donasi - Masjid Sophia [${program_category || 'Sedekah'}]`,
                 html: emailHtml
