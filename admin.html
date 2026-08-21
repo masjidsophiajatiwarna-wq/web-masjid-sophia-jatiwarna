@@ -2129,7 +2129,7 @@
             border-color: #CBD5E1;
         }
 
-        /* 2-Tab Self Profile Modal (Gambar 5 Standard) */
+        /* 2-Tab Self Profile Modal (Brand Guide Aligned) */
         .self-profile-tabs {
             display: flex;
             border-bottom: 2px solid var(--color-border);
@@ -2138,12 +2138,12 @@
         }
 
         .self-profile-tab-btn {
-            padding: 0.65rem 1rem;
+            padding: 0.65rem 1.15rem;
             font-size: 0.85rem;
             font-weight: 700;
             background: none;
             border: none;
-            border-bottom: 2px solid transparent;
+            border-bottom: 3px solid transparent;
             margin-bottom: -2px;
             color: var(--color-charcoal-muted);
             cursor: pointer;
@@ -2151,6 +2151,10 @@
             align-items: center;
             gap: 0.5rem;
             transition: var(--transition-fast);
+        }
+
+        .self-profile-tab-btn:hover {
+            color: var(--color-charcoal);
         }
 
         .self-profile-tab-btn.active {
@@ -2191,16 +2195,16 @@
             object-fit: cover;
         }
 
-        .btn-security-logout {
+        .btn-security-submit {
             width: 100%;
-            padding: 0.75rem 1rem;
-            background: #111827;
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, #1D1D1B 0%, #2D2D2A 100%);
             color: #FFFFFF;
-            border: 1px solid #374151;
-            border-radius: var(--radius-sm);
-            font-size: 0.82rem;
+            border: 1px solid #4B5563;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
             font-weight: 800;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -2208,13 +2212,15 @@
             gap: 0.5rem;
             transition: var(--transition-fast);
             margin-top: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         }
 
-        .btn-security-logout:hover {
+        .btn-security-submit:hover {
             background: #000000;
             border-color: var(--color-gold-deep);
-            color: var(--color-gold-primary);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            color: var(--color-gold-light);
+            box-shadow: 0 4px 12px rgba(201, 168, 76, 0.25);
+            transform: translateY(-1px);
         }
 
         /* Multi-Cloud Free-Tier Monitor (Masjid Sophia Brand Guide - Light, Warm, Clean & Serene) */
@@ -4105,100 +4111,100 @@
         </div>
     </div>
 
-    <!-- Modal 4: Profil & Keamanan Mandiri Pengurus (Self-Service - Gambar 5 Standard) -->
+    <!-- Modal 4: Profil & Keamanan Mandiri Pengurus (Self-Service - Standar Desain Sophia) -->
     <div class="modal-overlay" id="modal-user-self-profile" style="display: none;">
-        <div class="modal-box" style="max-width: 520px; background: #18181B; color: #F4F4F5; border: 1px solid #27272A;">
-            <div class="modal-header" style="border-bottom: 1px solid #27272A;">
-                <h3 style="color: #FFFFFF; font-size: 1rem; letter-spacing: 0.5px;">ACCOUNT PROFILE &amp; SECURITY</h3>
-                <button class="btn-modal-close" style="color: #A1A1AA;" onclick="closeSelfProfileModal()">&times;</button>
+        <div class="modal-box" style="max-width: 520px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-shield" style="color: var(--color-gold-deep);"></i> Profil &amp; Keamanan Akun Pengurus</h3>
+                <button class="btn-modal-close" onclick="closeSelfProfileModal()">&times;</button>
             </div>
 
-            <!-- 2-Tab Bar (Gambar 5) -->
-            <div class="self-profile-tabs" style="border-bottom-color: #27272A; margin-top: 1rem;">
+            <!-- 2-Tab Bar (Psikologis UI Alami & Selaras) -->
+            <div class="self-profile-tabs">
                 <button type="button" class="self-profile-tab-btn active" id="btn-self-tab-general" onclick="switchSelfProfileTab('general')">
-                    <i class="fa-regular fa-user"></i> General Profile
+                    <i class="fa-solid fa-id-card"></i> Profil Umum
                 </button>
-                <button type="button" class="self-profile-tab-btn" id="btn-self-tab-security" onclick="switchSelfProfileTab('security')" style="border: 1px solid #EAB308; border-radius: 4px; padding: 0.4rem 0.85rem; color: #EAB308;">
-                    <i class="fa-solid fa-lock"></i> Security &amp; Login
+                <button type="button" class="self-profile-tab-btn" id="btn-self-tab-security" onclick="switchSelfProfileTab('security')">
+                    <i class="fa-solid fa-lock"></i> Keamanan &amp; Sandi
                 </button>
             </div>
 
-            <!-- Tab 1: General Profile Content -->
+            <!-- Tab 1: Profil Umum Content -->
             <div id="self-tab-general-content">
                 <form onsubmit="handleSaveSelfProfile(event)">
-                    <div class="avatar-uploader-box" style="background: #27272A; border-color: #3F3F46;">
-                        <div class="avatar-preview-lg" id="self-avatar-preview" style="background: #18181B; border-color: #EAB308; color: #EAB308;">
+                    <div class="avatar-uploader-box">
+                        <div class="avatar-preview-lg" id="self-avatar-preview">
                             <i class="fa-solid fa-user"></i>
                         </div>
                         <div style="flex: 1;">
-                            <div style="font-size: 0.82rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.25rem;">Foto Profil Pengurus</div>
-                            <div style="font-size: 0.72rem; color: #A1A1AA; margin-bottom: 0.5rem;">Unggah gambar WebP (Maks 2MB)</div>
+                            <div style="font-size: 0.85rem; font-weight: 800; color: var(--color-charcoal); margin-bottom: 0.25rem;">Foto Profil Pengurus</div>
+                            <div style="font-size: 0.72rem; color: var(--color-charcoal-muted); margin-bottom: 0.5rem;">Unggah gambar format WebP, JPG, atau PNG (Maks 2MB)</div>
                             <input type="file" id="self-avatar-file-input" accept="image/*" style="display: none;" onchange="handleSelfAvatarUpload(event)">
-                            <button type="button" class="btn-table-action" onclick="document.getElementById('self-avatar-file-input').click()" style="background: #3F3F46; color: #FFFFFF; border-color: #52525B;">
+                            <button type="button" class="btn-table-action" onclick="document.getElementById('self-avatar-file-input').click()">
                                 <i class="fa-solid fa-camera"></i> Ganti Foto Profil
                             </button>
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 1rem;">
-                        <label class="form-label" style="color: #D4D4D8;">Nama Lengkap Pengurus</label>
-                        <input type="text" id="self-fullname-input" class="form-input" style="background: #09090B; border-color: #27272A; color: #FFFFFF;" required>
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap Pengurus</label>
+                        <input type="text" id="self-fullname-input" class="form-input" placeholder="Nama lengkap Anda" required>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 1rem;">
-                        <label class="form-label" style="color: #D4D4D8;">Alamat Email Resmi</label>
-                        <input type="email" id="self-email-display" class="form-input" style="background: #18181B; border-color: #27272A; color: #A1A1AA;" readonly>
+                    <div class="form-group">
+                        <label class="form-label">Alamat Email Resmi</label>
+                        <input type="email" id="self-email-display" class="form-input" readonly style="background: #F8FAFC; color: var(--color-charcoal-muted); cursor: not-allowed;">
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <label class="form-label" style="color: #D4D4D8;">Divisi &amp; Peran</label>
-                        <input type="text" id="self-role-display" class="form-input" style="background: #18181B; border-color: #27272A; color: #A1A1AA;" readonly>
+                    <div class="form-group">
+                        <label class="form-label">Divisi &amp; Peran</label>
+                        <input type="text" id="self-role-display" class="form-input" readonly style="background: #F8FAFC; color: var(--color-charcoal-muted); cursor: not-allowed;">
                     </div>
 
-                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                        <button type="button" class="btn-action-gold" style="background: #27272A; color: #FFFFFF; border-color: #3F3F46;" onclick="closeSelfProfileModal()">
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+                        <button type="button" class="btn-table-action" onclick="closeSelfProfileModal()">
                             Tutup
                         </button>
-                        <button type="submit" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.25rem; background: #EAB308; color: #000000; font-weight: 800;">
-                            Simpan Perubahan
+                        <button type="submit" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.25rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Profil
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- Tab 2: Security & Login Content (Gambar 5 Rule: Update & Logout) -->
+            <!-- Tab 2: Keamanan & Sandi Content -->
             <div id="self-tab-security-content" style="display: none;">
-                <!-- Section A: Change Password -->
-                <div style="margin-bottom: 1.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid #27272A;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.25rem;">
-                        <i class="fa-solid fa-lock"></i> Change Password
+                <!-- Section A: Perbarui Kata Sandi -->
+                <div style="margin-bottom: 1.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.92rem; font-weight: 800; color: var(--color-charcoal); margin-bottom: 0.25rem;">
+                        <i class="fa-solid fa-key" style="color: var(--color-gold-deep);"></i> Perbarui Kata Sandi Akun
                     </div>
-                    <div style="font-size: 0.72rem; color: #A1A1AA; line-height: 1.4; margin-bottom: 0.85rem;">
-                        Updating your password will automatically end active sessions and require re-login.
+                    <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 0.85rem;">
+                        Memperbarui kata sandi akan otomatis memutus sesi aktif di perangkat lain demi keamanan, dan Anda akan diminta login ulang.
                     </div>
-                    <div class="form-group" style="margin-bottom: 0.5rem;">
-                        <label class="form-label" style="color: #A1A1AA; font-size: 0.7rem; letter-spacing: 0.5px;">NEW PASSWORD</label>
-                        <input type="password" id="self-new-password-input" class="form-input" style="background: #09090B; border-color: #27272A; color: #FFFFFF;" placeholder="Minimum 6 characters">
+                    <div class="form-group">
+                        <label class="form-label" style="font-size: 0.72rem; letter-spacing: 0.5px;">KATA SANDI BARU</label>
+                        <input type="password" id="self-new-password-input" class="form-input" placeholder="Masukkan kata sandi baru (Minimal 6 karakter)">
                     </div>
-                    <button type="button" class="btn-security-logout" onclick="handleSelfUpdatePasswordAndLogout()">
-                        UPDATE PASSWORD &amp; LOGOUT &rarr;
+                    <button type="button" class="btn-security-submit" onclick="handleSelfUpdatePasswordAndLogout()">
+                        <i class="fa-solid fa-shield-check" style="color: var(--color-gold-primary);"></i> Perbarui Kata Sandi &amp; Login Ulang
                     </button>
                 </div>
 
-                <!-- Section B: Change Email Address -->
-                <div style="margin-bottom: 1rem;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 800; color: #FFFFFF; margin-bottom: 0.25rem;">
-                        <i class="fa-regular fa-envelope"></i> Change Email Address
+                <!-- Section B: Ajukan Pembaruan Email Resmi -->
+                <div style="margin-bottom: 0.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.92rem; font-weight: 800; color: var(--color-charcoal); margin-bottom: 0.25rem;">
+                        <i class="fa-regular fa-envelope" style="color: var(--color-gold-deep);"></i> Perbarui Alamat Email Resmi
                     </div>
-                    <div style="font-size: 0.72rem; color: #A1A1AA; line-height: 1.4; margin-bottom: 0.85rem;">
-                        Changing your email requires confirmation and will log you out.
+                    <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 0.85rem;">
+                        Mengubah email memerlukan konfirmasi ulang dan sesi aktif Anda akan dialihkan ke layar login.
                     </div>
-                    <div class="form-group" style="margin-bottom: 0.5rem;">
-                        <label class="form-label" style="color: #A1A1AA; font-size: 0.7rem; letter-spacing: 0.5px;">NEW EMAIL ADDRESS</label>
-                        <input type="email" id="self-new-email-input" class="form-input" style="background: #09090B; border-color: #27272A; color: #FFFFFF;" placeholder="newemail@company.com">
+                    <div class="form-group">
+                        <label class="form-label" style="font-size: 0.72rem; letter-spacing: 0.5px;">ALAMAT EMAIL RESMI BARU</label>
+                        <input type="email" id="self-new-email-input" class="form-input" placeholder="nama.pengurus@masjidsophiajatiwarna.com">
                     </div>
-                    <button type="button" class="btn-security-logout" onclick="handleSelfUpdateEmailAndLogout()">
-                        UPDATE EMAIL &amp; LOGOUT &rarr;
+                    <button type="button" class="btn-security-submit" onclick="handleSelfUpdateEmailAndLogout()">
+                        <i class="fa-solid fa-paper-plane" style="color: var(--color-gold-primary);"></i> Perbarui Email &amp; Login Ulang
                     </button>
                 </div>
             </div>

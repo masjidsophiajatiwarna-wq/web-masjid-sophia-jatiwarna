@@ -4,6 +4,19 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.12] - 2026-08-22
+
+### Redesain Modal Profil & Keamanan Pengurus Sesuai Brand Guide Sophia & Normalisasi Tab UX
+
+#### Penyempurnaan & Refaktor Desain (Improved & Design Refactor)
+- `[SELF_PROFILE_MODAL_REDESIGN]` Menyelaraskan 100% tampilan modal profil & keamanan mandiri pengurus (`#modal-user-self-profile`) dengan Brand Guide resmi Masjid Sophia:
+  - **Palet Visual Hangat & Bersih:** Mengubah latar belakang modal yang sebelumnya gelap menjadi kartu modal standar (`.modal-box`) dengan latar putih bersih, garis tepi abu-abu lembut (*Warm Border*), dan header aksen emas Sophia Gold (`#C9A84C`).
+  - **Normalisasi Tab Navigation:** Menghapus garis kotak kuning permanen (*hardcoded border*) pada tombol tab nonaktif. Navigasi tab kini menggunakan indikator garis bawah aktif (*Active Bottom Accent*) yang elegan dan intuitif secara psikologis UI.
+  - **Standarisasi Tombol Aksi:** Mengganti tombol biru gelap dengan tombol bergradasi *Charcoal Gold Glow* (`.btn-security-submit`) dengan tipografi bahasa Indonesia yang formal, santun, dan jelas.
+  - **Lokalisasi Bahasa Indonesia:** Menerjemahkan seluruh label dan teks panduan (seperti *Change Password* $\rightarrow$ *Perbarui Kata Sandi Akun*, *Update Email & Logout* $\rightarrow$ *Perbarui Email & Login Ulang*).
+
+---
+
 ## [1.7.11] - 2026-08-22
 
 ### Serverless Realtime Metrics Aggregator `/api/cloud-usage` & Pipeline Monitoring 7 Pilar
