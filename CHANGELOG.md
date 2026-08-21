@@ -17,7 +17,7 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
   - **PJ Santri & Pendidikan:** Direktori Santri Tahfidz Al-Qur'an & Log Mutaba'ah Setoran Hafalan Harian (Subuh & Maghrib: Juz/Surat/Ayat/Tajwid) serta rapor perkembangan.
   - **PJ Musafir & Pelayanan:** Buku Tamu Musafir Digital, Izin Menginap / Istirahat 24 Jam, dan Log Penitipan Kendaraan & Loker Barang.
   - **PJ Ibadah & Acara:** Kalibrasi Waktu Shalat & Ikhtiyat, Rotasi Petugas Harian (Imam 5 waktu, Muadzin, Khatib Jumat, Bilal), Kalender Acara/Kajian Tematik & Arsip Khutbah Jumat.
-  - **PJ Keuangan:** Modul Akuntansi Lengkap (Buku Kas Masuk, Buku Kas Keluar Operasional, Laporan Arus Kas, Neraca Kas Berkala, dan Ekspor CSV & Cetak PDF Transparan).
+  - **PJ Keuangan:** Modul Akuntansi Lengkap (Buku Kas Masuk, Buku Kas Keluar Operasional, Laporan Arus Kas, Neraca Kas Berkala, dan Ekspor CSV & Cetak PDF Transparan) serta Alur Pengajuan Anggaran (*Budget Request*) & Klaim Nota Bon (*Expense Claim*) terpusat bagi seluruh 7 PJ Divisi.
   - **PJ Keamanan:** Log Piket Keamanan 24 Jam & Formulir Laporan Kejadian/Patroli dengan unggah bukti foto/video ke ImageKit.io CDN (auto WebP/WebM).
   - **PJ Kebersihan:** Checklist Sanitasi Harian (Wudhu, Toilet, Ruang Utama, Halaman) & Formulir Laporan Kebersihan dengan unggah bukti foto/video ke ImageKit.io CDN (auto WebP/WebM).
 - `[DASHBOARD]` Sinkronisasi dashboard pelacak progres visual `progress-implementation-plan.html` pada subdomain `progdev.masjidsophiajatiwarna.com` memuat seluruh modul operasional tiap PJ dalam sub-grup visual yang elegan dan mudah dipahami pengurus DKM.

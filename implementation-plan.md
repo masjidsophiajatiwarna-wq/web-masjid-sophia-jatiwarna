@@ -186,9 +186,10 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - **Kalibrasi Hisab & Ikhtiyat:** Pengaturan menit ikhtiyat waktu shalat lokal.
     - **Rotasi Petugas Ibadah:** Penugasan Imam Rawatib (5 waktu), Muadzin, Khatib Jumat, Bilal, dan Penceramah Kuliah Subuh / Akhir Pekan.
     - **Manajemen Acara & Kajian Tematik:** Jadwal kajian, PHBI (Maulid, Isra Mi'raj, dll), dan arsip naskah khutbah Jumat yang dapat diunduh.
-  - [ ] **Modul PJ Keuangan (Comprehensive Accounting Suite):**
+  - [ ] **Modul PJ Keuangan (Comprehensive Accounting Suite & Budget Request):**
     - **Buku Kas Masuk:** Infaq Jumat, Infaq Kotak Amal, Donasi QRIS SEDEKAH MAKAN, Transfer Bank BSI, dan Donasi Khusus.
     - **Buku Kas Keluar:** Biaya operasional dapur makan gratis, listrik/air/wifi, honorarium ustadz/petugas, perawatan sarpras, dan santunan santri.
+    - **Form Pengajuan Anggaran & Reimbursement Nota Bon (Seluruh 7 PJ Divisi):** Formulir permohonan dana operasional atau klaim nota bon/kuitansi bagi seluruh PJ (Media, Logistik, Santri, Musafir, Ibadah, Keamanan, Kebersihan) dengan alur persetujuan terpusat (*Review & Approval*) oleh Ketua DKM & PJ Keuangan sebelum pencairan.
     - **Laporan Keuangan & Rekonsiliasi:** Laporan Arus Kas, Neraca Kas Berkala, Verifikasi Donasi Kode Unik, dan Ekspor Laporan Keuangan ke format CSV & Cetak PDF Transparan.
   - [ ] **Modul PJ Keamanan (Log Piket & Laporan Insiden):**
     - **Log Piket & Ronda Keamanan 24 Jam:** Jadwal petugas jaga, checklist patroli area masjid & parkiran.
@@ -239,7 +240,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 | **Data Santri & Mutaba'ah Tahfidz** | Penuh | Laporan | Tidak | Tidak | Penuh | Tidak | Tidak | Tidak | Tidak | Tidak |
 | **Buku Tamu Musafir & Loker 24 Jam** | Penuh | Laporan | Tidak | Tidak | Tidak | Penuh | Tidak | Tidak | Baca | Baca |
 | **Kalibrasi Shalat & Rotasi Petugas** | Penuh | Persetujuan | Baca | Tidak | Tidak | Tidak | Penuh | Tidak | Tidak | Tidak |
-| **Akuntansi, Kas & Laporan Keuangan** | Penuh | Penuh | Tidak | Request | Request | Request | Request | Penuh | Tidak | Request |
+| **Akuntansi, Kas & Laporan Keuangan** | Penuh | Penuh | Request | Request | Request | Request | Request | Penuh | Request | Request |
 | **Report Keamanan & Upload Bukti** | Penuh | Laporan | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Penuh | Tidak |
 | **Report Kebersihan & Upload Bukti** | Penuh | Laporan | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Penuh |
 | **Monitor 7 Pilar Cloud (Super Admin)** | Penuh | Baca | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak | Tidak |
