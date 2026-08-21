@@ -967,10 +967,12 @@
 
         /* 2. Gantt Timeline */
         .gantt-wrapper {
+        /* 2. GANTT TIMELINE SPLIT-PANE LAYOUT */
+        .gantt-wrapper {
             background: var(--color-bg-white);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
-            overflow-x: auto;
+            overflow: hidden;
             box-shadow: var(--shadow-sm);
         }
 
@@ -978,7 +980,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
+            padding: 0.85rem 1rem;
             border-bottom: 1px solid var(--color-border);
             background: #FAFAFA;
             flex-wrap: wrap;
@@ -998,6 +1000,7 @@
             font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
+            transition: var(--transition);
         }
 
         .btn-gantt-scale.active {
@@ -1006,101 +1009,209 @@
             border-color: var(--color-charcoal);
         }
 
-        .gantt-table {
+        /* Split-Pane Container */
+        .gantt-split-layout {
+            display: flex;
             width: 100%;
-            border-collapse: collapse;
-            min-width: 800px;
+            overflow: hidden;
+            position: relative;
+            background: var(--color-bg-white);
         }
 
-        .gantt-table th, .gantt-table td {
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--color-border);
-            border-right: 1px solid #F3F4F6;
-            vertical-align: middle;
+        /* Left Pane: Fixed Task List */
+        .gantt-sidebar-pane {
+            width: 250px;
+            min-width: 250px;
+            flex-shrink: 0;
+            background: var(--color-bg-white);
+            border-right: 2px solid var(--color-border);
+            z-index: 10;
+            box-shadow: 3px 0 8px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
         }
 
-        .gantt-table th {
+        .gantt-sidebar-header {
+            height: 46px;
+            padding: 0 0.85rem;
             background: #F9FAFB;
+            border-bottom: 1px solid var(--color-border);
             font-size: 0.75rem;
             font-weight: 800;
             color: var(--color-charcoal-muted);
-            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .gantt-bar-cell {
-            position: relative;
-            padding: 0.5rem 0.75rem;
-            min-width: 320px;
-        }
-
-        .gantt-track {
-            background: #F3F4F6;
-            height: 28px;
-            border-radius: var(--radius-sm);
-            position: relative;
+        .gantt-sidebar-row {
+            height: 52px;
+            padding: 0.45rem 0.85rem;
+            border-bottom: 1px solid #F3F4F6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             overflow: hidden;
+            background: var(--color-bg-white);
+        }
+
+        .gantt-sidebar-row:hover {
+            background: #FAF8F2;
+        }
+
+        .gantt-sidebar-title {
+            font-weight: 700;
+            font-size: 0.78rem;
+            color: var(--color-charcoal);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+
+        .gantt-sidebar-title:hover {
+            color: var(--color-gold-deep);
+        }
+
+        .gantt-sidebar-meta {
+            font-size: 0.68rem;
+            color: var(--color-charcoal-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 0.1rem;
+        }
+
+        /* Right Pane: Scrollable Timeline with Interactive Drag */
+        .gantt-timeline-pane {
+            flex: 1;
+            overflow-x: auto;
+            overflow-y: hidden;
+            position: relative;
+            background: #FFFFFF;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            scrollbar-width: thin;
+        }
+
+        .gantt-timeline-pane.dragging {
+            cursor: grabbing;
+            user-select: none;
+        }
+
+        .gantt-timeline-header-row {
+            height: 46px;
+            background: #F9FAFB;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            position: relative;
+        }
+
+        .gantt-timeline-col-header {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid #E5E7EB;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--color-charcoal-muted);
+            padding: 0.2rem;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .gantt-timeline-col-header.today {
+            background: #FAF6E8;
+            color: var(--color-gold-deep);
+            font-weight: 800;
+            border-right-color: var(--color-gold-border);
+        }
+
+        .gantt-timeline-body {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gantt-timeline-track-row {
+            height: 52px;
+            border-bottom: 1px solid #F3F4F6;
+            position: relative;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .gantt-timeline-track-row:hover {
+            background-color: #FAFBFD;
         }
 
         .gantt-bar {
             position: absolute;
-            top: 2px;
-            bottom: 2px;
-            border-radius: 4px;
+            height: 30px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
-            padding: 0 0.5rem;
-            font-size: 0.7rem;
+            padding: 0 0.65rem;
+            font-size: 0.72rem;
             font-weight: 800;
             cursor: pointer;
-            transition: var(--transition);
+            transition: transform 0.15s ease, filter 0.15s ease;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            z-index: 3;
+            box-sizing: border-box;
         }
 
-        /* Gantt Status Color Differentiation */
+        .gantt-bar:hover {
+            filter: brightness(1.08);
+            transform: scaleY(1.06);
+            z-index: 6;
+        }
+
+        /* Status Colors */
         .gantt-bar.pending {
             background: #E2E8F0;
             color: #334155;
             border: 1px solid #94A3B8;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .gantt-bar.in-progress, .gantt-bar.review {
             background: linear-gradient(90deg, #D97706, #F59E0B);
             color: #1E293B;
-            box-shadow: 0 1px 3px rgba(217, 119, 6, 0.3);
+            box-shadow: 0 2px 4px rgba(217, 119, 6, 0.3);
         }
 
         .gantt-bar.completed {
             background: linear-gradient(90deg, #059669, #10B981);
             color: #FFFFFF;
-            box-shadow: 0 1px 3px rgba(5, 150, 105, 0.35);
+            box-shadow: 0 2px 4px rgba(5, 150, 105, 0.35);
         }
 
-        .gantt-bar:hover {
-            filter: brightness(1.08);
-            transform: scaleY(1.05);
-            z-index: 5;
-        }
-
-        .gantt-today-line {
+        .gantt-today-vertical-line {
             position: absolute;
             top: 0;
             bottom: 0;
             width: 2px;
             background: var(--color-gold-deep);
-            z-index: 2;
+            z-index: 4;
             pointer-events: none;
+            box-shadow: 0 0 4px rgba(201, 168, 76, 0.5);
         }
 
-        .gantt-grid-line {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background: #E2E8F0;
-            pointer-events: none;
+        @media (max-width: 768px) {
+            .gantt-sidebar-pane {
+                width: 140px;
+                min-width: 140px;
+            }
         }
 
         /* 3. Calendar View (Portosiabe Pro Style) */
@@ -2127,8 +2238,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="gantt-chart-container" style="overflow-x: auto; padding: 1rem;">
-                            <!-- Gantt Table rendered dynamically -->
+                        <div id="gantt-chart-container" style="overflow: hidden; width: 100%;">
+                            <!-- Gantt Split-Pane rendered dynamically -->
                         </div>
                     </div>
                 </div>
@@ -3682,11 +3793,14 @@
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
+            const isMobile = window.innerWidth <= 768;
             let columns = [];
             let startDate = new Date();
             let endDate = new Date();
+            let defaultColWidth = isMobile ? 48 : 55;
+            let isAutoFitMode = ganttAutoFit;
 
-            if (ganttAutoFit) {
+            if (isAutoFitMode) {
                 // Auto-Fit Rentang Seluruh Tugas yang Ada
                 let minTime = Infinity;
                 let maxTime = -Infinity;
@@ -3710,14 +3824,16 @@
                 const diffDays = Math.max(7, Math.ceil((endDate - startDate) / 86400000));
                 
                 if (diffDays <= 35) {
+                    defaultColWidth = isMobile ? 44 : 52;
                     for (let i = 0; i < diffDays; i++) {
                         const d = new Date(startDate.getTime() + i * 86400000);
                         const isToday = d.getTime() === today.getTime();
-                        const label = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-                        columns.push({ date: d, label: isToday ? `${label} (Hari Ini)` : label, isToday, width: '60px' });
+                        const dayNum = d.getDate();
+                        const dayName = d.toLocaleDateString('id-ID', { weekday: 'narrow' });
+                        columns.push({ date: d, dayNum: dayNum, subLabel: dayName, isToday: isToday, width: defaultColWidth });
                     }
                 } else if (diffDays <= 180) {
-                    // Skala Pekanan ISO
+                    defaultColWidth = isMobile ? 95 : 120;
                     const numWeeks = Math.ceil(diffDays / 7);
                     for (let w = 0; w < numWeeks; w++) {
                         const dStart = new Date(startDate.getTime() + w * 7 * 86400000);
@@ -3726,21 +3842,23 @@
                         const iso = getISOWeekNumber(dStart);
                         columns.push({
                             date: dStart,
-                            label: `W${iso.week} (${dStart.toLocaleDateString('id-ID', { day: 'numeric', month: 'numeric' })})`,
+                            dayNum: `W${iso.week}`,
+                            subLabel: `${dStart.getDate()}/${dStart.getMonth()+1} - ${dEnd.getDate()}/${dEnd.getMonth()+1}`,
                             isToday: isCurrentWeek,
-                            width: '110px'
+                            width: defaultColWidth
                         });
                     }
                 } else {
-                    // Skala Bulanan
+                    defaultColWidth = isMobile ? 85 : 110;
                     let cur = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
                     while (cur <= endDate) {
                         const isCurrentMonth = today.getMonth() === cur.getMonth() && today.getFullYear() === cur.getFullYear();
                         columns.push({
                             date: new Date(cur),
-                            label: cur.toLocaleDateString('id-ID', { month: 'short', year: 'numeric' }),
+                            dayNum: monthNames[cur.getMonth()].substring(0, 3),
+                            subLabel: cur.getFullYear(),
                             isToday: isCurrentMonth,
-                            width: '140px'
+                            width: defaultColWidth
                         });
                         cur.setMonth(cur.getMonth() + 1, 1);
                     }
@@ -3748,12 +3866,13 @@
 
                 if (periodDisplay) periodDisplay.textContent = `Auto-Fit (${startDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })} - ${endDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })})`;
             } else if (ganttScale === 'day') {
-                // Skala Hari Penuh Satu Bulan Kalender
+                // Skala Hari: Seluruh hari bulan kalender berjalan (Comfortable min width 55px, Drag & Pan centered on Today)
                 const year = ganttCurrentDate.getFullYear();
                 const month = ganttCurrentDate.getMonth();
                 startDate = new Date(year, month, 1, 0, 0, 0, 0);
                 const lastDay = new Date(year, month + 1, 0).getDate();
                 endDate = new Date(year, month, lastDay, 23, 59, 59, 999);
+                defaultColWidth = isMobile ? 48 : 55;
 
                 for (let d = 1; d <= lastDay; d++) {
                     const dateObj = new Date(year, month, d);
@@ -3761,9 +3880,10 @@
                     const dayName = dateObj.toLocaleDateString('id-ID', { weekday: 'narrow' });
                     columns.push({
                         date: dateObj,
-                        label: `${d} ${dayName}${isToday ? ' •' : ''}`,
+                        dayNum: d,
+                        subLabel: dayName,
                         isToday: isToday,
-                        width: '52px'
+                        width: defaultColWidth
                     });
                 }
 
@@ -3772,11 +3892,12 @@
                 // Skala 12 Pekan ISO 8601 Baku
                 const target = new Date(ganttCurrentDate);
                 const dayNr = (target.getDay() + 6) % 7;
-                target.setDate(target.getDate() - dayNr); // Hari Senin pekan aktif
+                target.setDate(target.getDate() - dayNr); // Senin pekan aktif
                 target.setHours(0, 0, 0, 0);
 
                 startDate = new Date(target);
                 startDate.setDate(startDate.getDate() - (5 * 7)); // 5 pekan ke belakang
+                defaultColWidth = isMobile ? 95 : 120;
 
                 for (let i = 0; i < 12; i++) {
                     const dStart = new Date(startDate.getTime() + (i * 7 * 86400000));
@@ -3785,9 +3906,10 @@
                     const iso = getISOWeekNumber(dStart);
                     columns.push({
                         date: dStart,
-                        label: `W${iso.week} (${dStart.getDate()}/${dStart.getMonth()+1} - ${dEnd.getDate()}/${dEnd.getMonth()+1})`,
+                        dayNum: `W${iso.week}`,
+                        subLabel: `${dStart.getDate()}/${dStart.getMonth()+1} - ${dEnd.getDate()}/${dEnd.getMonth()+1}`,
                         isToday: isCurrentWeek,
-                        width: '120px'
+                        width: defaultColWidth
                     });
                 }
                 endDate = new Date(startDate.getTime() + (12 * 7 * 86400000) - 1);
@@ -3801,15 +3923,17 @@
                 const year = ganttCurrentDate.getFullYear();
                 startDate = new Date(year, 0, 1, 0, 0, 0, 0);
                 endDate = new Date(year, 11, 31, 23, 59, 59, 999);
+                defaultColWidth = isMobile ? 85 : 110;
 
                 for (let m = 0; m < 12; m++) {
                     const d = new Date(year, m, 1);
                     const isCurrentMonth = today.getMonth() === m && today.getFullYear() === year;
                     columns.push({
                         date: d,
-                        label: monthNames[m],
+                        dayNum: monthNames[m].substring(0, 3),
+                        subLabel: year,
                         isToday: isCurrentMonth,
-                        width: '110px'
+                        width: defaultColWidth
                     });
                 }
 
@@ -3817,46 +3941,53 @@
             }
 
             const totalDurationMs = Math.max(86400000, endDate.getTime() - startDate.getTime());
+            const totalTimelineWidth = columns.reduce((acc, col) => acc + col.width, 0);
 
-            // Render Header Grid Columns
-            let headerColsHtml = columns.map(c => `
-                <th style="text-align: center; min-width: ${c.width}; ${c.isToday ? 'background: #FAF6E8; color: var(--color-gold-deep); font-weight: 800;' : ''}">
-                    ${c.label}
-                </th>
+            // Left Sidebar HTML (Fixed Task Names & PIC)
+            let sidebarRowsHtml = tasks.map(t => {
+                const divClass = getDivisionBadgeClass(t.division);
+                return `
+                    <div class="gantt-sidebar-row">
+                        <div class="gantt-sidebar-title" onclick="openTaskDetailModal('${t.id}')" title="${t.title}">
+                            ${t.title}
+                        </div>
+                        <div class="gantt-sidebar-meta">
+                            <span class="div-badge ${divClass}" style="font-size: 0.62rem; padding: 0.1rem 0.35rem; line-height: 1;">${t.division.replace('Divisi ', '')}</span>
+                            <span><i class="fa-solid fa-user" style="font-size: 0.6rem;"></i> ${t.assigned_to ? t.assigned_to.split(' ')[0] : 'PIC'}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Right Timeline Column Headers
+            let timelineHeadersHtml = columns.map(c => `
+                <div class="gantt-timeline-col-header ${c.isToday ? 'today' : ''}" style="width: ${c.width}px;" title="${c.date.toLocaleDateString('id-ID', { dateStyle: 'full' })}">
+                    <span style="font-size: 0.75rem; font-weight: 800;">${c.dayNum}</span>
+                    <span style="font-size: 0.62rem; opacity: 0.85;">${c.subLabel}</span>
+                </div>
             `).join('');
 
-            let tableHtml = `
-                <table class="gantt-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 230px; position: sticky; left: 0; background: #F9FAFB; z-index: 10;">Tugas & Penanggung Jawab</th>
-                            <th style="width: 140px;">Divisi</th>
-                            <th style="width: 110px;">Jadwal</th>
-                            <th style="padding: 0;">
-                                <table style="width: 100%; border-collapse: collapse;">
-                                    <tr>${headerColsHtml}</tr>
-                                </table>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
+            // Calculate Today Indicator Line position in px
+            let todayLeftPx = null;
+            if (today >= startDate && today <= endDate) {
+                todayLeftPx = ((today.getTime() - startDate.getTime()) / totalDurationMs) * totalTimelineWidth;
+            }
 
-            tasks.forEach(t => {
+            // Right Timeline Track Rows
+            let timelineTracksHtml = tasks.map(t => {
                 const tStart = t.start_date ? new Date(t.start_date) : new Date(t.created_at || today);
                 tStart.setHours(0, 0, 0, 0);
                 const tDue = t.due_date ? new Date(t.due_date) : new Date(tStart.getTime() + 86400000);
                 tDue.setHours(23, 59, 59, 999);
 
-                let leftPct = ((tStart.getTime() - startDate.getTime()) / totalDurationMs) * 100;
-                let rightPct = ((tDue.getTime() - startDate.getTime()) / totalDurationMs) * 100;
-                let widthPct = rightPct - leftPct;
+                let leftPx = ((tStart.getTime() - startDate.getTime()) / totalDurationMs) * totalTimelineWidth;
+                let rightPx = ((tDue.getTime() - startDate.getTime()) / totalDurationMs) * totalTimelineWidth;
+                let widthPx = rightPx - leftPx;
 
                 const isOutOfRange = tDue < startDate || tStart > endDate;
-                leftPct = Math.max(0, Math.min(100, leftPct));
-                widthPct = Math.max(2, Math.min(100 - leftPct, widthPct));
+                leftPx = Math.max(0, Math.min(totalTimelineWidth, leftPx));
+                widthPx = Math.max(32, Math.min(totalTimelineWidth - leftPx, widthPx));
 
-                const divClass = getDivisionBadgeClass(t.division);
                 const pct = t.progress_pct !== undefined && t.progress_pct !== null ? t.progress_pct : (t.status === 'COMPLETED' ? 100 : (t.status === 'IN_PROGRESS' ? 50 : 0));
 
                 let statusClass = 'pending';
@@ -3866,38 +3997,90 @@
                     statusClass = 'in-progress';
                 }
 
-                const todayLeftPct = ((today.getTime() - startDate.getTime()) / totalDurationMs) * 100;
-
-                tableHtml += `
-                    <tr>
-                        <td style="position: sticky; left: 0; background: var(--color-bg-white); z-index: 10; box-shadow: 2px 0 5px rgba(0,0,0,0.02);">
-                            <div style="font-weight: 700; font-size: 0.8rem; color: var(--color-charcoal); cursor: pointer;" onclick="openTaskDetailModal('${t.id}')">${t.title}</div>
-                            <div style="font-size: 0.72rem; color: var(--color-charcoal-muted);"><i class="fa-solid fa-user"></i> ${t.assigned_to || 'Pengurus'}</div>
-                        </td>
-                        <td><span class="div-badge ${divClass}">${t.division.replace('Divisi ', '')}</span></td>
-                        <td style="font-size: 0.72rem; font-weight: 600; color: var(--color-charcoal-muted);">
-                            ${tStart.toLocaleDateString('id-ID', { day: 'numeric', month: 'numeric' })} - ${tDue.toLocaleDateString('id-ID', { day: 'numeric', month: 'numeric' })}
-                        </td>
-                        <td class="gantt-bar-cell" style="padding: 0.5rem 0.75rem;">
-                            <div class="gantt-track">
-                                ${todayLeftPct >= 0 && todayLeftPct <= 100 ? `<div class="gantt-today-line" style="left: ${todayLeftPct}%;"></div>` : ''}
-                                ${!isOutOfRange ? `
-                                    <div class="gantt-bar ${statusClass}" style="left: ${leftPct}%; width: ${widthPct}%;" onclick="openTaskDetailModal('${t.id}')" title="${t.title} (${pct}% • ${t.start_date || '-'} s/d ${t.due_date || '-'})">
-                                        <span>${pct}% • ${t.title}</span>
-                                    </div>
-                                ` : `
-                                    <div style="font-size: 0.65rem; color: #9CA3AF; padding: 0.25rem 0.5rem; font-style: italic;">
-                                        Jadwal di luar rentang tampilan (${tStart.toLocaleDateString('id-ID')} - ${tDue.toLocaleDateString('id-ID')}) — Gunakan navigasi atau Auto-Fit
-                                    </div>
-                                `}
+                return `
+                    <div class="gantt-timeline-track-row" style="--col-w: ${defaultColWidth}px;">
+                        ${!isOutOfRange ? `
+                            <div class="gantt-bar ${statusClass}" style="left: ${leftPx}px; width: ${widthPx}px;" onclick="openTaskDetailModal('${t.id}')" title="${t.title} (${pct}% • ${tStart.toLocaleDateString('id-ID')} s/d ${tDue.toLocaleDateString('id-ID')})">
+                                <span>${pct}% • ${t.title}</span>
                             </div>
-                        </td>
-                    </tr>
+                        ` : `
+                            <div style="font-size: 0.65rem; color: #9CA3AF; padding: 0 1rem; font-style: italic;">
+                                Jadwal (${tStart.toLocaleDateString('id-ID')} - ${tDue.toLocaleDateString('id-ID')}) — Geser timeline atau gunakan Auto-Fit
+                            </div>
+                        `}
+                    </div>
                 `;
-            });
+            }).join('');
 
-            tableHtml += `</tbody></table>`;
-            container.innerHTML = tableHtml;
+            // Full Split-Pane Layout
+            container.innerHTML = `
+                <div class="gantt-split-layout">
+                    <!-- Left Pane: Fixed Task Sidebar -->
+                    <div class="gantt-sidebar-pane">
+                        <div class="gantt-sidebar-header">
+                            <span><i class="fa-solid fa-list-check"></i> Tugas & PIC</span>
+                            <span style="font-size: 0.68rem; color: var(--color-charcoal-muted);">${tasks.length}</span>
+                        </div>
+                        <div class="gantt-sidebar-body">
+                            ${sidebarRowsHtml}
+                        </div>
+                    </div>
+
+                    <!-- Right Pane: Scrollable Timeline (Drag-to-Scroll & Swipe) -->
+                    <div class="gantt-timeline-pane" id="gantt-timeline-pane">
+                        <div class="gantt-timeline-header-row" style="width: ${totalTimelineWidth}px;">
+                            ${timelineHeadersHtml}
+                        </div>
+                        <div class="gantt-timeline-body" style="width: ${totalTimelineWidth}px;">
+                            ${todayLeftPx !== null ? `<div class="gantt-today-vertical-line" style="left: ${todayLeftPx}px;" title="Hari Ini"></div>` : ''}
+                            ${timelineTracksHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Interactive Drag-to-Scroll (Mouse Drag & Touch Pan)
+            const timelinePane = document.getElementById('gantt-timeline-pane');
+            if (timelinePane) {
+                let isDown = false;
+                let startX = 0;
+                let scrollLeft = 0;
+
+                timelinePane.addEventListener('mousedown', (e) => {
+                    if (e.target.closest('.gantt-bar')) return;
+                    isDown = true;
+                    timelinePane.classList.add('dragging');
+                    startX = e.pageX - timelinePane.offsetLeft;
+                    scrollLeft = timelinePane.scrollLeft;
+                });
+
+                timelinePane.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    timelinePane.classList.remove('dragging');
+                });
+
+                timelinePane.addEventListener('mouseup', () => {
+                    isDown = false;
+                    timelinePane.classList.remove('dragging');
+                });
+
+                timelinePane.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - timelinePane.offsetLeft;
+                    const walk = (x - startX) * 1.5;
+                    timelinePane.scrollLeft = scrollLeft - walk;
+                });
+
+                // Auto-center on Today or active date if in Day/Week view
+                setTimeout(() => {
+                    const todayCol = timelinePane.querySelector('.gantt-timeline-col-header.today');
+                    if (todayCol) {
+                        const targetScroll = todayCol.offsetLeft - (timelinePane.clientWidth / 2) + (todayCol.clientWidth / 2);
+                        timelinePane.scrollLeft = Math.max(0, targetScroll);
+                    }
+                }, 60);
+            }
         }
 
         // ==========================================================================

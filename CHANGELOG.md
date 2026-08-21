@@ -4,6 +4,25 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.6.6] - 2026-08-22
+
+### Split-Pane Gantt Layout, Zero-Leakage Task Sidebar, Interaktif Drag-to-Scroll Pan, dan Auto-Centered Today View
+
+#### Peningkatan & Penyempurnaan (Enhanced & Fixed)
+- `[SPLIT-PANE GANTT ARCHITECTURE]` Restrukturisasi total tata letak Gantt Chart dari tabel tunggal menjadi arsitektur modern dua panel (*Split-Pane Layout*):
+  - **Panel Kiri (Daftar Tugas Tetap / Fixed Sidebar):** Lebar 250px (Desktop) / 140px (Mobile) dengan latar solid putih, menampilkan Judul Tugas, badge divisi, dan PIC. Fisik kolom terpisah penuh dari timeline.
+  - **Panel Kanan (Timeline Garis Waktu):** Area horizontal yang dapat digeser secara leluasa tanpa menggeser nama tugas di panel kiri.
+- `[ZERO-LEAKAGE FIX]` Menghilangkan bug tembus/bocornya batang timeline (`.gantt-bar`) ke bawah kolom teks PIC & Judul Tugas melalui pemisahan kontainer independen dengan `z-index: 10` dan *solid border barrier*.
+- `[COMFORTABLE DAILY COLUMN WIDTH & AUTO-CENTER]`
+  - Menghilangkan pemaksaan 31 hari mampat dalam satu layar sempit.
+  - Setiap kolom hari kini memiliki lebar proporsional yang lapang dan mudah dibaca (55px di Desktop, 48px di Mobile / Android).
+  - Tampilan otomatis memusatkan (*auto-center*) posisi gulir pada **Hari Ini** saat pertama kali dibuka, sehingga pengguna langsung melihat 14–15 hari di sekitar tanggal aktif pada Desktop (atau 7 hari pada Android) tanpa teks terhimpit.
+- `[INTERACTIVE DRAG-TO-SCROLL & TOUCH PAN]`
+  - Menambahkan interaksi geser kursor halus (*grab-to-scroll*) menggunakan mouse drag di Desktop dan *smooth touch swipe* di Android/HP.
+  - Menerapkan `user-select: none;` pada header tanggal dan kisi grid sehingga menggeser timeline tidak lagi memicu seleksi blok biru (*text selection block*) yang mengganggu.
+
+---
+
 ## [1.6.5] - 2026-08-22
 
 ### Standarisasi ISO 8601 Gantt Timeline, Kalender Continuous Spanning Bar, Drag & Hold Range Selection, dan Validasi Kronologis Tanggal
