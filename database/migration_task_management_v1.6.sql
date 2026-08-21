@@ -34,7 +34,16 @@ CREATE TABLE IF NOT EXISTS public.task_chat_messages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 4. AKTIFKAN ROW LEVEL SECURITY (RLS) & IZIN AKSES PORTAL ADMIN
+-- 4. IZIN HAK AKSES POSTGRESQL & ROW LEVEL SECURITY (RLS)
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated, service_role;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON ROUTINES TO anon, authenticated, service_role;
+
 ALTER TABLE public.team_tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.task_activity_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.task_chat_messages ENABLE ROW LEVEL SECURITY;

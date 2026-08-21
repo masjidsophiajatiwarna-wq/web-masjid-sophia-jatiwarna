@@ -182,9 +182,18 @@ CREATE TABLE IF NOT EXISTS public.feedback_complaints (
 );
 
 -- ==============================================================================
+-- DATABASE PERMISSIONS & ROW LEVEL SECURITY (RLS) POLICIES
 -- ==============================================================================
--- ROW LEVEL SECURITY (RLS) POLICIES (IDEMPOTENT)
--- ==============================================================================
+
+-- 1. Grant base PostgreSQL schema & table permissions to application roles
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated, service_role;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON ROUTINES TO anon, authenticated, service_role;
 
 -- A. donations
 ALTER TABLE public.donations ENABLE ROW LEVEL SECURITY;
