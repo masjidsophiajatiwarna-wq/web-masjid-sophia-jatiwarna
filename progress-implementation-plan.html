@@ -947,14 +947,13 @@
         <div class="gantt-card-item">
             <div class="gantt-item-top">
                 <span class="gantt-item-name">
-                    <i class="fa-solid fa-database" style="color: var(--color-info);"></i> Fase 2: Database Supabase & Keamanan RLS
+                    <i class="fa-solid fa-database" style="color: var(--color-info);"></i> Fase 2: Database, Auth & Keamanan RLS
                 </span>
-                <span class="status-tag status-pending">Siap Eksekusi</span>
+                <span class="status-tag status-done">90% Selesai</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-0"></div>
+                <div class="gantt-bar-fill fill-90">90% - Skema Inti Live, Migrasi Lanjutan Tersisa</div>
             </div>
-            <span class="gantt-empty-label">Status: Siap dieksekusi setelah penataan frontend publik.</span>
         </div>
 
         <div class="gantt-card-item">
@@ -962,10 +961,10 @@
                 <span class="gantt-item-name">
                     <i class="fa-solid fa-desktop" style="color: var(--color-gold-deep);"></i> Fase 3: Portal Publik & Shalat Engine
                 </span>
-                <span class="status-tag status-inprogress">80% Selesai</span>
+                <span class="status-tag status-inprogress">60% Selesai</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-80">80% - Layout Publik & Hisab Live</div>
+                <div class="gantt-bar-fill fill-60">60% - Beranda Live, Redesign & Fitur Lanjutan Tersisa</div>
             </div>
         </div>
 
@@ -974,12 +973,11 @@
                 <span class="gantt-item-name">
                     <i class="fa-solid fa-list-check" style="color: var(--color-charcoal);"></i> Fase 4: Web Admin DKM & Task Engine
                 </span>
-                <span class="status-tag status-pending">Siap Eksekusi</span>
+                <span class="status-tag status-inprogress">25% Selesai</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-0"></div>
+                <div class="gantt-bar-fill fill-25">25% - Admin Core Live, Modul Besar Belum</div>
             </div>
-            <span class="gantt-empty-label">Status: Menunggu integrasi auth & database Fase 2.</span>
         </div>
 
         <div class="gantt-card-item">
@@ -1000,12 +998,11 @@
                 <span class="gantt-item-name">
                     <i class="fa-solid fa-rocket" style="color: var(--color-success);"></i> Fase 6: Go-Live & SEO Cutover
                 </span>
-                <span class="status-tag status-pending">Siap Eksekusi</span>
+                <span class="status-tag status-inprogress">40% Selesai</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-0"></div>
+                <div class="gantt-bar-fill fill-40">40% - Email & SEO Dasar Live</div>
             </div>
-            <span class="gantt-empty-label">Status: Finalisasi Schema.org, sitemap & email gateway.</span>
         </div>
     </section>
 
@@ -1230,6 +1227,16 @@
                             <div class="task-desc">Sinkronisasi otomatis checklist media, donasi masuk, dan tugas tim tanpa refresh halaman.</div>
                         </div>
                     </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Migrasi Skema Tambahan Task Management v2 & Obrolan Realtime
+                                <span class="task-badge-pill">SQL Migration v2</span>
+                            </div>
+                            <div class="task-desc">Tabel riwayat aktivitas (task_activity_logs), komentar tugas (task_comments), pesan koordinasi (task_chat_messages), dan kolom jadwal baru.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1240,8 +1247,8 @@
                 <div class="phase-title-group">
                     <div class="phase-badge in-progress">3</div>
                     <div class="phase-name">
-                        <h3>Fase 3: Frontend Web Portal Publik & Modul Shalat</h3>
-                        <p>Standar Istiqlal, hisab shalat Kemenag live countdown, filantropi & musafir 24 jam</p>
+                        <h3>Fase 3: Web Portal Publik untuk Umat & Musafir</h3>
+                        <p>Beranda lengkap, jadwal shalat otomatis, donasi, pengaduan jamaah, galeri, dan berita</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -1255,7 +1262,7 @@
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Halaman Muka Publik Berstandar Istiqlal
+                                Halaman Muka Publik Resmi
                                 <span class="task-badge-pill">index.html</span>
                             </div>
                             <div class="task-desc">Portal publik responsif tema terang tanpa mengekspos tombol admin di beranda.</div>
@@ -1265,18 +1272,18 @@
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Modul Hisab Shalat Kemenag & Live Countdown
+                                Jadwal Shalat Otomatis & Hitung Mundur Detik
                                 <span class="task-badge-pill">Hisab Engine</span>
                             </div>
-                            <div class="task-desc">Perhitungan astronomis 7 waktu shalat presisi Jatiwarna + highlight aktif + hitung mundur detik.</div>
+                            <div class="task-desc">Perhitungan otomatis 7 waktu shalat Jatiwarna + penanda aktif + hitung mundur.</div>
                         </div>
                     </div>
                     <div class="task-item completed">
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Modul Rotasi Petugas Ibadah & Kajian
-                                <span class="task-badge-pill">UI Component</span>
+                                Daftar Petugas Ibadah & Jadwal Kajian
+                                <span class="task-badge-pill">Petugas</span>
                             </div>
                             <div class="task-desc">Tampilan Imam Rawatib aktif, Muadzin, Khatib Shalat Jumat, dan Pengisi Kajian.</div>
                         </div>
@@ -1285,7 +1292,7 @@
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Kanal Filantropi 1-Click Copy BSI & QRIS SEDEKAH MAKAN
+                                Kanal Donasi 1-Klik Salin BSI & QRIS SEDEKAH MAKAN
                                 <span class="task-badge-pill">Filantropi</span>
                             </div>
                             <div class="task-desc">Salin otomatis BSI 7235464297 a.n. Masjid Sophia & QRIS NMID: ID2025401816769.</div>
@@ -1295,18 +1302,18 @@
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Dynamic Incognito Form Konfirmasi Donasi & Doa
-                                <span class="task-badge-pill">Incognito Form</span>
+                                Formulir Konfirmasi Donasi Tanpa Login
+                                <span class="task-badge-pill">Formulir</span>
                             </div>
-                            <div class="task-desc">Formulir konfirmasi donasi tanpa login dengan notifikasi toast konfirmasi.</div>
+                            <div class="task-desc">Formulir konfirmasi donasi dan doa jamaah instan dengan notifikasi konfirmasi.</div>
                         </div>
                     </div>
                     <div class="task-item completed">
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Showcase Fasilitas Layanan Musafir 24 Jam
-                                <span class="task-badge-pill">UI Section</span>
+                                Informasi Fasilitas Layanan Musafir 24 Jam
+                                <span class="task-badge-pill">Fasilitas</span>
                             </div>
                             <div class="task-desc">Informasi wudhu bersih 24 jam, ruang istirahat, air minum gratis, dan rute lokasi.</div>
                         </div>
@@ -1315,10 +1322,50 @@
                         <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Halaman Berita & Artikel Detail (artikel.html & artikel-detail.html)
+                                Pembaruan Besar Tampilan Beranda
+                                <span class="task-badge-pill">Redesign</span>
+                            </div>
+                            <div class="task-desc">Banner slider foto kegiatan, kartu layanan cepat, kalender hijriah, agenda kajian, galeri sorotan, animasi halus, dan navigasi bawah ponsel.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Kolom Pengaduan, Saran & Aspirasi Jamaah
+                                <span class="task-badge-pill">Pengaduan</span>
+                            </div>
+                            <div class="task-desc">Formulir pengaduan fasilitas dan kotak saran di beranda publik terhubung langsung ke email DKM.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Obrolan Langsung Jamaah ke Admin (Segera Hadir)
+                                <span class="task-badge-pill">Coming Soon</span>
+                            </div>
+                            <div class="task-desc">Widget obrolan di pojok web publik, pesan jamaah langsung masuk ke panel admin secara instan.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Halaman Berita & Artikel Terpisah
                                 <span class="task-badge-pill">Halaman Publik</span>
                             </div>
-                            <div class="task-desc">Direktori berita mandiri dengan live search, tab filter kategori, dan halaman baca.</div>
+                            <div class="task-desc">Direktori berita mandiri dengan pencarian, filter kategori, dan halaman baca artikel lengkap.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Halaman Galeri Foto & Video Dokumentasi
+                                <span class="task-badge-pill">Galeri</span>
+                            </div>
+                            <div class="task-desc">Album foto dan video kegiatan per kategori dengan penampil layar penuh dan streaming video.</div>
                         </div>
                     </div>
                 </div>
@@ -1329,117 +1376,201 @@
         <div class="phase-card" id="card-fase-4">
             <div class="phase-header" onclick="togglePhase('card-fase-4')">
                 <div class="phase-title-group">
-                    <div class="phase-badge done"><i class="fa-solid fa-check"></i></div>
+                    <div class="phase-badge in-progress">4</div>
                     <div class="phase-name">
-                        <h3>Fase 4: Web Admin DKM, Self-Sustain CMS & Task Health Dashboard</h3>
-                        <p>Task Health, No-Code Page Builder, ImageKit Video CDN (20GB), dan Export Laporan PDF</p>
+                        <h3>Fase 4: Dashboard Admin DKM & Manajemen Tugas Pengurus</h3>
+                        <p>Papan tugas 5 tampilan, obrolan internal, pengelola konten mandiri, dan pemantau kesehatan sistem</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-done">Dalam Proses (60%)</span>
+                    <span class="status-tag status-inprogress">Dalam Proses</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
             <div class="phase-body">
                 <div class="task-list">
+                    <!-- Sub-group: Admin Core (SELESAI) -->
+                    <div style="margin-bottom: 0.35rem; padding: 0.35rem 0.65rem; background: var(--color-success-bg); border-left: 3px solid var(--color-success); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
+                        <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Pondasi Admin (Selesai)
+                    </div>
                     <div class="task-item completed">
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Antarmuka Portal Admin & Supabase Auth Gate (admin.html)
+                                Portal Admin & Gerbang Login Aman
                                 <span class="task-badge-pill">Admin Core</span>
                             </div>
-                            <div class="task-desc">Desain antarmuka eksklusif DKM Sophia, login terproteksi Supabase Auth, dan pemisahan dari web publik.</div>
+                            <div class="task-desc">Antarmuka eksklusif DKM Sophia, login terproteksi, dan pemisahan dari web publik.</div>
                         </div>
                     </div>
                     <div class="task-item completed">
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Panel KPI Real-Time & Buku Kas Donasi Masuk
+                                Panel Ringkasan Kinerja & Buku Kas Donasi
                                 <span class="task-badge-pill">KPI Dashboard</span>
                             </div>
-                            <div class="task-desc">Monitoring realtime arus infaq/sedekah makan ba'da Dzuhur, kode unik verifikasi, dan rekapitulasi kas.</div>
+                            <div class="task-desc">Pemantauan langsung arus infaq/sedekah makan, kode verifikasi, dan rekapitulasi kas.</div>
                         </div>
                     </div>
                     <div class="task-item completed">
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Task Management Terpadu & Task Health Monitoring
-                                <span class="task-badge-pill">Task Health</span>
-                            </div>
-                            <div class="task-desc">Papan penugasan DKM per divisi (Sosial, Sarpras, Media, Santri, Keuangan), prioritas, dan tenggat waktu.</div>
-                        </div>
-                    </div>
-                    <div class="task-item completed">
-                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Inbox Kotak Saran & Pusat Pengaduan Jamaah
+                                Kotak Masuk Pengaduan & Saran Jamaah
                                 <span class="task-badge-pill">Feedback Hub</span>
                             </div>
-                            <div class="task-desc">Panel pemantauan laporan fasilitas rusak dan masukan jamaah terhubung tabel feedback_complaints.</div>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Article & Gallery Studio dengan ImageKit Video CDN (20GB)
-                                <span class="task-badge-pill">CMS Studio</span>
-                            </div>
-                            <div class="task-desc">Penerbitan warta dakwah, integrasi streaming video B-Roll Hero, dan upload aset WebP otomatis.</div>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Ekspor Laporan PDF Mandiri per Anggota Tim DKM
-                                <span class="task-badge-pill">PDF Export Engine</span>
-                            </div>
-                            <div class="task-desc">Fitur cetak dan ekspor ringkasan aktivitas/tugas per anggota ke format PDF standar Web Landscape.</div>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Chat Koordinasi Internal Antar-Pengurus
-                                <span class="task-badge-pill">Internal Chat</span>
-                            </div>
-                            <div class="task-desc">Obrolan internal per tiket tugas untuk rekam jejak instruksi kerja.</div>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Panel Kalibrasi Ikhtiyat Shalat & Rotasi Petugas
-                                <span class="task-badge-pill">DKM Panel</span>
-                            </div>
-                            <div class="task-desc">Pengaturan menit ikhtiyat dan penugasan Imam, Muadzin, Khatib, dan Penceramah.</div>
+                            <div class="task-desc">Panel pemantauan laporan fasilitas rusak dan masukan jamaah.</div>
                         </div>
                     </div>
                     <div class="task-item completed">
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Rekonsiliasi Kas Masuk & Laporan Keuangan
+                                Verifikasi Donasi Masuk & Pencatatan Kas Harian
                                 <span class="task-badge-pill">Keuangan</span>
                             </div>
-                            <div class="task-desc">Verifikasi donasi masuk dan pencatatan biaya makan gratis harian di admin.html.</div>
+                            <div class="task-desc">Verifikasi donasi masuk dan pencatatan biaya makan gratis harian.</div>
                         </div>
                     </div>
-                    <div class="task-item completed">
-                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+
+                    <!-- Sub-group: Task Management 5 View -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-info-bg); border-left: 3px solid var(--color-info); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
+                        <i class="fa-solid fa-table-columns" style="color: var(--color-info);"></i> Manajemen Tugas Pengurus (5 Tampilan)
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                System Health & Storage Monitor (Khusus Super Admin)
-                                <span class="task-badge-pill">Monitoring</span>
+                                Papan Kanban (Seret & Lepas Antar Kolom)
+                                <span class="task-badge-pill">Kanban</span>
                             </div>
-                            <div class="task-desc">Pemantauan kesehatan database Supabase, kuota CDN ImageKit 20GB, Vercel cache, dan Resend.</div>
+                            <div class="task-desc">4 kolom status: Menunggu, Dikerjakan, Review Pak DKM, Selesai. Geser kartu untuk ubah status langsung.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Garis Waktu Gantt (Jadwal Kerja Visual)
+                                <span class="task-badge-pill">Gantt</span>
+                            </div>
+                            <div class="task-desc">Tampilan bar jadwal mulai hingga tenggat per PJ, skala Hari / Minggu / Bulan.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Kalender Tugas (Bulanan & Agenda)
+                                <span class="task-badge-pill">Calendar</span>
+                            </div>
+                            <div class="task-desc">Kalender bulanan dengan bar tugas multi-hari dan daftar agenda kronologis. Geser tanggal untuk buat tugas baru.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Tabel Seluruh Tugas (Cari, Saring, Urutkan)
+                                <span class="task-badge-pill">All Tasks</span>
+                            </div>
+                            <div class="task-desc">Tabel master dengan pencarian, penyaringan per divisi/status/prioritas, arsipkan masal, dan unduh CSV.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Arsip Tugas Selesai (Simpan Rapi & Pulihkan)
+                                <span class="task-badge-pill">Archive</span>
+                            </div>
+                            <div class="task-desc">Penyimpanan tugas yang telah selesai per divisi agar papan kerja tetap bersih, bisa dipulihkan kapan saja.</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: Panel Pendukung -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-warning-bg); border-left: 3px solid var(--color-warning); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
+                        <i class="fa-solid fa-bell" style="color: var(--color-warning);"></i> Panel Pendukung Koordinasi
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Riwayat Pengelolaan Langsung (Tanpa Refresh)
+                                <span class="task-badge-pill">Riwayat</span>
+                            </div>
+                            <div class="task-desc">Catatan otomatis setiap perubahan tugas per PJ, muncul langsung tanpa perlu menyegarkan halaman.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Obrolan Internal Antar-Pengurus (Multi-Arah, Tanpa Refresh)
+                                <span class="task-badge-pill">Chat Internal</span>
+                            </div>
+                            <div class="task-desc">Semua PJ bisa saling berkirim pesan, ke Ketua DKM, atau ke Super Admin. Pesan masuk langsung tanpa refresh.</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: CMS & Pengelola Konten -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-gold-light); border-left: 3px solid var(--color-gold-deep); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #785800;">
+                        <i class="fa-solid fa-paintbrush" style="color: var(--color-gold-deep);"></i> Pengelola Konten Mandiri (Tim Masjid)
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pengatur Tampilan Beranda (Foto, Video, Banner)
+                                <span class="task-badge-pill">Homepage Manager</span>
+                            </div>
+                            <div class="task-desc">Tim media mengelola apa yang tampil di beranda publik tanpa menyentuh kode. Melalui jalur review Ketua DKM.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Studio Artikel & Galeri dengan Video Streaming
+                                <span class="task-badge-pill">CMS Studio</span>
+                            </div>
+                            <div class="task-desc">Penerbitan warta dakwah, upload foto & video otomatis, dan pratinjau tampilan di mesin pencari.</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: Panel Lanjutan -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-bg-sand); border-left: 3px solid var(--color-charcoal-light); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
+                        <i class="fa-solid fa-gears" style="color: var(--color-charcoal-light);"></i> Panel Operasional Lanjutan
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pengaturan Jadwal Shalat & Rotasi Petugas
+                                <span class="task-badge-pill">DKM Panel</span>
+                            </div>
+                            <div class="task-desc">Pengaturan menit waktu shalat dan penetapan rotasi Imam, Muadzin, Khatib, dan Penceramah.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pemantau Kesehatan Seluruh Infrastruktur (Khusus Super Admin)
+                                <span class="task-badge-pill">Monitor 7 Pilar</span>
+                            </div>
+                            <div class="task-desc">Dasbor khusus pemantauan kuota dan status 7 pilar layanan agar tetap aman dan tidak melampaui batas.</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Cetak Laporan Kinerja per Anggota Tim DKM
+                                <span class="task-badge-pill">PDF Export</span>
+                            </div>
+                            <div class="task-desc">Cetak dan unduh ringkasan aktivitas dan tugas per anggota ke format PDF standar.</div>
                         </div>
                     </div>
                 </div>
@@ -1558,7 +1689,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>Konfigurasi & Database</strong></td>
+                    <td><strong>Konfigurasi Sistem & API</strong></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm read">Baca</span></td>
                     <td><span class="badge-perm none">-</span></td>
@@ -1571,7 +1702,20 @@
                     <td><span class="badge-perm none">-</span></td>
                 </tr>
                 <tr>
-                    <td><strong>Task Management (Kanban)</strong></td>
+                    <td><strong>Manajemen Pengguna DKM</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Task Management (5 Tampilan)</strong></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm full">Penuh</span></td>
@@ -1584,7 +1728,33 @@
                     <td><span class="badge-perm full">Penuh</span></td>
                 </tr>
                 <tr>
-                    <td><strong>Article Studio CMS</strong></td>
+                    <td><strong>Riwayat Pengelolaan Realtime</strong></td>
+                    <td><span class="badge-perm full">Penuh+Hapus</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Chat Koordinasi Multi-Arah</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CMS & Studio Artikel</strong></td>
                     <td><span class="badge-perm full">Penuh</span></td>
                     <td><span class="badge-perm read">Review</span></td>
                     <td><span class="badge-perm full">Penuh</span></td>
@@ -1592,6 +1762,19 @@
                     <td><span class="badge-perm none">-</span></td>
                     <td><span class="badge-perm none">-</span></td>
                     <td><span class="badge-perm action">Kajian</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Pengatur Beranda & Media (Self-Sustain)</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Review</span></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
                     <td><span class="badge-perm none">-</span></td>
                     <td><span class="badge-perm none">-</span></td>
                     <td><span class="badge-perm none">-</span></td>
@@ -1699,6 +1882,19 @@
                     <td><span class="badge-perm none">-</span></td>
                     <td><span class="badge-perm none">-</span></td>
                     <td><span class="badge-perm full">Penuh</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Monitor 7 Pilar Cloud</strong></td>
+                    <td><span class="badge-perm full">Penuh</span></td>
+                    <td><span class="badge-perm read">Baca</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
+                    <td><span class="badge-perm none">-</span></td>
                 </tr>
             </tbody>
         </table>
