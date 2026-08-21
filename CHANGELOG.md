@@ -4,6 +4,19 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.6.4] - 2026-08-22
+
+### Penyempurnaan Presisi Ikon Sidebar, Diferensiasi Ikon Kotak Saran, dan Tombol Collapse Internal Chevron
+
+#### Peningkatan & Penyempurnaan (Enhanced & Fixed)
+- `[ICON CENTERING FIX]` Menghilangkan elemen pembungkus ekstra (*inner div*) pada tombol navigasi **Chat Koordinasi DKM** di sidebar sehingga posisi seluruh ikon menu vertikal sejajar dan terpusat presisi 100% saat sidebar dalam mode *collapsed* (72px).
+- `[DIFERENSIASI IKON KOTAK SARAN]` Mengubah ikon **Kotak Saran Jamaah** menjadi `fa-envelope-open-text` (kotak pesan/inbox aspirasi terbuka) sehingga secara visual berbeda tegas dan intuitif dari ikon **Chat Koordinasi DKM** (`fa-comments`).
+- `[ELEGANT INTERNAL CHEVRON TOGGLE]` Memindahkan tombol toggle collapse dari top bar luar ke dalam header brand sidebar (`.sidebar-brand`):
+  - Menggunakan ikon chevron minimalis bulat (`<` / `fa-chevron-left` saat melebar, dan `>` / `fa-chevron-right` saat mengecil).
+  - Menjaga tampilan top app bar tetap bersih, elegan, dan fokus pada informasi panel.
+
+---
+
 ## [1.6.3] - 2026-08-22
 
 ### Restrukturisasi Navigasi Sidebar, Fitur Collapse Sidebar, dan Tata Letak Fleksibel Toolbar Tugas
