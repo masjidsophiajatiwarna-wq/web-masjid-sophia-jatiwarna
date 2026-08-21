@@ -4,6 +4,22 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.6] - 2026-08-22
+
+### Pengurutan Tabel Akun Berbasis Prioritas Online (Online-First) & Hierarki Jabatan Resmi DKM
+
+#### Penambahan & Pembaruan (Added & Updated)
+- `[ONLINE_FIRST_ACCOUNT_SORTING]` Menerapkan algoritma pengurutan cerdas multi-tier pada tabel direktori master pengurus:
+  - **Tier 1 (Prioritas Presensi Realtime):** Akun yang berstatus **🟢 Online** selalu diposisikan pada baris paling atas tabel, disusul akun **🟡 Idle (Standby)**, kemudian **⚪ Offline**, dan akun **🔴 Nonaktif** di posisi terbawah.
+  - **Tier 2 (Hierarki Jabatan Resmi DKM):** Dalam status presensi yang sama, akun diurutkan secara tertib berdasarkan tingkat wewenang struktural:
+    1. Super Administrator (`SUPER_ADMIN`)
+    2. Ketua DKM Masjid Sophia (`KETUA_DKM`)
+    3. Super User / QA Audit (`SUPER_USER`)
+    4. Seluruh Penanggung Jawab Divisi (Media $\rightarrow$ Logistik $\rightarrow$ Santri $\rightarrow$ Musafir $\rightarrow$ Ibadah $\rightarrow$ Keuangan $\rightarrow$ Keamanan $\rightarrow$ Kebersihan)
+  - **Tier 3 (Urutan Alfabetis):** Jika peran setara, diurutkan menurut nama lengkap pengurus secara alfabetis.
+
+---
+
 ## [1.7.5] - 2026-08-22
 
 ### Perbaikan Kendala RLS Infinite Recursion (500 Internal Server Error) & Optimasi PostgreSQL Policy

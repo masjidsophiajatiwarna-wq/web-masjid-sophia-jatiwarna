@@ -7302,10 +7302,79 @@
             const q = (document.getElementById('filter-account-search')?.value || '').toLowerCase().trim();
             const divFilter = document.getElementById('filter-account-division')?.value || 'ALL';
 
+            const ROLE_ORDER_RANK = {
+                'SUPER_ADMIN': 1,
+                'KETUA_DKM': 2,
+                'SUPER_USER': 3,
+                'PJ_MEDIA': 4,
+                'PJ_LOGISTIK': 5,
+                'PJ_SANTRI': 6,
+                'PJ_MUSAFIR': 7,
+                'PJ_IBADAH': 8,
+                'PJ_KEUANGAN': 9,
+                'PJ_KEAMANAN': 10,
+                'PJ_KEBERSIHAN': 11,
+                'STAFF': 12
+            };
+
             const filtered = adminUsersList.filter(u => {
                 const matchQ = !q || (u.full_name || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q) || (u.role || '').toLowerCase().includes(q);
                 const matchDiv = divFilter === 'ALL' || (u.division || '') === divFilter;
                 return matchQ && matchDiv;
+            });
+
+            // Online-First Sort: 1) Online 🟢, 2) Idle 🟡, 3) Offline ⚪, 4) Nonaktif 🔴 -> Secondary: Role Hierarchy
+            filtered.sort((a, b) => {
+                const aEmail = (a.email || '').toLowerCase().trim();
+                const bEmail = (b.email || '').toLowerCase().trim();
+                const isCurrentA = currentUser && currentUser.email && currentUser.email.toLowerCase().trim() === aEmail;
+                const isCurrentB = currentUser && currentUser.email && currentUser.email.toLowerCase().trim() === bEmail;
+                const isAppVisible = document.getElementById('admin-app') && document.getElementById('admin-app').style.display !== 'none';
+
+                const aLiveOnline = (isCurrentA && isAppVisible) || onlineUsersSet.has(aEmail);
+                const bLiveOnline = (isCurrentB && isAppVisible) || onlineUsersSet.has(bEmail);
+
+                let aIdle = false;
+                if (aLiveOnline) {
+                    if (isCurrentA) {
+                        const idleMin = (Date.now() - lastUserActivityTimestamp) / 60000;
+                        if (idleMin >= 60 && idleMin <= 180) aIdle = true;
+                    } else if (idleUsersSet.has(aEmail)) {
+                        aIdle = true;
+                    }
+                }
+
+                let bIdle = false;
+                if (bLiveOnline) {
+                    if (isCurrentB) {
+                        const idleMin = (Date.now() - lastUserActivityTimestamp) / 60000;
+                        if (idleMin >= 60 && idleMin <= 180) bIdle = true;
+                    } else if (idleUsersSet.has(bEmail)) {
+                        bIdle = true;
+                    }
+                }
+
+                const getPresenceRank = (user, isLive, isIdleState) => {
+                    if (user.is_active === false) return 4;
+                    if (isLive && !isIdleState) return 1;
+                    if (isLive && isIdleState) return 2;
+                    return 3;
+                };
+
+                const rankA = getPresenceRank(a, aLiveOnline, aIdle);
+                const rankB = getPresenceRank(b, bLiveOnline, bIdle);
+
+                if (rankA !== rankB) {
+                    return rankA - rankB;
+                }
+
+                const roleRankA = ROLE_ORDER_RANK[a.role] || 99;
+                const roleRankB = ROLE_ORDER_RANK[b.role] || 99;
+                if (roleRankA !== roleRankB) {
+                    return roleRankA - roleRankB;
+                }
+
+                return (a.full_name || '').localeCompare(b.full_name || '');
             });
 
             // Update Stat Cards
