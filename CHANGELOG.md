@@ -4,6 +4,22 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.3] - 2026-08-22
+
+### Perbaikan Realtime Presence Channel Sync, Dynamic Logout State, dan Adaptive Color Styling
+
+#### Perbaikan & Penyempurnaan (Fixed & Improved)
+- `[PRESENCE_TRACKING_CHANNEL]` Mengintegrasikan sistem **Supabase Presence Tracking (`sync`, `join`, `leave`)** dan siaran langsung `USER_LOGOUT_EVENT`:
+  - Ketika pengurus melakukan logout, menutup peramban (*browser*), atau berpindah ke layar login, sistem seketika memutus pelacakan presensi (*untrack*) dan menyiarkan sinyal keluar ke seluruh peramban lain.
+  - Status akun seketika beralih menjadi **⚪ Offline** secara otomatis (*zero refresh*).
+  - Mengatasi kendala status tetap *online* setelah *hard refresh* dengan membedakan secara tegas antara waktu riwayat login (`last_login`) dan koneksi presensi aktif pengguna saat ini.
+- `[ADAPTIVE_COLOR_STYLING]` Menyesuaikan skema warna indikator dan teks waktu login terakhir:
+  - **🟢 Online:** Badge hijau (`live-dot`) dengan teks waktu hijau tebal `#047857` dan label `(Sedang Aktif)`.
+  - **🟡 Idle (Standby):** Badge kuning amber (`live-dot` amber) dengan teks waktu amber tebal `#B45309` dan label `(Standby / Idle)`.
+  - **⚪ Offline:** Badge abu-abu dengan teks riwayat waktu abu-abu redup `#64748B` (atau `#94A3B8` jika belum pernah login).
+
+---
+
 ## [1.7.2] - 2026-08-22
 
 ### Mobile Grabber Table Engine, 3-Tier Activity Presence, Single-Write Login, dan Modal Scroll-Lock
