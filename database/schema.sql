@@ -198,7 +198,7 @@ ON public.donations FOR SELECT TO anon, authenticated USING (payment_status = 'V
 
 DROP POLICY IF EXISTS "Allow full access for authenticated staff" ON public.donations;
 CREATE POLICY "Allow full access for authenticated staff" 
-ON public.donations FOR ALL TO authenticated USING (true) WITH CHECK (true);
+ON public.donations FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
 -- B. jadwal_petugas
 ALTER TABLE public.jadwal_petugas ENABLE ROW LEVEL SECURITY;
@@ -208,7 +208,7 @@ ON public.jadwal_petugas FOR SELECT TO anon, authenticated USING (is_active = TR
 
 DROP POLICY IF EXISTS "Allow full access jadwal for authenticated staff" ON public.jadwal_petugas;
 CREATE POLICY "Allow full access jadwal for authenticated staff" 
-ON public.jadwal_petugas FOR ALL TO authenticated USING (true) WITH CHECK (true);
+ON public.jadwal_petugas FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
 -- C. artikel_berita
 ALTER TABLE public.artikel_berita ENABLE ROW LEVEL SECURITY;
@@ -218,33 +218,27 @@ ON public.artikel_berita FOR SELECT TO anon, authenticated USING (is_published =
 
 DROP POLICY IF EXISTS "Allow full access articles for authenticated staff" ON public.artikel_berita;
 CREATE POLICY "Allow full access articles for authenticated staff" 
-ON public.artikel_berita FOR ALL TO authenticated USING (true) WITH CHECK (true);
+ON public.artikel_berita FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
 -- D. team_tasks
 ALTER TABLE public.team_tasks ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Allow public read team tasks for roadmap" ON public.team_tasks;
-CREATE POLICY "Allow public read team tasks for roadmap" 
-ON public.team_tasks FOR SELECT TO anon, authenticated USING (true);
-
 DROP POLICY IF EXISTS "Allow full access tasks for authenticated staff" ON public.team_tasks;
-CREATE POLICY "Allow full access tasks for authenticated staff" 
-ON public.team_tasks FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "team_tasks_full_policy" 
+ON public.team_tasks FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
 -- E. system_health_logs
 ALTER TABLE public.system_health_logs ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Allow public read system health" ON public.system_health_logs;
-CREATE POLICY "Allow public read system health" 
-ON public.system_health_logs FOR SELECT TO anon, authenticated USING (true);
-
 DROP POLICY IF EXISTS "Allow insert system health logs" ON public.system_health_logs;
-CREATE POLICY "Allow insert system health logs" 
-ON public.system_health_logs FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "system_health_logs_full_policy" 
+ON public.system_health_logs FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
 -- F. admin_users
 ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Allow read admin profiles for authenticated" ON public.admin_users;
 CREATE POLICY "Allow read admin profiles for authenticated" 
-ON public.admin_users FOR SELECT TO authenticated USING (true);
+ON public.admin_users FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
 -- G. media_checklists
 ALTER TABLE public.media_checklists ENABLE ROW LEVEL SECURITY;
@@ -255,40 +249,25 @@ ON public.media_checklists FOR ALL TO anon, authenticated, service_role USING (t
 -- H. feedback_complaints
 ALTER TABLE public.feedback_complaints ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Allow public anonymous insert feedback" ON public.feedback_complaints;
-CREATE POLICY "Allow public anonymous insert feedback" 
-ON public.feedback_complaints FOR INSERT TO anon, authenticated WITH CHECK (true);
-
 DROP POLICY IF EXISTS "Allow full access feedback for authenticated staff" ON public.feedback_complaints;
-CREATE POLICY "Allow full access feedback for authenticated staff" 
-ON public.feedback_complaints FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "feedback_complaints_full_policy" 
+ON public.feedback_complaints FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
 -- I. task_activity_logs
 ALTER TABLE public.task_activity_logs ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Allow public read task activity logs" ON public.task_activity_logs;
-CREATE POLICY "Allow public read task activity logs" 
-ON public.task_activity_logs FOR SELECT TO anon, authenticated USING (true);
-
 DROP POLICY IF EXISTS "Allow insert task activity logs" ON public.task_activity_logs;
-CREATE POLICY "Allow insert task activity logs" 
-ON public.task_activity_logs FOR INSERT TO anon, authenticated WITH CHECK (true);
-
 DROP POLICY IF EXISTS "Allow full access task activity logs for authenticated" ON public.task_activity_logs;
-CREATE POLICY "Allow full access task activity logs for authenticated" 
-ON public.task_activity_logs FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "task_activity_logs_full_policy" 
+ON public.task_activity_logs FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
 -- J. task_chat_messages
 ALTER TABLE public.task_chat_messages ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Allow read task chat messages" ON public.task_chat_messages;
-CREATE POLICY "Allow read task chat messages" 
-ON public.task_chat_messages FOR SELECT TO anon, authenticated USING (true);
-
 DROP POLICY IF EXISTS "Allow insert task chat messages" ON public.task_chat_messages;
-CREATE POLICY "Allow insert task chat messages" 
-ON public.task_chat_messages FOR INSERT TO anon, authenticated WITH CHECK (true);
-
 DROP POLICY IF EXISTS "Allow full access task chat messages for authenticated" ON public.task_chat_messages;
-CREATE POLICY "Allow full access task chat messages for authenticated" 
-ON public.task_chat_messages FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "task_chat_messages_full_policy" 
+ON public.task_chat_messages FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
 -- 10. TABEL PENGAJUAN IZIN & CUTI PENGURUS DKM
 CREATE TABLE IF NOT EXISTS public.dkm_leave_requests (

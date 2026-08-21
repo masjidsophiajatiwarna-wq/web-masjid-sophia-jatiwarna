@@ -34,32 +34,38 @@ CREATE TABLE IF NOT EXISTS public.task_chat_messages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 4. AKTIFKAN ROW LEVEL SECURITY (RLS) ZERO-TRUST
+-- 4. AKTIFKAN ROW LEVEL SECURITY (RLS) & IZIN AKSES PORTAL ADMIN
 ALTER TABLE public.team_tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.task_activity_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.task_chat_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.donations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.feedback_complaints ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.artikel_berita ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.media_checklists ENABLE ROW LEVEL SECURITY;
 
--- Kebijakan Akses Pengurus (Authenticated Users)
 DO $$
 BEGIN
-    DROP POLICY IF EXISTS "Pengurus dapat mengelola tugas tim" ON public.team_tasks;
-    CREATE POLICY "Pengurus dapat mengelola tugas tim" ON public.team_tasks FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    -- Kebijakan Akses Penuh untuk Pengurus & Portal Web (anon, authenticated, service_role)
+    DROP POLICY IF EXISTS "team_tasks_full_policy" ON public.team_tasks;
+    CREATE POLICY "team_tasks_full_policy" ON public.team_tasks FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
-    DROP POLICY IF EXISTS "Pengurus dapat melihat dan menambah log aktivitas" ON public.task_activity_logs;
-    CREATE POLICY "Pengurus dapat melihat dan menambah log aktivitas" ON public.task_activity_logs FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS "task_activity_logs_full_policy" ON public.task_activity_logs;
+    CREATE POLICY "task_activity_logs_full_policy" ON public.task_activity_logs FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
-    DROP POLICY IF EXISTS "Pengurus dapat melihat dan mengirim chat koordinasi" ON public.task_chat_messages;
-    CREATE POLICY "Pengurus dapat melihat dan mengirim chat koordinasi" ON public.task_chat_messages FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS "task_chat_messages_full_policy" ON public.task_chat_messages;
+    CREATE POLICY "task_chat_messages_full_policy" ON public.task_chat_messages FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
-    -- Fallback kebijakan untuk anon (jika pengujian lokal tanpa auth token)
-    DROP POLICY IF EXISTS "Anon task select" ON public.team_tasks;
-    CREATE POLICY "Anon task select" ON public.team_tasks FOR ALL TO anon USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS "donations_full_policy" ON public.donations;
+    CREATE POLICY "donations_full_policy" ON public.donations FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
-    DROP POLICY IF EXISTS "Anon log select" ON public.task_activity_logs;
-    CREATE POLICY "Anon log select" ON public.task_activity_logs FOR ALL TO anon USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS "feedback_complaints_full_policy" ON public.feedback_complaints;
+    CREATE POLICY "feedback_complaints_full_policy" ON public.feedback_complaints FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 
-    DROP POLICY IF EXISTS "Anon chat select" ON public.task_chat_messages;
-    CREATE POLICY "Anon chat select" ON public.task_chat_messages FOR ALL TO anon USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS "artikel_berita_full_policy" ON public.artikel_berita;
+    CREATE POLICY "artikel_berita_full_policy" ON public.artikel_berita FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
+
+    DROP POLICY IF EXISTS "media_checklists_full_policy" ON public.media_checklists;
+    CREATE POLICY "media_checklists_full_policy" ON public.media_checklists FOR ALL TO anon, authenticated, service_role USING (true) WITH CHECK (true);
 END $$;
 
 -- 5. DAFTARKAN TABEL KE PUBLIKASI SUPABASE REALTIME WEBSOCKET (CDC)

@@ -2333,24 +2333,88 @@
         ];
 
         // ==========================================================================
+        // LOCAL STORAGE CACHE HELPERS (ZERO-LOSS OFFLINE/REFRESH PERSISTENCE)
+        // ==========================================================================
+        function persistLocalTasks(tasks) {
+            try {
+                if (Array.isArray(tasks)) {
+                    localStorage.setItem('masjid_sophia_local_tasks', JSON.stringify(tasks));
+                }
+            } catch (e) {}
+        }
+
+        function getLocalTasks() {
+            try {
+                const raw = localStorage.getItem('masjid_sophia_local_tasks');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        function persistLocalLogs(logs) {
+            try {
+                if (Array.isArray(logs)) {
+                    localStorage.setItem('masjid_sophia_local_logs', JSON.stringify(logs));
+                }
+            } catch (e) {}
+        }
+
+        function getLocalLogs() {
+            try {
+                const raw = localStorage.getItem('masjid_sophia_local_logs');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        function persistLocalChats(chats) {
+            try {
+                if (Array.isArray(chats)) {
+                    localStorage.setItem('masjid_sophia_local_chats', JSON.stringify(chats));
+                }
+            } catch (e) {}
+        }
+
+        function getLocalChats() {
+            try {
+                const raw = localStorage.getItem('masjid_sophia_local_chats');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        // ==========================================================================
         // DATA LOADER & REALTIME SETUP
         // ==========================================================================
         async function loadAllAdminData() {
-            if (!sbClient) {
-                // Fallback Mock Data
-                allTasksList = [...DEFAULT_SEED_TASKS];
-                taskActivityLogs = [...DEFAULT_SEED_LOGS];
-                taskChatMessages = [...DEFAULT_SEED_CHATS];
-                renderAllTaskViews();
-                return;
-            }
+            // 1. Instantly restore from Local Cache so UI never reverts on refresh
+            const localTasks = getLocalTasks();
+            const localLogs = getLocalLogs();
+            const localChats = getLocalChats();
+
+            allTasksList = localTasks || [...DEFAULT_SEED_TASKS];
+            taskActivityLogs = localLogs || [...DEFAULT_SEED_LOGS];
+            taskChatMessages = localChats || [...DEFAULT_SEED_CHATS];
+
+            renderAllTaskViews();
+
+            if (!sbClient) return;
 
             try {
                 // 1. Fetch Donations
-                const { data: donations } = await sbClient.from('donations').select('*').order('created_at', { ascending: false });
-                if (donations) renderDonations(donations);
+                const { data: donations, error: donErr } = await sbClient.from('donations').select('*').order('created_at', { ascending: false });
+                if (!donErr && donations) renderDonations(donations);
 
-                // 2. Fetch Tasks
+                // 2. Fetch Tasks from Supabase Database
                 const { data: tasks, error: taskErr } = await sbClient.from('team_tasks').select('*').order('created_at', { ascending: false });
                 if (!taskErr && tasks && tasks.length > 0) {
                     allTasksList = tasks.map(t => ({
@@ -2359,37 +2423,33 @@
                         progress_pct: t.progress_pct !== undefined && t.progress_pct !== null ? t.progress_pct : (t.status === 'COMPLETED' ? 100 : (t.status === 'IN_PROGRESS' ? 50 : 0)),
                         start_date: t.start_date || (t.created_at ? t.created_at.split('T')[0] : new Date().toISOString().split('T')[0])
                     }));
-                } else {
-                    allTasksList = [...DEFAULT_SEED_TASKS];
-                    // Auto-seed to Supabase if database table is empty
-                    if (!taskErr && (!tasks || tasks.length === 0)) {
-                        sbClient.from('team_tasks').upsert(DEFAULT_SEED_TASKS).catch(e => console.debug('Seeding info:', e));
-                    }
+                    persistLocalTasks(allTasksList);
+                } else if (!taskErr && (!tasks || tasks.length === 0)) {
+                    // Seed database if empty
+                    sbClient.from('team_tasks').upsert(allTasksList).catch(e => console.debug('Seeding notice:', e));
                 }
 
                 // 3. Fetch Task Activity Logs
-                const { data: logs } = await sbClient.from('task_activity_logs').select('*').order('created_at', { ascending: false }).limit(50);
-                if (logs && logs.length > 0) {
+                const { data: logs, error: logErr } = await sbClient.from('task_activity_logs').select('*').order('created_at', { ascending: false }).limit(50);
+                if (!logErr && logs && logs.length > 0) {
                     taskActivityLogs = logs;
-                } else {
-                    taskActivityLogs = [...DEFAULT_SEED_LOGS];
+                    persistLocalLogs(taskActivityLogs);
                 }
 
                 // 4. Fetch Chat Messages
-                const { data: chats } = await sbClient.from('task_chat_messages').select('*').order('created_at', { ascending: true }).limit(100);
-                if (chats && chats.length > 0) {
+                const { data: chats, error: chatErr } = await sbClient.from('task_chat_messages').select('*').order('created_at', { ascending: true }).limit(100);
+                if (!chatErr && chats && chats.length > 0) {
                     taskChatMessages = chats;
-                } else {
-                    taskChatMessages = [...DEFAULT_SEED_CHATS];
+                    persistLocalChats(taskChatMessages);
                 }
 
                 // 5. Fetch Feedback
-                const { data: feedback } = await sbClient.from('feedback_complaints').select('*').order('created_at', { ascending: false });
-                if (feedback) renderFeedback(feedback);
+                const { data: feedback, error: fbErr } = await sbClient.from('feedback_complaints').select('*').order('created_at', { ascending: false });
+                if (!fbErr && feedback) renderFeedback(feedback);
 
                 // 6. Fetch Articles
-                const { data: articles } = await sbClient.from('artikel_berita').select('*').order('created_at', { ascending: false });
-                if (articles) renderArticles(articles);
+                const { data: articles, error: artErr } = await sbClient.from('artikel_berita').select('*').order('created_at', { ascending: false });
+                if (!artErr && articles) renderArticles(articles);
 
                 // 7. System Health
                 fetchSystemHealth();
@@ -2397,14 +2457,11 @@
                 // Setup Realtime Subscriptions (Unified Hub)
                 setupRealtimeSubscriptions();
 
-                // Render Task Views
+                // Final render
                 renderAllTaskViews();
 
             } catch (err) {
-                console.warn("Load data fallback:", err);
-                if (allTasksList.length === 0) allTasksList = [...DEFAULT_SEED_TASKS];
-                if (taskActivityLogs.length === 0) taskActivityLogs = [...DEFAULT_SEED_LOGS];
-                if (taskChatMessages.length === 0) taskChatMessages = [...DEFAULT_SEED_CHATS];
+                console.warn("Load data network notice:", err);
                 renderAllTaskViews();
             }
         }
@@ -2561,6 +2618,9 @@
         }
 
         function renderAllTaskViews() {
+            // Persist to Local Storage Cache immediately
+            persistLocalTasks(allTasksList);
+
             // Update KPI Tasks Count
             const activeTasks = allTasksList.filter(t => !t.is_archived);
             const completedCount = activeTasks.filter(t => t.status === 'COMPLETED').length;
@@ -3401,6 +3461,7 @@
         }
 
         function renderTaskHistory() {
+            persistLocalLogs(taskActivityLogs);
             const container = document.getElementById('activity-feed-container');
             if (!container) return;
 
@@ -3434,6 +3495,7 @@
         }
 
         function renderTaskChat() {
+            persistLocalChats(taskChatMessages);
             const stream = document.getElementById('chat-messages-stream');
             if (!stream) return;
 
