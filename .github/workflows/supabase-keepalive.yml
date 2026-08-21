@@ -1,0 +1,27 @@
+name: Supabase 24/7 Keep-Alive & Health Ping
+
+on:
+  schedule:
+    # Berjalan otomatis setiap 3 hari pada pukul 00:00 UTC
+    - cron: '0 0 */3 * *'
+  workflow_dispatch: # Memungkinkan trigger manual dari tab Actions GitHub
+
+jobs:
+  ping-supabase:
+    name: Ping Supabase REST Endpoint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Perform Health Ping to Supabase
+        run: |
+          echo "Sending Keep-Alive request to Supabase PostgreSQL instance..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            "https://fcwajbemkbhkogwtqcmx.supabase.co/rest/v1/media_checklists?select=id&limit=1")
+          
+          echo "Supabase Response Code: $HTTP_STATUS"
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 206 ]; then
+            echo "SUCCESS: Supabase database is active and healthy. Auto-pause prevented."
+          else
+            echo "WARNING: Unexpected HTTP status $HTTP_STATUS. Please verify credentials."
+          fi

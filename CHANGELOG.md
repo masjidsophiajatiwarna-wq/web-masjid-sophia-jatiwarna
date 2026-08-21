@@ -6,11 +6,21 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 
 ---
 
-## [1.1.0] - 2026-08-21
+## [1.2.0] - 2026-08-21
 
-### Web Portal Publik Resmi (Benchmark Istiqlal) & Pemisahan Portal Admin (Fase 3 Frontend)
+### Portal Admin DKM, Otomasi 24/7 Keep-Alive & SEO Suite (Fase 4 Admin Core)
 
 #### Penambahan (Added)
+- `[FEAT]` Portal Pengurus DKM & Employee Dashboard (`admin.html`) terisolasi di `admin.masjidsophiajatiwarna.com` dengan gerbang autentikasi aman Supabase Auth.
+- `[FEAT]` Panel KPI Real-Time: Monitoring volume Sedekah Makan Dzuhur (70+ porsi), agregasi kas donasi masuk, persentase efisiensi tugas (*Task Health Rate*), dan notifikasi aspirasi jamaah.
+- `[FEAT]` Task Management DKM: Papan penugasan lintas divisi (Sosial, Sarpras, Media, Santri, Keuangan) dengan penetapan PIC, prioritas, dan tenggat waktu.
+- `[FEAT]` Kotak Masuk Pengaduan Jamaah: Panel pemantauan laporan fasilitas rusak dan kotak saran dari tabel `feedback_complaints`.
+- `[CI/CD]` Otomasi 24/7 GitHub Actions `.github/workflows/supabase-keepalive.yml` untuk mencegah jeda otomatis pada database Supabase free tier.
+- `[SEO]` Pembuatan berkas `robots.txt` dan `sitemap.xml` untuk pengindeksan Google Search Console.
+
+---
+
+## [1.1.0] - 2026-08-21
 - `[FEAT]` Halaman muka publik lengkap (`index.html`) mengadopsi standar arsitektur web masjid besar (Benchmark: Masjid Istiqlal & Salman ITB) bertema terang resmi (*Pure White*, *Soft Cream Sand*, *Charcoal*, dan *Sophia Gold*).
 - `[FEAT]` Modul hisab jadwal shalat presisi lokal Jatiwarna (Kemenag RI) dengan *Live Countdown Timer* detik demi detik, penanda visual shalat aktif (*Active Prayer Card Highlight*), dan waktu astronomis Imsak, Subuh, Terbit, Dzuhur, Ashar, Maghrib, Isya.
 - `[FEAT]` Modul daftar petugas ibadah dan kajian harian/mingguan (Imam Rawatib, Muadzin, Khatib Shalat Jumat, dan Penceramah Kajian Tematik).
