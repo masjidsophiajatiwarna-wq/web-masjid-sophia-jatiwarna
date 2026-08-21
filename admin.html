@@ -7684,7 +7684,16 @@
                 let totalRecords = 0;
                 let registeredUsers = (window.adminUsersList && window.adminUsersList.length > 0) ? window.adminUsersList.length : 11;
 
-                // Query exact count of records from all active tables via Supabase
+                // 1. Try fetching live aggregated metrics from serverless backend /api/cloud-usage
+                let liveData = null;
+                try {
+                    const res = await fetch('/api/cloud-usage');
+                    if (res.ok) {
+                        liveData = await res.json();
+                    }
+                } catch (e) {}
+
+                // 2. Query exact count of records from all active tables via Supabase Client
                 if (typeof supabaseClient !== 'undefined' && supabaseClient) {
                     const tables = ['team_tasks', 'task_activity_logs', 'task_chat_messages', 'admin_users', 'donations', 'artikel_berita', 'feedback_complaints', 'media_checklists'];
                     const promises = tables.map(tbl => supabaseClient.from(tbl).select('id', { count: 'exact', head: true }));
@@ -7694,6 +7703,11 @@
                             totalRecords += res.value.count;
                         }
                     });
+                }
+
+                // If backend provided count and client got less (e.g. restricted table policies), use backend total
+                if (liveData && liveData.summary && liveData.summary.total_db_records > totalRecords) {
+                    totalRecords = liveData.summary.total_db_records;
                 }
 
                 // Fallback realistic baseline if database returns minimal/restricted rows
@@ -7721,11 +7735,6 @@
                 if (elMetricDbPct) elMetricDbPct.textContent = `${dbSizePct}%`;
                 if (elBarDbSize) elBarDbSize.style.width = `${Math.max(1, parseFloat(dbSizePct))}%`;
                 if (elMetricAuthUsers) elMetricAuthUsers.textContent = registeredUsers;
-
-                // Ping /api/health
-                try {
-                    await fetch('/api/health');
-                } catch (err) {}
 
             } catch (e) {
                 console.error('[Cloud Monitor Refresh Error]', e);

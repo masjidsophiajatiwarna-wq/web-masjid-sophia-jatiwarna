@@ -4,6 +4,19 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.11] - 2026-08-22
+
+### Serverless Realtime Metrics Aggregator `/api/cloud-usage` & Pipeline Monitoring 7 Pilar
+
+#### Penambahan & Arsitektur (Added & Architecture)
+- `[SERVERLESS_METRICS_PIPELINE]` Mengimplementasikan Vercel Serverless Function `/api/cloud-usage` sebagai backend proxy pengagregasi data real-time:
+  - **Live Supabase Record Counter:** Menguji dan menghitung baris data aktual secara paralel dari tabel-tabel operasional (`team_tasks`, `task_activity_logs`, `task_chat_messages`, `admin_users`, `donations`, dll) via header `Prefer: count=exact`.
+  - **Resend Live Domain Checker:** Menghubungkan pemeriksaan status verifikasi domain email transaksi secara langsung via API Resend jika token rahasia terkonfigurasi pada Environment Variables Vercel.
+  - **GitHub Actions Live Status:** Memeriksa status pipeline CI/CD terkini secara langsung dari REST API publik GitHub tanpa membocorkan kredensial.
+  - **Zero Frontend Secret Leak:** Seluruh token API manajemen diamankan di sisi serverless backend, menjaga keamanan data dari paparan *Inspect Element* di browser klien.
+
+---
+
 ## [1.7.10] - 2026-08-22
 
 ### Inisialisasi Direktori Akun pada Layar Login & Resolusi Dinamis Akun Baru
