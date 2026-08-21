@@ -4,6 +4,18 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.5] - 2026-08-22
+
+### Perbaikan Kendala RLS Infinite Recursion (500 Internal Server Error) & Optimasi PostgreSQL Policy
+
+#### Perbaikan & Penyempurnaan (Fixed & Improved)
+- `[RLS_RECURSION_FIX]` Mengatasi kendala error `500 (Internal Server Error)` pada permintaan `GET` dan `PATCH` tabel `public.admin_users`:
+  - Mengidentifikasi bahwa subquery rekursif ke tabel yang sama `(SELECT ... FROM public.admin_users)` di dalam klausul `USING` memicu *infinite recursion* pada mesin PostgreSQL.
+  - Menyediakan formulasi kebijakan RLS non-rekursif berbasis pencocokan langsung klaim JWT `(auth.jwt() ->> 'email')` yang bersih, aman, dan berkinerja tinggi (*zero 500 error*).
+- `[PROMISE_REJECTION_SAFETY]` Menambahkan penanganan proteksi `.catch()` pada pembaruan timestamp `last_login` di sisi klien untuk mencegah *unhandled rejection* saat sinkronisasi database.
+
+---
+
 ## [1.7.4] - 2026-08-22
 
 ### Persistensi Hibrida Akun Master Pengurus (Local Master + Supabase Sync) & Penanganan RLS 403

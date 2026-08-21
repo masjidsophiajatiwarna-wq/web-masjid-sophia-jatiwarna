@@ -3607,7 +3607,9 @@
                 if (sbClient) {
                     sbClient.from('admin_users').update({ 
                         last_login: nowISO 
-                    }).eq('email', userEmailClean).then(() => {});
+                    }).eq('email', userEmailClean).then(() => {}).catch(err => {
+                        console.warn("Update last_login DB notice:", err);
+                    });
                 }
 
                 if (realtimeHub) {
