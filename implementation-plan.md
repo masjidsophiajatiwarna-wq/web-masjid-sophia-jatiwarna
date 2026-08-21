@@ -50,21 +50,21 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ## 2. Peta Fase Implementasi Teknis
 
 ```text
-[FASE 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid] (50% - Dikelola Tim Media)
+[FASE 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid] (STATUS: 70% SELESAI)
        |
 [FASE 1: Inisialisasi Infrastruktur, Berkas Tata Kelola & Monitoring] (STATUS: SELESAI 100%)
        |
-[FASE 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS] (STATUS: SELESAI 90%)
+[FASE 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS] (STATUS: SELESAI 100%)
        |
 [FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: 60% SELESAI)
        |
 [FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: 50% SELESAI)
        |
-[FASE 5: Pengujian Terpadu, Audit Keamanan & User Acceptance Testing]
+[FASE 5: Pengujian Terpadu, Audit Keamanan & User Acceptance Testing] (STATUS: MENUNGGU FASE 3 & 4)
        |
-[FASE 6: Finalisasi Produksi, SEO, Email Routing, DNS Cutover & Go-Live]
+[FASE 6: Finalisasi Produksi, SEO, Email Routing, DNS Cutover & Go-Live] (STATUS: 40% SELESAI)
        |
-[FASE 7: Pipeline Aplikasi Mobile Android (.apk) & PWA Khusus Pengurus DKM]
+[FASE 7: Pipeline Aplikasi Mobile Android (.apk) & PWA Khusus Pengurus DKM] (STATUS: RENCANA LANJUTAN)
 ```
 
 ---
@@ -72,6 +72,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ## 3. Rincian Pekerjaan Tiap Fase
 
 ### Fase 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid
+- **Status:** 70% Selesai
 - **Penanganan:** Murni oleh Tim Media Masjid melalui portal checklist `media-checklist.html`.
 - **Daftar Tugas:**
   - [x] Audit aset logo resmi format vektor SVG (`logo_masjid_black.svg`, `logo_masjid_white.svg`) dan PNG transparan.
@@ -93,7 +94,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ---
 
 ### Fase 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS
-- **Status:** 90% Selesai
+- **Status:** Selesai (100%)
 - **Daftar Tugas:**
   - [x] **Master Skema Inti PostgreSQL (`database/schema.sql`):** `donations`, `jadwal_petugas`, `artikel_berita`, `team_tasks`, `system_health_logs`, `admin_users`, `feedback_complaints`, `media_checklists`.
   - [x] **Zero-Trust RLS Policies & Serverless Functions:** `/api/health.js`, `/api/donasi.js`, `/api/send-receipt.js`, `/api/pengaduan.js`.
@@ -174,6 +175,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ---
 
 ### Fase 5: Pengujian Terpadu, Audit Keamanan & UAT
+- **Status:** Menunggu Fase 3 & 4
 - **Daftar Tugas:**
   - [ ] **Unit & Accuracy Testing:** Hisab shalat lokal vs kalender resmi Kemenag Kota Bekasi.
   - [ ] **Form & Security Testing:** Validasi sanitasi form, pencegahan SQLi/XSS, dan audit Zero-Trust RLS Supabase.
@@ -194,6 +196,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ---
 
 ### Fase 7: Pipeline Aplikasi Mobile Android (.apk) & PWA Khusus Pengurus DKM (BARU)
+- **Status:** Rencana Lanjutan
 - **Tujuan:** Menyediakan aplikasi mobile mandiri yang ringan, cepat dibuka, dan siap pakai di smartphone Android seluruh jajaran pengurus DKM.
 - **Strategi Penerapan 3 Tingkat:**
   - [ ] **Tingkat 1 - PWA (Progressive Web App):**
