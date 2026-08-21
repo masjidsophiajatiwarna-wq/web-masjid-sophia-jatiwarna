@@ -4,6 +4,23 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.7.0] - 2026-08-22
+
+### Modul User Accounts & Access Control, Dynamic RBAC Permissions, dan Profil Mandiri Pengurus
+
+#### Penambahan & Pembaruan (Added & Updated)
+- `[ACCOUNT_CONTROL]` Menambahkan modul **User Accounts & Access Control** eksklusif untuk **Super Admin & Ketua DKM**:
+  - **Tabel Pengurus Realtime (Supabase CDC WebSocket):** Menampilkan daftar akun aktif, email, role, divisi, dan riwayat status login terakhir (*last active*) tanpa perlu refresh halaman.
+  - **Modal Override Akun (Super Admin / DKM):** Kemampuan reset kata sandi, ganti email/nama, dan fitur **Paksa Akhiri Sesi (*Force End Session / Logout*)** yang membatalkan sesi aktif pengurus seketika.
+  - **Matriks Hak Akses Dinamis (`permissions JSONB`):** Pengaturan izin akses akun per modul (Baca / Tulis / Tidak Ada Akses) yang merender navigasi sidebar secara dinamis dan fleksibel (tidak lagi hardcoded kaku di kode HTML).
+- `[SELF_SERVICE_PROFILE]` Menambahkan **Modal Profil & Keamanan Mandiri** untuk seluruh PJ Divisi:
+  - **Tab General Profile:** Mengubah Nama Lengkap, No WhatsApp, dan **Upload Foto Profil (Avatar)** dari galeri HP/Laptop yang otomatis dikompresi dan disimpan ke **ImageKit.io CDN**.
+  - **Tab Security & Login:** Ganti kata sandi dan ganti email dengan aturan keamanan ketat: **Sesi lama otomatis diakhiri dan wajib login ulang**.
+- `[DATABASE_MIGRATION]` Penambahan kolom `avatar_url`, `permissions JSONB`, `session_version INT`, dan fungsi `force_end_user_session` pada tabel `public.admin_users` di berkas `database/schema.sql` dan `database/migration_account_control.sql`.
+- `[ROADMAP_SYNC]` Sinkronisasi Master Implementation Plan v5.1 di `implementation-plan.md` dan `progress-implementation-plan.html` pada subdomain `progdev.masjidsophiajatiwarna.com`.
+
+---
+
 ## [1.6.9] - 2026-08-22
 
 ### Perbaikan ReferenceError escapeHtml pada Rendering Kalender Bulanan

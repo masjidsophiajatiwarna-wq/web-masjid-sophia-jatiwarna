@@ -1832,6 +1832,41 @@
                         </div>
                     </div>
 
+                    <!-- Sub-group: Manajemen Akun & Hak Akses Pengurus (Khusus DKM & Super Admin) -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #EEF2FF; border-left: 3px solid #6366F1; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #3730A3;">
+                        <i class="fa-solid fa-users-gear" style="color: #6366F1;"></i> Manajemen Akun & Hak Akses Pengurus (Khusus DKM & Super Admin)
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Tabel Akun Pengurus Realtime & Status Login Terakhir
+                                <span class="task-badge-pill">Account Control</span>
+                            </div>
+                            <div class="task-desc">Daftar akun DKM dengan status login terakhir, peran, divisi, dan pembaruan live tanpa refresh (Supabase Realtime CDC).</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pengaturan Hak Akses Dinamis per Modul & Paksa Akhiri Sesi
+                                <span class="task-badge-pill">Override & RBAC</span>
+                            </div>
+                            <div class="task-desc">Popup override akun bagi Super Admin/DKM untuk mengatur izin modul (Baca/Tulis/Tidak Ada Akses), reset kata sandi, dan paksa logout (end session).</div>
+                        </div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Modal Profil Mandiri (Upload Foto ImageKit & Keamanan Akun)
+                                <span class="task-badge-pill">Profil Mandiri</span>
+                            </div>
+                            <div class="task-desc">Setiap akun PJ bisa mengunggah foto profil dari perangkat lokal ke ImageKit, ganti kata sandi & email dengan auto-logout wajib.</div>
+                        </div>
+                    </div>
+
                     <!-- Sub-group: Super Admin & Ekspor Laporan -->
                     <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-bg-sand); border-left: 3px solid var(--color-charcoal-light); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
                         <i class="fa-solid fa-gears" style="color: var(--color-charcoal-light);"></i> Pengawasan Sistem & Cetak Dokumen

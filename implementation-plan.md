@@ -148,6 +148,14 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - **Formulir Pengajuan Izin Mandiri (Seluruh Pengurus):** Formulir bagi seluruh PJ divisi untuk mengajukan izin (Izin Sakit + bukti surat dokter, Keperluan Pribadi, Tugas Luar, Cuti Operasional) dengan tanggal mulai, tanggal selesai, alasan, dan status transparan.
     - **Alur Persetujuan Terpusat (Approval Flow):** Panel khusus bagi **Ketua DKM & Super Admin** untuk menyetujui (*Approve*) atau menolak (*Reject*) permohonan izin dengan catatan.
     - **Cron Otomasi & Keep-Alive:** Rekapitulasi absensi harian dan notifikasi pengingat pengajuan izin pending ke pimpinan DKM.
+  - [ ] **Modul User Accounts & Access Control (Khusus Super Admin & Ketua DKM - Benchmark SIABE-PORTO):**
+    - **Tabel Seluruh Akun Pengurus Realtime:** Daftar akun DKM dengan status login terakhir (*last active*), role, divisi, dan status aktif tanpa perlu refresh halaman.
+    - **Modal Override Akun (Super Admin / DKM):** Reset kata sandi, ubah email/nama, dan tombol **Paksa Akhiri Sesi (*Force End Session / Logout*)**.
+    - **Matriks Izin Dinamis per Modul (`permissions JSONB`):** Pengaturan hak akses tiap akun ke modul-modul sistem (Baca / Tulis / Tidak Ada Akses) yang merender sidebar secara dinamis dan fleksibel (non-hardcoded).
+  - [ ] **Modal Profil & Keamanan Mandiri Pengurus (Self-Service Profile & Security):**
+    - **Akses Mandiri PJ Divisi:** Dibuka lewat klik kartu profil/avatar di pojok kiri bawah sidebar.
+    - **Tab 1 - General Profile:** Ubah Nama, No WhatsApp, dan **Upload Foto Profil (Avatar)** dari perangkat lokal ke **ImageKit.io CDN**.
+    - **Tab 2 - Security & Login:** Ganti kata sandi dan ganti email dengan **Strict Security Rule: Otomatis Logout & Wajib Login Ulang**.
   - [ ] **Pemantau Kesehatan Arsitektur 7 Pilar Cloud (Khusus Super Admin):**
     - Dashboard kuota free-tier 7 pilar, kalkulasi dinamis `{ count: 'exact', head: true }`, KPI Row biaya IDR 0, panduan preventif (>80%).
   - [ ] **Ekspor Laporan Kinerja PDF Mandiri per Anggota Tim DKM:**
