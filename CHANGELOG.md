@@ -4,6 +4,21 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.8.0] - 2026-08-23
+
+### Peluncuran Modul Pengajuan Izin & Cuti Pengurus (Approval DKM / Super Admin) di Branch Dev
+
+#### Penambahan & Arsitektur (Added & Architecture)
+- `[LEAVE_REQUESTS_MODULE]` Membangun modul lengkap **Pengajuan Izin & Cuti Pengurus DKM** (`#tab-leave_requests` & `dkm_leave_requests`) dengan pemisahan peran (*RBAC Matrix*) yang presisi:
+  - **Formulir Pengajuan Mandiri (`#modal-apply-leave`):** Memungkinkan seluruh PJ divisi dan staf DKM mengajukan izin sakit (disertai unggah bukti surat dokter/resep auto-WebP ke ImageKit CDN), izin keperluan pribadi, tugas luar masjid, maupun cuti operasional dengan kalkulator hari otomatis.
+  - **Panel Persetujuan Terpusat (`#modal-review-leave`):** Panel khusus bagi **Ketua DKM & Super Admin** untuk menyetujui (*Approve*) atau menolak (*Reject*) izin dengan catatan evaluasi dan penunjukan petugas pengganti piket.
+  - **Papan Ketersediaan Tim & Koordinasi Piket:** Widget status pengurus yang sedang izin hari ini untuk menjaga koordinasi operasional 24 jam masjid, dengan perlindungan privasi (alasan detail dan surat dokter terlindungi hanya untuk pimpinan DKM).
+  - **Popup Notifikasi Penugasan Pengganti Piket (`#modal-substitute-alert`):** Modal informatif otomatis saat login (1x per hari) bagi pengurus yang ditunjuk menggantikan jadwal piket.
+  - **Database Postgres & Realtime CDC:** Migrasi `database/migration_leave_requests.sql` dengan Zero-Trust RLS Policies, indexing performa, dan sinkronisasi live multi-perangkat via WebSocket channel `dkm_leave_requests` / `LEAVE_SYNC`.
+  - **Ekspor CSV:** Unduh rekapitulasi data perizinan pengurus berstandar UTF-8 BOM untuk kebutuhan arsip dan audit administrasi DKM.
+
+---
+
 ## [1.7.14] - 2026-08-22
 
 ### Penyederhanaan Aksi Tabel & Pemindahan Tombol Hapus Akun ke Dalam Modal Edit

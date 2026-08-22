@@ -161,10 +161,11 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - **PJ Keuangan:** Buku Kas Masuk, Buku Kas Keluar, Alur Form Pengajuan Anggaran (*Budget Request*) & Klaim Nota Bon (*Expense Claim*) bagi seluruh 7 PJ divisi dengan persetujuan Ketua DKM & PJ Keuangan, Laporan Arus Kas, dan Neraca Kas Berkala (CSV & PDF).
     - **PJ Keamanan:** Log Piket Keamanan 24 Jam, Patroli Area, dan Input Laporan Kejadian dengan unggah foto/video ke ImageKit CDN (auto WebP/WebM).
     - **PJ Kebersihan:** Checklist Sanitasi Harian (Wudhu, Toilet, Ruang Shalat, Halaman) dan Input Laporan Kebersihan dengan unggah foto/video ke ImageKit CDN (auto WebP/WebM).
-  - [ ] **Modul Pengajuan Izin & Cuti Pengurus DKM (Leave & Absence Management):**
-    - **Formulir Pengajuan Izin Mandiri (Seluruh Pengurus):** Formulir bagi seluruh PJ divisi untuk mengajukan izin (Izin Sakit + bukti surat dokter, Keperluan Pribadi, Tugas Luar, Cuti Operasional) dengan tanggal mulai, tanggal selesai, alasan, dan status transparan.
-    - **Alur Persetujuan Terpusat (Approval Flow):** Panel khusus bagi **Ketua DKM & Super Admin** untuk menyetujui (*Approve*) atau menolak (*Reject*) permohonan izin dengan catatan.
-    - **Cron Otomasi & Keep-Alive:** Rekapitulasi absensi harian dan notifikasi pengingat pengajuan izin pending ke pimpinan DKM.
+  - [x] **Modul Pengajuan Izin & Cuti Pengurus DKM (Leave & Absence Management Suite - SELESAI):**
+    - **Formulir Pengajuan Izin Mandiri (Seluruh Pengurus):** Formulir bagi seluruh PJ divisi untuk mengajukan izin (Izin Sakit + bukti surat dokter auto-WebP, Keperluan Pribadi, Tugas Luar, Cuti Operasional) dengan tanggal mulai, tanggal selesai, alasan, dan status transparan.
+    - **Alur Persetujuan Terpusat (Approval Flow):** Panel khusus bagi **Ketua DKM & Super Admin** untuk menyetujui (*Approve*) atau menolak (*Reject*) permohonan izin dengan catatan evaluasi dan penunjukan petugas pengganti piket.
+    - **Papan Ketersediaan Tim & Popup Pengganti Piket:** Widget status pengurus izin hari ini untuk koordinasi tim (privasi terlindungi) serta notifikasi popup penugasan pengganti piket saat akun terkait login (1x per hari).
+    - **Database Postgres `dkm_leave_requests`:** Skema tabel lengkap, RLS Zero-Trust Policies, dan publikasi Supabase Realtime CDC (`database/migration_leave_requests.sql`).
   - [x] **Pemantau Kesehatan Arsitektur 7 Pilar Cloud (Khusus Super Admin - Benchmark SIABE-PORTO):**
     - Multi-Cloud Free-Tier Monitor: Dashboard pemantauan kuota 7 pilar (Supabase DB & Storage, Resend Email API, Vercel Edge & Hosting, ImageKit CDN 20GB, GitHub Actions CI/CD, Cloudflare DNS/Turnstile, Google Drive Workspace).
     - Kalkulasi dinamis total records database `{ count: 'exact', head: true }` dan estimasi ukuran DB Postgres MB.

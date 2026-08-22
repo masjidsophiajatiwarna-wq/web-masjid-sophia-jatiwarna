@@ -2566,6 +2566,183 @@
             }
         }
 
+        /* ========================================================================== */
+        /* MODUL PENGAJUAN IZIN & CUTI PENGURUS DKM STYLES                           */
+        /* ========================================================================== */
+        .leave-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .leave-stat-card {
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.15rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+
+        .leave-stat-card:hover {
+            border-color: var(--color-gold-primary);
+            transform: translateY(-2px);
+        }
+
+        .leave-stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .leave-stat-icon.total { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+        .leave-stat-icon.pending { background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A; }
+        .leave-stat-icon.approved { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+        .leave-stat-icon.today { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
+
+        .leave-stat-val {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            line-height: 1.1;
+        }
+
+        .leave-stat-label {
+            font-size: 0.75rem;
+            color: var(--color-charcoal-muted);
+            margin-top: 0.2rem;
+            font-weight: 600;
+        }
+
+        /* Widget Ketersediaan Hari Ini (Koordinasi Piket) */
+        .leave-today-container {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border: 1px solid #FDE68A;
+            border-left: 4px solid #D97706;
+            border-radius: var(--radius-md);
+            padding: 1.15rem 1.35rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(217, 119, 6, 0.08);
+        }
+
+        .leave-today-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .leave-today-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #92400E;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .leave-today-badge {
+            background: #D97706;
+            color: #FFFFFF;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.15rem 0.55rem;
+            border-radius: 9999px;
+        }
+
+        .leave-today-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .leave-today-card {
+            background: #FFFFFF;
+            border: 1px solid #FDE68A;
+            border-radius: var(--radius-sm);
+            padding: 0.6rem 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            font-size: 0.8rem;
+        }
+
+        .leave-today-empty {
+            font-size: 0.82rem;
+            color: #B45309;
+            font-style: italic;
+        }
+
+        /* Leave Type & Status Badges */
+        .badge-leave-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .badge-leave-sakit { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+        .badge-leave-pribadi { background: #EFF6FF; color: #2563EB; border: 1px solid #DBEAFE; }
+        .badge-leave-cuti { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+        .badge-leave-tugas { background: #F5F3FF; color: #7C3AED; border: 1px solid #DDD6FE; }
+        .badge-leave-lainnya { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+
+        .badge-leave-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.65rem;
+            border-radius: 9999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-status-pending { background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; }
+        .badge-status-approved { background: #ECFDF5; color: #065F46; border: 1px solid #6EE7B7; }
+        .badge-status-rejected { background: #FEF2F2; color: #991B1B; border: 1px solid #F87171; }
+        .badge-status-cancelled { background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1; }
+
+        .leave-doc-thumbnail {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .leave-doc-thumbnail:hover {
+            transform: scale(1.1);
+            border-color: var(--color-gold-primary);
+        }
+
+        @media (max-width: 900px) {
+            .leave-stat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .leave-stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* Mobile Responsive */
         @media (max-width: 900px) {
             .admin-sidebar {
@@ -2662,6 +2839,12 @@
                         <button class="nav-item-btn" onclick="switchTab('chat', this)">
                             <i class="fa-solid fa-comments"></i> <span>Chat Koordinasi DKM</span>
                             <span id="badge-sidebar-chat-mentions" class="mention-count-badge" style="display: none; margin-left: auto;">0</span>
+                        </button>
+                    </li>
+                    <li id="sidebar-nav-item-leave">
+                        <button class="nav-item-btn" id="btn-nav-leave-requests" onclick="switchTab('leave_requests', this)">
+                            <i class="fa-solid fa-calendar-day"></i> <span>Izin &amp; Cuti Pengurus</span>
+                            <span id="badge-sidebar-leave-pending" class="mention-count-badge" style="display: none; margin-left: auto;">0</span>
                         </button>
                     </li>
                     <li>
@@ -3793,6 +3976,128 @@
                 </div>
             </div>
 
+            <!-- Tab: Pengajuan Izin & Cuti Pengurus DKM -->
+            <div id="tab-leave_requests" class="tab-content-panel" style="display: none;">
+                <!-- Stat Cards Grid -->
+                <div class="leave-stat-grid">
+                    <div class="leave-stat-card">
+                        <div class="leave-stat-icon total">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                        <div>
+                            <div class="leave-stat-val" id="stat-leave-total">0</div>
+                            <div class="leave-stat-label">Total Pengajuan</div>
+                        </div>
+                    </div>
+                    <div class="leave-stat-card">
+                        <div class="leave-stat-icon pending">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <div>
+                            <div class="leave-stat-val" id="stat-leave-pending" style="color: #D97706;">0</div>
+                            <div class="leave-stat-label">Menunggu Persetujuan</div>
+                        </div>
+                    </div>
+                    <div class="leave-stat-card">
+                        <div class="leave-stat-icon approved">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div>
+                            <div class="leave-stat-val" id="stat-leave-approved" style="color: #059669;">0</div>
+                            <div class="leave-stat-label">Izin Disetujui</div>
+                        </div>
+                    </div>
+                    <div class="leave-stat-card">
+                        <div class="leave-stat-icon today">
+                            <i class="fa-solid fa-user-clock"></i>
+                        </div>
+                        <div>
+                            <div class="leave-stat-val" id="stat-leave-today" style="color: #2563EB;">0</div>
+                            <div class="leave-stat-label">Sedang Izin Hari Ini</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Widget Ketersediaan & Pengurus Sedang Izin Hari Ini (Koordinasi Piket Bersama) -->
+                <div class="leave-today-container" id="leave-today-container">
+                    <div class="leave-today-header">
+                        <div class="leave-today-title">
+                            <i class="fa-solid fa-clipboard-user"></i> Status Kehadiran &amp; Pengurus Izin Hari Ini (Koordinasi Piket)
+                        </div>
+                        <span class="leave-today-badge" id="leave-today-count-badge">0 Pengurus</span>
+                    </div>
+                    <div class="leave-today-list" id="leave-today-list">
+                        <div class="leave-today-empty">Alhamdulillah, seluruh pengurus DKM tercatat bertugas aktif dan tidak ada yang berhalangan/izin hari ini.</div>
+                    </div>
+                </div>
+
+                <!-- Main Section Container -->
+                <div class="section-container">
+                    <!-- Toolbar & Filters -->
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem;">
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem; flex: 1; min-width: 280px;">
+                            <button class="btn-auth-primary" onclick="openApplyLeaveModal()" style="width: auto; padding: 0.6rem 1.15rem; font-size: 0.82rem;">
+                                <i class="fa-solid fa-plus"></i> Ajukan Izin / Cuti
+                            </button>
+                            <select id="leave-filter-status" class="form-input" style="width: auto; min-width: 170px; padding: 0.55rem 0.85rem; font-size: 0.8rem;" onchange="renderLeaveRequestsTable()">
+                                <option value="ALL">Semua Status Izin</option>
+                                <option value="PENDING">Menunggu Review (Pending)</option>
+                                <option value="APPROVED">Disetujui (Approved)</option>
+                                <option value="REJECTED">Ditolak (Rejected)</option>
+                                <option value="CANCELLED">Dibatalkan</option>
+                            </select>
+                            <select id="leave-filter-division" class="form-input" style="width: auto; min-width: 170px; padding: 0.55rem 0.85rem; font-size: 0.8rem;" onchange="renderLeaveRequestsTable()">
+                                <option value="ALL">Seluruh Divisi DKM</option>
+                                <option value="Media & Dakwah">Media &amp; Dakwah</option>
+                                <option value="Logistik & Sarpras">Logistik &amp; Sarpras</option>
+                                <option value="Santri Tahfidz">Santri Tahfidz</option>
+                                <option value="Layanan Musafir">Layanan Musafir</option>
+                                <option value="Peribadatan & Acara">Peribadatan &amp; Acara</option>
+                                <option value="Keuangan & Akuntansi">Keuangan &amp; Akuntansi</option>
+                                <option value="Keamanan & Ketertiban">Keamanan &amp; Ketertiban</option>
+                                <option value="Kebersihan & Sanitasi">Kebersihan &amp; Sanitasi</option>
+                                <option value="Pimpinan DKM">Pimpinan DKM</option>
+                                <option value="IT & Ekosistem Digital">IT &amp; Ekosistem Digital</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 0.65rem;">
+                            <div style="position: relative; width: 220px;">
+                                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: var(--color-charcoal-muted);"></i>
+                                <input type="text" id="leave-search-input" class="form-input" placeholder="Cari nama / keperluan..." style="padding-left: 2rem; font-size: 0.8rem;" oninput="renderLeaveRequestsTable()">
+                            </div>
+                            <button class="btn-action-gold" onclick="exportLeaveRequestsCsv()" title="Unduh Rekap Izin & Cuti CSV">
+                                <i class="fa-solid fa-file-csv"></i> Unduh CSV
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Leave Requests Data Table -->
+                    <div class="table-responsive">
+                        <table class="admin-table" id="leave-requests-table">
+                            <thead>
+                                <tr>
+                                    <th>Pengurus Pemohon</th>
+                                    <th>Jenis Izin &amp; Durasi</th>
+                                    <th>Keterangan / Bukti Dokter</th>
+                                    <th>Petugas Pengganti Piket</th>
+                                    <th>Status Approval</th>
+                                    <th>Catatan Pimpinan</th>
+                                    <th style="text-align: right;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leave-requests-tbody">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">
+                                        <i class="fa-solid fa-spinner fa-spin" style="margin-right: 0.5rem;"></i> Memuat data perizinan pengurus...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -4251,6 +4556,236 @@
         </div>
     </div>
 
+    <!-- Modal: Pengajuan Izin & Cuti Mandiri Pengurus -->
+    <div class="modal-overlay" id="modal-apply-leave" style="display: none;">
+        <div class="modal-box" style="max-width: 620px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-calendar-plus" style="color: var(--color-gold-deep);"></i> Formulir Pengajuan Izin &amp; Cuti Pengurus</h3>
+                <button class="btn-modal-close" onclick="closeApplyLeaveModal()">&times;</button>
+            </div>
+            <form onsubmit="handleApplyLeaveSubmit(event)">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Nama Pengurus Pemohon</label>
+                        <input type="text" id="leave-form-name" class="form-input" readonly style="background: #F8FAFC; color: var(--color-charcoal-muted); cursor: not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Divisi / Peran Resmi</label>
+                        <input type="text" id="leave-form-division" class="form-input" readonly style="background: #F8FAFC; color: var(--color-charcoal-muted); cursor: not-allowed;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Kategori / Jenis Izin <span style="color: var(--color-danger);">*</span></label>
+                    <select id="leave-form-type" class="form-input" required onchange="handleLeaveTypeChange()">
+                        <option value="SAKIT">Izin Sakit (Disertai Surat Dokter / Resep)</option>
+                        <option value="KEPERLUAN_PRIBADI">Izin Keperluan Pribadi Mendesak</option>
+                        <option value="CUTI_OPERASIONAL">Cuti Operasional Terjadwal</option>
+                        <option value="TUGAS_LUAR">Tugas Luar / Pengabdian Masjid</option>
+                        <option value="LAINNYA">Izin Khusus / Lainnya</option>
+                    </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 0.75rem;">
+                    <div class="form-group">
+                        <label class="form-label">Tanggal Mulai <span style="color: var(--color-danger);">*</span></label>
+                        <input type="date" id="leave-form-start-date" class="form-input" required onchange="calculateLeaveDays()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tanggal Selesai <span style="color: var(--color-danger);">*</span></label>
+                        <input type="date" id="leave-form-end-date" class="form-input" required onchange="calculateLeaveDays()">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Durasi</label>
+                        <input type="text" id="leave-form-total-days" class="form-input" value="1 Hari" readonly style="background: #F8FAFC; text-align: center; font-weight: 700; color: var(--color-gold-deep);">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Alasan &amp; Keperluan Izin Rinci <span style="color: var(--color-danger);">*</span></label>
+                    <textarea id="leave-form-reason" class="form-input" rows="3" placeholder="Jelaskan alasan pengajuan izin secara santun dan jelas (rahasia terlindungi hanya untuk pimpinan DKM)..." required></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Petugas Pengganti Piket (Koordinasi)</label>
+                        <select id="leave-form-substitute" class="form-input">
+                            <option value="">-- Pilih Petugas Pengganti (Opsional) --</option>
+                            <!-- Populated dynamically from admin users -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nomor Kontak Darurat</label>
+                        <input type="text" id="leave-form-emergency" class="form-input" placeholder="Misal: +628123456789 (WhatsApp)">
+                    </div>
+                </div>
+
+                <!-- Attachment Box for Doctor's Certificate -->
+                <div class="form-group" id="leave-attachment-group">
+                    <label class="form-label">Lampiran Bukti Surat Dokter / Dokumen Pendukung</label>
+                    <div style="border: 2px dashed var(--color-border); border-radius: var(--radius-md); padding: 1rem; text-align: center; background: #FAFAFA;">
+                        <input type="file" id="leave-attachment-file" accept="image/*" style="display: none;" onchange="handleLeaveDocUpload(event)">
+                        <input type="hidden" id="leave-attachment-url" value="">
+                        
+                        <div id="leave-attachment-preview-box" style="display: none; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 0.75rem;">
+                            <img id="leave-attachment-img" src="" alt="Pratinjau Surat Dokter" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);">
+                            <div style="text-align: left;">
+                                <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">Surat Dokter Terlampir</div>
+                                <div style="font-size: 0.72rem; color: var(--color-success); margin-bottom: 0.35rem;"><i class="fa-solid fa-circle-check"></i> Siap dikirim (Auto WebP)</div>
+                                <button type="button" class="btn-table-action danger" onclick="removeLeaveDoc()" style="padding: 0.2rem 0.5rem; font-size: 0.72rem;">
+                                    <i class="fa-solid fa-trash"></i> Hapus Bukti
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="leave-attachment-upload-btn-box">
+                            <button type="button" class="btn-action-gold" onclick="document.getElementById('leave-attachment-file').click()">
+                                <i class="fa-solid fa-file-arrow-up"></i> Unggah Foto Surat Dokter / Resep
+                            </button>
+                            <div style="font-size: 0.72rem; color: var(--color-charcoal-muted); margin-top: 0.4rem;">Format WebP, JPG, PNG (Maks 3MB) - Disimpan di ImageKit CDN</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                    <button type="button" class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeApplyLeaveModal()">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.35rem;" id="btn-submit-leave-apply">
+                        <i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan Izin
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Review & Keputusan Persetujuan Pimpinan (SUPER_ADMIN & KETUA_DKM) -->
+    <div class="modal-overlay" id="modal-review-leave" style="display: none;">
+        <div class="modal-box" style="max-width: 560px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-stamp" style="color: var(--color-gold-deep);"></i> Evaluasi Persetujuan Izin Pengurus</h3>
+                <button class="btn-modal-close" onclick="closeReviewLeaveModal()">&times;</button>
+            </div>
+            <form onsubmit="handleReviewLeaveSubmit(event)">
+                <input type="hidden" id="review-leave-id" value="">
+                
+                <!-- Summary Card -->
+                <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.65rem;">
+                        <div>
+                            <div style="font-size: 0.95rem; font-weight: 800; color: var(--color-charcoal);" id="review-applicant-name">-</div>
+                            <div style="font-size: 0.75rem; color: var(--color-charcoal-muted);" id="review-applicant-role">-</div>
+                        </div>
+                        <span id="review-type-badge" class="badge-leave-type badge-leave-sakit">-</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.78rem; margin-bottom: 0.65rem;">
+                        <div><strong style="color: var(--color-charcoal);">Mulai:</strong> <span id="review-start-date">-</span></div>
+                        <div><strong style="color: var(--color-charcoal);">Selesai:</strong> <span id="review-end-date">-</span> (<span id="review-duration">-</span>)</div>
+                    </div>
+
+                    <div style="font-size: 0.78rem; color: var(--color-charcoal); line-height: 1.4; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.65rem; margin-bottom: 0.65rem;">
+                        <strong>Alasan Pengajuan:</strong>
+                        <div id="review-reason-text" style="color: #334155; margin-top: 0.2rem;">-</div>
+                    </div>
+
+                    <div id="review-attachment-row" style="display: none; align-items: center; gap: 0.75rem; padding-top: 0.5rem; border-top: 1px dashed var(--color-border);">
+                        <img id="review-attachment-thumb" src="" alt="Surat Dokter" class="leave-doc-thumbnail" onclick="openLeaveDocLightbox(this.src)" title="Klik untuk memperbesar bukti surat dokter">
+                        <div style="font-size: 0.75rem;">
+                            <div style="font-weight: 700; color: var(--color-charcoal);">Bukti Surat Dokter Terlampir</div>
+                            <a href="javascript:void(0)" onclick="openLeaveDocLightbox(document.getElementById('review-attachment-thumb').src)" style="color: var(--color-gold-deep); text-decoration: underline; font-size: 0.72rem;">Klik untuk melihat ukuran penuh</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Action Form -->
+                <div class="form-group">
+                    <label class="form-label">Keputusan Persetujuan <span style="color: var(--color-danger);">*</span></label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; border: 1.5px solid #A7F3D0; background: #ECFDF5; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #065F46;">
+                            <input type="radio" name="review-decision" value="APPROVED" checked>
+                            <i class="fa-solid fa-circle-check" style="color: #059669;"></i> Setujui Izin (Approve)
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; border: 1.5px solid #FECACA; background: #FEF2F2; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #991B1B;">
+                            <input type="radio" name="review-decision" value="REJECTED">
+                            <i class="fa-solid fa-circle-xmark" style="color: #DC2626;"></i> Tolak Izin (Reject)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Konfirmasi / Tunjuk Petugas Pengganti Piket</label>
+                    <select id="review-substitute-officer" class="form-input">
+                        <option value="">-- Tidak ada petugas pengganti khusus --</option>
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Catatan Evaluasi / Pesan Pimpinan DKM</label>
+                    <textarea id="review-notes" class="form-input" rows="2" placeholder="Tuliskan catatan arahan, doa kesembuhan, atau alasan penolakan..."></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.25rem;">
+                    <button type="button" class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeReviewLeaveModal()">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.35rem;" id="btn-submit-leave-review">
+                        <i class="fa-solid fa-stamp"></i> Simpan Keputusan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Lightbox Dokumen Surat Dokter Ukuran Penuh -->
+    <div class="modal-overlay" id="modal-leave-lightbox" style="display: none; background: rgba(0,0,0,0.85);" onclick="closeLeaveDocLightbox()">
+        <div style="max-width: 90vw; max-height: 90vh; position: relative; text-align: center;" onclick="event.stopPropagation()">
+            <img id="leave-lightbox-img" src="" alt="Surat Dokter Ukuran Penuh" style="max-width: 100%; max-height: 85vh; border-radius: var(--radius-md); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div style="margin-top: 0.75rem; text-align: center;">
+                <button type="button" class="btn-action-gold" style="background: #FFFFFF; color: var(--color-charcoal); border: none; padding: 0.45rem 1.25rem; font-size: 0.8rem;" onclick="closeLeaveDocLightbox()">
+                    <i class="fa-solid fa-xmark"></i> Tutup Pratinjau
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Popup Notifikasi Penugasan Pengganti Piket Saat Login (1x per Hari) -->
+    <div class="modal-overlay" id="modal-substitute-alert" style="display: none;">
+        <div class="modal-box" style="max-width: 500px; border-top: 4px solid var(--color-gold-deep);">
+            <div class="modal-header">
+                <h3 style="color: #92400E;"><i class="fa-solid fa-bell" style="color: var(--color-gold-deep);"></i> Pemberitahuan Penugasan Pengganti Piket</h3>
+                <button class="btn-modal-close" onclick="closeSubstituteAlertModal()">&times;</button>
+            </div>
+            <div style="padding: 0.5rem 0;">
+                <p style="font-size: 0.88rem; color: var(--color-charcoal); line-height: 1.5; margin-bottom: 1rem;">
+                    Assalamu'alaikum <strong id="substitute-alert-recipient-name">Pengurus</strong>, Anda telah ditugaskan oleh Pimpinan DKM sebagai **Petugas Pengganti Piket** untuk permohonan izin rekan kerja:
+                </p>
+
+                <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.88rem; font-weight: 800; color: #92400E; margin-bottom: 0.25rem;" id="substitute-alert-applicant">
+                        -
+                    </div>
+                    <div style="font-size: 0.75rem; color: #B45309; margin-bottom: 0.5rem;" id="substitute-alert-division">
+                        -
+                    </div>
+                    <div style="font-size: 0.78rem; color: var(--color-charcoal); line-height: 1.4;">
+                        <strong>Jadwal Menggantikan:</strong> <span id="substitute-alert-dates">-</span> (<span id="substitute-alert-duration">-</span>)
+                    </div>
+                    <div style="font-size: 0.75rem; color: #78350F; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #FCD34D;" id="substitute-alert-notes">
+                        -
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end;">
+                    <button type="button" class="btn-auth-primary" style="width: auto; padding: 0.6rem 1.5rem;" onclick="closeSubstituteAlertModal()">
+                        <i class="fa-solid fa-check"></i> Saya Mengerti &amp; Siap Bertugas
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Supabase Client Config
         const SUPABASE_PROJECT_URL = "https://fcwajbemkbhkogwtqcmx.supabase.co";
@@ -4606,6 +5141,10 @@
 
             loadAllAdminData();
             loadAdminUsers();
+            loadLeaveRequests();
+            setTimeout(() => {
+                checkSubstituteDutyNotification();
+            }, 800);
         }
 
         // Switch Navigation Tabs with Browser Memory & URL Hash Persistence
@@ -4649,6 +5188,7 @@
                 'history': ['Riwayat Aktivitas Portal DKM', 'Log riwayat aksi tugas, pembaruan status, dan audit trail pengurus secara real-time'],
                 'chat': ['Ruang Koordinasi Pengurus DKM Sophia', 'Saluran komunikasi multi-arah antar 10 peran DKM (Live WhatsApp-Style tanpa refresh)'],
                 'feedback': ['Pusat Pengaduan & Kotak Saran', 'Aspirasi, kritik, dan laporan kenyamanan dari jamaah/musafir'],
+                'leave_requests': ['Manajemen Pengajuan Izin & Cuti Pengurus', 'Pusat permohonan izin sakit, cuti operasional, dan persetujuan terpusat pimpinan DKM'],
                 'articles': ['Content Studio Warta & Dakwah', 'Penerbitan artikel, jadwal kajian, dan dokumentasi kegiatan'],
                 'health': ['Multi-Cloud Free-Tier Monitor', 'Sistem pemantauan 7 pilar infrastruktur cloud gratis (Zero-Cost Production Stack)'],
                 'accounts': ['Direktori & Manajemen Pengguna DKM', 'Kontrol hak akses multi-divisi, riwayat login live, reset kredensial baku, dan manajemen sesi pengurus']
@@ -4674,6 +5214,8 @@
             } else if (tabId === 'chat') {
                 renderTaskChat();
                 markMentionsAsRead();
+            } else if (tabId === 'leave_requests') {
+                loadLeaveRequests();
             } else if (tabId === 'accounts') {
                 loadAdminUsers();
             } else if (tabId === 'health') {
@@ -5002,6 +5544,7 @@
             taskChatMessages = localChats || [...DEFAULT_SEED_CHATS];
 
             renderAllTaskViews();
+            loadLeaveRequests();
 
             if (!sbClient) return;
 
@@ -5114,11 +5657,21 @@
                         console.log('[Realtime CDC] admin_users:', payload);
                         handleRealtimeAdminUserChange(payload);
                     })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'dkm_leave_requests' }, payload => {
+                        console.log('[Realtime CDC] dkm_leave_requests:', payload);
+                        handleRealtimeLeaveChange(payload);
+                    })
                     // 2. Broadcast Channel (Ultra Fast Multi-Tab / Multi-Client Realtime Sync)
                     .on('broadcast', { event: 'TASK_SYNC' }, ({ payload }) => {
                         console.log('[Realtime Broadcast] TASK_SYNC received:', payload);
                         if (payload && payload.action) {
                             handleBroadcastTaskSync(payload);
+                        }
+                    })
+                    .on('broadcast', { event: 'LEAVE_SYNC' }, ({ payload }) => {
+                        console.log('[Realtime Broadcast] LEAVE_SYNC received:', payload);
+                        if (payload) {
+                            handleBroadcastLeaveSync(payload);
                         }
                     })
                     .on('broadcast', { event: 'LOG_SYNC' }, ({ payload }) => {
@@ -9209,6 +9762,909 @@
 
             saveCustomUsersToLocal();
             renderAdminUsersTable();
+        }
+
+        // ==========================================================================
+        // MODUL PENGAJUAN IZIN & CUTI PENGURUS DKM ENGINE
+        // ==========================================================================
+        const DEFAULT_SEED_LEAVE_REQUESTS = [
+            {
+                id: "dkm-leave-001",
+                user_id: "8aae0c0a-3beb-4b43-af49-bfd91d94db91",
+                full_name: "Penanggung Jawab Kebersihan & Sanitasi",
+                email: "kebersihan@masjidsophiajatiwarna.com",
+                role: "PJ_KEBERSIHAN",
+                division: "Kebersihan & Sanitasi",
+                leave_type: "SAKIT",
+                start_date: new Date().toISOString().split('T')[0],
+                end_date: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
+                total_days: 3,
+                reason: "Istirahat pemulihan demam dan radang tenggorokan sesuai anjuran dokter puskesmas.",
+                attachment_url: null,
+                emergency_contact: "+6281234567800",
+                substitute_officer: "Penanggung Jawab Logistik & Sarpras",
+                status: "APPROVED",
+                review_notes: "Syafakallah. Disetujui. Petugas piket sanitasi wudhu di-backup sementara oleh PJ Logistik.",
+                reviewed_by: "Ketua DKM Masjid Sophia",
+                reviewed_at: new Date(Date.now() - 3600000 * 5).toISOString(),
+                created_at: new Date(Date.now() - 3600000 * 8).toISOString(),
+                updated_at: new Date(Date.now() - 3600000 * 5).toISOString()
+            },
+            {
+                id: "dkm-leave-002",
+                user_id: "c200dd04-3677-4b7c-bb49-57ef9a5840d2",
+                full_name: "Penanggung Jawab Media & Dakwah",
+                email: "media@masjidsophiajatiwarna.com",
+                role: "PJ_MEDIA",
+                division: "Media & Dakwah",
+                leave_type: "KEPERLUAN_PRIBADI",
+                start_date: new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0],
+                end_date: new Date(Date.now() + 86400000 * 4).toISOString().split('T')[0],
+                total_days: 2,
+                reason: "Menghadiri acara wisuda keluarga di luar kota Bandung.",
+                attachment_url: null,
+                emergency_contact: "+6281234567894",
+                substitute_officer: "Super Administrator Sophia",
+                status: "PENDING",
+                review_notes: null,
+                reviewed_by: null,
+                reviewed_at: null,
+                created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
+                updated_at: new Date(Date.now() - 3600000 * 2).toISOString()
+            },
+            {
+                id: "dkm-leave-003",
+                user_id: "e481b4df-6a3f-4277-bc0c-99d9b62a4d33",
+                full_name: "Penanggung Jawab Santri Tahfidz",
+                email: "santri@masjidsophiajatiwarna.com",
+                role: "PJ_SANTRI",
+                division: "Santri Tahfidz",
+                leave_type: "TUGAS_LUAR",
+                start_date: new Date(Date.now() + 86400000 * 7).toISOString().split('T')[0],
+                end_date: new Date(Date.now() + 86400000 * 8).toISOString().split('T')[0],
+                total_days: 2,
+                reason: "Mendampingi 5 santri tahfidz mengikuti Musabaqah Hifdzil Qur'an (MHQ) tingkat Kota Bekasi.",
+                attachment_url: null,
+                emergency_contact: "+6281234567896",
+                substitute_officer: "Penanggung Jawab Peribadatan & Acara",
+                status: "APPROVED",
+                review_notes: "Barakallahu fiikum. Disetujui. Halaqah santri ba'da subuh diampu oleh PJ Ibadah.",
+                reviewed_by: "Ketua DKM Masjid Sophia",
+                reviewed_at: new Date(Date.now() - 86400000).toISOString(),
+                created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
+                updated_at: new Date(Date.now() - 86400000).toISOString()
+            }
+        ];
+
+        let leaveRequestsList = [];
+
+        function getLocalLeaveRequests() {
+            try {
+                const data = localStorage.getItem('masjid_sophia_leave_requests_master');
+                return data ? JSON.parse(data) : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function persistLocalLeaveRequests(list) {
+            try {
+                localStorage.setItem('masjid_sophia_leave_requests_master', JSON.stringify(list || []));
+            } catch (e) {}
+        }
+
+        async function loadLeaveRequests() {
+            const local = getLocalLeaveRequests();
+            if (local && local.length > 0) {
+                leaveRequestsList = local;
+            } else if (leaveRequestsList.length === 0) {
+                leaveRequestsList = [...DEFAULT_SEED_LEAVE_REQUESTS];
+                persistLocalLeaveRequests(leaveRequestsList);
+            }
+
+            renderLeaveRequestsTable();
+            renderLeaveTodayWidget();
+            updateLeaveKpiStats();
+
+            if (!sbClient) return;
+
+            try {
+                const { data, error } = await sbClient
+                    .from('dkm_leave_requests')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (!error && data && data.length > 0) {
+                    leaveRequestsList = data;
+                    persistLocalLeaveRequests(leaveRequestsList);
+                    renderLeaveRequestsTable();
+                    renderLeaveTodayWidget();
+                    updateLeaveKpiStats();
+                } else if (!error && (!data || data.length === 0)) {
+                    // Seed remote DB if empty
+                    sbClient.from('dkm_leave_requests').upsert(leaveRequestsList).catch(e => console.debug('Leave DB seed notice:', e));
+                }
+            } catch (err) {
+                console.warn('Fetch dkm_leave_requests notice:', err);
+            }
+        }
+
+        function renderLeaveRequestsTable() {
+            const tbody = document.getElementById('leave-requests-tbody');
+            if (!tbody) return;
+
+            const filterStatus = document.getElementById('leave-filter-status')?.value || 'ALL';
+            const filterDivision = document.getElementById('leave-filter-division')?.value || 'ALL';
+            const searchQuery = (document.getElementById('leave-search-input')?.value || '').toLowerCase().trim();
+
+            const role = getUserRole();
+            const currentEmail = (currentUser?.email || '').toLowerCase().trim();
+            const isPimpinan = ['SUPER_ADMIN', 'KETUA_DKM'].includes(role);
+
+            let filtered = leaveRequestsList.filter(item => {
+                if (filterStatus !== 'ALL' && item.status !== filterStatus) return false;
+                if (filterDivision !== 'ALL' && !item.division.includes(filterDivision)) return false;
+                if (searchQuery) {
+                    const matchName = (item.full_name || '').toLowerCase().includes(searchQuery);
+                    const matchReason = (item.reason || '').toLowerCase().includes(searchQuery);
+                    const matchDiv = (item.division || '').toLowerCase().includes(searchQuery);
+                    const matchSub = (item.substitute_officer || '').toLowerCase().includes(searchQuery);
+                    if (!matchName && !matchReason && !matchDiv && !matchSub) return false;
+                }
+                return true;
+            });
+
+            // Sort: PENDING first, then by start_date desc
+            filtered.sort((a, b) => {
+                if (a.status === 'PENDING' && b.status !== 'PENDING') return -1;
+                if (a.status !== 'PENDING' && b.status === 'PENDING') return 1;
+                return new Date(b.created_at || b.start_date) - new Date(a.created_at || a.start_date);
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: var(--color-charcoal-muted); padding: 2.5rem 1rem;">
+                            <i class="fa-solid fa-calendar-xmark" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block; opacity: 0.5;"></i>
+                            Tidak ada data pengajuan izin & cuti yang sesuai filter.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(item => {
+                const isOwner = (item.email || '').toLowerCase().trim() === currentEmail;
+                const canViewProtectedReason = isPimpinan || isOwner;
+
+                // Format Type Badge
+                let typeBadge = '';
+                if (item.leave_type === 'SAKIT') {
+                    typeBadge = `<span class="badge-leave-type badge-leave-sakit"><i class="fa-solid fa-notes-medical"></i> Izin Sakit</span>`;
+                } else if (item.leave_type === 'KEPERLUAN_PRIBADI') {
+                    typeBadge = `<span class="badge-leave-type badge-leave-pribadi"><i class="fa-solid fa-user-clock"></i> Pribadi</span>`;
+                } else if (item.leave_type === 'CUTI_OPERASIONAL') {
+                    typeBadge = `<span class="badge-leave-type badge-leave-cuti"><i class="fa-solid fa-umbrella-beach"></i> Cuti Operasional</span>`;
+                } else if (item.leave_type === 'TUGAS_LUAR') {
+                    typeBadge = `<span class="badge-leave-type badge-leave-tugas"><i class="fa-solid fa-briefcase"></i> Tugas Luar</span>`;
+                } else {
+                    typeBadge = `<span class="badge-leave-type badge-leave-lainnya"><i class="fa-solid fa-calendar-day"></i> Izin Khusus</span>`;
+                }
+
+                // Format Status Badge
+                let statusBadge = '';
+                if (item.status === 'PENDING') {
+                    statusBadge = `<span class="badge-leave-status badge-status-pending"><i class="fa-solid fa-hourglass-half"></i> Menunggu Review</span>`;
+                } else if (item.status === 'APPROVED') {
+                    statusBadge = `<span class="badge-leave-status badge-status-approved"><i class="fa-solid fa-circle-check"></i> Disetujui</span>`;
+                } else if (item.status === 'REJECTED') {
+                    statusBadge = `<span class="badge-leave-status badge-status-rejected"><i class="fa-solid fa-circle-xmark"></i> Ditolak</span>`;
+                } else {
+                    statusBadge = `<span class="badge-leave-status badge-status-cancelled"><i class="fa-solid fa-ban"></i> Dibatalkan</span>`;
+                }
+
+                // Reason & Document formatting
+                let reasonHtml = '';
+                if (canViewProtectedReason) {
+                    reasonHtml = `<div style="font-size: 0.8rem; color: var(--color-charcoal); line-height: 1.35; max-width: 260px;">${escapeHtml(item.reason || '-')}</div>`;
+                    if (item.attachment_url) {
+                        reasonHtml += `
+                            <div style="display: flex; align-items: center; gap: 0.4rem; margin-top: 0.35rem;">
+                                <img src="${escapeHtml(item.attachment_url)}" alt="Bukti Surat Dokter" class="leave-doc-thumbnail" onclick="openLeaveDocLightbox('${escapeHtml(item.attachment_url)}')" title="Klik untuk memperbesar bukti surat dokter">
+                                <span style="font-size: 0.7rem; color: var(--color-gold-deep); cursor: pointer;" onclick="openLeaveDocLightbox('${escapeHtml(item.attachment_url)}')">Surat Dokter</span>
+                            </div>
+                        `;
+                    }
+                } else {
+                    reasonHtml = `
+                        <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); font-style: italic;">
+                            <i class="fa-solid fa-lock" style="font-size: 0.68rem; margin-right: 0.25rem;"></i> Keterangan Terlindungi (Privat Pimpinan DKM)
+                        </div>
+                    `;
+                }
+
+                // Substitute Officer
+                const subOfficer = item.substitute_officer ? `
+                    <div style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; color: #92400E; background: #FEF3C7; padding: 0.2rem 0.55rem; border-radius: 4px; border: 1px solid #FDE68A;">
+                        <i class="fa-solid fa-user-shield"></i> ${escapeHtml(item.substitute_officer)}
+                    </div>
+                ` : `<span style="font-size: 0.75rem; color: var(--color-charcoal-muted);">-</span>`;
+
+                // Review notes
+                const reviewNotesHtml = item.review_notes ? `
+                    <div style="font-size: 0.75rem; color: #475569; line-height: 1.3; max-width: 200px;">
+                        <div style="font-weight: 700; color: #0F172A;">${escapeHtml(item.reviewed_by || 'Pimpinan DKM')}:</div>
+                        "${escapeHtml(item.review_notes)}"
+                    </div>
+                ` : `<span style="font-size: 0.75rem; color: var(--color-charcoal-muted);">-</span>`;
+
+                // Actions
+                let actionsHtml = `<div style="display: flex; justify-content: flex-end; gap: 0.35rem;">`;
+                if (isPimpinan) {
+                    actionsHtml += `
+                        <button type="button" class="btn-table-action primary" onclick="openReviewLeaveModal('${item.id}')" title="Evaluasi & Keputusan Persetujuan">
+                            <i class="fa-solid fa-stamp"></i> Tinjau
+                        </button>
+                    `;
+                    if (role === 'SUPER_ADMIN') {
+                        actionsHtml += `
+                            <button type="button" class="btn-table-action danger" onclick="handleDeleteLeaveRequest('${item.id}')" title="Hapus Data Pengajuan">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        `;
+                    }
+                } else if (isOwner && item.status === 'PENDING') {
+                    actionsHtml += `
+                        <button type="button" class="btn-table-action danger" onclick="handleCancelLeaveRequest('${item.id}')" title="Batalkan Pengajuan Izin Saya">
+                            <i class="fa-solid fa-ban"></i> Batalkan
+                        </button>
+                    `;
+                } else {
+                    actionsHtml += `
+                        <button type="button" class="btn-table-action" onclick="alert('Status Izin: ' + '${item.status}' + '\\nDiajukan oleh: ' + '${escapeHtml(item.full_name)}' + '\\nTanggal: ' + '${item.start_date} s/d ${item.end_date}')" title="Lihat Status">
+                            <i class="fa-solid fa-info-circle"></i> Info
+                        </button>
+                    `;
+                }
+                actionsHtml += `</div>`;
+
+                return `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.65rem;">
+                                <div style="width: 32px; height: 32px; border-radius: 50%; background: #F1F5F9; color: var(--color-charcoal); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.72rem; border: 1px solid var(--color-border); flex-shrink: 0;">
+                                    ${(item.full_name || 'DKM').substring(0, 2).toUpperCase()}
+                                </div>
+                                <div style="min-width: 0;">
+                                    <div style="font-size: 0.85rem; font-weight: 800; color: var(--color-charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        ${escapeHtml(item.full_name)}
+                                    </div>
+                                    <div style="font-size: 0.72rem; color: var(--color-charcoal-muted);">
+                                        ${escapeHtml(item.division)} • <span style="font-weight: 600;">${escapeHtml(item.role)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            ${typeBadge}
+                            <div style="font-size: 0.75rem; color: var(--color-charcoal); font-weight: 700; margin-top: 0.35rem;">
+                                ${item.start_date} <span style="color: var(--color-charcoal-muted); font-weight: 400;">s/d</span> ${item.end_date}
+                            </div>
+                            <div style="font-size: 0.7rem; color: var(--color-gold-deep); font-weight: 800;">
+                                ${item.total_days} Hari Izin
+                            </div>
+                        </td>
+                        <td>${reasonHtml}</td>
+                        <td>${subOfficer}</td>
+                        <td>${statusBadge}</td>
+                        <td>${reviewNotesHtml}</td>
+                        <td style="text-align: right;">${actionsHtml}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderLeaveTodayWidget() {
+            const listEl = document.getElementById('leave-today-list');
+            const badgeEl = document.getElementById('leave-today-count-badge');
+            if (!listEl || !badgeEl) return;
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            const onLeaveToday = leaveRequestsList.filter(item => {
+                return item.status === 'APPROVED' && item.start_date <= todayStr && item.end_date >= todayStr;
+            });
+
+            badgeEl.textContent = `${onLeaveToday.length} Pengurus`;
+
+            if (onLeaveToday.length === 0) {
+                listEl.innerHTML = `
+                    <div class="leave-today-empty">
+                        <i class="fa-solid fa-circle-check" style="color: #059669; margin-right: 0.35rem;"></i>
+                        Alhamdulillah, seluruh pengurus DKM tercatat bertugas aktif dan tidak ada yang berhalangan/izin hari ini.
+                    </div>
+                `;
+                return;
+            }
+
+            listEl.innerHTML = onLeaveToday.map(item => {
+                let typeText = item.leave_type === 'SAKIT' ? 'Izin Sakit' : (item.leave_type === 'CUTI_OPERASIONAL' ? 'Cuti' : 'Izin Tugas/Pribadi');
+                return `
+                    <div class="leave-today-card">
+                        <div style="width: 28px; height: 28px; border-radius: 50%; background: #FEF3C7; color: #92400E; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.7rem; border: 1px solid #FDE68A;">
+                            ${(item.full_name || 'P').substring(0, 2).toUpperCase()}
+                        </div>
+                        <div>
+                            <div style="font-weight: 800; color: #92400E; font-size: 0.82rem;">${escapeHtml(item.full_name)}</div>
+                            <div style="font-size: 0.72rem; color: #B45309;">
+                                ${escapeHtml(item.division)} • <span style="font-weight: 700;">${typeText} (${item.start_date} s/d ${item.end_date})</span>
+                            </div>
+                            ${item.substitute_officer ? `
+                                <div style="font-size: 0.7rem; color: #78350F; margin-top: 0.15rem;">
+                                    <i class="fa-solid fa-arrow-right-arrow-left"></i> Pengganti: <strong>${escapeHtml(item.substitute_officer)}</strong>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateLeaveKpiStats() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const total = leaveRequestsList.length;
+            const pending = leaveRequestsList.filter(l => l.status === 'PENDING').length;
+            const approved = leaveRequestsList.filter(l => l.status === 'APPROVED').length;
+            const today = leaveRequestsList.filter(l => l.status === 'APPROVED' && l.start_date <= todayStr && l.end_date >= todayStr).length;
+
+            const elTotal = document.getElementById('stat-leave-total');
+            const elPending = document.getElementById('stat-leave-pending');
+            const elApproved = document.getElementById('stat-leave-approved');
+            const elToday = document.getElementById('stat-leave-today');
+            const badgeSidebar = document.getElementById('badge-sidebar-leave-pending');
+
+            if (elTotal) elTotal.textContent = total;
+            if (elPending) elPending.textContent = pending;
+            if (elApproved) elApproved.textContent = approved;
+            if (elToday) elToday.textContent = today;
+
+            if (badgeSidebar) {
+                const role = getUserRole();
+                if (['SUPER_ADMIN', 'KETUA_DKM'].includes(role) && pending > 0) {
+                    badgeSidebar.style.display = 'inline-flex';
+                    badgeSidebar.textContent = pending;
+                } else {
+                    badgeSidebar.style.display = 'none';
+                }
+            }
+        }
+
+        function openApplyLeaveModal() {
+            const modal = document.getElementById('modal-apply-leave');
+            if (!modal) return;
+
+            const nameInput = document.getElementById('leave-form-name');
+            const divInput = document.getElementById('leave-form-division');
+            const startDateInput = document.getElementById('leave-form-start-date');
+            const endDateInput = document.getElementById('leave-form-end-date');
+            const totalDaysInput = document.getElementById('leave-form-total-days');
+            const reasonInput = document.getElementById('leave-form-reason');
+            const emergencyInput = document.getElementById('leave-form-emergency');
+            const subSelect = document.getElementById('leave-form-substitute');
+
+            const uName = getUserDisplayName(currentUser);
+            const uDiv = getUserDivision();
+
+            if (nameInput) nameInput.value = uName;
+            if (divInput) divInput.value = `${uDiv} (${getUserRole()})`;
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            if (startDateInput) startDateInput.value = todayStr;
+            if (endDateInput) endDateInput.value = todayStr;
+            if (totalDaysInput) totalDaysInput.value = '1 Hari';
+            if (reasonInput) reasonInput.value = '';
+            if (emergencyInput) emergencyInput.value = currentUser?.phone_number || '';
+
+            // Populate substitute options
+            if (subSelect) {
+                subSelect.innerHTML = `<option value="">-- Pilih Petugas Pengganti (Opsional) --</option>`;
+                adminUsersList.forEach(u => {
+                    if ((u.email || '').toLowerCase().trim() !== (currentUser?.email || '').toLowerCase().trim()) {
+                        const opt = document.createElement('option');
+                        opt.value = u.full_name || u.email;
+                        opt.textContent = `${u.full_name || u.email} (${u.division || u.role})`;
+                        subSelect.appendChild(opt);
+                    }
+                });
+            }
+
+            removeLeaveDoc();
+            handleLeaveTypeChange();
+            modal.style.display = 'flex';
+        }
+
+        function closeApplyLeaveModal() {
+            const modal = document.getElementById('modal-apply-leave');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function handleLeaveTypeChange() {
+            const type = document.getElementById('leave-form-type')?.value;
+            const attachGroup = document.getElementById('leave-attachment-group');
+            if (attachGroup) {
+                if (type === 'SAKIT') {
+                    attachGroup.style.display = 'block';
+                } else {
+                    attachGroup.style.display = 'block'; // accessible for all, emphasized for SAKIT
+                }
+            }
+        }
+
+        function calculateLeaveDays() {
+            const startVal = document.getElementById('leave-form-start-date')?.value;
+            const endVal = document.getElementById('leave-form-end-date')?.value;
+            const totalDaysInput = document.getElementById('leave-form-total-days');
+
+            if (!startVal || !endVal) return;
+
+            const dStart = new Date(startVal);
+            const dEnd = new Date(endVal);
+
+            if (dEnd < dStart) {
+                alert('Tanggal selesai izin tidak boleh lebih awal dari tanggal mulai.');
+                document.getElementById('leave-form-end-date').value = startVal;
+                if (totalDaysInput) totalDaysInput.value = '1 Hari';
+                return;
+            }
+
+            const diffTime = Math.abs(dEnd - dStart);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            if (totalDaysInput) totalDaysInput.value = `${diffDays} Hari`;
+        }
+
+        function handleLeaveDocUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert('Harap pilih file gambar bukti surat dokter (JPG, PNG, WebP).');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const maxDim = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height && width > maxDim) {
+                        height *= maxDim / width;
+                        width = maxDim;
+                    } else if (height > maxDim) {
+                        width *= maxDim / height;
+                        height = maxDim;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const webpData = canvas.toDataURL('image/webp', 0.85);
+                    document.getElementById('leave-attachment-url').value = webpData;
+                    document.getElementById('leave-attachment-img').src = webpData;
+                    document.getElementById('leave-attachment-preview-box').style.display = 'flex';
+                    document.getElementById('leave-attachment-upload-btn-box').style.display = 'none';
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeLeaveDoc() {
+            const urlInput = document.getElementById('leave-attachment-url');
+            const fileInput = document.getElementById('leave-attachment-file');
+            const previewBox = document.getElementById('leave-attachment-preview-box');
+            const btnBox = document.getElementById('leave-attachment-upload-btn-box');
+
+            if (urlInput) urlInput.value = '';
+            if (fileInput) fileInput.value = '';
+            if (previewBox) previewBox.style.display = 'none';
+            if (btnBox) btnBox.style.display = 'block';
+        }
+
+        async function handleApplyLeaveSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-leave-apply');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Pengajuan...';
+            }
+
+            const startVal = document.getElementById('leave-form-start-date').value;
+            const endVal = document.getElementById('leave-form-end-date').value;
+            const dStart = new Date(startVal);
+            const dEnd = new Date(endVal);
+            const diffDays = Math.ceil(Math.abs(dEnd - dStart) / (1000 * 60 * 60 * 24)) + 1;
+
+            const newLeave = {
+                id: generateUUID(),
+                user_id: currentUser?.id || generateUUID(),
+                full_name: getUserDisplayName(currentUser),
+                email: (currentUser?.email || '').toLowerCase().trim(),
+                role: getUserRole(),
+                division: getUserDivision(),
+                leave_type: document.getElementById('leave-form-type').value,
+                start_date: startVal,
+                end_date: endVal,
+                total_days: diffDays,
+                reason: document.getElementById('leave-form-reason').value.trim(),
+                attachment_url: document.getElementById('leave-attachment-url').value || null,
+                emergency_contact: document.getElementById('leave-form-emergency').value.trim(),
+                substitute_officer: document.getElementById('leave-form-substitute').value || null,
+                status: 'PENDING',
+                review_notes: null,
+                reviewed_by: null,
+                reviewed_at: null,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+
+            leaveRequestsList.unshift(newLeave);
+            persistLocalLeaveRequests(leaveRequestsList);
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('dkm_leave_requests').insert(newLeave);
+                } catch (err) {
+                    console.warn('DB insert dkm_leave_requests notice:', err);
+                }
+            }
+
+            if (realtimeHub) {
+                try {
+                    realtimeHub.send({
+                        type: 'broadcast',
+                        event: 'LEAVE_SYNC',
+                        payload: newLeave
+                    });
+                } catch (e) {}
+            }
+
+            // Log activity to History
+            const newLog = {
+                id: generateUUID(),
+                task_id: null,
+                action_type: 'LEAVE_REQUESTED',
+                description: `${newLeave.full_name} mengajukan ${newLeave.leave_type} (${newLeave.start_date} s/d ${newLeave.end_date}, ${newLeave.total_days} hari)`,
+                actor_name: newLeave.full_name,
+                actor_role: newLeave.role,
+                created_at: new Date().toISOString()
+            };
+            taskActivityLogs.unshift(newLog);
+            persistLocalLogs(taskActivityLogs);
+
+            closeApplyLeaveModal();
+            renderLeaveRequestsTable();
+            renderLeaveTodayWidget();
+            updateLeaveKpiStats();
+
+            alert('Pengajuan izin Anda berhasil dikirim ke Pimpinan DKM & Super Admin untuk persetujuan.');
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan Izin';
+            }
+        }
+
+        function openReviewLeaveModal(id) {
+            const item = leaveRequestsList.find(l => String(l.id) === String(id));
+            if (!item) return;
+
+            const modal = document.getElementById('modal-review-leave');
+            if (!modal) return;
+
+            document.getElementById('review-leave-id').value = item.id;
+            document.getElementById('review-applicant-name').textContent = item.full_name;
+            document.getElementById('review-applicant-role').textContent = `${item.division} • ${item.role}`;
+            document.getElementById('review-start-date').textContent = item.start_date;
+            document.getElementById('review-end-date').textContent = item.end_date;
+            document.getElementById('review-duration').textContent = `${item.total_days} Hari`;
+            document.getElementById('review-reason-text').textContent = item.reason || '-';
+
+            // Badge
+            const badgeEl = document.getElementById('review-type-badge');
+            if (badgeEl) {
+                badgeEl.className = `badge-leave-type badge-leave-${item.leave_type.toLowerCase()}`;
+                badgeEl.textContent = item.leave_type;
+            }
+
+            // Attachment
+            const attachRow = document.getElementById('review-attachment-row');
+            const attachThumb = document.getElementById('review-attachment-thumb');
+            if (attachRow && attachThumb) {
+                if (item.attachment_url) {
+                    attachThumb.src = item.attachment_url;
+                    attachRow.style.display = 'flex';
+                } else {
+                    attachRow.style.display = 'none';
+                }
+            }
+
+            // Substitute dropdown
+            const subSelect = document.getElementById('review-substitute-officer');
+            if (subSelect) {
+                subSelect.innerHTML = `<option value="">-- Tidak ada petugas pengganti khusus --</option>`;
+                adminUsersList.forEach(u => {
+                    const opt = document.createElement('option');
+                    opt.value = u.full_name || u.email;
+                    opt.textContent = `${u.full_name || u.email} (${u.division || u.role})`;
+                    if (item.substitute_officer && (item.substitute_officer === u.full_name || item.substitute_officer === u.email)) {
+                        opt.selected = true;
+                    }
+                    subSelect.appendChild(opt);
+                });
+            }
+
+            document.getElementById('review-notes').value = item.review_notes || '';
+            const radios = document.getElementsByName('review-decision');
+            radios.forEach(r => {
+                if (r.value === (item.status === 'REJECTED' ? 'REJECTED' : 'APPROVED')) {
+                    r.checked = true;
+                }
+            });
+
+            modal.style.display = 'flex';
+        }
+
+        function closeReviewLeaveModal() {
+            const modal = document.getElementById('modal-review-leave');
+            if (modal) modal.style.display = 'none';
+        }
+
+        async function handleReviewLeaveSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('review-leave-id').value;
+            const item = leaveRequestsList.find(l => String(l.id) === String(id));
+            if (!item) return;
+
+            const btn = document.getElementById('btn-submit-leave-review');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            }
+
+            let decision = 'APPROVED';
+            const radios = document.getElementsByName('review-decision');
+            radios.forEach(r => { if (r.checked) decision = r.value; });
+
+            const subOfficer = document.getElementById('review-substitute-officer').value || null;
+            const reviewNotes = document.getElementById('review-notes').value.trim();
+            const reviewerName = getUserDisplayName(currentUser) || 'Pimpinan DKM';
+
+            item.status = decision;
+            item.substitute_officer = subOfficer;
+            item.review_notes = reviewNotes;
+            item.reviewed_by = reviewerName;
+            item.reviewed_at = new Date().toISOString();
+            item.updated_at = new Date().toISOString();
+
+            persistLocalLeaveRequests(leaveRequestsList);
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('dkm_leave_requests').update({
+                        status: item.status,
+                        substitute_officer: item.substitute_officer,
+                        review_notes: item.review_notes,
+                        reviewed_by: item.reviewed_by,
+                        reviewed_at: item.reviewed_at,
+                        updated_at: item.updated_at
+                    }).eq('id', item.id);
+                } catch (err) {
+                    console.warn('DB update dkm_leave_requests notice:', err);
+                }
+            }
+
+            if (realtimeHub) {
+                try {
+                    realtimeHub.send({
+                        type: 'broadcast',
+                        event: 'LEAVE_SYNC',
+                        payload: item
+                    });
+                } catch (e) {}
+            }
+
+            // Log activity to History
+            const newLog = {
+                id: generateUUID(),
+                task_id: null,
+                action_type: decision === 'APPROVED' ? 'LEAVE_APPROVED' : 'LEAVE_REJECTED',
+                description: `${reviewerName} ${decision === 'APPROVED' ? 'menyetujui' : 'menolak'} pengajuan izin ${item.full_name} (${item.leave_type})`,
+                actor_name: reviewerName,
+                actor_role: getUserRole(),
+                created_at: new Date().toISOString()
+            };
+            taskActivityLogs.unshift(newLog);
+            persistLocalLogs(taskActivityLogs);
+
+            closeReviewLeaveModal();
+            renderLeaveRequestsTable();
+            renderLeaveTodayWidget();
+            updateLeaveKpiStats();
+
+            alert(`Keputusan berhasil disimpan. Status permohonan kini: ${decision}`);
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-stamp"></i> Simpan Keputusan';
+            }
+        }
+
+        async function handleCancelLeaveRequest(id) {
+            const item = leaveRequestsList.find(l => String(l.id) === String(id));
+            if (!item) return;
+
+            if (!confirm(`Batalkan pengajuan izin ${item.leave_type} (${item.start_date} s/d ${item.end_date})?`)) return;
+
+            item.status = 'CANCELLED';
+            item.updated_at = new Date().toISOString();
+            persistLocalLeaveRequests(leaveRequestsList);
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('dkm_leave_requests').update({ status: 'CANCELLED', updated_at: item.updated_at }).eq('id', item.id);
+                } catch (e) {}
+            }
+
+            if (realtimeHub) {
+                try {
+                    realtimeHub.send({ type: 'broadcast', event: 'LEAVE_SYNC', payload: item });
+                } catch (e) {}
+            }
+
+            renderLeaveRequestsTable();
+            renderLeaveTodayWidget();
+            updateLeaveKpiStats();
+            alert('Pengajuan izin Anda berhasil dibatalkan.');
+        }
+
+        async function handleDeleteLeaveRequest(id) {
+            if (!confirm('Hapus riwayat pengajuan izin ini secara permanen?')) return;
+
+            leaveRequestsList = leaveRequestsList.filter(l => String(l.id) !== String(id));
+            persistLocalLeaveRequests(leaveRequestsList);
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('dkm_leave_requests').delete().eq('id', id);
+                } catch (e) {}
+            }
+
+            renderLeaveRequestsTable();
+            renderLeaveTodayWidget();
+            updateLeaveKpiStats();
+        }
+
+        function exportLeaveRequestsCsv() {
+            if (leaveRequestsList.length === 0) {
+                alert('Tidak ada data pengajuan izin untuk diekspor.');
+                return;
+            }
+
+            const headers = ['ID', 'Nama Pengurus', 'Email', 'Divisi', 'Role', 'Jenis Izin', 'Tanggal Mulai', 'Tanggal Selesai', 'Durasi Hari', 'Alasan', 'Petugas Pengganti', 'Status Approval', 'Reviewer', 'Catatan Review', 'Tanggal Dibuat'];
+            const rows = leaveRequestsList.map(item => [
+                `"${item.id}"`,
+                `"${(item.full_name || '').replace(/"/g, '""')}"`,
+                `"${(item.email || '').replace(/"/g, '""')}"`,
+                `"${(item.division || '').replace(/"/g, '""')}"`,
+                `"${(item.role || '').replace(/"/g, '""')}"`,
+                `"${(item.leave_type || '').replace(/"/g, '""')}"`,
+                `"${item.start_date || ''}"`,
+                `"${item.end_date || ''}"`,
+                item.total_days || 1,
+                `"${(item.reason || '').replace(/"/g, '""')}"`,
+                `"${(item.substitute_officer || '').replace(/"/g, '""')}"`,
+                `"${item.status || ''}"`,
+                `"${(item.reviewed_by || '').replace(/"/g, '""')}"`,
+                `"${(item.review_notes || '').replace(/"/g, '""')}"`,
+                `"${item.created_at || ''}"`
+            ]);
+
+            const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `Rekap_Izin_Cuti_DKM_Sophia_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function openLeaveDocLightbox(url) {
+            const modal = document.getElementById('modal-leave-lightbox');
+            const img = document.getElementById('leave-lightbox-img');
+            if (modal && img) {
+                img.src = url;
+                modal.style.display = 'flex';
+            }
+        }
+
+        function closeLeaveDocLightbox() {
+            const modal = document.getElementById('modal-leave-lightbox');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function checkSubstituteDutyNotification() {
+            if (!currentUser) return;
+            const currentName = (currentUser.full_name || '').toLowerCase().trim();
+            const currentEmail = (currentUser.email || '').toLowerCase().trim();
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            const duties = leaveRequestsList.filter(l => {
+                if (l.status !== 'APPROVED') return false;
+                if (!l.substitute_officer) return false;
+                const subClean = l.substitute_officer.toLowerCase().trim();
+                const isMatch = subClean === currentName || subClean === currentEmail || (currentUser.name && subClean.includes(currentUser.name.toLowerCase()));
+                const isActive = l.end_date >= todayStr;
+                return isMatch && isActive;
+            });
+
+            if (duties.length === 0) return;
+
+            const duty = duties[0];
+            const notifKey = `masjid_sophia_sub_notif_${todayStr}_${duty.id}`;
+            try {
+                if (localStorage.getItem(notifKey) === '1') {
+                    return; // Already notified today
+                }
+            } catch (e) {}
+
+            const modal = document.getElementById('modal-substitute-alert');
+            if (!modal) return;
+
+            document.getElementById('substitute-alert-recipient-name').textContent = getUserDisplayName(currentUser);
+            document.getElementById('substitute-alert-applicant').textContent = duty.full_name;
+            document.getElementById('substitute-alert-division').textContent = `${duty.division} (${duty.leave_type})`;
+            document.getElementById('substitute-alert-dates').textContent = `${duty.start_date} s/d ${duty.end_date}`;
+            document.getElementById('substitute-alert-duration').textContent = `${duty.total_days} Hari`;
+            document.getElementById('substitute-alert-notes').textContent = duty.review_notes ? `Pesan Pimpinan: "${duty.review_notes}"` : 'Harap berkoordinasi dengan pengurus terkait untuk kelancaran piket harian.';
+
+            try {
+                localStorage.setItem(notifKey, '1');
+            } catch (e) {}
+
+            modal.style.display = 'flex';
+        }
+
+        function closeSubstituteAlertModal() {
+            const modal = document.getElementById('modal-substitute-alert');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function handleRealtimeLeaveChange(payload) {
+            if (!payload) return;
+            const updated = payload.new || payload;
+            if (!updated || !updated.id) return;
+
+            const idx = leaveRequestsList.findIndex(l => String(l.id) === String(updated.id));
+            if (idx !== -1) {
+                leaveRequestsList[idx] = { ...leaveRequestsList[idx], ...updated };
+            } else {
+                leaveRequestsList.unshift(updated);
+            }
+
+            persistLocalLeaveRequests(leaveRequestsList);
+            renderLeaveRequestsTable();
+            renderLeaveTodayWidget();
+            updateLeaveKpiStats();
+        }
+
+        function handleBroadcastLeaveSync(payload) {
+            if (!payload || !payload.id) return;
+            handleRealtimeLeaveChange(payload);
         }
 
         function refreshAdminData() {

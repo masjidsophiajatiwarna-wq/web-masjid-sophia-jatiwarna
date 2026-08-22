@@ -53,6 +53,18 @@
       "destination": "/artikel.html"
     },
     {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/progdev",
+      "destination": "/progress-implementation-plan.html"
+    },
+    {
+      "source": "/izin",
+      "destination": "/admin.html#leave_requests"
+    },
+    {
       "source": "/media-checklist",
       "destination": "/media-checklist.html"
     },
