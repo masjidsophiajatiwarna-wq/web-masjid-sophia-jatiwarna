@@ -9878,22 +9878,33 @@
                     .select('*')
                     .order('created_at', { ascending: false });
 
-                if (!error && data && data.length > 0) {
+                // Jika tabel belum ada di database (error 400/42P01), hentikan dengan senyap
+                if (error) {
+                    console.debug('[Leave] Tabel dkm_leave_requests belum tersedia di database:', error.code || error.message || error);
+                    return;
+                }
+
+                if (data && data.length > 0) {
                     leaveRequestsList = data;
                     persistLocalLeaveRequests(leaveRequestsList);
                     renderLeaveRequestsTable();
                     renderLeaveTodayWidget();
                     updateLeaveKpiStats();
-                } else if (!error && (!data || data.length === 0)) {
-                    // Seed remote DB if empty
+                } else if (data && data.length === 0) {
+                    // Tabel ada tapi kosong — seed data awal, satu per satu untuk menghindari UUID conflict
                     try {
-                        await sbClient.from('dkm_leave_requests').upsert(leaveRequestsList);
+                        const { error: upsertErr } = await sbClient
+                            .from('dkm_leave_requests')
+                            .upsert(leaveRequestsList, { onConflict: 'id', ignoreDuplicates: true });
+                        if (upsertErr) {
+                            console.debug('[Leave] Seeding note:', upsertErr.message || upsertErr);
+                        }
                     } catch (e) {
-                        console.debug('Leave DB seed notice:', e);
+                        console.debug('[Leave] Seeding skipped:', e);
                     }
                 }
             } catch (err) {
-                console.warn('Fetch dkm_leave_requests notice:', err);
+                console.debug('[Leave] loadLeaveRequests skipped (DB not ready):', err);
             }
         }
 
