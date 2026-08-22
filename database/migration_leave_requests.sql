@@ -1,32 +1,53 @@
 -- ==============================================================================
--- MIGRASI DATABASE: MODUL PENGAJUAN IZIN & CUTI PENGURUS DKM
+-- MIGRASI DATABASE: MODUL PENGAJUAN IZIN & CUTI PENGURUS DKM (IDEMPOTENT & ROBUST)
 -- Tabel: public.dkm_leave_requests
 -- Ekosistem Portal Masjid Musafir Sophia Jatiwarna
 -- ==============================================================================
 
--- 1. PEMBUATAN TABEL PENGAJUAN IZIN & CUTI
+-- 1. PEMBUATAN / AUTO-MIGRASI TABEL PENGAJUAN IZIN & CUTI
 CREATE TABLE IF NOT EXISTS public.dkm_leave_requests (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    user_id VARCHAR(100), -- Referensi ID pengurus atau email
-    full_name VARCHAR(150) NOT NULL,
-    email VARCHAR(150) NOT NULL,
-    role VARCHAR(100) NOT NULL,
-    division VARCHAR(100) NOT NULL,
-    leave_type VARCHAR(50) NOT NULL DEFAULT 'SAKIT', -- 'SAKIT', 'KEPERLUAN_PRIBADI', 'CUTI_OPERASIONAL', 'TUGAS_LUAR', 'LAINNYA'
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
+    user_id VARCHAR(100),
+    full_name VARCHAR(150) NOT NULL DEFAULT '',
+    email VARCHAR(150) NOT NULL DEFAULT '',
+    role VARCHAR(100) NOT NULL DEFAULT 'STAFF',
+    division VARCHAR(100) NOT NULL DEFAULT 'Umum',
+    leave_type VARCHAR(50) NOT NULL DEFAULT 'SAKIT',
+    start_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    end_date DATE NOT NULL DEFAULT CURRENT_DATE,
     total_days INT NOT NULL DEFAULT 1,
-    reason TEXT NOT NULL,
-    attachment_url TEXT, -- URL bukti surat dokter / dokumen penunjang (ImageKit CDN / Base64 WebP)
+    reason TEXT NOT NULL DEFAULT '',
+    attachment_url TEXT,
     emergency_contact VARCHAR(50),
-    substitute_officer VARCHAR(150), -- Petugas pengganti piket selama masa izin
-    status VARCHAR(30) NOT NULL DEFAULT 'PENDING', -- 'PENDING', 'APPROVED', 'REJECTED', 'CANCELLED'
-    review_notes TEXT, -- Catatan evaluasi dari Ketua DKM / Super Admin
-    reviewed_by VARCHAR(150), -- Nama / email peninjau
+    substitute_officer VARCHAR(150),
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+    review_notes TEXT,
+    reviewed_by VARCHAR(150),
     reviewed_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Pastikan seluruh kolom terpasang (jika tabel dkm_leave_requests sebelumnya sudah dibuat dengan kolom berbeda)
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS user_id VARCHAR(100);
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS full_name VARCHAR(150) NOT NULL DEFAULT '';
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS email VARCHAR(150) NOT NULL DEFAULT '';
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS role VARCHAR(100) NOT NULL DEFAULT 'STAFF';
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS division VARCHAR(100) NOT NULL DEFAULT 'Umum';
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS leave_type VARCHAR(50) NOT NULL DEFAULT 'SAKIT';
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS start_date DATE NOT NULL DEFAULT CURRENT_DATE;
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS end_date DATE NOT NULL DEFAULT CURRENT_DATE;
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS total_days INT NOT NULL DEFAULT 1;
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS reason TEXT NOT NULL DEFAULT '';
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS attachment_url TEXT;
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS emergency_contact VARCHAR(50);
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS substitute_officer VARCHAR(150);
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS status VARCHAR(30) NOT NULL DEFAULT 'PENDING';
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS review_notes TEXT;
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS reviewed_by VARCHAR(150);
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMP WITH TIME ZONE;
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
+ALTER TABLE public.dkm_leave_requests ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
 
 -- 2. INDEKS PERFORMA QUERY
 CREATE INDEX IF NOT EXISTS idx_leave_requests_user ON public.dkm_leave_requests(user_id);
