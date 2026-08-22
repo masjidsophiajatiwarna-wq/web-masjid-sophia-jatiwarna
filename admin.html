@@ -5678,6 +5678,16 @@
                             handleBroadcastLeaveSync(payload);
                         }
                     })
+                    .on('broadcast', { event: 'LEAVE_SYNC_DELETE' }, ({ payload }) => {
+                        console.log('[Realtime Broadcast] LEAVE_SYNC_DELETE received:', payload);
+                        if (payload && payload.id) {
+                            leaveRequestsList = leaveRequestsList.filter(l => String(l.id) !== String(payload.id));
+                            persistLocalLeaveRequests(leaveRequestsList);
+                            renderLeaveRequestsTable();
+                            renderLeaveTodayWidget();
+                            updateLeaveKpiStats();
+                        }
+                    })
                     .on('broadcast', { event: 'LOG_SYNC' }, ({ payload }) => {
                         if (payload && !taskActivityLogs.some(l => l.id === payload.id)) {
                             taskActivityLogs.unshift(payload);
@@ -10633,6 +10643,12 @@
                 } catch (e) {}
             }
 
+            if (realtimeHub) {
+                try {
+                    realtimeHub.send({ type: 'broadcast', event: 'LEAVE_SYNC_DELETE', payload: { id: id } });
+                } catch (e) {}
+            }
+
             renderLeaveRequestsTable();
             renderLeaveTodayWidget();
             updateLeaveKpiStats();
@@ -10737,6 +10753,16 @@
 
         function handleRealtimeLeaveChange(payload) {
             if (!payload) return;
+
+            if (payload.eventType === 'DELETE' && payload.old && payload.old.id) {
+                leaveRequestsList = leaveRequestsList.filter(l => String(l.id) !== String(payload.old.id));
+                persistLocalLeaveRequests(leaveRequestsList);
+                renderLeaveRequestsTable();
+                renderLeaveTodayWidget();
+                updateLeaveKpiStats();
+                return;
+            }
+
             const updated = payload.new || payload;
             if (!updated || !updated.id) return;
 
