@@ -9868,13 +9868,9 @@
         }
 
         async function loadLeaveRequests() {
+            // Tahap 1: Tampilkan data localStorage dulu sebagai UI awal (optimistic UI)
             const local = getLocalLeaveRequests();
-            if (local && local.length > 0) {
-                leaveRequestsList = local;
-            } else if (leaveRequestsList.length === 0) {
-                leaveRequestsList = [...DEFAULT_SEED_LEAVE_REQUESTS];
-                persistLocalLeaveRequests(leaveRequestsList);
-            }
+            leaveRequestsList = (local && local.length > 0) ? local : [];
 
             renderLeaveRequestsTable();
             renderLeaveTodayWidget();
@@ -9889,20 +9885,25 @@
                     .order('created_at', { ascending: false });
 
                 if (error) {
-                    // Tabel belum tersedia — gunakan data localStorage saja
+                    // DB tidak tersedia — tetap pakai data localStorage (offline mode)
                     console.debug('[Leave] DB not ready, using local data:', error.code || error.message);
                     return;
                 }
 
-                if (data && data.length > 0) {
-                    // Gabungkan: DB sebagai sumber kebenaran, lokalmaster sebagai fallback
+                // Tahap 2: DB berhasil diquery — DB adalah sumber kebenaran mutlak
+                // Jika DB kosong, bersihkan juga localStorage agar tidak tampilkan data stale/seed lama
+                if (!data || data.length === 0) {
+                    leaveRequestsList = [];
+                    persistLocalLeaveRequests([]);
+                } else {
                     leaveRequestsList = data;
                     persistLocalLeaveRequests(leaveRequestsList);
-                    renderLeaveRequestsTable();
-                    renderLeaveTodayWidget();
-                    updateLeaveKpiStats();
                 }
-                // Jika data kosong di DB — biarkan, pengurus mengisi via formulir Ajukan Izin
+
+                renderLeaveRequestsTable();
+                renderLeaveTodayWidget();
+                updateLeaveKpiStats();
+
             } catch (err) {
                 console.debug('[Leave] loadLeaveRequests using local fallback:', err);
             }
