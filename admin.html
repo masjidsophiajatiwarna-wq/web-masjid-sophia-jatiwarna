@@ -10284,35 +10284,118 @@
             if (btnBox) btnBox.style.display = 'block';
         }
 
+        /**
+         * Memeriksa apakah seorang pengurus sudah memiliki pengajuan izin
+         * (status PENDING atau APPROVED) yang tanggalnya tumpang-tindih
+         * dengan rentang tanggal yang diminta.
+         * @param {string} email - Email pengurus pemohon
+         * @param {string} startDate - Tanggal mulai (YYYY-MM-DD)
+         * @param {string} endDate - Tanggal selesai (YYYY-MM-DD)
+         * @param {string|null} excludeId - ID leave request yang dikecualikan (untuk edit)
+         * @returns {{ hasConflict: boolean, conflicting: object|null }}
+         */
+        function checkLeaveOverlap(email, startDate, endDate, excludeId = null) {
+            const emailClean = (email || '').toLowerCase().trim();
+            const newStart = startDate;
+            const newEnd = endDate;
+
+            const conflicting = leaveRequestsList.find(existing => {
+                if (excludeId && String(existing.id) === String(excludeId)) return false;
+                if ((existing.email || '').toLowerCase().trim() !== emailClean) return false;
+                if (!['PENDING', 'APPROVED'].includes(existing.status)) return false;
+                // Rentang tanggal tumpang-tindih: newStart <= existingEnd AND newEnd >= existingStart
+                return newStart <= existing.end_date && newEnd >= existing.start_date;
+            });
+
+            return { hasConflict: !!conflicting, conflicting: conflicting || null };
+        }
+
         async function handleApplyLeaveSubmit(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-leave-apply');
+
+            const startVal = document.getElementById('leave-form-start-date').value;
+            const endVal = document.getElementById('leave-form-end-date').value;
+            const leaveType = document.getElementById('leave-form-type').value;
+            const reason = document.getElementById('leave-form-reason').value.trim();
+            const emergencyContact = document.getElementById('leave-form-emergency').value.trim();
+            const substituteOfficer = document.getElementById('leave-form-substitute').value || null;
+            const attachmentUrl = document.getElementById('leave-attachment-url').value || null;
+
+            const dStart = new Date(startVal);
+            const dEnd = new Date(endVal);
+            const diffDays = Math.ceil(Math.abs(dEnd - dStart) / (1000 * 60 * 60 * 24)) + 1;
+
+            const currentEmail = (currentUser?.email || '').toLowerCase().trim();
+
+            // ============================================================
+            // VALIDASI 1: Cek tumpang-tindih tanggal dengan izin sebelumnya
+            // ============================================================
+            const { hasConflict, conflicting } = checkLeaveOverlap(currentEmail, startVal, endVal);
+            if (hasConflict) {
+                const statusLabel = conflicting.status === 'APPROVED' ? 'Disetujui' : 'Menunggu Persetujuan';
+                alert(
+                    `Pengajuan izin tidak dapat dikirim.\n\n` +
+                    `Anda sudah memiliki pengajuan izin dengan status "${statusLabel}" ` +
+                    `pada rentang tanggal yang bertumpang-tindih:\n\n` +
+                    `Jenis Izin : ${conflicting.leave_type}\n` +
+                    `Tanggal    : ${conflicting.start_date} s/d ${conflicting.end_date} (${conflicting.total_days} hari)\n\n` +
+                    `Harap batalkan atau tunggu keputusan pimpinan atas pengajuan sebelumnya terlebih dahulu.\n` +
+                    `Jika perlu perubahan, hubungi Ketua DKM / Super Admin untuk menghapus data izin terdahulu.`
+                );
+                return;
+            }
+
+            // ============================================================
+            // VALIDASI 2: Dialog konfirmasi ringkasan pengajuan
+            // ============================================================
+            const leaveTypeLabels = {
+                'SAKIT': 'Izin Sakit',
+                'KEPERLUAN_PRIBADI': 'Keperluan Pribadi',
+                'CUTI_OPERASIONAL': 'Cuti Operasional',
+                'TUGAS_LUAR': 'Tugas Luar Masjid',
+                'LAINNYA': 'Izin Khusus Lainnya'
+            };
+            const typeLabel = leaveTypeLabels[leaveType] || leaveType;
+
+            const isConfirmed = confirm(
+                `Konfirmasi Pengajuan Izin & Cuti\n` +
+                `─────────────────────────────────\n` +
+                `Jenis Izin   : ${typeLabel}\n` +
+                `Tanggal Mulai: ${startVal}\n` +
+                `Tanggal Selesai: ${endVal}\n` +
+                `Durasi       : ${diffDays} Hari\n` +
+                `Pengganti    : ${substituteOfficer || '(tidak ada)'}\n` +
+                `─────────────────────────────────\n` +
+                `Pastikan seluruh informasi sudah benar sebelum dikirim.\n` +
+                `Tekan OK untuk mengirim pengajuan, atau Batal untuk kembali mengedit.`
+            );
+
+            if (!isConfirmed) return;
+
+            // ============================================================
+            // PROSES PENGIRIMAN
+            // ============================================================
             if (btn) {
                 btn.disabled = true;
                 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Pengajuan...';
             }
 
-            const startVal = document.getElementById('leave-form-start-date').value;
-            const endVal = document.getElementById('leave-form-end-date').value;
-            const dStart = new Date(startVal);
-            const dEnd = new Date(endVal);
-            const diffDays = Math.ceil(Math.abs(dEnd - dStart) / (1000 * 60 * 60 * 24)) + 1;
-
             const newLeave = {
                 id: generateUUID(),
                 user_id: currentUser?.id || generateUUID(),
                 full_name: getUserDisplayName(currentUser),
-                email: (currentUser?.email || '').toLowerCase().trim(),
+                email: currentEmail,
                 role: getUserRole(),
                 division: getUserDivision(),
-                leave_type: document.getElementById('leave-form-type').value,
+                leave_type: leaveType,
                 start_date: startVal,
                 end_date: endVal,
                 total_days: diffDays,
-                reason: document.getElementById('leave-form-reason').value.trim(),
-                attachment_url: document.getElementById('leave-attachment-url').value || null,
-                emergency_contact: document.getElementById('leave-form-emergency').value.trim(),
-                substitute_officer: document.getElementById('leave-form-substitute').value || null,
+                reason: reason,
+                attachment_url: attachmentUrl,
+                emergency_contact: emergencyContact,
+                substitute_officer: substituteOfficer,
                 status: 'PENDING',
                 review_notes: null,
                 reviewed_by: null,
@@ -10326,28 +10409,27 @@
 
             if (sbClient) {
                 try {
-                    await sbClient.from('dkm_leave_requests').insert(newLeave);
+                    const { error: insertErr } = await sbClient.from('dkm_leave_requests').insert(newLeave);
+                    if (insertErr) {
+                        console.warn('[Leave] DB insert notice:', insertErr.message || insertErr);
+                    }
                 } catch (err) {
-                    console.warn('DB insert dkm_leave_requests notice:', err);
+                    console.warn('[Leave] DB insert error:', err);
                 }
             }
 
             if (realtimeHub) {
                 try {
-                    realtimeHub.send({
-                        type: 'broadcast',
-                        event: 'LEAVE_SYNC',
-                        payload: newLeave
-                    });
+                    realtimeHub.send({ type: 'broadcast', event: 'LEAVE_SYNC', payload: newLeave });
                 } catch (e) {}
             }
 
-            // Log activity to History
+            // Log aktivitas ke Riwayat Portal
             const newLog = {
                 id: generateUUID(),
                 task_id: null,
                 action_type: 'LEAVE_REQUESTED',
-                description: `${newLeave.full_name} mengajukan ${newLeave.leave_type} (${newLeave.start_date} s/d ${newLeave.end_date}, ${newLeave.total_days} hari)`,
+                description: `${newLeave.full_name} mengajukan ${typeLabel} (${newLeave.start_date} s/d ${newLeave.end_date}, ${newLeave.total_days} hari)`,
                 actor_name: newLeave.full_name,
                 actor_role: newLeave.role,
                 created_at: new Date().toISOString()
@@ -10360,7 +10442,7 @@
             renderLeaveTodayWidget();
             updateLeaveKpiStats();
 
-            alert('Pengajuan izin Anda berhasil dikirim ke Pimpinan DKM & Super Admin untuk persetujuan.');
+            alert('Pengajuan izin Anda berhasil dikirim ke Pimpinan DKM & Super Admin untuk persetujuan. Jazakumullah khairan.');
             if (btn) {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan Izin';
