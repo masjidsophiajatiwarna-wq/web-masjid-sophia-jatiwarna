@@ -5565,7 +5565,11 @@
                     persistLocalTasks(allTasksList);
                 } else if (!taskErr && (!tasks || tasks.length === 0)) {
                     // Seed database if empty
-                    sbClient.from('team_tasks').upsert(allTasksList).catch(e => console.debug('Seeding notice:', e));
+                    try {
+                        await sbClient.from('team_tasks').upsert(allTasksList);
+                    } catch (e) {
+                        console.debug('Seeding notice:', e);
+                    }
                 }
 
                 // 3. Fetch Task Activity Logs
@@ -9882,7 +9886,11 @@
                     updateLeaveKpiStats();
                 } else if (!error && (!data || data.length === 0)) {
                     // Seed remote DB if empty
-                    sbClient.from('dkm_leave_requests').upsert(leaveRequestsList).catch(e => console.debug('Leave DB seed notice:', e));
+                    try {
+                        await sbClient.from('dkm_leave_requests').upsert(leaveRequestsList);
+                    } catch (e) {
+                        console.debug('Leave DB seed notice:', e);
+                    }
                 }
             } catch (err) {
                 console.warn('Fetch dkm_leave_requests notice:', err);
