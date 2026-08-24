@@ -7647,7 +7647,7 @@
                 sender_name: sender,
                 sender_role: role,
                 sender_division: div !== 'ALL' ? div : 'Pengurus Resmi DKM',
-                message: type === 'IMAGE' ? '📷 [Lampiran Foto Dokumentasi]' : '🎥 [Lampiran Video Dokumentasi]',
+                message: type === 'IMAGE' ? '[Lampiran Foto Dokumentasi]' : '[Lampiran Video Dokumentasi]',
                 attachment_url: url,
                 attachment_type: type,
                 reply_to: replyingToMessage ? {
@@ -8903,7 +8903,7 @@
                 return matchQ && matchDiv;
             });
 
-            // Online-First Sort: 1) Online 🟢, 2) Idle 🟡, 3) Offline ⚪, 4) Nonaktif 🔴 -> Secondary: Role Hierarchy
+            // Online-First Sort: 1) Online, 2) Idle, 3) Offline, 4) Nonaktif -> Secondary: Role Hierarchy
             filtered.sort((a, b) => {
                 const aEmail = (a.email || '').toLowerCase().trim();
                 const bEmail = (b.email || '').toLowerCase().trim();
