@@ -12833,6 +12833,12 @@
         }
 
         async function handleSaveIbadahSchedule(statusTarget = 'Draft') {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_IBADAH'].includes(role)) {
+                alert('Akses Ditolak: Hanya PJ Ibadah atau Pimpinan DKM yang berwenang menyimpan atau mengajukan jadwal peribadatan.');
+                return;
+            }
+
             const formId = document.getElementById('ibadah-form-id').value;
             const tanggal = document.getElementById('ibadah-input-tanggal').value;
             const hari = document.getElementById('ibadah-input-hari').value || getIndonesianDayName(tanggal);
@@ -12958,10 +12964,13 @@
             document.getElementById('review-ibadah-summary').textContent = `Jadwal Shalat: ${schedule.tanggal} (${schedule.hari}) • Pengaju: ${schedule.submitted_by || 'PJ Ibadah'}`;
             document.getElementById('review-ibadah-notes').value = schedule.review_notes || '';
             document.getElementById('modal-ibadah-review-note').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function closeIbadahReviewModal() {
             document.getElementById('modal-ibadah-review-note').style.display = 'none';
+            const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
+            if (!anyOpen) document.body.style.overflow = '';
         }
 
         async function handleIbadahReviewSubmit(e) {
@@ -13209,10 +13218,13 @@
             `;
 
             document.getElementById('modal-ibadah-detail').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function closeIbadahDetailModal() {
             document.getElementById('modal-ibadah-detail').style.display = 'none';
+            const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
+            if (!anyOpen) document.body.style.overflow = '';
         }
 
         async function handleSaveKajian(statusTarget = 'Draft') {
@@ -13360,8 +13372,50 @@
             loadIbadahKajian();
         }
 
+        function closeAnyOpenModal(modalEl) {
+            if (!modalEl) return;
+            const id = modalEl.id;
+            if (id === 'modal-ibadah-review-note' && typeof closeIbadahReviewModal === 'function') closeIbadahReviewModal();
+            else if (id === 'modal-ibadah-detail' && typeof closeIbadahDetailModal === 'function') closeIbadahDetailModal();
+            else if (id === 'task-modal' && typeof closeTaskModal === 'function') closeTaskModal();
+            else if (id === 'task-detail-modal' && typeof closeTaskDetailModal === 'function') closeTaskDetailModal();
+            else if (id === 'modal-admin-add-user' && typeof closeAddUserModal === 'function') closeAddUserModal();
+            else if (id === 'modal-admin-edit-user' && typeof closeEditUserModal === 'function') closeEditUserModal();
+            else if (id === 'modal-confirm-delete-user' && typeof closeDeleteUserModal === 'function') closeDeleteUserModal();
+            else if (id === 'modal-confirm-reset-user' && typeof closeResetUserModal === 'function') closeResetUserModal();
+            else if (id === 'modal-user-self-profile' && typeof closeSelfProfileModal === 'function') closeSelfProfileModal();
+            else if (id === 'modal-apply-leave' && typeof closeApplyLeaveModal === 'function') closeApplyLeaveModal();
+            else if (id === 'modal-review-leave' && typeof closeReviewLeaveModal === 'function') closeReviewLeaveModal();
+            else if (id === 'modal-leave-lightbox' && typeof closeLeaveDocLightbox === 'function') closeLeaveDocLightbox();
+            else if (id === 'modal-substitute-alert' && typeof closeSubstituteAlertModal === 'function') closeSubstituteAlertModal();
+            else {
+                modalEl.style.display = 'none';
+                const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
+                if (!anyOpen) document.body.style.overflow = '';
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             initTableGrabbers();
+
+            // Global Modal Backdrop Dismiss & Escape Key Listener
+            document.addEventListener('click', (e) => {
+                if (e.target && e.target.classList && e.target.classList.contains('modal-overlay')) {
+                    if (e.target.id === 'modal-reset-password') return;
+                    closeAnyOpenModal(e.target);
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const openModals = Array.from(document.querySelectorAll('.modal-overlay')).filter(m => m.style.display === 'flex' || m.style.display === 'block');
+                    if (openModals.length > 0) {
+                        const topModal = openModals[openModals.length - 1];
+                        if (topModal.id === 'modal-reset-password') return;
+                        closeAnyOpenModal(topModal);
+                    }
+                }
+            });
         });
     </script>
 </body>
