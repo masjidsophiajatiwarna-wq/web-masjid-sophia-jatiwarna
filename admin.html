@@ -6312,6 +6312,12 @@
                         roles: ['*']
                     },
                     {
+                        id: 'feedback',
+                        label: 'Kotak Saran Jamaah',
+                        icon: 'fa-solid fa-envelope-open-text',
+                        roles: ['*']
+                    },
+                    {
                         id: 'history',
                         label: 'Riwayat Portal',
                         icon: 'fa-solid fa-clock-rotate-left',
@@ -6337,12 +6343,6 @@
                         icon: 'fa-solid fa-kaaba',
                         badgeId: 'badge-sidebar-ibadah-pending',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_IBADAH']
-                    },
-                    {
-                        id: 'feedback',
-                        label: 'Kotak Saran Jamaah',
-                        icon: 'fa-solid fa-envelope-open-text',
-                        roles: ['*']
                     },
                     {
                         id: 'donations',
@@ -12104,7 +12104,7 @@
 
         const DEFAULT_IBADAH_SCHEDULES_SEED = [
             {
-                id: "ibd-001-seed-2026-08-24",
+                id: "b1000000-0000-4000-8000-000000000001",
                 tanggal: "2026-08-24",
                 hari: "Senin",
                 imsak: "04:31",
@@ -12137,7 +12137,7 @@
                 created_at: "2026-08-23T14:30:00Z"
             },
             {
-                id: "ibd-002-seed-2026-08-25",
+                id: "b1000000-0000-4000-8000-000000000002",
                 tanggal: "2026-08-25",
                 hari: "Selasa",
                 imsak: "04:31",
@@ -12170,7 +12170,7 @@
                 created_at: "2026-08-24T08:15:00Z"
             },
             {
-                id: "ibd-003-seed-2026-08-28",
+                id: "b1000000-0000-4000-8000-000000000003",
                 tanggal: "2026-08-28",
                 hari: "Jumat",
                 imsak: "04:30",
@@ -12203,7 +12203,7 @@
                 created_at: "2026-08-24T09:00:00Z"
             },
             {
-                id: "ibd-004-seed-2026-08-29",
+                id: "b1000000-0000-4000-8000-000000000004",
                 tanggal: "2026-08-29",
                 hari: "Sabtu",
                 imsak: "04:30",
@@ -12239,7 +12239,7 @@
 
         const DEFAULT_IBADAH_KAJIAN_SEED = [
             {
-                id: "kjn-001-seed",
+                id: "c1000000-0000-4000-8000-000000000001",
                 judul_kajian: "Tafsir Al-Qur'an Tematik: Menjaga Hati & Keikhlasan Beramal",
                 pemateri: "Ust. Dr. H. Abdurrahman",
                 tema_kategori: "Kajian Akhir Pekan",
@@ -12256,7 +12256,7 @@
                 created_at: "2026-08-23T10:00:00Z"
             },
             {
-                id: "kjn-002-seed",
+                id: "c1000000-0000-4000-8000-000000000002",
                 judul_kajian: "Kajian Rutin Ba'da Subuh: Fiqih Shalat & Adab Musafir",
                 pemateri: "Ust. Syamsul Huda",
                 tema_kategori: "Kajian Rutin Ba'da Subuh",
@@ -12640,6 +12640,9 @@
             const tbody = document.getElementById('ibadah-approval-tbody');
             if (!tbody) return;
 
+            const checkAllBox = document.getElementById('check-all-ibadah-approval');
+            if (checkAllBox) checkAllBox.checked = false;
+
             const filterStatus = document.getElementById('ibadah-dkm-filter-status') ? document.getElementById('ibadah-dkm-filter-status').value : 'Pending Approval';
 
             let filtered = [...ibadahSchedulesList];
@@ -12831,8 +12834,9 @@
                 return;
             }
 
+            const existingSchedule = formId ? ibadahSchedulesList.find(s => s.id === formId) : null;
             const record = {
-                id: formId || `ibd-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+                id: formId || (typeof generateUUID === 'function' ? generateUUID() : ('b1000000-0000-4000-8000-' + String(Date.now()).slice(-12).padStart(12, '0'))),
                 tanggal: tanggal,
                 hari: hari,
                 ikhtiyat_minutes: ikhtiyat,
@@ -12855,8 +12859,12 @@
                 bilal_jumat: document.getElementById('ibadah-bilal-jumat').value || '',
                 status_approval: statusTarget,
                 submitted_by: getUserDisplayName(currentUser),
-                submitted_by_email: currentUser ? currentUser.email : '',
+                submitted_by_email: currentUser ? (currentUser.email || '') : '',
                 submitted_at: new Date().toISOString(),
+                reviewed_by: (statusTarget === 'Pending Approval') ? '' : (existingSchedule ? existingSchedule.reviewed_by : ''),
+                reviewed_by_email: (statusTarget === 'Pending Approval') ? '' : (existingSchedule ? existingSchedule.reviewed_by_email : ''),
+                reviewed_at: (statusTarget === 'Pending Approval') ? null : (existingSchedule ? existingSchedule.reviewed_at : null),
+                review_notes: (statusTarget === 'Pending Approval') ? '' : (existingSchedule ? (existingSchedule.review_notes || '') : ''),
                 updated_at: new Date().toISOString()
             };
 
@@ -12902,7 +12910,7 @@
 
             schedule.status_approval = 'Approved';
             schedule.reviewed_by = getUserDisplayName(currentUser);
-            schedule.reviewed_by_email = currentUser ? currentUser.email : '';
+            schedule.reviewed_by_email = currentUser ? (currentUser.email || '') : '';
             schedule.reviewed_at = new Date().toISOString();
             if (note) schedule.review_notes = note;
 
@@ -12949,15 +12957,36 @@
 
             if (actionType === 'BATCH_REJECT') {
                 const checked = Array.from(document.querySelectorAll('.ibadah-approval-checkbox:checked')).map(cb => cb.value);
+                const reviewerName = getUserDisplayName(currentUser);
+                const reviewerEmail = currentUser ? (currentUser.email || '') : '';
+                const nowISO = new Date().toISOString();
+                const reviewNoteText = notes || 'Mohon disesuaikan kembali penugasan petugas/waktu shalat.';
+
                 for (const itemIbdId of checked) {
                     const sch = ibadahSchedulesList.find(s => s.id === itemIbdId);
                     if (sch) {
                         sch.status_approval = 'Rejected';
-                        sch.reviewed_by = getUserDisplayName(currentUser);
-                        sch.reviewed_at = new Date().toISOString();
-                        sch.review_notes = notes || 'Mohon disesuaikan kembali penugasan petugas/waktu shalat.';
+                        sch.reviewed_by = reviewerName;
+                        sch.reviewed_by_email = reviewerEmail;
+                        sch.reviewed_at = nowISO;
+                        sch.review_notes = reviewNoteText;
+
+                        if (sbClient) {
+                            try {
+                                await sbClient.from('jadwal_shalat_petugas').update({
+                                    status_approval: 'Rejected',
+                                    reviewed_by: reviewerName,
+                                    reviewed_by_email: reviewerEmail,
+                                    reviewed_at: nowISO,
+                                    review_notes: reviewNoteText
+                                }).eq('id', itemIbdId);
+                            } catch (e) {}
+                        }
                     }
                 }
+                const checkAllBox = document.getElementById('check-all-ibadah-approval');
+                if (checkAllBox) checkAllBox.checked = false;
+
                 localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
                 renderIbadahScheduleTable();
                 renderIbadahApprovalTable();
@@ -12976,7 +13005,7 @@
             } else {
                 schedule.status_approval = 'Rejected';
                 schedule.reviewed_by = getUserDisplayName(currentUser);
-                schedule.reviewed_by_email = currentUser ? currentUser.email : '';
+                schedule.reviewed_by_email = currentUser ? (currentUser.email || '') : '';
                 schedule.reviewed_at = new Date().toISOString();
                 schedule.review_notes = notes || 'Mohon disesuaikan kembali susunan petugas.';
 
@@ -13027,6 +13056,7 @@
 
             const nowISO = new Date().toISOString();
             const reviewerName = getUserDisplayName(currentUser);
+            const reviewerEmail = currentUser ? (currentUser.email || '') : '';
 
             for (const cb of checkedBoxes) {
                 const id = cb.value;
@@ -13034,6 +13064,7 @@
                 if (schedule) {
                     schedule.status_approval = 'Approved';
                     schedule.reviewed_by = reviewerName;
+                    schedule.reviewed_by_email = reviewerEmail;
                     schedule.reviewed_at = nowISO;
 
                     if (sbClient) {
@@ -13041,12 +13072,16 @@
                             await sbClient.from('jadwal_shalat_petugas').update({
                                 status_approval: 'Approved',
                                 reviewed_by: reviewerName,
+                                reviewed_by_email: reviewerEmail,
                                 reviewed_at: nowISO
                             }).eq('id', id);
                         } catch (e) {}
                     }
                 }
             }
+
+            const checkAllBox = document.getElementById('check-all-ibadah-approval');
+            if (checkAllBox) checkAllBox.checked = false;
 
             localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
             renderIbadahScheduleTable();
@@ -13169,7 +13204,7 @@
             }
 
             const record = {
-                id: `kjn-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+                id: typeof generateUUID === 'function' ? generateUUID() : ('c1000000-0000-4000-8000-' + String(Date.now()).slice(-12).padStart(12, '0')),
                 judul_kajian: judul,
                 pemateri: pemateri,
                 tema_kategori: kategori,
@@ -13181,7 +13216,7 @@
                 deskripsi: deskripsi,
                 status_approval: statusTarget,
                 submitted_by: getUserDisplayName(currentUser),
-                submitted_by_email: currentUser ? currentUser.email : '',
+                submitted_by_email: currentUser ? (currentUser.email || '') : '',
                 created_at: new Date().toISOString()
             };
 

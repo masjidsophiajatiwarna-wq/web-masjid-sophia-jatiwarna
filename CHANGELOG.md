@@ -10,13 +10,18 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 
 #### Fitur Baru (Added)
 - `[SIDEBAR_ACCORDION_GROUPS]` Implementasi arsitektur menu sidebar dinamis berbasis accordion (`SIDEBAR_MENU_GROUPS`) yang mengelompokkan menu operasional ke dalam 4 grup terstruktur ("DASHBOARD & TUGAS", "LAYANAN & IBADAH", "PUBLIKASI & MEDIA", "AKSES & SISTEM").
-- `[RBAC_DYNAMIC_FILTERING]` Penyaringan menu berbasis peran (RBAC) pada fungsi `renderSidebar(role)` di mana grup accordion disembunyikan secara otomatis dari DOM jika pengguna tidak memiliki hak akses pada minimal satu menu di dalamnya (misal: login sebagai `PJ_IBADAH` secara otomatis menyembunyikan grup "PUBLIKASI & MEDIA").
-- `[IBADAH_APPROVAL_SCHEMA]` Berkas migrasi database `database/migration_modul_ibadah_media.sql` dan sinkronisasi master `database/schema.sql` untuk tabel `public.jadwal_shalat_petugas` dan `public.kajian_acara_ibadah` lengkap dengan kolom alur persetujuan (`status_approval` ['Draft', 'Pending Approval', 'Approved', 'Rejected'], `submitted_by`, `reviewed_by`, `review_notes`), indeks performa, RLS, serta Supabase Realtime publication.
+- `[RBAC_DYNAMIC_FILTERING]` Penyaringan menu berbasis peran (RBAC) pada fungsi `renderSidebar(role)` di mana grup accordion disembunyikan secara otomatis dari DOM jika pengguna tidak memiliki hak akses pada minimal satu menu di dalamnya (misal: login sebagai `PJ_IBADAH` secara otomatis menyembunyikan grup "PUBLIKASI & MEDIA", dan login sebagai `PJ_MEDIA` secara otomatis menyembunyikan grup "LAYANAN & IBADAH").
+- `[IBADAH_APPROVAL_SCHEMA]` Berkas migrasi database `database/migration_modul_ibadah_media.sql` dan sinkronisasi master `database/schema.sql` untuk tabel `public.jadwal_shalat_petugas` dan `public.kajian_acara_ibadah` lengkap dengan kolom alur persetujuan (`status_approval` ['Draft', 'Pending Approval', 'Approved', 'Rejected'], `submitted_by`, `reviewed_by`, `reviewed_by_email`, `review_notes`), indeks performa, RLS, serta Supabase Realtime publication.
 - `[IBADAH_TWO_SIDED_UI]` Antarmuka dwi-sisi terpadu pada Modul Peribadatan (`#tab-ibadah`):
   - **Sisi PJ Ibadah (`#subview-ibadah-input`):** Form input jadwal shalat 5 waktu & penugasan imam/khatib/muadzin, terintegrasi mesin hisab astronomis presisi Jatiwarna (Kemenag WIB UTC+7), kalibrasi ikhtiyat, opsi simpan Draf, dan tombol Pengajuan Persetujuan ke DKM.
-  - **Sisi Pimpinan DKM (`#subview-ibadah-approval`):** Tabel tinjauan jadwal dengan fitur persetujuan massal (Batch Approve), tombol persetujuan cepat per baris, dialog catatan revisi (`#modal-ibadah-review-note`), dan inspeksi komprehensif (`#modal-ibadah-detail`).
+  - **Sisi Pimpinan DKM (`#subview-ibadah-approval`):** Tabel tinjauan jadwal dengan fitur persetujuan massal (Batch Approve), penolakan/revisi massal (Batch Reject), sinkronisasi status checkbox master, tombol persetujuan cepat per baris, dialog catatan revisi (`#modal-ibadah-review-note`), dan inspeksi komprehensif (`#modal-ibadah-detail`).
   - **Sub-view Agenda Kajian (`#subview-ibadah-kajian`):** Manajemen agenda kajian tematik & rutin ba'da subuh dengan persetujuan pimpinan.
-- `[VERIFICATION_AUTOMATION]` Skrip pengujian otomatis `scratch/verify_sidebar_and_ui.js` dan `scratch/verify_supabase_db.js` yang memvalidasi integritas RBAC sidebar, kelengkapan elemen UI, kepatuhan standar No-Emoji, dan struktur skema database.
+- `[VERIFICATION_AUTOMATION]` Skrip pengujian otomatis `scratch/verify_sidebar_and_ui.js`, `scratch/adversarial_verification.js`, dan `scratch/test_batch_and_edge_cases.js` yang memvalidasi integritas RBAC sidebar untuk seluruh 11 peran DKM, ketahanan batch approval >50 item, toleransi gangguan jaringan (offline fallback), kelengkapan elemen UI, kepatuhan standar No-Emoji, dan struktur skema database.
+
+#### Perbaikan & Keandalan (Fixed & Reliability)
+- `[RBAC_GROUP_ISOLATION_FIX]` Memindahkan menu Kotak Saran Jamaah (`feedback`) ke dalam grup `DASHBOARD & TUGAS` agar grup `LAYANAN & IBADAH` murni terisolasi dan hanya muncul bagi peran yang memiliki hak akses peribadatan (`PJ_IBADAH`) atau keuangan (`PJ_KEUANGAN`).
+- `[RFC_UUID_COMPLIANCE]` Memperbaiki format ID pada seed data baku dan form generator agar selalu menggunakan RFC4122 UUID yang valid dan kompatibel dengan kolom bertipe `UUID` di database PostgreSQL Supabase.
+- `[BATCH_REJECT_DB_SYNC]` Memperbaiki logika penolakan massal (*Batch Reject*) agar mengeksekusi pembaruan status dan `reviewed_by_email` secara langsung ke Supabase DB.
 
 ---
 
