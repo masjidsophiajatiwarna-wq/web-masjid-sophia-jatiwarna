@@ -5129,6 +5129,16 @@
                     alert('Status Konfirmasi Email: ' + decodeURIComponent(msg.replace(/\+/g, ' ')));
                     history.replaceState(null, '', window.location.pathname + '#overview');
                 }
+            } else if (rawHash.includes('type=email_change') && rawHash.includes('access_token=')) {
+                showAuthScreen();
+                setTimeout(async () => {
+                    if (sbClient) {
+                        await sbClient.auth.signOut();
+                    }
+                    alert('Email Anda telah berhasil dikonfirmasi!\n\nSilakan masuk kembali (login) menggunakan alamat email baru Anda.');
+                    window.location.replace(window.location.pathname);
+                }, 1500);
+                return;
             }
 
             await loadAdminUsers();
