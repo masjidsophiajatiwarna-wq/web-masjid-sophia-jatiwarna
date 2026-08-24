@@ -22,6 +22,9 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 - `[RBAC_GROUP_ISOLATION_FIX]` Memindahkan menu Kotak Saran Jamaah (`feedback`) ke dalam grup `DASHBOARD & TUGAS` agar grup `LAYANAN & IBADAH` murni terisolasi dan hanya muncul bagi peran yang memiliki hak akses peribadatan (`PJ_IBADAH`) atau keuangan (`PJ_KEUANGAN`).
 - `[RFC_UUID_COMPLIANCE]` Memperbaiki format ID pada seed data baku dan form generator agar selalu menggunakan RFC4122 UUID yang valid dan kompatibel dengan kolom bertipe `UUID` di database PostgreSQL Supabase.
 - `[BATCH_REJECT_DB_SYNC]` Memperbaiki logika penolakan massal (*Batch Reject*) agar mengeksekusi pembaruan status dan `reviewed_by_email` secara langsung ke Supabase DB.
+- `[ACCESSIBILITY_ENHANCEMENT]` Menambahkan atribut aksesibilitas WAI-ARIA lengkap (`aria-expanded`, `aria-controls`, `role="region"`, `aria-label`) pada header dan wadah daftar menu accordion sidebar di `admin.html`, tersinkronisasi secara dinamis pada interaksi klik maupun ekspansi otomatis tab aktif.
+- `[ROLE_SECURITY_GATES_HARDENING]` Memperkuat validasi otorisasi peran pada `openIbadahReviewModal`, `openBatchRejectModal`, `handleIbadahReviewSubmit`, `handleSaveKajian`, `handleDeleteIbadahSchedule`, dan `handleDeleteKajian` serta memastikan persistensi `reviewed_by_email` pada agenda kajian.
+- `[TABLE_GRABBER_AUTOINIT]` Menginisialisasi listener Table Drag Grabber Engine secara otomatis setiap kali tab `#tab-ibadah` dibuka guna menjamin kelancaran interaksi drag-to-scroll pada perangkat layar sentuh dan desktop.
 
 ---
 

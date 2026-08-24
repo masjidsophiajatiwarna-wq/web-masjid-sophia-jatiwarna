@@ -6410,14 +6410,14 @@
 
                 html += `
                     <div class="sidebar-accordion-group ${isCollapsed ? 'collapsed' : ''}" id="sidebar-group-${group.id}">
-                        <button type="button" class="sidebar-group-header" onclick="toggleSidebarGroup('${group.id}')" title="${escapeHtml(group.title)}">
+                        <button type="button" class="sidebar-group-header" onclick="toggleSidebarGroup('${group.id}')" title="${escapeHtml(group.title)}" aria-expanded="${isCollapsed ? 'false' : 'true'}" aria-controls="sidebar-group-body-${group.id}">
                             <div class="group-title-box">
-                                <i class="${escapeHtml(group.icon)}"></i>
+                                <i class="${escapeHtml(group.icon)}" aria-hidden="true"></i>
                                 <span class="group-title-text">${escapeHtml(group.title)}</span>
                             </div>
-                            <i class="fa-solid fa-chevron-down group-chevron"></i>
+                            <i class="fa-solid fa-chevron-down group-chevron" aria-hidden="true"></i>
                         </button>
-                        <ul class="sidebar-group-body">
+                        <ul class="sidebar-group-body" id="sidebar-group-body-${group.id}" role="region" aria-label="${escapeHtml(group.title)}">
                 `;
 
                 visibleItems.forEach(item => {
@@ -6429,7 +6429,7 @@
                     html += `
                         <li id="sidebar-nav-item-${escapeHtml(item.id)}">
                             <button class="nav-item-btn ${isActive}" onclick="switchTab('${escapeHtml(item.id)}', this)" title="${escapeHtml(item.label)}">
-                                <i class="${escapeHtml(item.icon)}"></i>
+                                <i class="${escapeHtml(item.icon)}" aria-hidden="true"></i>
                                 <span>${escapeHtml(item.label)}</span>
                                 ${badgeHtml}
                             </button>
@@ -6455,6 +6455,10 @@
             const groupElem = document.getElementById(`sidebar-group-${groupId}`);
             if (!groupElem) return;
             const isCollapsed = groupElem.classList.toggle('collapsed');
+            const headerBtn = groupElem.querySelector('.sidebar-group-header');
+            if (headerBtn) {
+                headerBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+            }
             try {
                 localStorage.setItem(`masjid_sophia_group_collapsed_${groupId}`, isCollapsed ? '1' : '0');
             } catch (e) {}
@@ -6620,6 +6624,10 @@
                 const parentGroup = btn.closest('.sidebar-accordion-group');
                 if (parentGroup && parentGroup.classList.contains('collapsed')) {
                     parentGroup.classList.remove('collapsed');
+                    const groupBtn = parentGroup.querySelector('.sidebar-group-header');
+                    if (groupBtn) {
+                        groupBtn.setAttribute('aria-expanded', 'true');
+                    }
                 }
             }
 
@@ -6665,6 +6673,7 @@
                 fetchSystemHealth();
             } else if (tabId === 'ibadah') {
                 initModulIbadah();
+                if (typeof initTableGrabbers === 'function') initTableGrabbers();
             }
         }
 
@@ -12935,6 +12944,12 @@
         }
 
         function openIbadahReviewModal(id, actionType = 'REJECT') {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(role)) {
+                alert('Akses Ditolak: Hanya Pimpinan DKM (Super Admin / Ketua DKM) yang berwenang meninjau atau meminta revisi jadwal.');
+                return;
+            }
+
             const schedule = ibadahSchedulesList.find(s => s.id === id);
             if (!schedule) return;
 
@@ -12951,6 +12966,12 @@
 
         async function handleIbadahReviewSubmit(e) {
             e.preventDefault();
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(role)) {
+                alert('Akses Ditolak: Hanya Pimpinan DKM (Super Admin / Ketua DKM) yang berwenang meninjau atau meminta revisi jadwal.');
+                return;
+            }
+
             const id = document.getElementById('review-ibadah-schedule-id').value;
             const actionType = document.getElementById('review-ibadah-action-type').value;
             const notes = document.getElementById('review-ibadah-notes').value;
@@ -13092,6 +13113,12 @@
         }
 
         function openBatchRejectModal() {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(role)) {
+                alert('Akses Ditolak: Hanya Pimpinan DKM (Super Admin / Ketua DKM) yang berwenang meminta revisi jadwal secara massal.');
+                return;
+            }
+
             const checkedBoxes = Array.from(document.querySelectorAll('.ibadah-approval-checkbox:checked'));
             if (checkedBoxes.length === 0) {
                 alert('Peringatan: Silakan centang minimal satu jadwal yang ingin diminta revisi.');
@@ -13189,6 +13216,12 @@
         }
 
         async function handleSaveKajian(statusTarget = 'Draft') {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_IBADAH'].includes(role)) {
+                alert('Akses Ditolak: Hanya PJ Ibadah atau Pimpinan DKM yang berwenang menambahkan agenda kajian.');
+                return;
+            }
+
             const judul = document.getElementById('kajian-input-judul').value.trim();
             const pemateri = document.getElementById('kajian-input-pemateri').value.trim();
             const tanggal = document.getElementById('kajian-input-tanggal').value;
@@ -13255,6 +13288,7 @@
 
             kajian.status_approval = 'Approved';
             kajian.reviewed_by = getUserDisplayName(currentUser);
+            kajian.reviewed_by_email = currentUser ? (currentUser.email || '') : '';
             kajian.reviewed_at = new Date().toISOString();
 
             if (sbClient) {
@@ -13262,6 +13296,7 @@
                     await sbClient.from('kajian_acara_ibadah').update({
                         status_approval: 'Approved',
                         reviewed_by: kajian.reviewed_by,
+                        reviewed_by_email: kajian.reviewed_by_email,
                         reviewed_at: kajian.reviewed_at
                     }).eq('id', id);
                 } catch (e) {}
@@ -13273,6 +13308,12 @@
         }
 
         async function handleDeleteIbadahSchedule(id) {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_IBADAH'].includes(role)) {
+                alert('Akses Ditolak: Anda tidak memiliki izin untuk menghapus jadwal peribadatan.');
+                return;
+            }
+
             const confirmDel = confirm('Konfirmasi: Apakah Anda yakin ingin menghapus jadwal peribadatan ini?');
             if (!confirmDel) return;
 
@@ -13291,6 +13332,12 @@
         }
 
         async function handleDeleteKajian(id) {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_IBADAH'].includes(role)) {
+                alert('Akses Ditolak: Anda tidak memiliki izin untuk menghapus agenda kajian.');
+                return;
+            }
+
             const confirmDel = confirm('Konfirmasi: Apakah Anda yakin ingin menghapus agenda kajian ini?');
             if (!confirmDel) return;
 
