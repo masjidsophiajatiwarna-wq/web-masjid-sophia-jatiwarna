@@ -2757,6 +2757,53 @@
                 padding: 1.25rem 1rem;
             }
         }
+        .password-wrapper {
+            position: relative;
+            display: block;
+        }
+        .btn-toggle-password {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--color-charcoal-muted);
+            cursor: pointer;
+            padding: 0.2rem;
+            transition: var(--transition);
+        }
+        .btn-toggle-password:hover {
+            color: var(--color-gold-deep);
+        }
+        .password-requirements {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: var(--color-bg-sand);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            color: var(--color-charcoal-muted);
+        }
+        .password-req-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .password-req-item:last-child {
+            margin-bottom: 0;
+        }
+        .req-icon {
+            width: 14px;
+            text-align: center;
+        }
+        .req-unmet {
+            color: var(--color-charcoal-muted);
+        }
+        .req-met {
+            color: var(--color-success);
+        }
     </style>
 </head>
 <body>
@@ -2780,7 +2827,12 @@
 
                 <div class="form-group">
                     <label class="form-label" for="login-password">Kata Sandi</label>
-                    <input type="password" id="login-password" class="form-input" placeholder="••••••••••••" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" class="form-input" placeholder="••••••••••••" required>
+                        <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('login-password', this)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
                     <div style="margin-top: 0.35rem; text-align: right;">
                         <a href="#" onclick="handleForgotPasswordFromLogin(event)" style="font-size: 0.72rem; color: var(--color-gold-deep); text-decoration: none; font-weight: 700;">Lupa Kata Sandi?</a>
                     </div>
@@ -4497,14 +4549,30 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label" style="font-size: 0.72rem; letter-spacing: 0.5px;">KATA SANDI LAMA</label>
-                        <input type="password" id="self-current-password-input" class="form-input" placeholder="Masukkan kata sandi saat ini">
+                        <div class="password-wrapper">
+                            <input type="password" id="self-current-password-input" class="form-input" placeholder="Masukkan kata sandi saat ini">
+                            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('self-current-password-input', this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
                         <div style="margin-top: 0.35rem; text-align: right;">
                             <a href="#" onclick="handleForgotPasswordFromProfile(event)" style="font-size: 0.72rem; color: var(--color-gold-deep); text-decoration: none; font-weight: 700;">Lupa Sandi Lama?</a>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label" style="font-size: 0.72rem; letter-spacing: 0.5px;">KATA SANDI BARU</label>
-                        <input type="password" id="self-new-password-input" class="form-input" placeholder="Masukkan kata sandi baru (Minimal 6 karakter)">
+                        <div class="password-wrapper">
+                            <input type="password" id="self-new-password-input" class="form-input" placeholder="Minimal 8 karakter, ada huruf besar/kecil, angka & simbol" oninput="checkPasswordStrength(this.value, 'self-pw-req')">
+                            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('self-new-password-input', this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-requirements" id="self-pw-req">
+                            <div class="password-req-item"><i class="fa-solid fa-times req-icon req-unmet"></i> Minimal 8 karakter</div>
+                            <div class="password-req-item"><i class="fa-solid fa-times req-icon req-unmet"></i> Mengandung huruf besar & kecil</div>
+                            <div class="password-req-item"><i class="fa-solid fa-times req-icon req-unmet"></i> Mengandung angka</div>
+                            <div class="password-req-item"><i class="fa-solid fa-times req-icon req-unmet"></i> Mengandung karakter simbol</div>
+                        </div>
                     </div>
                     <button type="button" class="btn-security-submit" onclick="handleSelfUpdatePasswordAndLogout()">
                         <i class="fa-solid fa-shield-check" style="color: var(--color-gold-primary);"></i> Perbarui Kata Sandi &amp; Login Ulang
@@ -4547,11 +4615,27 @@
             <form id="form-reset-password" onsubmit="handleResetPasswordSubmit(event)">
                 <div class="form-group">
                     <label class="form-label">KATA SANDI BARU</label>
-                    <input type="password" id="recovery-new-password" class="form-input" placeholder="Minimal 6 karakter" required minlength="6">
+                    <div class="password-wrapper">
+                        <input type="password" id="recovery-new-password" class="form-input" placeholder="Minimal 8 karakter, ada huruf besar/kecil, angka & simbol" required oninput="checkPasswordStrength(this.value, 'recovery-pw-req')">
+                        <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('recovery-new-password', this)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-requirements" id="recovery-pw-req">
+                        <div class="password-req-item"><i class="fa-solid fa-times req-icon req-unmet"></i> Minimal 8 karakter</div>
+                        <div class="password-req-item"><i class="fa-solid fa-times req-icon req-unmet"></i> Mengandung huruf besar & kecil</div>
+                        <div class="password-req-item"><i class="fa-solid fa-times req-icon req-unmet"></i> Mengandung angka</div>
+                        <div class="password-req-item"><i class="fa-solid fa-times req-icon req-unmet"></i> Mengandung karakter simbol</div>
+                    </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 2rem;">
                     <label class="form-label">KONFIRMASI KATA SANDI</label>
-                    <input type="password" id="recovery-confirm-password" class="form-input" placeholder="Ulangi kata sandi baru" required minlength="6">
+                    <div class="password-wrapper">
+                        <input type="password" id="recovery-confirm-password" class="form-input" placeholder="Ulangi kata sandi baru" required>
+                        <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('recovery-confirm-password', this)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
                 
                 <button type="submit" class="btn-auth-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.85rem; padding: 0.85rem; background: var(--color-charcoal); color: var(--color-gold-primary); border: none; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer;">
@@ -5201,6 +5285,58 @@
                 showAuthScreen();
             }
         });
+
+        // UX: Toggle Password Visibility
+        function togglePasswordVisibility(inputId, btnEl) {
+            const input = document.getElementById(inputId);
+            const icon = btnEl.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // UX: Password Strength Real-time Validation
+        function checkPasswordStrength(password, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const items = container.querySelectorAll('.password-req-item .req-icon');
+            if (items.length !== 4) return;
+            
+            const reqs = [
+                password.length >= 8, // Length
+                /[a-z]/.test(password) && /[A-Z]/.test(password), // Lower & Upper
+                /[0-9]/.test(password), // Number
+                /[^A-Za-z0-9]/.test(password) // Symbol
+            ];
+
+            reqs.forEach((isMet, index) => {
+                const icon = items[index];
+                if (isMet) {
+                    icon.classList.remove('fa-times', 'req-unmet');
+                    icon.classList.add('fa-check', 'req-met');
+                } else {
+                    icon.classList.remove('fa-check', 'req-met');
+                    icon.classList.add('fa-times', 'req-unmet');
+                }
+            });
+        }
+        
+        function validatePasswordReqs(password) {
+            return (
+                password.length >= 8 &&
+                /[a-z]/.test(password) &&
+                /[A-Z]/.test(password) &&
+                /[0-9]/.test(password) &&
+                /[^A-Za-z0-9]/.test(password)
+            );
+        }
+
         // Lupa Kata Sandi dari Halaman Login
         async function handleForgotPasswordFromLogin(e) {
             if (e) e.preventDefault();
@@ -5244,8 +5380,8 @@
             const newPass = document.getElementById('recovery-new-password').value;
             const confirmPass = document.getElementById('recovery-confirm-password').value;
             
-            if (!newPass || newPass.length < 6) {
-                alert("Kata sandi baru minimal 6 karakter.");
+            if (!validatePasswordReqs(newPass)) {
+                alert("Kata sandi belum memenuhi kriteria keamanan (Minimal 8 karakter, huruf besar/kecil, angka, simbol).");
                 return;
             }
             if (newPass !== confirmPass) {
@@ -10016,8 +10152,8 @@
                 alert('Harap masukkan kata sandi Anda saat ini.');
                 return;
             }
-            if (!pass || pass.length < 6) {
-                alert('Kata sandi baru minimal harus 6 karakter.');
+            if (!validatePasswordReqs(pass)) {
+                alert('Kata sandi baru belum memenuhi kriteria keamanan (Minimal 8 karakter, huruf besar/kecil, angka, simbol).');
                 return;
             }
 
