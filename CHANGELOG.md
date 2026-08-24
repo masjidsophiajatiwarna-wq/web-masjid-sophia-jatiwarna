@@ -14,9 +14,13 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
   - Tautan **Lupa Sandi Lama** di Modal Profil Mandiri bagi pengurus yang sedang login namun lupa sandi lamanya saat ingin mengganti sandi baru.
   - Implementasi modal khusus `#modal-reset-password` untuk mengatur sandi baru dengan tampilan rapi ala Masjid Sophia setelah klik tautan dari email.
 - `[AUTH_SECURE_PASSWORD]` Penambahan input **Kata Sandi Lama** di Modal Profil Mandiri (Tab Security) yang dikaitkan langsung dengan parameter `current_password` di Supabase untuk memenuhi standar pengamanan otentikasi.
+- `[AUTH_UX_IMPROVEMENT]` Peningkatan UX (User Experience) Input Kata Sandi:
+  - **Toggle Visibilitas Sandi:** Menambahkan ikon mata interaktif pada seluruh form kata sandi (login, profil, reset sandi) agar pengguna bisa mengecek ketikan mereka.
+  - **Validasi Kekuatan Sandi Real-time:** Menambahkan *checklist* indikator keamanan dinamis di bawah kolom sandi baru untuk mengawal syarat keamanan Supabase secara ketat (minimal 8 karakter, huruf besar/kecil, angka, simbol) sebelum diklik simpan.
 
 #### Perbaikan (Fixed)
 - `[AUTH_FORCED_RELOGIN]` Otomatis menghapus sesi secara paksa setelah pengguna sukses mengeklik tautan konfirmasi email atau tautan pemulihan sandi, lalu menampilkan pesan yang mengarahkan mereka untuk *login ulang* menggunakan kredensial yang baru demi mencegah sesi macet atau bug autorisasi ganda.
+- `[AUTH_BYPASS_FIX]` Memperbaiki celah keamanan logika login (*fallback bypass*) di mana sebelumnya sistem mengizinkan login lokal menggunakan kata sandi *default* (SophiaJatiwarna2026!) meskipun pengguna sebenarnya sudah mengganti kata sandinya di database Supabase.
 
 ---
 

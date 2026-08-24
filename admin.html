@@ -5486,37 +5486,46 @@
                         const isCustomPassMatch = customPass && (password === customPass || passTrimmed === customPass);
 
                         if (isDefaultPass || isCustomPassMatch) {
-                            // Auto-provision into Supabase Auth in background
+                            // Auto-provision into Supabase Auth
                             if (sbClient) {
                                 try {
-                                    const { data: upData } = await sbClient.auth.signUp({
+                                    let sbUser = null;
+                                    const { data: inData } = await sbClient.auth.signInWithPassword({
                                         email: email,
-                                        password: password,
-                                        options: {
-                                            data: {
-                                                full_name: matchingUser.full_name,
-                                                role: matchingUser.role,
-                                                division: matchingUser.division
-                                            }
-                                        }
+                                        password: password
                                     });
-                                    if (upData && upData.user) {
-                                        authUser = upData.user;
+                                    if (inData && inData.user) {
+                                        sbUser = inData.user;
                                     } else {
-                                        const { data: inData } = await sbClient.auth.signInWithPassword({
+                                        const { data: upData, error: upError } = await sbClient.auth.signUp({
                                             email: email,
-                                            password: password
+                                            password: password,
+                                            options: {
+                                                data: {
+                                                    full_name: matchingUser.full_name,
+                                                    role: matchingUser.role,
+                                                    division: matchingUser.division
+                                                }
+                                            }
                                         });
-                                        if (inData && inData.user) {
-                                            authUser = inData.user;
+                                        if (upData && upData.user && !upError) {
+                                            sbUser = upData.user;
                                         }
+                                    }
+
+                                    if (sbUser) {
+                                        authUser = sbUser;
+                                        loginSuccess = true;
+                                    } else {
+                                        // Keduanya gagal (User sudah ada di Supabase tapi password lama/default salah karena sudah diganti)
+                                        // Maka KITA JANGAN mengizinkan masuk.
+                                        loginSuccess = false;
                                     }
                                 } catch (provErr) {
                                     console.warn("Auto-provision notice:", provErr);
                                 }
-                            }
-
-                            if (!authUser) {
+                            } else {
+                                // Mode tanpa database (Mock)
                                 authUser = {
                                     id: matchingUser.id || ('user_' + Date.now()),
                                     email: matchingUser.email,
@@ -5526,8 +5535,8 @@
                                         division: matchingUser.division
                                     }
                                 };
+                                loginSuccess = true;
                             }
-                            loginSuccess = true;
                         }
                     }
                 }
