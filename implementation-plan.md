@@ -7,7 +7,7 @@
 **Domain Utama Produksi:** `https://masjidsophiajatiwarna.com/`  
 **Domain Sekunder (Redirect 301):** `https://masjidsophiajatiwarna.my.id/`, `https://masjidsophia.com/`  
 **Subdomain Pemantauan & Admin:** `https://progdev.masjidsophiajatiwarna.com/`, `https://admin.masjidsophiajatiwarna.com/`  
-**Versi Rencana Induk:** v5.5 (Perbaikan Alur Redirect Email Supabase, Sinkronisasi Logout Keamanan, dan Optimasi Profil Mandiri)  
+**Versi Rencana Induk:** v5.6 (Pengelompokan Sidebar Dinamis Berbasis Peran, Skema Alur Persetujuan Modul Ibadah, dan Antarmuka Dwi-Sisi Input & Approval Batch)  
 **Terakhir Diperbarui:** 2026-08-24  
 
 ---
@@ -127,9 +127,13 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 
 ### Fase 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ
 - **Benchmark Rujukan:** SIABE-PORTO (Task Engine & Cloud Monitor), WEB-UMAR Admin (Article Studio), dan Standard Modul Odoo/Masjid (`.unused-modul-web-sophia`)
-- **Status:** 50% Selesai (Admin Core, Task Management 5 View, Obrolan Koordinasi Multi-Arah, Account Control & Dynamic RBAC, Profil Mandiri & Mobile Grabber Selesai)
+- **Status:** 60% Selesai (Admin Core, Task Management 5 View, Obrolan Koordinasi Multi-Arah, Account Control & Dynamic RBAC, Profil Mandiri, Izin & Cuti Pengurus, Pengelompokan Sidebar Dinamis Accordion, dan Modul Peribadatan & Alur Persetujuan Selesai)
 - **Daftar Tugas:**
   - [x] **Pondasi Admin Core & Auth Gate (`admin.html`):** Gerbang login Supabase Auth JWT, sidebar adaptif RBAC 10 peran, panel KPI Real-Time, inbox kotak saran, dan rekonsiliasi kas harian.
+  - [x] **Pengelompokan Sidebar Dinamis Berbasis Accordion & RBAC Filtering (R1 - SELESAI):**
+    - Arsitektur pengelompokan menu multi-tier (`SIDEBAR_MENU_GROUPS`) yang mengorganisasikan menu ke dalam 4 grup terstruktur: "DASHBOARD & TUGAS", "LAYANAN & IBADAH", "PUBLIKASI & MEDIA", "AKSES & SISTEM".
+    - Penyaringan visibilitas berbasis peran pada `renderSidebar(role)`: grup hanya dirender ke dalam DOM apabila peran aktif memiliki izin minimal satu menu di dalamnya (misal: peran `PJ_IBADAH` secara otomatis tidak menampilkan grup "PUBLIKASI & MEDIA").
+    - Fitur collapse/expand interaktif per grup dengan persistensi status lokal `localStorage` serta auto-expand saat tab di dalamnya aktif.
   - [x] **Optimasi Antarmuka Fluid Desktop & Mobile-First Touch UI (`admin.html`):**
     - **Tampilan Desktop / Laptop:** Multi-kolom lebar, split-pane layout gantt (fixed sidebar 250px + timeline), tabel data komprehensif, sidebar collapse to icon mode (72px).
     - **Tampilan Smartphone (Android & iPhone):** Table Drag Grabber Engine (`.table-responsive`), drag-to-scroll kursor grab/grabbing, target sentuh min 48px, gestur swipe touch pan, auto-center Today view, modal backdrop scroll lock (`overflow: hidden`).
@@ -154,12 +158,16 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - [x] **Peningkatan UX & Validasi Keamanan Form Kata Sandi:** Tombol *toggle* lihat/sembunyikan sandi (ikon mata SVG/FA) di seluruh form sandi, validasi kerumitan sandi *real-time* dengan indikator hijau/merah (*Live Checklist*: 8 karakter, huruf besar/kecil, angka, simbol), dan penolakan *submit* jika belum memenuhi syarat keamanan.
     - [x] **Penutupan Celah Keamanan (Auth Security Bypass Fix):** Menghapus mekanisme *fallback bypass* (akses otomatis menggunakan kata sandi default `SophiaJatiwarna2026!`) apabila proyek telah terhubung ke server Supabase. Hal ini menjamin bahwa seluruh verifikasi sandi mutlak tunduk pada keputusan *database* otoritatif tanpa celah jalur belakang (*backdoor*).
     - [x] **Penyelarasan Visual Brand Sophia:** Latar belakang putih bersih `.modal-box`, indikator tab aktif garis bawah emas Sophia Gold tebal, tombol aksi bergradasi *Charcoal Gold Glow*, dan 100% bahasa Indonesia santun & formal.
-  - [ ] **Suite Modul Khusus per Divisi PJ:**
+  - [x] **Modul Peribadatan, Penugasan Petugas & Alur Persetujuan DKM (R2 & R3 - SELESAI):**
+    - [x] **Skema Migrasi Database Alur Persetujuan (`database/migration_modul_ibadah_media.sql`):** Tabel `public.jadwal_shalat_petugas` dan `public.kajian_acara_ibadah` dengan kolom status persetujuan (`status_approval` ['Draft', 'Pending Approval', 'Approved', 'Rejected'], `submitted_by`, `reviewed_by`, `review_notes`), RLS Zero-Trust, dan Realtime Replication.
+    - [x] **Sisi PJ Ibadah (`#subview-ibadah-input`):** Form input jadwal shalat 5 waktu terkalibrasi mesin Hisab Astronomis Jatiwarna Kemenag WIB UTC+7, kalibrasi menit ikhtiyat, susunan imam rawatib & muadzin, susunan petugas Shalat Jumat (Khatib, Muadzin, Bilal), opsi simpan draf, dan tombol pengajuan persetujuan ke DKM.
+    - [x] **Sisi Pimpinan DKM (`#subview-ibadah-approval`):** Tabel tinjauan jadwal dengan fitur persetujuan massal (*Batch Approve*), tombol persetujuan cepat per baris, modal catatan revisi (`#modal-ibadah-review-note`), dan inspeksi detail komprehensif (`#modal-ibadah-detail`).
+    - [x] **Sub-view Agenda Kajian (`#subview-ibadah-kajian`):** Manajemen agenda kajian akhir pekan dan kajian rutin ba'da subuh dengan persetujuan pimpinan DKM.
+  - [ ] **Suite Modul Khusus per Divisi PJ (Sisa):**
     - **PJ Media & Dakwah:** Article Studio (Quill.js Rich Text, slug generator, ImageKit cover WebP) & Dynamic Homepage Media Manager (review Ketua DKM).
     - **PJ Logistik & Sarpras:** Porsi Makan Gratis ba'da Dzuhur (70+ porsi/hari, dapur) & Inventaris Aset Fisik Masjid (kode inventaris, lokasi, kondisi, servis).
     - **PJ Santri & Pendidikan:** Direktori Santri Tahfidz & Log Mutaba'ah Setoran Hafalan Qur'an (Subuh & Maghrib) serta rapor perkembangan.
     - **PJ Musafir & Pelayanan:** Buku Tamu Musafir Digital, Izin Menginap / Istirahat 24 Jam, dan Log Penitipan Kendaraan & Loker Barang.
-    - **PJ Ibadah & Acara:** Kalibrasi Menit Ikhtiyat Shalat, Rotasi Petugas Harian (Imam, Muadzin, Khatib, Bilal), Kalender Acara/Kajian & Arsip Khutbah.
     - **PJ Keuangan:** Buku Kas Masuk, Buku Kas Keluar, Alur Form Pengajuan Anggaran (*Budget Request*) & Klaim Nota Bon (*Expense Claim*) bagi seluruh 7 PJ divisi dengan persetujuan Ketua DKM & PJ Keuangan, Laporan Arus Kas, dan Neraca Kas Berkala (CSV & PDF).
     - **PJ Keamanan:** Log Piket Keamanan 24 Jam, Patroli Area, dan Input Laporan Kejadian dengan unggah foto/video ke ImageKit CDN (auto WebP/WebM).
     - **PJ Kebersihan:** Checklist Sanitasi Harian (Wudhu, Toilet, Ruang Shalat, Halaman) dan Input Laporan Kebersihan dengan unggah foto/video ke ImageKit CDN (auto WebP/WebM).

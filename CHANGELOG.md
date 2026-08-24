@@ -4,6 +4,22 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.8.5] - 2026-08-24
+
+### Pengelompokan Sidebar Dinamis Berbasis Peran, Skema Alur Persetujuan Modul Ibadah, dan Antarmuka Dwi-Sisi Input & Approval Batch
+
+#### Fitur Baru (Added)
+- `[SIDEBAR_ACCORDION_GROUPS]` Implementasi arsitektur menu sidebar dinamis berbasis accordion (`SIDEBAR_MENU_GROUPS`) yang mengelompokkan menu operasional ke dalam 4 grup terstruktur ("DASHBOARD & TUGAS", "LAYANAN & IBADAH", "PUBLIKASI & MEDIA", "AKSES & SISTEM").
+- `[RBAC_DYNAMIC_FILTERING]` Penyaringan menu berbasis peran (RBAC) pada fungsi `renderSidebar(role)` di mana grup accordion disembunyikan secara otomatis dari DOM jika pengguna tidak memiliki hak akses pada minimal satu menu di dalamnya (misal: login sebagai `PJ_IBADAH` secara otomatis menyembunyikan grup "PUBLIKASI & MEDIA").
+- `[IBADAH_APPROVAL_SCHEMA]` Berkas migrasi database `database/migration_modul_ibadah_media.sql` dan sinkronisasi master `database/schema.sql` untuk tabel `public.jadwal_shalat_petugas` dan `public.kajian_acara_ibadah` lengkap dengan kolom alur persetujuan (`status_approval` ['Draft', 'Pending Approval', 'Approved', 'Rejected'], `submitted_by`, `reviewed_by`, `review_notes`), indeks performa, RLS, serta Supabase Realtime publication.
+- `[IBADAH_TWO_SIDED_UI]` Antarmuka dwi-sisi terpadu pada Modul Peribadatan (`#tab-ibadah`):
+  - **Sisi PJ Ibadah (`#subview-ibadah-input`):** Form input jadwal shalat 5 waktu & penugasan imam/khatib/muadzin, terintegrasi mesin hisab astronomis presisi Jatiwarna (Kemenag WIB UTC+7), kalibrasi ikhtiyat, opsi simpan Draf, dan tombol Pengajuan Persetujuan ke DKM.
+  - **Sisi Pimpinan DKM (`#subview-ibadah-approval`):** Tabel tinjauan jadwal dengan fitur persetujuan massal (Batch Approve), tombol persetujuan cepat per baris, dialog catatan revisi (`#modal-ibadah-review-note`), dan inspeksi komprehensif (`#modal-ibadah-detail`).
+  - **Sub-view Agenda Kajian (`#subview-ibadah-kajian`):** Manajemen agenda kajian tematik & rutin ba'da subuh dengan persetujuan pimpinan.
+- `[VERIFICATION_AUTOMATION]` Skrip pengujian otomatis `scratch/verify_sidebar_and_ui.js` dan `scratch/verify_supabase_db.js` yang memvalidasi integritas RBAC sidebar, kelengkapan elemen UI, kepatuhan standar No-Emoji, dan struktur skema database.
+
+---
+
 ## [1.8.4] - 2026-08-24
 
 ### Alur Lupa Kata Sandi & Pengamanan Kata Sandi Lama

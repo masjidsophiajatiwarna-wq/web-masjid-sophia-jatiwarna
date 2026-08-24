@@ -300,6 +300,116 @@
             white-space: nowrap;
         }
 
+        /* Dynamic Accordion Sidebar Styles (R1) */
+        .sidebar-nav-container {
+            overflow-y: auto;
+            overflow-x: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            padding-right: 2px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(227, 196, 102, 0.25) transparent;
+        }
+
+        .sidebar-nav-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-nav-container::-webkit-scrollbar-thumb {
+            background: rgba(227, 196, 102, 0.25);
+            border-radius: 4px;
+        }
+
+        .sidebar-accordion-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.35rem 0.5rem;
+            font-size: 0.67rem;
+            font-weight: 800;
+            color: #9CA3AF;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .sidebar-group-header:hover {
+            color: var(--color-gold-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-group-header .group-title-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sidebar-group-header .group-title-box i {
+            font-size: 0.72rem;
+            color: var(--color-gold-primary);
+            width: 14px;
+            text-align: center;
+        }
+
+        .sidebar-group-header .group-chevron {
+            font-size: 0.62rem;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #6B7280;
+        }
+
+        .sidebar-accordion-group.collapsed .sidebar-group-header .group-chevron {
+            transform: rotate(-90deg);
+        }
+
+        .sidebar-group-body {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            margin-top: 0.2rem;
+            padding: 0;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .sidebar-accordion-group.collapsed .sidebar-group-body {
+            display: none;
+        }
+
+        .admin-sidebar.collapsed .sidebar-group-header {
+            justify-content: center;
+            padding: 0.35rem 0;
+        }
+
+        .admin-sidebar.collapsed .sidebar-group-header .group-title-text,
+        .admin-sidebar.collapsed .sidebar-group-header .group-chevron {
+            display: none !important;
+        }
+
+        .admin-sidebar.collapsed .sidebar-group-header .group-title-box {
+            justify-content: center;
+            width: 100%;
+        }
+
+        .admin-sidebar.collapsed .sidebar-accordion-group.collapsed .sidebar-group-body {
+            display: flex !important;
+        }
+
         .sidebar-nav {
             list-style: none;
             display: flex;
@@ -311,11 +421,11 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.7rem 0.9rem;
+            padding: 0.65rem 0.85rem;
             border-radius: var(--radius-sm);
             color: #D1D5DB;
             text-decoration: none;
-            font-size: 0.825rem;
+            font-size: 0.82rem;
             font-weight: 600;
             cursor: pointer;
             border: none;
@@ -334,8 +444,93 @@
         .nav-item-btn i {
             width: 18px;
             text-align: center;
-            font-size: 1rem;
+            font-size: 0.95rem;
             flex-shrink: 0;
+        }
+
+        /* Modul Ibadah & Approval Styles (R3) */
+        .btn-subview-ibadah {
+            padding: 0.6rem 1.15rem;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            color: var(--color-charcoal-muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-subview-ibadah:hover {
+            color: var(--color-charcoal);
+            border-color: var(--color-gold-deep);
+            background: var(--color-gold-light);
+        }
+
+        .btn-subview-ibadah.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+        }
+
+        .prayer-time-box {
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.65rem;
+            text-align: center;
+        }
+
+        .prayer-time-header {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--color-charcoal-muted);
+            text-transform: uppercase;
+            margin-bottom: 0.35rem;
+        }
+
+        .prayer-input {
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.4rem 0.5rem;
+        }
+
+        .badge-approval {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: var(--radius-full);
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .badge-approval.draft {
+            background: #F3F4F6;
+            color: #4B5563;
+            border: 1px solid #E5E7EB;
+        }
+
+        .badge-approval.pending {
+            background: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FCD34D;
+        }
+
+        .badge-approval.approved {
+            background: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+        }
+
+        .badge-approval.rejected {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
         }
 
         .sidebar-footer {
@@ -2855,7 +3050,7 @@
     <div class="admin-layout" id="admin-app">
         <!-- Sidebar Navigation -->
         <aside class="admin-sidebar" id="admin-sidebar">
-            <div>
+            <div style="display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden;">
                 <div class="sidebar-brand">
                     <div style="display: flex; align-items: center; gap: 0.75rem; min-width: 0;">
                         <div class="sidebar-brand-icon">S</div>
@@ -2869,60 +3064,10 @@
                     </button>
                 </div>
 
-                <ul class="sidebar-nav">
-                    <li>
-                        <button class="nav-item-btn active" onclick="switchTab('overview', this)">
-                            <i class="fa-solid fa-gauge-high"></i> <span>Ringkasan Utama</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-item-btn" onclick="switchTab('donations', this)">
-                            <i class="fa-solid fa-hand-holding-dollar"></i> <span>Donasi & Infaq</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-item-btn" onclick="switchTab('tasks', this)">
-                            <i class="fa-solid fa-list-check"></i> <span>Tugas & Task Health</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-item-btn" onclick="switchTab('history', this)">
-                            <i class="fa-solid fa-clock-rotate-left"></i> <span>Riwayat Portal</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-item-btn" onclick="switchTab('chat', this)">
-                            <i class="fa-solid fa-comments"></i> <span>Chat Koordinasi DKM</span>
-                            <span id="badge-sidebar-chat-mentions" class="mention-count-badge" style="display: none; margin-left: auto;">0</span>
-                        </button>
-                    </li>
-                    <li id="sidebar-nav-item-leave">
-                        <button class="nav-item-btn" id="btn-nav-leave-requests" onclick="switchTab('leave_requests', this)">
-                            <i class="fa-solid fa-calendar-day"></i> <span>Izin &amp; Cuti Pengurus</span>
-                            <span id="badge-sidebar-leave-pending" class="mention-count-badge" style="display: none; margin-left: auto;">0</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-item-btn" onclick="switchTab('feedback', this)">
-                            <i class="fa-solid fa-envelope-open-text"></i> <span>Kotak Saran Jamaah</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-item-btn" onclick="switchTab('articles', this)">
-                            <i class="fa-solid fa-newspaper"></i> <span>Warta & Artikel</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button class="nav-item-btn" onclick="switchTab('health', this)">
-                            <i class="fa-solid fa-server"></i> <span>Cloud Monitor</span>
-                        </button>
-                    </li>
-                    <li id="sidebar-nav-item-accounts" style="display: none;">
-                        <button class="nav-item-btn" id="btn-nav-accounts" onclick="switchTab('accounts', this)">
-                            <i class="fa-solid fa-users-gear"></i> <span>Manajemen Pengguna</span>
-                        </button>
-                    </li>
-                </ul>
+                <!-- Dynamic Accordion Menu Container (Rendered by renderSidebar) -->
+                <div class="sidebar-nav-container" id="sidebar-nav-container">
+                    <!-- Populated dynamically based on user role -->
+                </div>
             </div>
 
             <div class="sidebar-footer">
@@ -4153,7 +4298,444 @@
                 </div>
             </div>
 
+            <!-- TAB: MODUL PERIBADATAN & PENUGASAN PETUGAS IBADAH (R3) -->
+            <div id="tab-ibadah" class="tab-content-panel" style="display: none;">
+                
+                <!-- Stat Cards KPI Summary -->
+                <div class="leave-stat-grid" style="margin-bottom: 1.25rem;">
+                    <div class="leave-stat-card">
+                        <div class="leave-stat-icon total">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <div>
+                            <div class="leave-stat-val" id="stat-ibadah-total">0</div>
+                            <div class="leave-stat-label">Total Jadwal Shalat</div>
+                        </div>
+                    </div>
+                    <div class="leave-stat-card">
+                        <div class="leave-stat-icon pending">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <div>
+                            <div class="leave-stat-val" id="stat-ibadah-pending" style="color: #D97706;">0</div>
+                            <div class="leave-stat-label">Menunggu Persetujuan DKM</div>
+                        </div>
+                    </div>
+                    <div class="leave-stat-card">
+                        <div class="leave-stat-icon approved">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div>
+                            <div class="leave-stat-val" id="stat-ibadah-approved" style="color: #059669;">0</div>
+                            <div class="leave-stat-label">Jadwal Disetujui</div>
+                        </div>
+                    </div>
+                    <div class="leave-stat-card">
+                        <div class="leave-stat-icon today">
+                            <i class="fa-solid fa-book-quran"></i>
+                        </div>
+                        <div>
+                            <div class="leave-stat-val" id="stat-ibadah-kajian" style="color: #2563EB;">0</div>
+                            <div class="leave-stat-label">Agenda Kajian &amp; PHBI</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-View Switcher Tabs -->
+                <div class="ibadah-subview-nav" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.75rem;">
+                    <button type="button" class="btn-subview-ibadah active" id="btn-subview-ibadah-input" onclick="switchIbadahSubView('input')">
+                        <i class="fa-solid fa-pen-to-square"></i> Input &amp; Penugasan Jadwal (Sisi PJ)
+                    </button>
+                    <button type="button" class="btn-subview-ibadah" id="btn-subview-ibadah-approval" onclick="switchIbadahSubView('approval')">
+                        <i class="fa-solid fa-clipboard-check"></i> Tabel Approval Batch (Sisi DKM)
+                        <span id="badge-ibadah-pending-tab" class="mention-count-badge" style="display: none; margin-left: 0.4rem;">0</span>
+                    </button>
+                    <button type="button" class="btn-subview-ibadah" id="btn-subview-ibadah-kajian" onclick="switchIbadahSubView('kajian')">
+                        <i class="fa-solid fa-book-quran"></i> Agenda Kajian &amp; Acara
+                    </button>
+                </div>
+
+                <!-- SUB-VIEW 1: SISI PJ IBADAH (INPUT & OVERRIDE MANUAL) -->
+                <div id="subview-ibadah-input" class="ibadah-subview-pane">
+                    <div class="section-container" style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                            <div>
+                                <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="fa-solid fa-clock" style="color: var(--color-gold-deep);"></i> Form Input Jadwal Shalat &amp; Penugasan Petugas
+                                </h3>
+                                <p style="font-size: 0.8rem; color: var(--color-charcoal-muted); margin-top: 0.2rem;">
+                                    Hisab astronomis presisi Jatiwarna (Latitude: -6.310391, Longitude: 106.921264, Ikhtiyat +2 Menit).
+                                </p>
+                            </div>
+                            <button type="button" class="btn-action-gold" onclick="syncHisabKemenagForInput()" title="Hitung otomatis hisab waktu shalat Kemenag">
+                                <i class="fa-solid fa-rotate"></i> Hitung Hisab Kemenag
+                            </button>
+                        </div>
+
+                        <form id="form-ibadah-schedule" onsubmit="event.preventDefault();">
+                            <input type="hidden" id="ibadah-form-id" value="">
+
+                            <!-- Baris 1: Tanggal & Ikhtiyat -->
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; background: #FAF9F5; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Tanggal Pelaksanaan <span style="color: var(--color-danger);">*</span></label>
+                                    <input type="date" id="ibadah-input-tanggal" class="form-input" onchange="onIbadahDateChange(this.value)" required>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Hari Operasional</label>
+                                    <input type="text" id="ibadah-input-hari" class="form-input" readonly style="background: #F3F4F6; font-weight: 700;">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Menit Ikhtiyat (Pengaman)</label>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="number" id="ibadah-input-ikhtiyat" class="form-input" value="2" min="0" max="10" style="width: 80px;" onchange="recalculatePrayerTimesWithIkhtiyat()">
+                                        <span style="font-size: 0.8rem; color: var(--color-charcoal-muted);">Menit</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Baris 2: Hisab Waktu Shalat 7 Waktu -->
+                            <div style="margin-bottom: 1.25rem;">
+                                <label class="form-label" style="margin-bottom: 0.6rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.4rem;">
+                                    <i class="fa-solid fa-sun" style="color: var(--color-gold-deep);"></i> Waktu Shalat Fardhu &amp; Sunnah (Format 24 Jam)
+                                </label>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem;">
+                                    <div class="prayer-time-box">
+                                        <div class="prayer-time-header">Imsak</div>
+                                        <input type="text" id="ibadah-waktu-imsak" class="form-input prayer-input" value="04:30" placeholder="04:30">
+                                    </div>
+                                    <div class="prayer-time-box">
+                                        <div class="prayer-time-header">Subuh</div>
+                                        <input type="text" id="ibadah-waktu-subuh" class="form-input prayer-input" value="04:40" placeholder="04:40">
+                                    </div>
+                                    <div class="prayer-time-box">
+                                        <div class="prayer-time-header">Terbit</div>
+                                        <input type="text" id="ibadah-waktu-terbit" class="form-input prayer-input" value="05:55" placeholder="05:55">
+                                    </div>
+                                    <div class="prayer-time-box">
+                                        <div class="prayer-time-header">Dhuha</div>
+                                        <input type="text" id="ibadah-waktu-dhuha" class="form-input prayer-input" value="06:20" placeholder="06:20">
+                                    </div>
+                                    <div class="prayer-time-box">
+                                        <div class="prayer-time-header">Dzuhur</div>
+                                        <input type="text" id="ibadah-waktu-dzuhur" class="form-input prayer-input" value="12:00" placeholder="12:00">
+                                    </div>
+                                    <div class="prayer-time-box">
+                                        <div class="prayer-time-header">Ashar</div>
+                                        <input type="text" id="ibadah-waktu-ashar" class="form-input prayer-input" value="15:15" placeholder="15:15">
+                                    </div>
+                                    <div class="prayer-time-box">
+                                        <div class="prayer-time-header">Maghrib</div>
+                                        <input type="text" id="ibadah-waktu-maghrib" class="form-input prayer-input" value="18:05" placeholder="18:05">
+                                    </div>
+                                    <div class="prayer-time-box">
+                                        <div class="prayer-time-header">Isya</div>
+                                        <input type="text" id="ibadah-waktu-isya" class="form-input prayer-input" value="19:15" placeholder="19:15">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Baris 3: Penugasan Petugas Shalat Fardhu Rawatib -->
+                            <div style="margin-bottom: 1.25rem;">
+                                <label class="form-label" style="margin-bottom: 0.6rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.4rem;">
+                                    <i class="fa-solid fa-users-viewfinder" style="color: var(--color-gold-deep);"></i> Penugasan Imam Rawatib &amp; Muadzin Shalat 5 Waktu
+                                </label>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Imam Subuh</label>
+                                        <input type="text" id="ibadah-imam-subuh" class="form-input" value="Ust. Ahmad Fauzi (Rawatib)" placeholder="Nama Imam Subuh">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Imam Dzuhur</label>
+                                        <input type="text" id="ibadah-imam-dzuhur" class="form-input" value="Ust. Muhammad Rizki" placeholder="Nama Imam Dzuhur">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Imam Ashar</label>
+                                        <input type="text" id="ibadah-imam-ashar" class="form-input" value="Ust. Muhammad Rizki" placeholder="Nama Imam Ashar">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Imam Maghrib</label>
+                                        <input type="text" id="ibadah-imam-maghrib" class="form-input" value="Ust. Syamsul Huda" placeholder="Nama Imam Maghrib">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Imam Isya</label>
+                                        <input type="text" id="ibadah-imam-isya" class="form-input" value="Ust. Syamsul Huda" placeholder="Nama Imam Isya">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Muadzin Rawatib</label>
+                                        <input type="text" id="ibadah-muadzin-rawatib" class="form-input" value="Kang Ridwan (Marbot/Piket)" placeholder="Nama Muadzin">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Baris 4: Khusus Hari Jumat (Khatib, Muadzin, Bilal) -->
+                            <div id="ibadah-jumat-section" style="margin-bottom: 1.5rem; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: var(--radius-sm); padding: 1rem;">
+                                <label class="form-label" style="color: #1E40AF; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem;">
+                                    <i class="fa-solid fa-kaaba"></i> Penugasan Khusus Shalat Jumat
+                                </label>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem;">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label" style="font-size: 0.72rem; color: #1E3A8A;">Khatib Shalat Jumat</label>
+                                        <input type="text" id="ibadah-khatib-jumat" class="form-input" placeholder="Ust. Dr. H. Abdurrahman">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label" style="font-size: 0.72rem; color: #1E3A8A;">Muadzin Shalat Jumat</label>
+                                        <input type="text" id="ibadah-muadzin-jumat" class="form-input" placeholder="Kang Bilal / Santri">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label" style="font-size: 0.72rem; color: #1E3A8A;">Bilal / Muraqqi</label>
+                                        <input type="text" id="ibadah-bilal-jumat" class="form-input" placeholder="Kang Ridwan">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Bar -->
+                            <div style="display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--color-border); flex-wrap: wrap;">
+                                <button type="button" class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="resetIbadahForm()">
+                                    <i class="fa-solid fa-arrow-rotate-left"></i> Reset Form
+                                </button>
+                                <button type="button" class="btn-action-gold" onclick="handleSaveIbadahSchedule('Draft')">
+                                    <i class="fa-solid fa-floppy-disk"></i> Simpan Sebagai Draft
+                                </button>
+                                <button type="button" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.4rem;" onclick="handleSaveIbadahSchedule('Pending Approval')">
+                                    <i class="fa-solid fa-paper-plane"></i> Ajukan Persetujuan ke Pimpinan DKM
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Table: Daftar Jadwal & Status Pengajuan Saya -->
+                    <div class="section-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                            <h3 style="font-size: 1rem; font-weight: 800; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fa-solid fa-list-check" style="color: var(--color-gold-deep);"></i> Riwayat &amp; Status Pengajuan Jadwal Shalat
+                            </h3>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <select id="ibadah-pj-filter-status" class="form-input" style="width: auto; font-size: 0.8rem; padding: 0.45rem 0.75rem;" onchange="renderIbadahScheduleTable()">
+                                    <option value="ALL">Semua Status</option>
+                                    <option value="Draft">Draft</option>
+                                    <option value="Pending Approval">Menunggu Persetujuan</option>
+                                    <option value="Approved">Disetujui</option>
+                                    <option value="Rejected">Ditolak / Perlu Revisi</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table" id="ibadah-pj-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal &amp; Hari</th>
+                                        <th>Waktu Shalat (Hisab)</th>
+                                        <th>Petugas Imam &amp; Muadzin</th>
+                                        <th>Status Persetujuan</th>
+                                        <th>Catatan Evaluasi Pimpinan</th>
+                                        <th style="text-align: right;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ibadah-pj-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-VIEW 2: SISI PIMPINAN DKM (APPROVAL BATCH) -->
+                <div id="subview-ibadah-approval" class="ibadah-subview-pane" style="display: none;">
+                    <div class="section-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+                            <div>
+                                <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="fa-solid fa-clipboard-check" style="color: var(--color-gold-deep);"></i> Tabel Persetujuan Batch (DKM Approval Dashboard)
+                                </h3>
+                                <p style="font-size: 0.8rem; color: var(--color-charcoal-muted); margin-top: 0.2rem;">
+                                    Review, verifikasi akurasi hisab, dan setujui penugasan imam/khatib yang diajukan oleh PJ Ibadah secara massal.
+                                </p>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                                <button type="button" class="btn-action-gold" style="background: #059669; color: #FFFFFF; border-color: #059669;" onclick="handleBatchApproveIbadah()">
+                                    <i class="fa-solid fa-check-double"></i> Setujui Terpilih (Batch Approve)
+                                </button>
+                                <button type="button" class="btn-action-gold" style="background: #DC2626; color: #FFFFFF; border-color: #DC2626;" onclick="openBatchRejectModal()">
+                                    <i class="fa-solid fa-xmark"></i> Tolak / Minta Revisi Terpilih
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Filter bar -->
+                        <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <select id="ibadah-dkm-filter-status" class="form-input" style="width: auto; font-size: 0.8rem; padding: 0.45rem 0.75rem;" onchange="renderIbadahApprovalTable()">
+                                <option value="Pending Approval">Khusus Menunggu Persetujuan (Pending)</option>
+                                <option value="ALL">Semua Pengajuan</option>
+                                <option value="Approved">Sudah Disetujui (Approved)</option>
+                                <option value="Rejected">Perlu Revisi (Rejected)</option>
+                                <option value="Draft">Draft</option>
+                            </select>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table" id="ibadah-approval-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px; text-align: center;">
+                                            <input type="checkbox" id="check-all-ibadah-approval" onchange="toggleSelectAllIbadahApproval(this.checked)">
+                                        </th>
+                                        <th>Tanggal &amp; Hari</th>
+                                        <th>Waktu Shalat</th>
+                                        <th>Penugasan Imam &amp; Khatib</th>
+                                        <th>Pengaju (PJ Ibadah)</th>
+                                        <th>Status Persetujuan</th>
+                                        <th>Catatan Review</th>
+                                        <th style="text-align: right;">Aksi Cepat</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ibadah-approval-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-VIEW 3: AGENDA KAJIAN & ACARA -->
+                <div id="subview-ibadah-kajian" class="ibadah-subview-pane" style="display: none;">
+                    <div class="section-container" style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                            <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fa-solid fa-book-quran" style="color: var(--color-gold-deep);"></i> Form Agenda Kajian &amp; Acara Peribadatan
+                            </h3>
+                        </div>
+
+                        <form id="form-ibadah-kajian" onsubmit="event.preventDefault();">
+                            <input type="hidden" id="kajian-form-id" value="">
+                            
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Judul Kajian / Acara <span style="color: var(--color-danger);">*</span></label>
+                                    <input type="text" id="kajian-input-judul" class="form-input" placeholder="Kajian Subuh: Tafsir Surat Al-Kahfi" required>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Pemateri / Ustadz <span style="color: var(--color-danger);">*</span></label>
+                                    <input type="text" id="kajian-input-pemateri" class="form-input" placeholder="Ust. Dr. H. Abdurrahman" required>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Kategori Kajian</label>
+                                    <select id="kajian-input-kategori" class="form-input">
+                                        <option value="Kajian Rutin Ba'da Subuh">Kajian Rutin Ba'da Subuh</option>
+                                        <option value="Kajian Akhir Pekan">Kajian Akhir Pekan</option>
+                                        <option value="Kajian Tematik">Kajian Tematik</option>
+                                        <option value="PHBI">Peringatan Hari Besar Islam (PHBI)</option>
+                                        <option value="Kajian Muslimah">Kajian Muslimah</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Tanggal Pelaksanaan <span style="color: var(--color-danger);">*</span></label>
+                                    <input type="date" id="kajian-input-tanggal" class="form-input" required>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Waktu Mulai</label>
+                                    <input type="text" id="kajian-input-mulai" class="form-input" value="05:30" placeholder="05:30">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Waktu Selesai</label>
+                                    <input type="text" id="kajian-input-selesai" class="form-input" value="07:00" placeholder="07:00">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Lokasi / Ruangan</label>
+                                    <input type="text" id="kajian-input-lokasi" class="form-input" value="Ruang Shalat Utama" placeholder="Ruang Shalat Utama">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Deskripsi / Ringkasan Tema</label>
+                                <textarea id="kajian-input-deskripsi" class="form-input" rows="2" placeholder="Deskripsi ringkas materi kajian yang akan dibahas..."></textarea>
+                            </div>
+
+                            <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                                <button type="button" class="btn-action-gold" onclick="handleSaveKajian('Draft')">
+                                    <i class="fa-solid fa-floppy-disk"></i> Simpan Draft
+                                </button>
+                                <button type="button" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.4rem;" onclick="handleSaveKajian('Pending Approval')">
+                                    <i class="fa-solid fa-paper-plane"></i> Ajukan Persetujuan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Table Kajian -->
+                    <div class="section-container">
+                        <div class="table-responsive">
+                            <table class="admin-table" id="kajian-table">
+                                <thead>
+                                    <tr>
+                                        <th>Judul &amp; Tema Kajian</th>
+                                        <th>Pemateri</th>
+                                        <th>Tanggal &amp; Waktu</th>
+                                        <th>Lokasi</th>
+                                        <th>Status Persetujuan</th>
+                                        <th style="text-align: right;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="kajian-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </main>
+    </div>
+
+    <!-- Modal: Catatan Review / Alasan Revisi Ibadah -->
+    <div class="modal-overlay" id="modal-ibadah-review-note" style="display: none;">
+        <div class="modal-box" style="max-width: 520px;">
+            <div class="modal-header">
+                <h3 id="modal-ibadah-review-title"><i class="fa-solid fa-comment-dots" style="color: var(--color-gold-deep);"></i> Catatan Evaluasi &amp; Persetujuan</h3>
+                <button class="btn-modal-close" onclick="closeIbadahReviewModal()">&times;</button>
+            </div>
+            <form onsubmit="handleIbadahReviewSubmit(event)">
+                <input type="hidden" id="review-ibadah-schedule-id" value="">
+                <input type="hidden" id="review-ibadah-action-type" value="APPROVE">
+                
+                <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.85rem; margin-bottom: 1rem; font-size: 0.82rem;">
+                    <div id="review-ibadah-summary" style="font-weight: 700; color: var(--color-charcoal);">-</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Catatan Evaluasi / Arahan Pimpinan DKM</label>
+                    <textarea id="review-ibadah-notes" class="form-input" rows="3" placeholder="Tuliskan catatan, rekomendasi penggantian petugas, atau konfirmasi persetujuan..."></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" class="btn-action-gold" style="background: #F3F4F6; color: var(--color-charcoal); border-color: var(--color-border);" onclick="closeIbadahReviewModal()">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.35rem;" id="btn-submit-ibadah-review">
+                        <i class="fa-solid fa-stamp"></i> Simpan Keputusan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Detail Lengkap Jadwal Shalat & Petugas -->
+    <div class="modal-overlay" id="modal-ibadah-detail" style="display: none;">
+        <div class="modal-box" style="max-width: 580px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-circle-info" style="color: var(--color-gold-deep);"></i> Detail Jadwal Shalat &amp; Petugas Bertugas</h3>
+                <button class="btn-modal-close" onclick="closeIbadahDetailModal()">&times;</button>
+            </div>
+            <div id="ibadah-detail-body" style="padding: 0.5rem 0;">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
     </div>
 
     <!-- Modal: Tambah / Edit Tugas DKM -->
@@ -5701,6 +6283,183 @@
             }
         }
 
+        // ==========================================================================
+        // DYNAMIC ACCORDION SIDEBAR & RBAC MENU ENGINE (R1)
+        // ==========================================================================
+        const SIDEBAR_MENU_GROUPS = [
+            {
+                id: 'dashboard_tugas',
+                title: 'DASHBOARD & TUGAS',
+                icon: 'fa-solid fa-layer-group',
+                items: [
+                    {
+                        id: 'overview',
+                        label: 'Ringkasan Utama',
+                        icon: 'fa-solid fa-gauge-high',
+                        roles: ['*']
+                    },
+                    {
+                        id: 'tasks',
+                        label: 'Tugas & Task Health',
+                        icon: 'fa-solid fa-list-check',
+                        roles: ['*']
+                    },
+                    {
+                        id: 'chat',
+                        label: 'Chat Koordinasi DKM',
+                        icon: 'fa-solid fa-comments',
+                        badgeId: 'badge-sidebar-chat-mentions',
+                        roles: ['*']
+                    },
+                    {
+                        id: 'history',
+                        label: 'Riwayat Portal',
+                        icon: 'fa-solid fa-clock-rotate-left',
+                        roles: ['*']
+                    },
+                    {
+                        id: 'leave_requests',
+                        label: 'Izin & Cuti Pengurus',
+                        icon: 'fa-solid fa-calendar-day',
+                        badgeId: 'badge-sidebar-leave-pending',
+                        roles: ['*']
+                    }
+                ]
+            },
+            {
+                id: 'layanan_ibadah',
+                title: 'LAYANAN & IBADAH',
+                icon: 'fa-solid fa-kaaba',
+                items: [
+                    {
+                        id: 'ibadah',
+                        label: 'Layanan & Petugas Ibadah',
+                        icon: 'fa-solid fa-kaaba',
+                        badgeId: 'badge-sidebar-ibadah-pending',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_IBADAH']
+                    },
+                    {
+                        id: 'feedback',
+                        label: 'Kotak Saran Jamaah',
+                        icon: 'fa-solid fa-envelope-open-text',
+                        roles: ['*']
+                    },
+                    {
+                        id: 'donations',
+                        label: 'Donasi & Infaq',
+                        icon: 'fa-solid fa-hand-holding-dollar',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEUANGAN']
+                    }
+                ]
+            },
+            {
+                id: 'publikasi_media',
+                title: 'PUBLIKASI & MEDIA',
+                icon: 'fa-solid fa-bullhorn',
+                items: [
+                    {
+                        id: 'articles',
+                        label: 'Warta & Artikel',
+                        icon: 'fa-solid fa-newspaper',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA']
+                    }
+                ]
+            },
+            {
+                id: 'akses_keuangan',
+                title: 'AKSES & SISTEM',
+                icon: 'fa-solid fa-shield-halved',
+                items: [
+                    {
+                        id: 'health',
+                        label: 'Cloud Monitor',
+                        icon: 'fa-solid fa-server',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM']
+                    },
+                    {
+                        id: 'accounts',
+                        label: 'Manajemen Pengguna',
+                        icon: 'fa-solid fa-users-gear',
+                        roles: ['SUPER_ADMIN', 'KETUA_DKM']
+                    }
+                ]
+            }
+        ];
+
+        function renderSidebar(role = getUserRole()) {
+            const container = document.getElementById('sidebar-nav-container');
+            if (!container) return;
+
+            const currentTab = localStorage.getItem('masjid_sophia_active_tab') || 'overview';
+
+            let html = '';
+            SIDEBAR_MENU_GROUPS.forEach(group => {
+                // Filter visible items based on current role
+                const visibleItems = group.items.filter(item => {
+                    if (!item.roles || item.roles.includes('*')) return true;
+                    return item.roles.includes(role);
+                });
+
+                // Grup hanya muncul jika user memiliki izin pada minimal satu menu di dalamnya
+                if (visibleItems.length === 0) return;
+
+                // Check if any visible item inside this group is the current active tab
+                const containsActiveTab = visibleItems.some(it => it.id === currentTab);
+                const savedCollapsed = localStorage.getItem(`masjid_sophia_group_collapsed_${group.id}`);
+                const isCollapsed = containsActiveTab ? false : (savedCollapsed === '1');
+
+                html += `
+                    <div class="sidebar-accordion-group ${isCollapsed ? 'collapsed' : ''}" id="sidebar-group-${group.id}">
+                        <button type="button" class="sidebar-group-header" onclick="toggleSidebarGroup('${group.id}')" title="${escapeHtml(group.title)}">
+                            <div class="group-title-box">
+                                <i class="${escapeHtml(group.icon)}"></i>
+                                <span class="group-title-text">${escapeHtml(group.title)}</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down group-chevron"></i>
+                        </button>
+                        <ul class="sidebar-group-body">
+                `;
+
+                visibleItems.forEach(item => {
+                    const isActive = (item.id === currentTab) ? 'active' : '';
+                    const badgeHtml = item.badgeId 
+                        ? `<span id="${escapeHtml(item.badgeId)}" class="mention-count-badge" style="display: none; margin-left: auto;">0</span>`
+                        : '';
+
+                    html += `
+                        <li id="sidebar-nav-item-${escapeHtml(item.id)}">
+                            <button class="nav-item-btn ${isActive}" onclick="switchTab('${escapeHtml(item.id)}', this)" title="${escapeHtml(item.label)}">
+                                <i class="${escapeHtml(item.icon)}"></i>
+                                <span>${escapeHtml(item.label)}</span>
+                                ${badgeHtml}
+                            </button>
+                        </li>
+                    `;
+                });
+
+                html += `
+                        </ul>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            // Restore active badge counts
+            if (typeof updateMentionBadges === 'function') updateMentionBadges();
+            if (typeof updateLeavePendingBadge === 'function') updateLeavePendingBadge();
+            if (typeof updateIbadahPendingBadge === 'function') updateIbadahPendingBadge();
+        }
+
+        function toggleSidebarGroup(groupId) {
+            const groupElem = document.getElementById(`sidebar-group-${groupId}`);
+            if (!groupElem) return;
+            const isCollapsed = groupElem.classList.toggle('collapsed');
+            try {
+                localStorage.setItem(`masjid_sophia_group_collapsed_${groupId}`, isCollapsed ? '1' : '0');
+            } catch (e) {}
+        }
+
         function showAdminDashboard(user) {
             currentUser = { ...user };
             if (currentUser && (currentUser.email || currentUser.id)) {
@@ -5725,6 +6484,9 @@
             
             updateCurrentUserProfileUI(currentUser);
             const role = getUserRole();
+
+            // Render Dynamic Accordion Sidebar (Role-Based Menu Groups)
+            renderSidebar(role);
 
             // Record Last Login (Single Write to Supabase DB & Broadcast Presence)
             const nowISO = new Date().toISOString();
@@ -5763,13 +6525,6 @@
                 }
             }
 
-            // Strict Role-Based Visibility: Manajemen Pengguna DKM (SUPER_ADMIN & KETUA_DKM Only)
-            const navAccounts = document.getElementById('sidebar-nav-item-accounts');
-            if (navAccounts) {
-                const canAccessAccounts = ['SUPER_ADMIN', 'KETUA_DKM'].includes(role);
-                navAccounts.style.display = canAccessAccounts ? 'block' : 'none';
-            }
-
             // Restore sidebar collapsed state
             try {
                 if (localStorage.getItem('masjid_sophia_sidebar_collapsed') === '1' && window.innerWidth > 900) {
@@ -5791,7 +6546,7 @@
 
             // Restore active tab from URL Hash or localStorage (Memory Browser)
             const rawHash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
-            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'health', 'accounts'];
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'health', 'accounts', 'ibadah'];
             const savedTab = (rawHash && validTabs.includes(rawHash))
                 ? rawHash 
                 : (localStorage.getItem('masjid_sophia_active_tab') || 'overview');
@@ -5800,6 +6555,8 @@
             loadAllAdminData();
             loadAdminUsers();
             loadLeaveRequests();
+            loadIbadahSchedules();
+            loadIbadahKajian();
             setTimeout(() => {
                 checkSubstituteDutyNotification();
             }, 800);
@@ -5807,17 +6564,36 @@
 
         // Switch Navigation Tabs with Browser Memory & URL Hash Persistence
         function switchTab(tabId, btn = null) {
-            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'health', 'accounts'];
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'health', 'accounts', 'ibadah'];
             if (!tabId || !validTabs.includes(tabId)) tabId = 'overview';
 
-            // Strict Gate: Account Control Tab
-            if (tabId === 'accounts') {
-                const role = getUserRole();
-                if (!['SUPER_ADMIN', 'KETUA_DKM'].includes(role)) {
-                    alert('Akses Ditolak: Modul Manajemen Pengguna DKM hanya dapat diakses oleh Super Administrator dan Ketua DKM.');
-                    switchTab('overview');
-                    return;
-                }
+            const role = getUserRole();
+
+            // Strict Role Gates
+            if (tabId === 'accounts' && !['SUPER_ADMIN', 'KETUA_DKM'].includes(role)) {
+                alert('Akses Ditolak: Modul Manajemen Pengguna DKM hanya dapat diakses oleh Super Administrator dan Ketua DKM.');
+                switchTab('overview');
+                return;
+            }
+            if (tabId === 'articles' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA'].includes(role)) {
+                alert('Akses Ditolak: Modul Warta & Artikel hanya dapat diakses oleh Tim Media dan Pimpinan DKM.');
+                switchTab('overview');
+                return;
+            }
+            if (tabId === 'donations' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEUANGAN'].includes(role)) {
+                alert('Akses Ditolak: Modul Donasi & Infaq hanya dapat diakses oleh Bendahara / PJ Keuangan dan Pimpinan DKM.');
+                switchTab('overview');
+                return;
+            }
+            if (tabId === 'ibadah' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_IBADAH'].includes(role)) {
+                alert('Akses Ditolak: Modul Peribadatan hanya dapat diakses oleh PJ Ibadah dan Pimpinan DKM.');
+                switchTab('overview');
+                return;
+            }
+            if (tabId === 'health' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM'].includes(role)) {
+                alert('Akses Ditolak: Modul Cloud Monitor hanya dapat diakses oleh Administrator dan Pimpinan DKM.');
+                switchTab('overview');
+                return;
             }
 
             // Save to localStorage & URL Hash
@@ -5838,7 +6614,14 @@
                 // Auto-match nav button by onclick attribute
                 btn = document.querySelector(`.nav-item-btn[onclick*="'${tabId}'"]`);
             }
-            if (btn) btn.classList.add('active');
+            if (btn) {
+                btn.classList.add('active');
+                // Auto-expand parent group if collapsed
+                const parentGroup = btn.closest('.sidebar-accordion-group');
+                if (parentGroup && parentGroup.classList.contains('collapsed')) {
+                    parentGroup.classList.remove('collapsed');
+                }
+            }
 
             const titles = {
                 'overview': ['Ringkasan Operasional Masjid', 'Pemantauan real-time arus infaq, tugas tim, dan layanan musafir 24 jam'],
@@ -5850,7 +6633,8 @@
                 'leave_requests': ['Manajemen Pengajuan Izin & Cuti Pengurus', 'Pusat permohonan izin sakit, cuti operasional, dan persetujuan terpusat pimpinan DKM'],
                 'articles': ['Content Studio Warta & Dakwah', 'Penerbitan artikel, jadwal kajian, dan dokumentasi kegiatan'],
                 'health': ['Multi-Cloud Free-Tier Monitor', 'Sistem pemantauan 7 pilar infrastruktur cloud gratis (Zero-Cost Production Stack)'],
-                'accounts': ['Direktori & Manajemen Pengguna DKM', 'Kontrol hak akses multi-divisi, riwayat login live, reset kredensial baku, dan manajemen sesi pengurus']
+                'accounts': ['Direktori & Manajemen Pengguna DKM', 'Kontrol hak akses multi-divisi, riwayat login live, reset kredensial baku, dan manajemen sesi pengurus'],
+                'ibadah': ['Modul Peribadatan & Penugasan Petugas', 'Kalibrasi hisab jadwal shalat presisi Kemenag Jatiwarna, penugasan imam & khatib, serta alur persetujuan jadwal DKM']
             };
 
             if (titles[tabId]) {
@@ -5879,6 +6663,8 @@
                 loadAdminUsers();
             } else if (tabId === 'health') {
                 fetchSystemHealth();
+            } else if (tabId === 'ibadah') {
+                initModulIbadah();
             }
         }
 
@@ -11309,9 +12095,1187 @@
             handleRealtimeLeaveChange(payload);
         }
 
+        // ==========================================================================
+        // MODUL PERIBADATAN & ALUR PERSETUJUAN (APPROVAL WORKFLOW) ENGINE (R2 & R3)
+        // ==========================================================================
+        let ibadahSchedulesList = [];
+        let ibadahKajianList = [];
+        let currentIbadahSubView = 'input';
+
+        const DEFAULT_IBADAH_SCHEDULES_SEED = [
+            {
+                id: "ibd-001-seed-2026-08-24",
+                tanggal: "2026-08-24",
+                hari: "Senin",
+                imsak: "04:31",
+                subuh: "04:41",
+                terbit: "05:54",
+                dhuha: "06:18",
+                dzuhur: "11:59",
+                ashar: "15:19",
+                maghrib: "17:58",
+                isya: "19:08",
+                ikhtiyat_minutes: 2,
+                is_manual_override: false,
+                imam_subuh: "Ust. Ahmad Fauzi (Rawatib)",
+                imam_dzuhur: "Ust. Muhammad Rizki",
+                imam_ashar: "Ust. Muhammad Rizki",
+                imam_maghrib: "Ust. Syamsul Huda",
+                imam_isya: "Ust. Syamsul Huda",
+                muadzin_rawatib: "Kang Ridwan (Marbot)",
+                khatib_jumat: "",
+                muadzin_jumat: "",
+                bilal_jumat: "",
+                status_approval: "Approved",
+                submitted_by: "Silvih Damayanti (PJ Ibadah)",
+                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
+                submitted_at: "2026-08-23T14:30:00Z",
+                reviewed_by: "Habib Maulana (Ketua DKM)",
+                reviewed_by_email: "ketuadkm@masjidsophiajatiwarna.com",
+                reviewed_at: "2026-08-23T16:00:00Z",
+                review_notes: "Jadwal dan susunan imam rawatib disetujui sesuai kalender peribadatan.",
+                created_at: "2026-08-23T14:30:00Z"
+            },
+            {
+                id: "ibd-002-seed-2026-08-25",
+                tanggal: "2026-08-25",
+                hari: "Selasa",
+                imsak: "04:31",
+                subuh: "04:41",
+                terbit: "05:54",
+                dhuha: "06:18",
+                dzuhur: "11:59",
+                ashar: "15:19",
+                maghrib: "17:58",
+                isya: "19:08",
+                ikhtiyat_minutes: 2,
+                is_manual_override: false,
+                imam_subuh: "Ust. Ahmad Fauzi (Rawatib)",
+                imam_dzuhur: "Ust. Muhammad Rizki",
+                imam_ashar: "Ust. Muhammad Rizki",
+                imam_maghrib: "Ust. Syamsul Huda",
+                imam_isya: "Ust. Syamsul Huda",
+                muadzin_rawatib: "Kang Ridwan (Marbot)",
+                khatib_jumat: "",
+                muadzin_jumat: "",
+                bilal_jumat: "",
+                status_approval: "Pending Approval",
+                submitted_by: "Silvih Damayanti (PJ Ibadah)",
+                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
+                submitted_at: "2026-08-24T08:15:00Z",
+                reviewed_by: "",
+                reviewed_by_email: "",
+                reviewed_at: null,
+                review_notes: "",
+                created_at: "2026-08-24T08:15:00Z"
+            },
+            {
+                id: "ibd-003-seed-2026-08-28",
+                tanggal: "2026-08-28",
+                hari: "Jumat",
+                imsak: "04:30",
+                subuh: "04:40",
+                terbit: "05:53",
+                dhuha: "06:17",
+                dzuhur: "11:58",
+                ashar: "15:18",
+                maghrib: "17:58",
+                isya: "19:08",
+                ikhtiyat_minutes: 2,
+                is_manual_override: false,
+                imam_subuh: "Ust. Ahmad Fauzi (Rawatib)",
+                imam_dzuhur: "Ust. Dr. H. Abdurrahman (Khatib)",
+                imam_ashar: "Ust. Muhammad Rizki",
+                imam_maghrib: "Ust. Syamsul Huda",
+                imam_isya: "Ust. Syamsul Huda",
+                muadzin_rawatib: "Kang Ridwan",
+                khatib_jumat: "Ust. Dr. H. Abdurrahman",
+                muadzin_jumat: "Kang Bilal (Santri)",
+                bilal_jumat: "Kang Ridwan (Marbot)",
+                status_approval: "Pending Approval",
+                submitted_by: "Silvih Damayanti (PJ Ibadah)",
+                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
+                submitted_at: "2026-08-24T09:00:00Z",
+                reviewed_by: "",
+                reviewed_by_email: "",
+                reviewed_at: null,
+                review_notes: "",
+                created_at: "2026-08-24T09:00:00Z"
+            },
+            {
+                id: "ibd-004-seed-2026-08-29",
+                tanggal: "2026-08-29",
+                hari: "Sabtu",
+                imsak: "04:30",
+                subuh: "04:40",
+                terbit: "05:53",
+                dhuha: "06:17",
+                dzuhur: "11:58",
+                ashar: "15:18",
+                maghrib: "17:58",
+                isya: "19:08",
+                ikhtiyat_minutes: 2,
+                is_manual_override: false,
+                imam_subuh: "Ust. Syamsul Huda",
+                imam_dzuhur: "Ust. Muhammad Rizki",
+                imam_ashar: "Ust. Muhammad Rizki",
+                imam_maghrib: "Ust. Ahmad Fauzi",
+                imam_isya: "Ust. Ahmad Fauzi",
+                muadzin_rawatib: "Kang Ridwan",
+                khatib_jumat: "",
+                muadzin_jumat: "",
+                bilal_jumat: "",
+                status_approval: "Draft",
+                submitted_by: "Silvih Damayanti (PJ Ibadah)",
+                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
+                submitted_at: "2026-08-24T10:00:00Z",
+                reviewed_by: "",
+                reviewed_by_email: "",
+                reviewed_at: null,
+                review_notes: "",
+                created_at: "2026-08-24T10:00:00Z"
+            }
+        ];
+
+        const DEFAULT_IBADAH_KAJIAN_SEED = [
+            {
+                id: "kjn-001-seed",
+                judul_kajian: "Tafsir Al-Qur'an Tematik: Menjaga Hati & Keikhlasan Beramal",
+                pemateri: "Ust. Dr. H. Abdurrahman",
+                tema_kategori: "Kajian Akhir Pekan",
+                tanggal_pelaksanaan: "2026-08-30",
+                waktu_mulai: "09:00",
+                waktu_selesai: "11:30",
+                lokasi: "Ruang Shalat Utama",
+                target_jamaah: "Umum & Musafir",
+                deskripsi: "Kajian mendalam tentang tazkiyatun nafs dan penjagaan amal harian di era modern.",
+                status_approval: "Approved",
+                submitted_by: "Silvih Damayanti (PJ Ibadah)",
+                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
+                reviewed_by: "Habib Maulana (Ketua DKM)",
+                created_at: "2026-08-23T10:00:00Z"
+            },
+            {
+                id: "kjn-002-seed",
+                judul_kajian: "Kajian Rutin Ba'da Subuh: Fiqih Shalat & Adab Musafir",
+                pemateri: "Ust. Syamsul Huda",
+                tema_kategori: "Kajian Rutin Ba'da Subuh",
+                tanggal_pelaksanaan: "2026-08-26",
+                waktu_mulai: "05:15",
+                waktu_selesai: "06:15",
+                lokasi: "Ruang Shalat Utama",
+                target_jamaah: "Jamaah Subuh & Musafir",
+                deskripsi: "Membahas fiqih praktis qashar & jamak shalat serta adab istirahat bagi musafir.",
+                status_approval: "Pending Approval",
+                submitted_by: "Silvih Damayanti (PJ Ibadah)",
+                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
+                reviewed_by: "",
+                created_at: "2026-08-24T08:00:00Z"
+            }
+        ];
+
+        // Hisab Astronomis Waktu Shalat Presisi Jatiwarna (-6.310391, 106.921264, WIB UTC+7)
+        function calculatePrayerTimes(dateStr, ikhtiyatMin = 2) {
+            const d = dateStr ? new Date(dateStr + 'T00:00:00') : new Date();
+            const dayOfYear = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            const rad = Math.PI / 180;
+            const declination = 23.45 * Math.sin(rad * (360 / 365) * (dayOfYear - 81));
+            const eqTime = 9.87 * Math.sin(rad * 2 * (360 / 365) * (dayOfYear - 81)) - 7.53 * Math.cos(rad * (360 / 365) * (dayOfYear - 81)) - 1.5 * Math.sin(rad * (360 / 365) * (dayOfYear - 81));
+            
+            const transit = 12 + (105 - 106.921264) / 15 - (eqTime / 60);
+            const lat = -6.310391 * rad;
+            const dec = declination * rad;
+            
+            function hourAngle(alt) {
+                const cosHA = (Math.sin(alt * rad) - Math.sin(lat) * Math.sin(dec)) / (Math.cos(lat) * Math.cos(dec));
+                if (cosHA > 1) return 0;
+                if (cosHA < -1) return 180;
+                return Math.acos(cosHA) / rad;
+            }
+
+            const haSubuh = hourAngle(-20);
+            const haTerbit = hourAngle(-0.833);
+            const haIsya = hourAngle(-18);
+            
+            const asharAlt = Math.atan(1 / (1 + Math.tan(Math.abs(lat - dec)))) / rad;
+            const haAshar = hourAngle(asharAlt);
+
+            function toTimeString(hoursDec, offsetMinutes = 0) {
+                const totalMinutes = Math.round((hoursDec * 60) + offsetMinutes);
+                const hh = Math.floor(totalMinutes / 60) % 24;
+                const mm = totalMinutes % 60;
+                return `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+            }
+
+            const dzuhurHour = transit;
+            const subuhHour = transit - (haSubuh / 15);
+            const terbitHour = transit - (haTerbit / 15);
+            const asharHour = transit + (haAshar / 15);
+            const maghribHour = transit + (haTerbit / 15);
+            const isyaHour = transit + (haIsya / 15);
+            const imsakHour = subuhHour - (10 / 60);
+            const dhuhaHour = terbitHour + (25 / 60);
+
+            const ikh = parseInt(ikhtiyatMin, 10) || 2;
+
+            return {
+                imsak: toTimeString(imsakHour, ikh),
+                subuh: toTimeString(subuhHour, ikh),
+                terbit: toTimeString(terbitHour, 0),
+                dhuha: toTimeString(dhuhaHour, ikh),
+                dzuhur: toTimeString(dzuhurHour, ikh),
+                ashar: toTimeString(asharHour, ikh),
+                maghrib: toTimeString(maghribHour, ikh),
+                isya: toTimeString(isyaHour, ikh)
+            };
+        }
+
+        function getIndonesianDayName(dateStr) {
+            if (!dateStr) return 'Senin';
+            const d = new Date(dateStr + 'T00:00:00');
+            const days = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            return days[d.getDay()] || 'Senin';
+        }
+
+        function initModulIbadah() {
+            // Default input date to tomorrow or today
+            const dateInput = document.getElementById('ibadah-input-tanggal');
+            if (dateInput && !dateInput.value) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.value = today;
+                onIbadahDateChange(today);
+            }
+
+            const role = getUserRole();
+            // Default subview view based on role
+            if (['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(role) && !localStorage.getItem('masjid_sophia_ibadah_subview')) {
+                switchIbadahSubView('approval');
+            } else {
+                const saved = localStorage.getItem('masjid_sophia_ibadah_subview') || 'input';
+                switchIbadahSubView(saved);
+            }
+
+            loadIbadahSchedules();
+            loadIbadahKajian();
+        }
+
+        async function loadIbadahSchedules() {
+            try {
+                if (sbClient) {
+                    const { data, error } = await sbClient
+                        .from('jadwal_shalat_petugas')
+                        .select('*')
+                        .order('tanggal', { ascending: false });
+
+                    if (!error && Array.isArray(data) && data.length > 0) {
+                        ibadahSchedulesList = data;
+                        localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(data));
+                        renderIbadahScheduleTable();
+                        renderIbadahApprovalTable();
+                        updateIbadahKpiStats();
+                        updateIbadahPendingBadge();
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.debug('[Ibadah] Load schedules Supabase notice:', err);
+            }
+
+            // Local fallback
+            try {
+                const cached = localStorage.getItem('masjid_sophia_ibadah_schedules_master');
+                if (cached) {
+                    ibadahSchedulesList = JSON.parse(cached);
+                } else {
+                    ibadahSchedulesList = [...DEFAULT_IBADAH_SCHEDULES_SEED];
+                    localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
+                }
+            } catch (e) {
+                ibadahSchedulesList = [...DEFAULT_IBADAH_SCHEDULES_SEED];
+            }
+
+            renderIbadahScheduleTable();
+            renderIbadahApprovalTable();
+            updateIbadahKpiStats();
+            updateIbadahPendingBadge();
+        }
+
+        async function loadIbadahKajian() {
+            try {
+                if (sbClient) {
+                    const { data, error } = await sbClient
+                        .from('kajian_acara_ibadah')
+                        .select('*')
+                        .order('tanggal_pelaksanaan', { ascending: true });
+
+                    if (!error && Array.isArray(data) && data.length > 0) {
+                        ibadahKajianList = data;
+                        localStorage.setItem('masjid_sophia_ibadah_kajian_master', JSON.stringify(data));
+                        renderIbadahKajianTable();
+                        updateIbadahKpiStats();
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.debug('[Ibadah] Load kajian Supabase notice:', err);
+            }
+
+            // Local fallback
+            try {
+                const cached = localStorage.getItem('masjid_sophia_ibadah_kajian_master');
+                if (cached) {
+                    ibadahKajianList = JSON.parse(cached);
+                } else {
+                    ibadahKajianList = [...DEFAULT_IBADAH_KAJIAN_SEED];
+                    localStorage.setItem('masjid_sophia_ibadah_kajian_master', JSON.stringify(ibadahKajianList));
+                }
+            } catch (e) {
+                ibadahKajianList = [...DEFAULT_IBADAH_KAJIAN_SEED];
+            }
+
+            renderIbadahKajianTable();
+            updateIbadahKpiStats();
+        }
+
+        function onIbadahDateChange(dateStr) {
+            if (!dateStr) return;
+            const hariName = getIndonesianDayName(dateStr);
+            const hariInput = document.getElementById('ibadah-input-hari');
+            if (hariInput) hariInput.value = hariName;
+
+            // Highlight Friday special duty section if day is Jumat
+            const jumatSection = document.getElementById('ibadah-jumat-section');
+            if (jumatSection) {
+                jumatSection.style.display = 'block';
+                if (hariName === 'Jumat') {
+                    jumatSection.style.borderColor = '#2563EB';
+                    jumatSection.style.background = '#EFF6FF';
+                } else {
+                    jumatSection.style.borderColor = '#E5E7EB';
+                    jumatSection.style.background = '#F9FAFB';
+                }
+            }
+
+            syncHisabKemenagForInput();
+        }
+
+        function syncHisabKemenagForInput() {
+            const dateStr = document.getElementById('ibadah-input-tanggal') ? document.getElementById('ibadah-input-tanggal').value : '';
+            const ikhtiyat = document.getElementById('ibadah-input-ikhtiyat') ? parseInt(document.getElementById('ibadah-input-ikhtiyat').value, 10) : 2;
+            const times = calculatePrayerTimes(dateStr, ikhtiyat);
+
+            if (document.getElementById('ibadah-waktu-imsak')) document.getElementById('ibadah-waktu-imsak').value = times.imsak;
+            if (document.getElementById('ibadah-waktu-subuh')) document.getElementById('ibadah-waktu-subuh').value = times.subuh;
+            if (document.getElementById('ibadah-waktu-terbit')) document.getElementById('ibadah-waktu-terbit').value = times.terbit;
+            if (document.getElementById('ibadah-waktu-dhuha')) document.getElementById('ibadah-waktu-dhuha').value = times.dhuha;
+            if (document.getElementById('ibadah-waktu-dzuhur')) document.getElementById('ibadah-waktu-dzuhur').value = times.dzuhur;
+            if (document.getElementById('ibadah-waktu-ashar')) document.getElementById('ibadah-waktu-ashar').value = times.ashar;
+            if (document.getElementById('ibadah-waktu-maghrib')) document.getElementById('ibadah-waktu-maghrib').value = times.maghrib;
+            if (document.getElementById('ibadah-waktu-isya')) document.getElementById('ibadah-waktu-isya').value = times.isya;
+        }
+
+        function recalculatePrayerTimesWithIkhtiyat() {
+            syncHisabKemenagForInput();
+        }
+
+        function switchIbadahSubView(subView) {
+            currentIbadahSubView = subView;
+            try {
+                localStorage.setItem('masjid_sophia_ibadah_subview', subView);
+            } catch (e) {}
+
+            document.querySelectorAll('.btn-subview-ibadah').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.ibadah-subview-pane').forEach(p => p.style.display = 'none');
+
+            const btn = document.getElementById(`btn-subview-ibadah-${subView}`);
+            if (btn) btn.classList.add('active');
+
+            const pane = document.getElementById(`subview-ibadah-${subView}`);
+            if (pane) pane.style.display = 'block';
+
+            if (subView === 'input') {
+                renderIbadahScheduleTable();
+            } else if (subView === 'approval') {
+                renderIbadahApprovalTable();
+            } else if (subView === 'kajian') {
+                renderIbadahKajianTable();
+            }
+        }
+
+        function updateIbadahKpiStats() {
+            const totalSchedules = ibadahSchedulesList.length;
+            const pendingCount = ibadahSchedulesList.filter(s => s.status_approval === 'Pending Approval').length;
+            const approvedCount = ibadahSchedulesList.filter(s => s.status_approval === 'Approved').length;
+            const totalKajian = ibadahKajianList.length;
+
+            const statTotal = document.getElementById('stat-ibadah-total');
+            if (statTotal) statTotal.textContent = totalSchedules;
+
+            const statPending = document.getElementById('stat-ibadah-pending');
+            if (statPending) statPending.textContent = pendingCount;
+
+            const statApproved = document.getElementById('stat-ibadah-approved');
+            if (statApproved) statApproved.textContent = approvedCount;
+
+            const statKajian = document.getElementById('stat-ibadah-kajian');
+            if (statKajian) statKajian.textContent = totalKajian;
+        }
+
+        function updateIbadahPendingBadge() {
+            const pendingCount = ibadahSchedulesList.filter(s => s.status_approval === 'Pending Approval').length;
+            
+            const badgeSidebar = document.getElementById('badge-sidebar-ibadah-pending');
+            if (badgeSidebar) {
+                if (pendingCount > 0) {
+                    badgeSidebar.textContent = pendingCount;
+                    badgeSidebar.style.display = 'inline-block';
+                } else {
+                    badgeSidebar.style.display = 'none';
+                }
+            }
+
+            const badgeTab = document.getElementById('badge-ibadah-pending-tab');
+            if (badgeTab) {
+                if (pendingCount > 0) {
+                    badgeTab.textContent = pendingCount;
+                    badgeTab.style.display = 'inline-block';
+                } else {
+                    badgeTab.style.display = 'none';
+                }
+            }
+        }
+
+        function getApprovalBadgeHtml(status) {
+            const s = (status || 'Draft').trim();
+            if (s === 'Approved') {
+                return `<span class="badge-approval approved"><i class="fa-solid fa-circle-check"></i> Disetujui</span>`;
+            } else if (s === 'Pending Approval') {
+                return `<span class="badge-approval pending"><i class="fa-solid fa-hourglass-half"></i> Menunggu Persetujuan</span>`;
+            } else if (s === 'Rejected') {
+                return `<span class="badge-approval rejected"><i class="fa-solid fa-circle-xmark"></i> Perlu Revisi</span>`;
+            }
+            return `<span class="badge-approval draft"><i class="fa-solid fa-file-lines"></i> Draft</span>`;
+        }
+
+        function renderIbadahScheduleTable() {
+            const tbody = document.getElementById('ibadah-pj-tbody');
+            if (!tbody) return;
+
+            const filterStatus = document.getElementById('ibadah-pj-filter-status') ? document.getElementById('ibadah-pj-filter-status').value : 'ALL';
+            
+            let filtered = [...ibadahSchedulesList];
+            if (filterStatus !== 'ALL') {
+                filtered = filtered.filter(s => s.status_approval === filterStatus);
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">
+                            Belum ada jadwal shalat yang tersimpan dengan filter ini.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(s => {
+                const jumatInfo = (s.hari === 'Jumat' && s.khatib_jumat) 
+                    ? `<div style="font-size: 0.73rem; color: #1E40AF; font-weight: 700; margin-top: 0.2rem;"><i class="fa-solid fa-kaaba"></i> Khatib: ${escapeHtml(s.khatib_jumat)}</div>` 
+                    : '';
+
+                const notesInfo = s.review_notes 
+                    ? `<div style="font-size: 0.75rem; color: var(--color-charcoal); background: #FAF9F5; padding: 0.35rem 0.5rem; border-radius: var(--radius-sm); border-left: 3px solid var(--color-gold-deep);">${escapeHtml(s.review_notes)}</div>`
+                    : '<span style="color: var(--color-charcoal-muted); font-size: 0.75rem;">-</span>';
+
+                html += `
+                    <tr>
+                        <td>
+                            <div style="font-weight: 800; color: var(--color-charcoal); font-size: 0.85rem;">${escapeHtml(s.tanggal)}</div>
+                            <div style="font-size: 0.75rem; color: var(--color-gold-deep); font-weight: 700;">Hari ${escapeHtml(s.hari)}</div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.78rem; color: var(--color-charcoal);">
+                                <strong>Sbh:</strong> ${escapeHtml(s.subuh || '-')} • <strong>Dzh:</strong> ${escapeHtml(s.dzuhur || '-')}
+                            </div>
+                            <div style="font-size: 0.75rem; color: var(--color-charcoal-muted);">
+                                <strong>Ash:</strong> ${escapeHtml(s.ashar || '-')} • <strong>Mag:</strong> ${escapeHtml(s.maghrib || '-')} • <strong>Isy:</strong> ${escapeHtml(s.isya || '-')}
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.78rem; font-weight: 700; color: var(--color-charcoal);">
+                                Imam: ${escapeHtml(s.imam_subuh || s.imam_maghrib || 'Ust. Rawatib')}
+                            </div>
+                            <div style="font-size: 0.73rem; color: var(--color-charcoal-muted);">
+                                Muadzin: ${escapeHtml(s.muadzin_rawatib || 'Piket')}
+                            </div>
+                            ${jumatInfo}
+                        </td>
+                        <td>
+                            ${getApprovalBadgeHtml(s.status_approval)}
+                        </td>
+                        <td>
+                            ${notesInfo}
+                        </td>
+                        <td style="text-align: right; white-space: nowrap;">
+                            <button type="button" class="btn-table-action" onclick="openIbadahDetailModal('${escapeHtml(s.id)}')" title="Lihat Detail">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn-table-action" onclick="populateIbadahForm('${escapeHtml(s.id)}')" title="Edit &amp; Ajukan">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button type="button" class="btn-table-action danger" onclick="handleDeleteIbadahSchedule('${escapeHtml(s.id)}')" title="Hapus Jadwal">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function renderIbadahApprovalTable() {
+            const tbody = document.getElementById('ibadah-approval-tbody');
+            if (!tbody) return;
+
+            const filterStatus = document.getElementById('ibadah-dkm-filter-status') ? document.getElementById('ibadah-dkm-filter-status').value : 'Pending Approval';
+
+            let filtered = [...ibadahSchedulesList];
+            if (filterStatus !== 'ALL') {
+                filtered = filtered.filter(s => s.status_approval === filterStatus);
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">
+                            Tidak ada pengajuan jadwal ibadah yang memerlukan peninjauan dengan filter ini.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(s => {
+                const jumatInfo = (s.hari === 'Jumat' && s.khatib_jumat) 
+                    ? `<div style="font-size: 0.73rem; color: #1E40AF; font-weight: 700;"><i class="fa-solid fa-kaaba"></i> Khatib: ${escapeHtml(s.khatib_jumat)}</div>` 
+                    : '';
+
+                const notesInfo = s.review_notes 
+                    ? `<div style="font-size: 0.75rem; color: var(--color-charcoal); background: #FAF9F5; padding: 0.35rem 0.5rem; border-radius: var(--radius-sm); border-left: 3px solid var(--color-gold-deep);">${escapeHtml(s.review_notes)}</div>`
+                    : '<span style="color: var(--color-charcoal-muted); font-size: 0.75rem;">-</span>';
+
+                const canApprove = ['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(getUserRole());
+
+                html += `
+                    <tr>
+                        <td style="text-align: center;">
+                            <input type="checkbox" class="ibadah-approval-checkbox" value="${escapeHtml(s.id)}">
+                        </td>
+                        <td>
+                            <div style="font-weight: 800; color: var(--color-charcoal); font-size: 0.85rem;">${escapeHtml(s.tanggal)}</div>
+                            <div style="font-size: 0.75rem; color: var(--color-gold-deep); font-weight: 700;">Hari ${escapeHtml(s.hari)}</div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.78rem; color: var(--color-charcoal);">
+                                Sbh ${escapeHtml(s.subuh || '-')} • Dzh ${escapeHtml(s.dzuhur || '-')}
+                            </div>
+                            <div style="font-size: 0.74rem; color: var(--color-charcoal-muted);">
+                                Ash ${escapeHtml(s.ashar || '-')} • Mag ${escapeHtml(s.maghrib || '-')} • Isy ${escapeHtml(s.isya || '-')}
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.78rem; font-weight: 700; color: var(--color-charcoal);">
+                                Imam: ${escapeHtml(s.imam_subuh || 'Ust. Rawatib')}
+                            </div>
+                            <div style="font-size: 0.74rem; color: var(--color-charcoal-muted);">
+                                Muadzin: ${escapeHtml(s.muadzin_rawatib || 'Piket')}
+                            </div>
+                            ${jumatInfo}
+                        </td>
+                        <td>
+                            <div style="font-size: 0.78rem; font-weight: 700; color: var(--color-charcoal);">${escapeHtml(s.submitted_by || 'PJ Ibadah')}</div>
+                            <div style="font-size: 0.72rem; color: var(--color-charcoal-muted);">${s.submitted_at ? new Date(s.submitted_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '-'}</div>
+                        </td>
+                        <td>
+                            ${getApprovalBadgeHtml(s.status_approval)}
+                        </td>
+                        <td>
+                            ${notesInfo}
+                        </td>
+                        <td style="text-align: right; white-space: nowrap;">
+                            <button type="button" class="btn-table-action" onclick="openIbadahDetailModal('${escapeHtml(s.id)}')" title="Lihat Detail Lengkap">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            ${canApprove ? `
+                                <button type="button" class="btn-table-action" style="color: #059669;" onclick="handleSingleApproveIbadah('${escapeHtml(s.id)}')" title="Setujui Jadwal Langsung">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <button type="button" class="btn-table-action danger" onclick="openIbadahReviewModal('${escapeHtml(s.id)}', 'REJECT')" title="Tolak / Beri Catatan Revisi">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                </button>
+                            ` : ''}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function renderIbadahKajianTable() {
+            const tbody = document.getElementById('kajian-tbody');
+            if (!tbody) return;
+
+            if (ibadahKajianList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">
+                            Belum ada agenda kajian yang terdaftar.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            ibadahKajianList.forEach(k => {
+                const canApprove = ['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(getUserRole());
+                html += `
+                    <tr>
+                        <td>
+                            <div style="font-weight: 800; color: var(--color-charcoal); font-size: 0.85rem;">${escapeHtml(k.judul_kajian)}</div>
+                            <span class="badge-leave-type badge-leave-operasional" style="font-size: 0.7rem;">${escapeHtml(k.tema_kategori || 'Kajian')}</span>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">${escapeHtml(k.pemateri)}</div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">${escapeHtml(k.tanggal_pelaksanaan)}</div>
+                            <div style="font-size: 0.74rem; color: var(--color-charcoal-muted);">${escapeHtml(k.waktu_mulai)} - ${escapeHtml(k.waktu_selesai)} WIB</div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.78rem; color: var(--color-charcoal);">${escapeHtml(k.lokasi || 'Ruang Shalat Utama')}</div>
+                        </td>
+                        <td>
+                            ${getApprovalBadgeHtml(k.status_approval)}
+                        </td>
+                        <td style="text-align: right; white-space: nowrap;">
+                            ${canApprove && k.status_approval !== 'Approved' ? `
+                                <button type="button" class="btn-table-action" style="color: #059669;" onclick="handleSingleApproveKajian('${escapeHtml(k.id)}')" title="Setujui Kajian">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            ` : ''}
+                            <button type="button" class="btn-table-action danger" onclick="handleDeleteKajian('${escapeHtml(k.id)}')" title="Hapus Kajian">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function populateIbadahForm(id) {
+            const schedule = ibadahSchedulesList.find(s => s.id === id);
+            if (!schedule) return;
+
+            document.getElementById('ibadah-form-id').value = schedule.id;
+            document.getElementById('ibadah-input-tanggal').value = schedule.tanggal;
+            document.getElementById('ibadah-input-hari').value = schedule.hari;
+            document.getElementById('ibadah-input-ikhtiyat').value = schedule.ikhtiyat_minutes || 2;
+
+            document.getElementById('ibadah-waktu-imsak').value = schedule.imsak || '04:30';
+            document.getElementById('ibadah-waktu-subuh').value = schedule.subuh || '04:40';
+            document.getElementById('ibadah-waktu-terbit').value = schedule.terbit || '05:55';
+            document.getElementById('ibadah-waktu-dhuha').value = schedule.dhuha || '06:20';
+            document.getElementById('ibadah-waktu-dzuhur').value = schedule.dzuhur || '12:00';
+            document.getElementById('ibadah-waktu-ashar').value = schedule.ashar || '15:15';
+            document.getElementById('ibadah-waktu-maghrib').value = schedule.maghrib || '18:05';
+            document.getElementById('ibadah-waktu-isya').value = schedule.isya || '19:15';
+
+            document.getElementById('ibadah-imam-subuh').value = schedule.imam_subuh || '';
+            document.getElementById('ibadah-imam-dzuhur').value = schedule.imam_dzuhur || '';
+            document.getElementById('ibadah-imam-ashar').value = schedule.imam_ashar || '';
+            document.getElementById('ibadah-imam-maghrib').value = schedule.imam_maghrib || '';
+            document.getElementById('ibadah-imam-isya').value = schedule.imam_isya || '';
+            document.getElementById('ibadah-muadzin-rawatib').value = schedule.muadzin_rawatib || '';
+
+            document.getElementById('ibadah-khatib-jumat').value = schedule.khatib_jumat || '';
+            document.getElementById('ibadah-muadzin-jumat').value = schedule.muadzin_jumat || '';
+            document.getElementById('ibadah-bilal-jumat').value = schedule.bilal_jumat || '';
+
+            switchIbadahSubView('input');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetIbadahForm() {
+            document.getElementById('ibadah-form-id').value = '';
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('ibadah-input-tanggal').value = today;
+            onIbadahDateChange(today);
+        }
+
+        async function handleSaveIbadahSchedule(statusTarget = 'Draft') {
+            const formId = document.getElementById('ibadah-form-id').value;
+            const tanggal = document.getElementById('ibadah-input-tanggal').value;
+            const hari = document.getElementById('ibadah-input-hari').value || getIndonesianDayName(tanggal);
+            const ikhtiyat = parseInt(document.getElementById('ibadah-input-ikhtiyat').value, 10) || 2;
+
+            if (!tanggal) {
+                alert('Peringatan: Harap pilih tanggal pelaksanaan jadwal shalat.');
+                return;
+            }
+
+            const record = {
+                id: formId || `ibd-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+                tanggal: tanggal,
+                hari: hari,
+                ikhtiyat_minutes: ikhtiyat,
+                imsak: document.getElementById('ibadah-waktu-imsak').value || '04:30',
+                subuh: document.getElementById('ibadah-waktu-subuh').value || '04:40',
+                terbit: document.getElementById('ibadah-waktu-terbit').value || '05:55',
+                dhuha: document.getElementById('ibadah-waktu-dhuha').value || '06:20',
+                dzuhur: document.getElementById('ibadah-waktu-dzuhur').value || '12:00',
+                ashar: document.getElementById('ibadah-waktu-ashar').value || '15:15',
+                maghrib: document.getElementById('ibadah-waktu-maghrib').value || '18:05',
+                isya: document.getElementById('ibadah-waktu-isya').value || '19:15',
+                imam_subuh: document.getElementById('ibadah-imam-subuh').value || 'Ust. Rawatib Subuh',
+                imam_dzuhur: document.getElementById('ibadah-imam-dzuhur').value || 'Ust. Rawatib Dzuhur',
+                imam_ashar: document.getElementById('ibadah-imam-ashar').value || 'Ust. Rawatib Ashar',
+                imam_maghrib: document.getElementById('ibadah-imam-maghrib').value || 'Ust. Rawatib Maghrib',
+                imam_isya: document.getElementById('ibadah-imam-isya').value || 'Ust. Rawatib Isya',
+                muadzin_rawatib: document.getElementById('ibadah-muadzin-rawatib').value || 'Kang Ridwan (Piket)',
+                khatib_jumat: document.getElementById('ibadah-khatib-jumat').value || '',
+                muadzin_jumat: document.getElementById('ibadah-muadzin-jumat').value || '',
+                bilal_jumat: document.getElementById('ibadah-bilal-jumat').value || '',
+                status_approval: statusTarget,
+                submitted_by: getUserDisplayName(currentUser),
+                submitted_by_email: currentUser ? currentUser.email : '',
+                submitted_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+
+            // DB Upsert
+            if (sbClient) {
+                try {
+                    await sbClient.from('jadwal_shalat_petugas').upsert(record);
+                } catch (e) {
+                    console.warn('[Ibadah] Supabase schedule upsert warning:', e);
+                }
+            }
+
+            // Local State Update
+            const existingIdx = ibadahSchedulesList.findIndex(s => s.id === record.id);
+            if (existingIdx !== -1) {
+                ibadahSchedulesList[existingIdx] = { ...ibadahSchedulesList[existingIdx], ...record };
+            } else {
+                ibadahSchedulesList.unshift(record);
+            }
+
+            localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
+            renderIbadahScheduleTable();
+            renderIbadahApprovalTable();
+            updateIbadahKpiStats();
+            updateIbadahPendingBadge();
+            resetIbadahForm();
+
+            const msg = (statusTarget === 'Pending Approval')
+                ? 'Alhamdulillah, jadwal peribadatan berhasil diajukan ke Pimpinan DKM untuk persetujuan.'
+                : 'Jadwal peribadatan berhasil disimpan sebagai draf.';
+            alert(msg);
+        }
+
+        async function handleSingleApproveIbadah(id, note = '') {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(role)) {
+                alert('Akses Ditolak: Hanya Pimpinan DKM (Super Admin/Ketua DKM) yang berwenang menyetujui jadwal.');
+                return;
+            }
+
+            const schedule = ibadahSchedulesList.find(s => s.id === id);
+            if (!schedule) return;
+
+            schedule.status_approval = 'Approved';
+            schedule.reviewed_by = getUserDisplayName(currentUser);
+            schedule.reviewed_by_email = currentUser ? currentUser.email : '';
+            schedule.reviewed_at = new Date().toISOString();
+            if (note) schedule.review_notes = note;
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('jadwal_shalat_petugas').update({
+                        status_approval: 'Approved',
+                        reviewed_by: schedule.reviewed_by,
+                        reviewed_by_email: schedule.reviewed_by_email,
+                        reviewed_at: schedule.reviewed_at,
+                        review_notes: schedule.review_notes || ''
+                    }).eq('id', id);
+                } catch (e) {}
+            }
+
+            localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
+            renderIbadahScheduleTable();
+            renderIbadahApprovalTable();
+            updateIbadahKpiStats();
+            updateIbadahPendingBadge();
+            alert(`Jadwal tanggal ${schedule.tanggal} berhasil disetujui.`);
+        }
+
+        function openIbadahReviewModal(id, actionType = 'REJECT') {
+            const schedule = ibadahSchedulesList.find(s => s.id === id);
+            if (!schedule) return;
+
+            document.getElementById('review-ibadah-schedule-id').value = id;
+            document.getElementById('review-ibadah-action-type').value = actionType;
+            document.getElementById('review-ibadah-summary').textContent = `Jadwal Shalat: ${schedule.tanggal} (${schedule.hari}) • Pengaju: ${schedule.submitted_by || 'PJ Ibadah'}`;
+            document.getElementById('review-ibadah-notes').value = schedule.review_notes || '';
+            document.getElementById('modal-ibadah-review-note').style.display = 'flex';
+        }
+
+        function closeIbadahReviewModal() {
+            document.getElementById('modal-ibadah-review-note').style.display = 'none';
+        }
+
+        async function handleIbadahReviewSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('review-ibadah-schedule-id').value;
+            const actionType = document.getElementById('review-ibadah-action-type').value;
+            const notes = document.getElementById('review-ibadah-notes').value;
+
+            if (actionType === 'BATCH_REJECT') {
+                const checked = Array.from(document.querySelectorAll('.ibadah-approval-checkbox:checked')).map(cb => cb.value);
+                for (const itemIbdId of checked) {
+                    const sch = ibadahSchedulesList.find(s => s.id === itemIbdId);
+                    if (sch) {
+                        sch.status_approval = 'Rejected';
+                        sch.reviewed_by = getUserDisplayName(currentUser);
+                        sch.reviewed_at = new Date().toISOString();
+                        sch.review_notes = notes || 'Mohon disesuaikan kembali penugasan petugas/waktu shalat.';
+                    }
+                }
+                localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
+                renderIbadahScheduleTable();
+                renderIbadahApprovalTable();
+                updateIbadahKpiStats();
+                updateIbadahPendingBadge();
+                closeIbadahReviewModal();
+                alert(`Sebanyak ${checked.length} jadwal telah dikembalikan untuk revisi.`);
+                return;
+            }
+
+            const schedule = ibadahSchedulesList.find(s => s.id === id);
+            if (!schedule) return;
+
+            if (actionType === 'APPROVE') {
+                await handleSingleApproveIbadah(id, notes);
+            } else {
+                schedule.status_approval = 'Rejected';
+                schedule.reviewed_by = getUserDisplayName(currentUser);
+                schedule.reviewed_by_email = currentUser ? currentUser.email : '';
+                schedule.reviewed_at = new Date().toISOString();
+                schedule.review_notes = notes || 'Mohon disesuaikan kembali susunan petugas.';
+
+                if (sbClient) {
+                    try {
+                        await sbClient.from('jadwal_shalat_petugas').update({
+                            status_approval: 'Rejected',
+                            reviewed_by: schedule.reviewed_by,
+                            reviewed_by_email: schedule.reviewed_by_email,
+                            reviewed_at: schedule.reviewed_at,
+                            review_notes: schedule.review_notes
+                        }).eq('id', id);
+                    } catch (err) {}
+                }
+
+                localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
+                renderIbadahScheduleTable();
+                renderIbadahApprovalTable();
+                updateIbadahKpiStats();
+                updateIbadahPendingBadge();
+                alert(`Jadwal tanggal ${schedule.tanggal} telah ditandai untuk revisi.`);
+            }
+
+            closeIbadahReviewModal();
+        }
+
+        function toggleSelectAllIbadahApproval(isChecked) {
+            document.querySelectorAll('.ibadah-approval-checkbox').forEach(cb => {
+                cb.checked = isChecked;
+            });
+        }
+
+        async function handleBatchApproveIbadah() {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(role)) {
+                alert('Akses Ditolak: Hanya Pimpinan DKM yang berwenang menyetujui jadwal secara massal.');
+                return;
+            }
+
+            const checkedBoxes = Array.from(document.querySelectorAll('.ibadah-approval-checkbox:checked'));
+            if (checkedBoxes.length === 0) {
+                alert('Peringatan: Silakan centang minimal satu jadwal yang ingin disetujui.');
+                return;
+            }
+
+            const confirmProceed = confirm(`Konfirmasi Persetujuan: Apakah Anda yakin ingin menyetujui ${checkedBoxes.length} pengajuan jadwal shalat terpilih sekaligus?`);
+            if (!confirmProceed) return;
+
+            const nowISO = new Date().toISOString();
+            const reviewerName = getUserDisplayName(currentUser);
+
+            for (const cb of checkedBoxes) {
+                const id = cb.value;
+                const schedule = ibadahSchedulesList.find(s => s.id === id);
+                if (schedule) {
+                    schedule.status_approval = 'Approved';
+                    schedule.reviewed_by = reviewerName;
+                    schedule.reviewed_at = nowISO;
+
+                    if (sbClient) {
+                        try {
+                            await sbClient.from('jadwal_shalat_petugas').update({
+                                status_approval: 'Approved',
+                                reviewed_by: reviewerName,
+                                reviewed_at: nowISO
+                            }).eq('id', id);
+                        } catch (e) {}
+                    }
+                }
+            }
+
+            localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
+            renderIbadahScheduleTable();
+            renderIbadahApprovalTable();
+            updateIbadahKpiStats();
+            updateIbadahPendingBadge();
+            alert(`Alhamdulillah, sebanyak ${checkedBoxes.length} pengajuan jadwal peribadatan berhasil disetujui.`);
+        }
+
+        function openBatchRejectModal() {
+            const checkedBoxes = Array.from(document.querySelectorAll('.ibadah-approval-checkbox:checked'));
+            if (checkedBoxes.length === 0) {
+                alert('Peringatan: Silakan centang minimal satu jadwal yang ingin diminta revisi.');
+                return;
+            }
+
+            document.getElementById('review-ibadah-schedule-id').value = 'BATCH';
+            document.getElementById('review-ibadah-action-type').value = 'BATCH_REJECT';
+            document.getElementById('review-ibadah-summary').textContent = `Minta Revisi Massal untuk ${checkedBoxes.length} Jadwal Terpilih`;
+            document.getElementById('review-ibadah-notes').value = '';
+            document.getElementById('modal-ibadah-review-note').style.display = 'flex';
+        }
+
+        function openIbadahDetailModal(id) {
+            const schedule = ibadahSchedulesList.find(s => s.id === id);
+            if (!schedule) return;
+
+            const body = document.getElementById('ibadah-detail-body');
+            if (!body) return;
+
+            body.innerHTML = `
+                <div style="background: #FAF9F5; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 800; color: var(--color-charcoal);">${escapeHtml(schedule.tanggal)} (Hari ${escapeHtml(schedule.hari)})</div>
+                            <div style="font-size: 0.78rem; color: var(--color-charcoal-muted); margin-top: 0.15rem;">Diajukan oleh: <strong>${escapeHtml(schedule.submitted_by || 'PJ Ibadah')}</strong></div>
+                        </div>
+                        ${getApprovalBadgeHtml(schedule.status_approval)}
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.25rem;">
+                    <h4 style="font-size: 0.85rem; font-weight: 800; color: var(--color-charcoal); margin-bottom: 0.5rem; text-transform: uppercase;">
+                        <i class="fa-solid fa-clock" style="color: var(--color-gold-deep);"></i> Waktu Shalat &amp; Ikhtiyat (+${escapeHtml(String(schedule.ikhtiyat_minutes || 2))} Menit)
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; text-align: center; font-size: 0.78rem;">
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.5rem; border-radius: var(--radius-sm);"><strong>Imsak:</strong> ${escapeHtml(schedule.imsak || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.5rem; border-radius: var(--radius-sm);"><strong>Subuh:</strong> ${escapeHtml(schedule.subuh || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.5rem; border-radius: var(--radius-sm);"><strong>Terbit:</strong> ${escapeHtml(schedule.terbit || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.5rem; border-radius: var(--radius-sm);"><strong>Dhuha:</strong> ${escapeHtml(schedule.dhuha || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.5rem; border-radius: var(--radius-sm);"><strong>Dzuhur:</strong> ${escapeHtml(schedule.dzuhur || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.5rem; border-radius: var(--radius-sm);"><strong>Ashar:</strong> ${escapeHtml(schedule.ashar || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.5rem; border-radius: var(--radius-sm);"><strong>Maghrib:</strong> ${escapeHtml(schedule.maghrib || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.5rem; border-radius: var(--radius-sm);"><strong>Isya:</strong> ${escapeHtml(schedule.isya || '-')}</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.25rem;">
+                    <h4 style="font-size: 0.85rem; font-weight: 800; color: var(--color-charcoal); margin-bottom: 0.5rem; text-transform: uppercase;">
+                        <i class="fa-solid fa-users" style="color: var(--color-gold-deep);"></i> Penugasan Imam &amp; Petugas Rawatib
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.8rem;">
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.6rem; border-radius: var(--radius-sm);"><strong>Imam Subuh:</strong> ${escapeHtml(schedule.imam_subuh || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.6rem; border-radius: var(--radius-sm);"><strong>Imam Dzuhur:</strong> ${escapeHtml(schedule.imam_dzuhur || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.6rem; border-radius: var(--radius-sm);"><strong>Imam Ashar:</strong> ${escapeHtml(schedule.imam_ashar || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.6rem; border-radius: var(--radius-sm);"><strong>Imam Maghrib:</strong> ${escapeHtml(schedule.imam_maghrib || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.6rem; border-radius: var(--radius-sm);"><strong>Imam Isya:</strong> ${escapeHtml(schedule.imam_isya || '-')}</div>
+                        <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 0.6rem; border-radius: var(--radius-sm);"><strong>Muadzin:</strong> ${escapeHtml(schedule.muadzin_rawatib || '-')}</div>
+                    </div>
+                </div>
+
+                ${schedule.hari === 'Jumat' || schedule.khatib_jumat ? `
+                    <div style="margin-bottom: 1.25rem; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: var(--radius-md); padding: 1rem;">
+                        <h4 style="font-size: 0.85rem; font-weight: 800; color: #1E40AF; margin-bottom: 0.5rem;">
+                            <i class="fa-solid fa-kaaba"></i> Petugas Shalat Jumat
+                        </h4>
+                        <div style="font-size: 0.8rem; line-height: 1.6; color: var(--color-charcoal);">
+                            <div><strong>Khatib Jumat:</strong> ${escapeHtml(schedule.khatib_jumat || '-')}</div>
+                            <div><strong>Muadzin Jumat:</strong> ${escapeHtml(schedule.muadzin_jumat || '-')}</div>
+                            <div><strong>Bilal Jumat:</strong> ${escapeHtml(schedule.bilal_jumat || '-')}</div>
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${schedule.review_notes ? `
+                    <div style="margin-bottom: 1rem; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.8rem;">
+                        <strong style="color: #92400E;">Catatan Review Pimpinan:</strong>
+                        <div style="color: #78350F; margin-top: 0.25rem;">${escapeHtml(schedule.review_notes)}</div>
+                        <div style="font-size: 0.72rem; color: #B45309; margin-top: 0.35rem;">Oleh: ${escapeHtml(schedule.reviewed_by || 'Pimpinan DKM')}</div>
+                    </div>
+                ` : ''}
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                    <button type="button" class="btn-action-gold" onclick="closeIbadahDetailModal()">
+                        <i class="fa-solid fa-xmark"></i> Tutup Detail
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('modal-ibadah-detail').style.display = 'flex';
+        }
+
+        function closeIbadahDetailModal() {
+            document.getElementById('modal-ibadah-detail').style.display = 'none';
+        }
+
+        async function handleSaveKajian(statusTarget = 'Draft') {
+            const judul = document.getElementById('kajian-input-judul').value.trim();
+            const pemateri = document.getElementById('kajian-input-pemateri').value.trim();
+            const tanggal = document.getElementById('kajian-input-tanggal').value;
+            const kategori = document.getElementById('kajian-input-kategori').value;
+            const mulai = document.getElementById('kajian-input-mulai').value || '05:30';
+            const selesai = document.getElementById('kajian-input-selesai').value || '07:00';
+            const lokasi = document.getElementById('kajian-input-lokasi').value || 'Ruang Shalat Utama';
+            const deskripsi = document.getElementById('kajian-input-deskripsi').value.trim();
+
+            if (!judul || !pemateri || !tanggal) {
+                alert('Peringatan: Harap lengkapi judul kajian, pemateri, dan tanggal pelaksanaan.');
+                return;
+            }
+
+            const record = {
+                id: `kjn-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+                judul_kajian: judul,
+                pemateri: pemateri,
+                tema_kategori: kategori,
+                tanggal_pelaksanaan: tanggal,
+                waktu_mulai: mulai,
+                waktu_selesai: selesai,
+                lokasi: lokasi,
+                target_jamaah: 'Umum & Musafir',
+                deskripsi: deskripsi,
+                status_approval: statusTarget,
+                submitted_by: getUserDisplayName(currentUser),
+                submitted_by_email: currentUser ? currentUser.email : '',
+                created_at: new Date().toISOString()
+            };
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('kajian_acara_ibadah').insert(record);
+                } catch (e) {
+                    console.warn('[Ibadah] Supabase kajian insert notice:', e);
+                }
+            }
+
+            ibadahKajianList.unshift(record);
+            localStorage.setItem('masjid_sophia_ibadah_kajian_master', JSON.stringify(ibadahKajianList));
+            renderIbadahKajianTable();
+            updateIbadahKpiStats();
+
+            document.getElementById('kajian-input-judul').value = '';
+            document.getElementById('kajian-input-pemateri').value = '';
+            document.getElementById('kajian-input-deskripsi').value = '';
+
+            const msg = (statusTarget === 'Pending Approval')
+                ? 'Agenda kajian berhasil diajukan untuk persetujuan.'
+                : 'Agenda kajian berhasil disimpan sebagai draf.';
+            alert(msg);
+        }
+
+        async function handleSingleApproveKajian(id) {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(role)) {
+                alert('Akses Ditolak: Hanya Pimpinan DKM yang berwenang menyetujui agenda kajian.');
+                return;
+            }
+
+            const kajian = ibadahKajianList.find(k => k.id === id);
+            if (!kajian) return;
+
+            kajian.status_approval = 'Approved';
+            kajian.reviewed_by = getUserDisplayName(currentUser);
+            kajian.reviewed_at = new Date().toISOString();
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('kajian_acara_ibadah').update({
+                        status_approval: 'Approved',
+                        reviewed_by: kajian.reviewed_by,
+                        reviewed_at: kajian.reviewed_at
+                    }).eq('id', id);
+                } catch (e) {}
+            }
+
+            localStorage.setItem('masjid_sophia_ibadah_kajian_master', JSON.stringify(ibadahKajianList));
+            renderIbadahKajianTable();
+            alert(`Agenda kajian "${kajian.judul_kajian}" berhasil disetujui.`);
+        }
+
+        async function handleDeleteIbadahSchedule(id) {
+            const confirmDel = confirm('Konfirmasi: Apakah Anda yakin ingin menghapus jadwal peribadatan ini?');
+            if (!confirmDel) return;
+
+            ibadahSchedulesList = ibadahSchedulesList.filter(s => s.id !== id);
+            if (sbClient) {
+                try {
+                    await sbClient.from('jadwal_shalat_petugas').delete().eq('id', id);
+                } catch (e) {}
+            }
+
+            localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
+            renderIbadahScheduleTable();
+            renderIbadahApprovalTable();
+            updateIbadahKpiStats();
+            updateIbadahPendingBadge();
+        }
+
+        async function handleDeleteKajian(id) {
+            const confirmDel = confirm('Konfirmasi: Apakah Anda yakin ingin menghapus agenda kajian ini?');
+            if (!confirmDel) return;
+
+            ibadahKajianList = ibadahKajianList.filter(k => k.id !== id);
+            if (sbClient) {
+                try {
+                    await sbClient.from('kajian_acara_ibadah').delete().eq('id', id);
+                } catch (e) {}
+            }
+
+            localStorage.setItem('masjid_sophia_ibadah_kajian_master', JSON.stringify(ibadahKajianList));
+            renderIbadahKajianTable();
+            updateIbadahKpiStats();
+        }
+
         function refreshAdminData() {
             loadAllAdminData();
             loadAdminUsers(true);
+            loadIbadahSchedules();
+            loadIbadahKajian();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
