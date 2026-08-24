@@ -151,6 +151,8 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - [x] **Akses Mandiri PJ Divisi:** Dibuka lewat klik kartu profil/avatar di pojok kiri bawah sidebar.
     - [x] **Tab 1 - Profil Umum:** Ubah Nama Lengkap dan **Upload Foto Profil (Avatar)** dari perangkat lokal langsung teroptimasi (auto WebP 400x400) ke **ImageKit.io CDN**.
     - [x] **Tab 2 - Keamanan & Sandi:** Ganti kata sandi dan ganti email dengan **Strict Security Rule: Otomatis Logout & Wajib Login Ulang**.
+    - [x] **Peningkatan UX & Validasi Keamanan Form Kata Sandi:** Tombol *toggle* lihat/sembunyikan sandi (ikon mata SVG/FA) di seluruh form sandi, validasi kerumitan sandi *real-time* dengan indikator hijau/merah (*Live Checklist*: 8 karakter, huruf besar/kecil, angka, simbol), dan penolakan *submit* jika belum memenuhi syarat keamanan.
+    - [x] **Penutupan Celah Keamanan (Auth Security Bypass Fix):** Menghapus mekanisme *fallback bypass* (akses otomatis menggunakan kata sandi default `SophiaJatiwarna2026!`) apabila proyek telah terhubung ke server Supabase. Hal ini menjamin bahwa seluruh verifikasi sandi mutlak tunduk pada keputusan *database* otoritatif tanpa celah jalur belakang (*backdoor*).
     - [x] **Penyelarasan Visual Brand Sophia:** Latar belakang putih bersih `.modal-box`, indikator tab aktif garis bawah emas Sophia Gold tebal, tombol aksi bergradasi *Charcoal Gold Glow*, dan 100% bahasa Indonesia santun & formal.
   - [ ] **Suite Modul Khusus per Divisi PJ:**
     - **PJ Media & Dakwah:** Article Studio (Quill.js Rich Text, slug generator, ImageKit cover WebP) & Dynamic Homepage Media Manager (review Ketua DKM).
