@@ -7,7 +7,7 @@
 **Domain Utama Produksi:** `https://masjidsophiajatiwarna.com/`  
 **Domain Sekunder (Redirect 301):** `https://masjidsophiajatiwarna.my.id/`, `https://masjidsophia.com/`  
 **Subdomain Pemantauan & Admin:** `https://progdev.masjidsophiajatiwarna.com/`, `https://admin.masjidsophiajatiwarna.com/`  
-**Versi Rencana Induk:** v5.4 (Integrasi Dynamic Auth Email Confirmation Redirect, Automatic PostgreSQL Trigger Sync, Direct Email Update Procedure, Multi-Tier Dynamic Profile Resolver, Suite Akun Pengurus DKM, Dynamic RBAC 17 Modul, dan Mobile Grabber Table Engine)  
+**Versi Rencana Induk:** v5.5 (Perbaikan Alur Redirect Email Supabase, Sinkronisasi Logout Keamanan, dan Optimasi Profil Mandiri)  
 **Terakhir Diperbarui:** 2026-08-24  
 
 ---

@@ -9948,11 +9948,12 @@
 
                 alert(
                     `Permintaan pembaruan email ke (${newEmail}) berhasil diajukan!\n\n` +
-                    `Tautan konfirmasi telah dikirimkan ke kotak masuk email baru (${newEmail}).\n\n` +
-                    `Silakan buka kotak masuk email Anda dan klik tombol "Konfirmasi Email Baru" untuk menyelesaikan proses pembaruan.`
+                    `Tautan konfirmasi telah dikirimkan ke kotak masuk email Anda.\n\n` +
+                    `Untuk keamanan, Anda akan dikeluarkan dari sesi saat ini. Silakan buka kotak masuk email Anda dan klik tautan konfirmasi, lalu login kembali.`
                 );
 
                 closeSelfProfileModal();
+                handleLogout();
             } catch (err) {
                 alert('Terjadi kesalahan saat mengajukan pembaruan email: ' + (err.message || err));
             }

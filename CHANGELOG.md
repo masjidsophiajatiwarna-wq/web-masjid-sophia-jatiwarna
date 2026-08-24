@@ -4,6 +4,18 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.8.3] - 2026-08-24
+
+### Perbaikan Alur Konfirmasi Email & Sinkronisasi Logout Keamanan
+
+#### Perbaikan Bug (Fixed)
+- `[AUTH_EMAIL_LOGOUT_FIX]` Memperbaiki masalah alur pergantian email pada profil mandiri pengurus:
+  - **Auto Logout Security:** Menambahkan pemanggilan `handleLogout()` secara eksplisit setelah pengguna mengonfirmasi permintaan penggantian email, memastikan sesi lama segera ditutup demi keamanan.
+  - **Perbaikan Pesan Instruksi:** Memperbarui alert peringatan penggantian email agar lebih jelas menginformasikan pengguna bahwa mereka akan dikeluarkan dari sesi secara otomatis dan harus login kembali.
+  - **Panduan Konfigurasi Supabase:** Dokumentasi dan instruksi langsung untuk menonaktifkan fitur *Secure email change* di dashboard Supabase guna memangkas keharusan konfirmasi dari email lama, serta pengaturan *Site URL* agar redirect tidak lagi nyasar ke `localhost:3000`.
+
+---
+
 ## [1.8.2] - 2026-08-24
 
 ### Resolusi Redirect URL Konfirmasi Email Supabase Auth & Trigger Sinkronisasi Otomatis Database
