@@ -4,6 +4,20 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.8.2] - 2026-08-24
+
+### Resolusi Redirect URL Konfirmasi Email Supabase Auth & Trigger Sinkronisasi Otomatis Database
+
+#### Perbaikan & Keandalan (Fixed & Reliability)
+- `[AUTH_EMAIL_REDIRECT_FIX]` Mengatasi masalah pengalihan (*redirect*) tautan konfirmasi email yang mengarah ke `localhost:3000`:
+  - **Dynamic Email Redirect URL:** Menambahkan parameter `{ emailRedirectTo: redirectUrl }` secara dinamis pada pemanggilan `sbClient.auth.updateUser({ email: newEmail })` sehingga tautan konfirmasi email Supabase mengarahkan kembali ke origin domain aktif (`https://dev.masjidsophiajatiwarna.com/admin.html` atau `https://admin.masjidsophiajatiwarna.com/admin.html`).
+  - **Penanganan Hash Callback & Notifikasi:** Menambahkan parser parameter `#access_token=...`, `#message=...`, dan `#error=...` pada saat inisialisasi `DOMContentLoaded` untuk memberikan umpan balik yang ramah dan membersihkan hash routing secara aman.
+  - **Sanitasi Routing Tab:** Memperbarui fungsi `switchTab()` dan parser hash agar tidak mengalami benturan saat URL mengandung token/parameter otentikasi.
+  - **PostgreSQL Trigger Sinkronisasi Email:** Membuat berkas migrasi `database/migration_sync_auth_email.sql` dan memperbarui `database/schema.sql` dengan trigger `on_auth_user_email_updated` pada tabel `auth.users` agar kolom `email` pada `public.admin_users` otomatis terbarukan saat verifikasi email selesai.
+  - **Penyelarasan Template Email:** Menyediakan koleksi template email konfirmasi, reset kata sandi, magic link OTP, dan undangan di direktori `email-smtp-config/` yang telah teruji bebas emoji dan siap disinkronkan ke Supabase Dashboard.
+
+---
+
 ## [1.8.1] - 2026-08-24
 
 ### Resolusi Dinamis Profil Pengurus, Eliminasi Hardcoded Override & Sanitasi Sinkronisasi Master Database

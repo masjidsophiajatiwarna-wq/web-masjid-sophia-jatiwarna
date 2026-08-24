@@ -367,4 +367,28 @@ ALTER TABLE public.task_chat_messages REPLICA IDENTITY FULL;
 ALTER TABLE public.donations REPLICA IDENTITY FULL;
 ALTER TABLE public.feedback_complaints REPLICA IDENTITY FULL;
 ALTER TABLE public.dkm_leave_requests REPLICA IDENTITY FULL;
+ALTER TABLE public.admin_users REPLICA IDENTITY FULL;
+
+-- ==============================================================================
+-- 11. SINKRONISASI OTOMATIS EMAIL AUTH.USERS KE PUBLIC.ADMIN_USERS
+-- ==============================================================================
+CREATE OR REPLACE FUNCTION public.handle_auth_user_email_update()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.email IS DISTINCT FROM OLD.email THEN
+        UPDATE public.admin_users
+        SET email = LOWER(TRIM(NEW.email)),
+            updated_at = NOW()
+        WHERE id = NEW.id OR LOWER(TRIM(email)) = LOWER(TRIM(OLD.email));
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_email_updated ON auth.users;
+CREATE TRIGGER on_auth_user_email_updated
+    AFTER UPDATE OF email ON auth.users
+    FOR EACH ROW
+    EXECUTE FUNCTION public.handle_auth_user_email_update();
+
 

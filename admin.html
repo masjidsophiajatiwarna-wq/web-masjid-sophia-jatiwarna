@@ -4507,14 +4507,14 @@
                         <i class="fa-regular fa-envelope" style="color: var(--color-gold-deep);"></i> Perbarui Alamat Email Resmi
                     </div>
                     <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 0.85rem;">
-                        Mengubah email memerlukan konfirmasi ulang dan sesi aktif Anda akan dialihkan ke layar login.
+                        Masukkan alamat email resmi baru. Tautan konfirmasi akan dikirimkan ke kotak masuk email baru untuk verifikasi kepemilikan.
                     </div>
                     <div class="form-group">
                         <label class="form-label" style="font-size: 0.72rem; letter-spacing: 0.5px;">ALAMAT EMAIL RESMI BARU</label>
                         <input type="email" id="self-new-email-input" class="form-input" placeholder="nama.pengurus@masjidsophiajatiwarna.com">
                     </div>
-                    <button type="button" class="btn-security-submit" onclick="handleSelfUpdateEmailAndLogout()">
-                        <i class="fa-solid fa-paper-plane" style="color: var(--color-gold-primary);"></i> Perbarui Email &amp; Login Ulang
+                    <button type="button" class="btn-security-submit" onclick="handleSelfUpdateEmail()">
+                        <i class="fa-solid fa-paper-plane" style="color: var(--color-gold-primary);"></i> Kirim Tautan Konfirmasi Email
                     </button>
                 </div>
             </div>
@@ -5073,12 +5073,69 @@
             return { role: 'STAFF', division: 'Operasional Masjid', name: 'Staff Pengurus DKM' };
         }
 
-        // Check Auth Session on Load
+        // Sinkronisasi otomatis email auth ke admin_users jika user baru saja mengonfirmasi email
+        async function syncAuthenticatedUserEmail(authUser) {
+            if (!authUser || !authUser.email) return;
+            const authEmail = authUser.email.toLowerCase().trim();
+            const authId = authUser.id ? String(authUser.id) : '';
+
+            const idx = adminUsersList.findIndex(u => (authId && String(u.id) === authId) || ((u.email || '').toLowerCase().trim() === authEmail));
+            if (idx !== -1) {
+                const matched = adminUsersList[idx];
+                const oldEmail = (matched.email || '').toLowerCase().trim();
+                if (oldEmail !== authEmail) {
+                    matched.email = authEmail;
+                    matched.updated_at = new Date().toISOString();
+                    adminUsersList[idx] = matched;
+
+                    if (sbClient) {
+                        try {
+                            await sbClient.from('admin_users').update({
+                                email: authEmail,
+                                updated_at: new Date().toISOString()
+                            }).eq('id', matched.id || authId);
+                        } catch (err) {
+                            console.warn("Sync admin_users email notice:", err);
+                        }
+                    }
+
+                    saveCustomUsersToLocal();
+                    renderAdminUsersTable();
+                }
+            }
+        }
+
+        // Check Auth Session & Callback Hash on Load
         document.addEventListener('DOMContentLoaded', async () => {
+            const rawHash = window.location.hash || '';
+            const rawSearch = window.location.search || '';
+
+            // 1. Tangani Pesan Kesalahan dari Tautan Konfirmasi
+            if (rawHash.includes('error=') || rawSearch.includes('error=')) {
+                let errorDesc = 'Tautan konfirmasi otentikasi tidak valid atau telah kedaluwarsa.';
+                try {
+                    const params = new URLSearchParams(rawHash.startsWith('#') ? rawHash.slice(1) : (rawSearch.startsWith('?') ? rawSearch.slice(1) : ''));
+                    errorDesc = params.get('error_description') || params.get('error') || errorDesc;
+                } catch (e) {}
+                alert('Pemberitahuan Otentikasi: ' + decodeURIComponent(errorDesc.replace(/\+/g, ' ')));
+                history.replaceState(null, '', window.location.pathname + '#overview');
+            } else if (rawHash.includes('message=')) {
+                let msg = '';
+                try {
+                    const params = new URLSearchParams(rawHash.startsWith('#') ? rawHash.slice(1) : '');
+                    msg = params.get('message') || '';
+                } catch (e) {}
+                if (msg) {
+                    alert('Status Konfirmasi Email: ' + decodeURIComponent(msg.replace(/\+/g, ' ')));
+                    history.replaceState(null, '', window.location.pathname + '#overview');
+                }
+            }
+
             await loadAdminUsers();
             if (sbClient) {
                 const { data: { session } } = await sbClient.auth.getSession();
                 if (session && session.user) {
+                    await syncAuthenticatedUserEmail(session.user);
                     showAdminDashboard(session.user);
                 } else {
                     showAuthScreen();
@@ -5375,10 +5432,11 @@
         }
 
         function showAdminDashboard(user) {
-            currentUser = user;
-            if (currentUser && currentUser.email) {
-                const curEmail = currentUser.email.toLowerCase().trim();
-                const matchedUser = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === curEmail);
+            currentUser = { ...user };
+            if (currentUser && (currentUser.email || currentUser.id)) {
+                const curEmail = (currentUser.email || '').toLowerCase().trim();
+                const curId = currentUser.id ? String(currentUser.id) : '';
+                const matchedUser = adminUsersList.find(u => (curId && String(u.id) === curId) || (curEmail && (u.email || '').toLowerCase().trim() === curEmail));
                 if (matchedUser) {
                     currentUser = {
                         ...matchedUser,
@@ -5386,7 +5444,8 @@
                         full_name: matchedUser.full_name || user.full_name || (user.user_metadata && user.user_metadata.full_name),
                         role: matchedUser.role || user.role,
                         division: matchedUser.division || user.division,
-                        avatar_url: matchedUser.avatar_url || user.avatar_url
+                        avatar_url: matchedUser.avatar_url || user.avatar_url,
+                        email: user.email || matchedUser.email
                     };
                 }
             }
@@ -5461,8 +5520,11 @@
             }
 
             // Restore active tab from URL Hash or localStorage (Memory Browser)
-            const hashTab = window.location.hash ? window.location.hash.replace('#', '').trim() : null;
-            const savedTab = hashTab || localStorage.getItem('masjid_sophia_active_tab') || 'overview';
+            const rawHash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'health', 'accounts'];
+            const savedTab = (rawHash && validTabs.includes(rawHash))
+                ? rawHash 
+                : (localStorage.getItem('masjid_sophia_active_tab') || 'overview');
             switchTab(savedTab);
 
             loadAllAdminData();
@@ -5475,7 +5537,8 @@
 
         // Switch Navigation Tabs with Browser Memory & URL Hash Persistence
         function switchTab(tabId, btn = null) {
-            if (!tabId) tabId = 'overview';
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'health', 'accounts'];
+            if (!tabId || !validTabs.includes(tabId)) tabId = 'overview';
 
             // Strict Gate: Account Control Tab
             if (tabId === 'accounts') {
@@ -9847,25 +9910,51 @@
             }
         }
 
-        async function handleSelfUpdateEmailAndLogout() {
+        async function handleSelfUpdateEmail() {
             const newEmail = document.getElementById('self-new-email-input').value.trim().toLowerCase();
             if (!newEmail || !newEmail.includes('@')) {
-                alert('Harap masukkan format email yang valid.');
+                alert('Harap masukkan format alamat email yang valid.');
                 return;
             }
 
+            if (currentUser && currentUser.email && currentUser.email.toLowerCase().trim() === newEmail) {
+                alert('Alamat email baru tidak boleh sama dengan alamat email akun saat ini.');
+                return;
+            }
+
+            const confirmProceed = confirm(
+                `Apakah Anda yakin ingin memperbarui email resmi akun menjadi:\n${newEmail}?\n\nTautan konfirmasi akan dikirimkan ke kotak masuk email baru Anda.`
+            );
+            if (!confirmProceed) return;
+
             try {
+                // Gunakan URL domain saat ini secara dinamis (dev.masjidsophiajatiwarna.com atau admin.masjidsophiajatiwarna.com)
+                const currentOrigin = window.location.origin;
+                const currentPath = window.location.pathname.endsWith('.html') 
+                    ? window.location.pathname 
+                    : (window.location.pathname.replace(/\/?$/, '') + '/admin.html');
+                const redirectUrl = currentOrigin + currentPath;
+
                 if (sbClient) {
-                    const { error } = await sbClient.auth.updateUser({ email: newEmail });
+                    const { data, error } = await sbClient.auth.updateUser(
+                        { email: newEmail },
+                        { emailRedirectTo: redirectUrl }
+                    );
                     if (error) {
-                        alert('Gagal memperbarui email: ' + error.message);
+                        alert('Gagal mengajukan pembaruan email: ' + error.message);
                         return;
                     }
                 }
-                alert(`Alamat email berhasil diperbarui ke (${newEmail})! Anda akan dialihkan ke halaman login.`);
-                handleLogout();
+
+                alert(
+                    `Permintaan pembaruan email ke (${newEmail}) berhasil diajukan!\n\n` +
+                    `Tautan konfirmasi telah dikirimkan ke kotak masuk email baru (${newEmail}).\n\n` +
+                    `Silakan buka kotak masuk email Anda dan klik tombol "Konfirmasi Email Baru" untuk menyelesaikan proses pembaruan.`
+                );
+
+                closeSelfProfileModal();
             } catch (err) {
-                alert('Terjadi kesalahan saat memperbarui email.');
+                alert('Terjadi kesalahan saat mengajukan pembaruan email: ' + (err.message || err));
             }
         }
 

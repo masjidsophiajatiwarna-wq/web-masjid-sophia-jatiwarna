@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pengurus DKM</title>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', Arial, -apple-system, sans-serif; background-color: #F8F6F0; margin: 0; padding: 25px 15px; color: #1D1D1B; }
+        .email-card { max-width: 560px; margin: 0 auto; background: #FFFFFF; border-radius: 12px; border-top: 6px solid #C9A84C; padding: 30px 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+        .logo-title { font-size: 20px; font-weight: 800; color: #1D1D1B; text-align: center; margin-bottom: 4px; }
+        .sub-title { font-size: 13px; color: #4B5563; text-align: center; margin-bottom: 25px; }
+        .btn-confirm { display: block; width: 240px; margin: 25px auto; padding: 13px 20px; background-color: #1D1D1B; color: #E3C466 !important; text-decoration: none; text-align: center; font-weight: 700; border-radius: 8px; font-size: 14px; }
+        .footer { text-align: center; font-size: 12px; color: #9CA3AF; margin-top: 30px; border-top: 1px solid #E5E7EB; padding-top: 15px; line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <div class="email-card">
+        <div class="logo-title">Masjid Musafir Sophia Jatiwarna</div>
+        <div class="sub-title">Undangan Akses Portal Manajemen DKM</div>
+        <p style="font-size: 14px; line-height: 1.6; color: #374151;">Assalamu'alaikum Warahmatullahi Wabarakatuh,</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #374151;">
+            Anda telah diundang oleh Ketua DKM untuk bergabung sebagai pengurus di sistem Portal Manajemen Masjid Musafir Sophia Jatiwarna.
+        </p>
+        <p style="font-size: 14px; line-height: 1.6; color: #374151;">
+            Silakan klik tombol di bawah ini untuk menerima undangan dan membuat kata sandi akun Anda:
+        </p>
+        <a href="{{ .ConfirmationURL }}" class="btn-confirm">Terima Undangan & Buat Sandi</a>
+        <div class="footer">
+            Masjid Sophia Jatiwarna • Jl. Raya Hankam, Jatiwarna, Pondok Melati, Kota Bekasi<br>
+            Hotline DKM 24 Jam: 0851-8835-2432 • info@masjidsophiajatiwarna.com
+        </div>
+    </div>
+</body>
+</html>
