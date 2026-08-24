@@ -7,8 +7,8 @@
 **Domain Utama Produksi:** `https://masjidsophiajatiwarna.com/`  
 **Domain Sekunder (Redirect 301):** `https://masjidsophiajatiwarna.my.id/`, `https://masjidsophia.com/`  
 **Subdomain Pemantauan & Admin:** `https://progdev.masjidsophiajatiwarna.com/`, `https://admin.masjidsophiajatiwarna.com/`  
-**Versi Rencana Induk:** v5.2 (Integrasi Suite Akun Pengurus DKM, Dynamic RBAC 17 Modul, Presensi 3-Tier SIABE-PORTO, Single-Write Login Broadcast, Hybrid Local Master Persistence, dan Mobile Grabber Table Engine)  
-**Terakhir Diperbarui:** 2026-08-22  
+**Versi Rencana Induk:** v5.3 (Integrasi Suite Akun Pengurus DKM, Dynamic RBAC 17 Modul, Resolusi Profil Dinamis Multi-Tier, Presensi 3-Tier SIABE-PORTO, Single-Write Login Broadcast, Hybrid Local Master Persistence, dan Mobile Grabber Table Engine)  
+**Terakhir Diperbarui:** 2026-08-24  
 
 ---
 

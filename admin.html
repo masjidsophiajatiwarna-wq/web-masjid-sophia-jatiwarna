@@ -4802,17 +4802,272 @@
             console.warn("Supabase Admin init:", e);
         }
 
+        let realtimeHub = null;
+
+        // Master Seed & RBAC Configuration
+        const DEFAULT_ADMIN_USERS_SEED = [
+            {
+                id: "5f439559-74ae-4406-bac6-1d5b2ce0a90d",
+                email: "superadmin@masjidsophiajatiwarna.com",
+                full_name: "Super Administrator Sophia",
+                role: "SUPER_ADMIN",
+                division: "IT & Ekosistem Digital",
+                phone_number: "+6281234567890",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "6a937ea3-1372-4eb9-924b-026cb32652d4",
+                email: "superuser@masjidsophiajatiwarna.com",
+                full_name: "Habib Maulana",
+                role: "SUPER_USER",
+                division: "Quality Assurance & Audit",
+                phone_number: "+6281234567891",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "77380ff1-42bd-4285-b727-79803a7e9d97",
+                email: "dkm@masjidsophiajatiwarna.com",
+                full_name: "Ketua DKM Masjid Sophia",
+                role: "KETUA_DKM",
+                division: "Pimpinan DKM",
+                phone_number: "+6281234567892",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "38d46664-7070-41b2-a7c5-3c4e4fe91688",
+                email: "media@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Media & Dakwah",
+                role: "PJ_MEDIA",
+                division: "Media & Dakwah",
+                phone_number: "+6281234567893",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "a32b9a78-39f4-40a9-8769-661940333fb6",
+                email: "logistik@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Logistik & Sarpras",
+                role: "PJ_LOGISTIK",
+                division: "Logistik & Sarpras",
+                phone_number: "+6281234567894",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "146ddfbc-81d4-4dc8-b783-799a1c8621b4",
+                email: "santri@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Santri Tahfidz",
+                role: "PJ_SANTRI",
+                division: "Santri & Tahfidz",
+                phone_number: "+6281234567895",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "cc146860-c400-4408-8135-c710f739ba88",
+                email: "musafir@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Layanan Musafir",
+                role: "PJ_MUSAFIR",
+                division: "Pelayanan Musafir",
+                phone_number: "+6281234567896",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "7260075c-ae31-48ed-944e-1b1984e808da",
+                email: "ibadah@masjidsophiajatiwarna.com",
+                full_name: "Silvih Damayanti",
+                role: "PJ_IBADAH",
+                division: "Peribadatan & Acara",
+                phone_number: "+6281234567897",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "e9084be8-1f18-4380-a31f-65f0024a6225",
+                email: "keuangan@masjidsophiajatiwarna.com",
+                full_name: "Bendahara & Akuntansi DKM",
+                role: "PJ_KEUANGAN",
+                division: "Keuangan & Akuntansi",
+                phone_number: "+6281234567898",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "9ff7cd7f-eaf6-42e2-8d8e-4aec8508ab5d",
+                email: "keamanan@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Keamanan & Ketertiban",
+                role: "PJ_KEAMANAN",
+                division: "Keamanan & Ketertiban",
+                phone_number: "+6281234567899",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            },
+            {
+                id: "8aae0c0a-3beb-4b43-af49-bfd91d94db91",
+                email: "kebersihan@masjidsophiajatiwarna.com",
+                full_name: "Penanggung Jawab Kebersihan & Sanitasi",
+                role: "PJ_KEBERSIHAN",
+                division: "Kebersihan & Sanitasi",
+                phone_number: "+6281234567800",
+                is_active: true,
+                avatar_url: null,
+                last_login: null
+            }
+        ];
+
+        const SYSTEM_MODULES = [
+            { key: "system_config", name: "Konfigurasi Sistem & API", icon: "fa-sliders" },
+            { key: "account_control", name: "Manajemen Pengguna DKM (Account Control)", icon: "fa-users-gear" },
+            { key: "tasks", name: "Task Management (5 Tampilan)", icon: "fa-list-check" },
+            { key: "history", name: "Riwayat Pengelolaan Realtime", icon: "fa-clock-rotate-left" },
+            { key: "chat", name: "Chat Koordinasi Multi-Arah", icon: "fa-comments" },
+            { key: "leave_requests", name: "Pengajuan Izin & Cuti Pengurus", icon: "fa-calendar-day" },
+            { key: "articles", name: "Penerbitan Artikel & Berita (CMS)", icon: "fa-newspaper" },
+            { key: "home_curation", name: "Pengatur Beranda (Self-Sustain)", icon: "fa-house-laptop" },
+            { key: "sarpras_logistics", name: "Logistik Makan & Aset Masjid", icon: "fa-utensils" },
+            { key: "santri", name: "Data Santri & Mutaba'ah Tahfidz", icon: "fa-graduation-cap" },
+            { key: "musafir", name: "Buku Tamu Musafir & Loker 24 Jam", icon: "fa-bed" },
+            { key: "prayer_calibration", name: "Kalibrasi Shalat & Rotasi Petugas", icon: "fa-kaaba" },
+            { key: "finance", name: "Akuntansi, Kas & Laporan Keuangan", icon: "fa-hand-holding-dollar" },
+            { key: "security", name: "Report Keamanan & Upload Bukti", icon: "fa-shield-halved" },
+            { key: "sanitation", name: "Report Kebersihan & Upload Bukti", icon: "fa-broom" },
+            { key: "health", name: "Monitor 7 Pilar Cloud", icon: "fa-server" },
+            { key: "pwa_mobile", name: "PWA & Akses Mobile App APK", icon: "fa-mobile-screen-button" }
+        ];
+
+        const ROLE_PERMISSION_TEMPLATES = {
+            "SUPER_ADMIN": {
+                system_config: "Penuh", account_control: "Penuh", tasks: "Penuh", history: "Penuh", chat: "Penuh",
+                leave_requests: "Penuh", articles: "Penuh", home_curation: "Penuh", sarpras_logistics: "Penuh",
+                santri: "Penuh", musafir: "Penuh", prayer_calibration: "Penuh", finance: "Penuh", security: "Penuh",
+                sanitation: "Penuh", health: "Penuh", pwa_mobile: "Penuh"
+            },
+            "KETUA_DKM": {
+                system_config: "Baca", account_control: "Baca", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Penuh", articles: "Review", home_curation: "Review", sarpras_logistics: "Laporan",
+                santri: "Laporan", musafir: "Laporan", prayer_calibration: "Persetujuan", finance: "Penuh",
+                security: "Laporan", sanitation: "Laporan", health: "Baca", pwa_mobile: "Penuh"
+            },
+            "SUPER_USER": {
+                system_config: "Baca", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "Baca", home_curation: "Baca", sarpras_logistics: "Baca",
+                santri: "Baca", musafir: "Baca", prayer_calibration: "Baca", finance: "Request", security: "Baca",
+                sanitation: "Baca", health: "Baca", pwa_mobile: "Penuh"
+            },
+            "PJ_MEDIA": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "Penuh", home_curation: "Penuh", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "Baca", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_LOGISTIK": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "Penuh",
+                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_SANTRI": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "Penuh", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_MUSAFIR": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "TIDAK_ADA_AKSES", musafir: "Penuh", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_IBADAH": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "Kajian", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "Penuh", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_KEUANGAN": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "Laporan",
+                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Penuh",
+                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_KEAMANAN": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "TIDAK_ADA_AKSES", musafir: "Baca", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
+                security: "Penuh", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            },
+            "PJ_KEBERSIHAN": {
+                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
+                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
+                santri: "TIDAK_ADA_AKSES", musafir: "Baca", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
+                security: "TIDAK_ADA_AKSES", sanitation: "Penuh", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
+            }
+        };
+
+        let adminUsersList = [];
+        let tempSelfAvatarUrl = null;
+        const onlineUsersSet = new Set();
+        const idleUsersSet = new Set();
+
+        function getDivisionPrefix(division) {
+            const map = {
+                "Media & Dakwah": "media",
+                "Logistik & Sarpras": "logistik",
+                "Santri & Tahfidz": "santri",
+                "Pelayanan Musafir": "musafir",
+                "Peribadatan & Acara": "ibadah",
+                "Keuangan & Akuntansi": "keuangan",
+                "Keamanan & Ketertiban": "keamanan",
+                "Kebersihan & Sanitasi": "kebersihan",
+                "IT & Ekosistem Digital": "it",
+                "Pimpinan DKM": "dkm",
+                "Quality Assurance & Audit": "superuser"
+            };
+            return map[division] || "pengurus";
+        }
+
+        function getRoleFromDivision(division) {
+            const map = {
+                "Media & Dakwah": "PJ_MEDIA",
+                "Logistik & Sarpras": "PJ_LOGISTIK",
+                "Santri & Tahfidz": "PJ_SANTRI",
+                "Pelayanan Musafir": "PJ_MUSAFIR",
+                "Peribadatan & Acara": "PJ_IBADAH",
+                "Keuangan & Akuntansi": "PJ_KEUANGAN",
+                "Keamanan & Ketertiban": "PJ_KEAMANAN",
+                "Kebersihan & Sanitasi": "PJ_KEBERSIHAN",
+                "IT & Ekosistem Digital": "SUPER_ADMIN",
+                "Pimpinan DKM": "KETUA_DKM",
+                "Quality Assurance & Audit": "SUPER_USER"
+            };
+            return map[division] || "STAFF";
+        }
+
         function getRoleAndDivisionFromEmail(email) {
             const clean = (email || '').toLowerCase().trim();
             if (clean.startsWith('superadmin')) return { role: 'SUPER_ADMIN', division: 'IT & Ekosistem Digital', name: 'Super Administrator Sophia' };
-            if (clean.startsWith('superuser')) return { role: 'SUPER_USER', division: 'Quality Assurance & Audit', name: 'Super User Testing Sophia' };
+            if (clean.startsWith('superuser')) return { role: 'SUPER_USER', division: 'Quality Assurance & Audit', name: 'Habib Maulana' };
             if (clean.startsWith('dkm') || clean.startsWith('ketua')) return { role: 'KETUA_DKM', division: 'Pimpinan DKM', name: 'Ketua DKM Masjid Sophia' };
             if (clean.startsWith('media')) return { role: 'PJ_MEDIA', division: 'Media & Dakwah', name: 'Penanggung Jawab Media & Dakwah' };
             if (clean.startsWith('logistik')) return { role: 'PJ_LOGISTIK', division: 'Logistik & Sarpras', name: 'Penanggung Jawab Logistik & Sarpras' };
-            if (clean.startsWith('santri')) return { role: 'PJ_SANTRI', division: 'Santri Tahfidz', name: 'Penanggung Jawab Santri Tahfidz' };
-            if (clean.startsWith('musafir')) return { role: 'PJ_MUSAFIR', division: 'Layanan Musafir', name: 'Penanggung Jawab Layanan Musafir' };
-            if (clean.startsWith('ibadah')) return { role: 'PJ_IBADAH', division: 'Peribadatan & Acara', name: 'Penanggung Jawab Peribadatan & Acara' };
-            if (clean.startsWith('keuangan')) return { role: 'PJ_KEUANGAN', division: 'Keuangan & Akuntansi', name: 'Penanggung Jawab Keuangan & Akuntansi' };
+            if (clean.startsWith('santri')) return { role: 'PJ_SANTRI', division: 'Santri & Tahfidz', name: 'Penanggung Jawab Santri Tahfidz' };
+            if (clean.startsWith('musafir')) return { role: 'PJ_MUSAFIR', division: 'Pelayanan Musafir', name: 'Penanggung Jawab Layanan Musafir' };
+            if (clean.startsWith('ibadah')) return { role: 'PJ_IBADAH', division: 'Peribadatan & Acara', name: 'Silvih Damayanti' };
+            if (clean.startsWith('keuangan')) return { role: 'PJ_KEUANGAN', division: 'Keuangan & Akuntansi', name: 'Bendahara & Akuntansi DKM' };
             if (clean.startsWith('keamanan')) return { role: 'PJ_KEAMANAN', division: 'Keamanan & Ketertiban', name: 'Penanggung Jawab Keamanan & Ketertiban' };
             if (clean.startsWith('kebersihan')) return { role: 'PJ_KEBERSIHAN', division: 'Kebersihan & Sanitasi', name: 'Penanggung Jawab Kebersihan & Sanitasi' };
             return { role: 'STAFF', division: 'Operasional Masjid', name: 'Staff Pengurus DKM' };
@@ -4820,7 +5075,7 @@
 
         // Check Auth Session on Load
         document.addEventListener('DOMContentLoaded', async () => {
-            loadAdminUsers();
+            await loadAdminUsers();
             if (sbClient) {
                 const { data: { session } } = await sbClient.auth.getSession();
                 if (session && session.user) {
@@ -5010,23 +5265,92 @@
         }
 
         function getUserDisplayName(user) {
-            if (!user || !user.email) return 'Pengurus DKM';
-            const email = user.email.toLowerCase();
-            if (email.includes('superadmin')) return 'Super Administrator';
-            if (email.includes('superuser')) return 'Super User (Pimpinan)';
-            if (email === 'habibmaulana@masjidsophiajatiwarna.com' || email.includes('habib')) return 'Habib Maulana';
-            if (email.includes('dkm') || email.includes('ketua')) return 'Ketua DKM Sophia';
-            if (email.includes('media')) return 'PJ Media & Dakwah';
-            if (email.includes('logistik')) return 'Ustadz Ridwan (Logistik)';
-            if (email.includes('santri')) return 'Ustadz Fajar (Santri)';
-            if (email.includes('musafir')) return 'Pak Bambang (Musafir)';
-            if (email.includes('ibadah')) return 'Ustadz Hilman (Ibadah)';
-            if (email.includes('keuangan')) return 'Pak Hendra (Keuangan)';
-            if (email.includes('keamanan')) return 'Pak Agus (Keamanan)';
-            if (email.includes('kebersihan')) return 'Pak Marwan (Kebersihan)';
-            
-            const raw = user.email.split('@')[0];
-            return raw.charAt(0).toUpperCase() + raw.slice(1).replace(/[._]/g, ' ');
+            const targetUser = user || currentUser;
+            if (!targetUser) return 'Pengurus DKM';
+
+            // Jika dipanggil dengan string (misal string email atau nama)
+            if (typeof targetUser === 'string') {
+                const str = targetUser.trim();
+                if (str.includes('@')) {
+                    const matched = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === str.toLowerCase());
+                    if (matched && matched.full_name && matched.full_name.trim()) return matched.full_name.trim();
+                    const raw = str.split('@')[0];
+                    return raw.charAt(0).toUpperCase() + raw.slice(1).replace(/[._]/g, ' ');
+                }
+                return str;
+            }
+
+            const email = (targetUser.email || '').toLowerCase().trim();
+
+            // 1. Properti full_name langsung pada objek user
+            if (targetUser.full_name && typeof targetUser.full_name === 'string' && targetUser.full_name.trim()) {
+                return targetUser.full_name.trim();
+            }
+
+            // 2. Metadata Supabase Auth (user_metadata)
+            if (targetUser.user_metadata) {
+                if (targetUser.user_metadata.full_name && typeof targetUser.user_metadata.full_name === 'string' && targetUser.user_metadata.full_name.trim()) {
+                    return targetUser.user_metadata.full_name.trim();
+                }
+                if (targetUser.user_metadata.name && typeof targetUser.user_metadata.name === 'string' && targetUser.user_metadata.name.trim()) {
+                    return targetUser.user_metadata.name.trim();
+                }
+            }
+
+            // 3. Cari dari data riil adminUsersList (hasil sinkronisasi live tabel public.admin_users)
+            if (email) {
+                const matched = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === email);
+                if (matched && matched.full_name && matched.full_name.trim()) {
+                    return matched.full_name.trim();
+                }
+            }
+
+            // 4. Cari dari seed default jika ada
+            if (email) {
+                const seedMatch = DEFAULT_ADMIN_USERS_SEED.find(u => (u.email || '').toLowerCase().trim() === email);
+                if (seedMatch && seedMatch.full_name && seedMatch.full_name.trim()) {
+                    return seedMatch.full_name.trim();
+                }
+            }
+
+            // 5. Properti name langsung
+            if (targetUser.name && typeof targetUser.name === 'string' && targetUser.name.trim()) {
+                return targetUser.name.trim();
+            }
+
+            // 6. Format dari prefix email
+            if (email) {
+                const raw = email.split('@')[0];
+                return raw.charAt(0).toUpperCase() + raw.slice(1).replace(/[._]/g, ' ');
+            }
+
+            return 'Pengurus DKM';
+        }
+
+        function updateCurrentUserProfileUI(user = currentUser) {
+            if (!user) return;
+            const displayName = getUserDisplayName(user);
+            const role = getUserRole();
+            const roleLabel = getUserRoleLabel(role);
+
+            const nameElem = document.getElementById('display-user-email');
+            if (nameElem) nameElem.textContent = displayName;
+
+            const roleElem = document.getElementById('display-user-role');
+            if (roleElem) roleElem.textContent = roleLabel;
+
+            const avatarBox = document.getElementById('display-user-avatar');
+            if (avatarBox) {
+                const userEmail = (user.email || '').toLowerCase().trim();
+                const matched = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === userEmail);
+                const avatarUrl = user.avatar_url || (matched ? matched.avatar_url : null);
+                if (avatarUrl) {
+                    avatarBox.innerHTML = `<img src="${escapeHtml(avatarUrl)}" alt="${escapeHtml(displayName)}">`;
+                } else {
+                    const initials = displayName.substring(0, 2).toUpperCase();
+                    avatarBox.innerHTML = `<span>${initials}</span>`;
+                }
+            }
         }
 
         function toggleSidebarCollapse() {
@@ -5052,30 +5376,32 @@
 
         function showAdminDashboard(user) {
             currentUser = user;
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('admin-app').style.display = 'block';
-            document.getElementById('display-user-email').textContent = getUserDisplayName(user);
-
-            const role = getUserRole();
-            const roleElem = document.getElementById('display-user-role');
-            if (roleElem) roleElem.textContent = getUserRoleLabel(role);
-
-            // Update user avatar in sidebar
-            const avatarBox = document.getElementById('display-user-avatar');
-            if (avatarBox) {
-                if (user.avatar_url) {
-                    avatarBox.innerHTML = `<img src="${escapeHtml(user.avatar_url)}" alt="Avatar">`;
-                } else {
-                    const initials = getUserDisplayName(user).substring(0, 2).toUpperCase();
-                    avatarBox.innerHTML = `<span>${initials}</span>`;
+            if (currentUser && currentUser.email) {
+                const curEmail = currentUser.email.toLowerCase().trim();
+                const matchedUser = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === curEmail);
+                if (matchedUser) {
+                    currentUser = {
+                        ...matchedUser,
+                        ...user,
+                        full_name: matchedUser.full_name || user.full_name || (user.user_metadata && user.user_metadata.full_name),
+                        role: matchedUser.role || user.role,
+                        division: matchedUser.division || user.division,
+                        avatar_url: matchedUser.avatar_url || user.avatar_url
+                    };
                 }
             }
+
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('admin-app').style.display = 'block';
+            
+            updateCurrentUserProfileUI(currentUser);
+            const role = getUserRole();
 
             // Record Last Login (Single Write to Supabase DB & Broadcast Presence)
             const nowISO = new Date().toISOString();
             registerUserActivity();
-            if (user && user.email) {
-                const userEmailClean = user.email.toLowerCase().trim();
+            if (currentUser && currentUser.email) {
+                const userEmailClean = currentUser.email.toLowerCase().trim();
                 onlineUsersSet.add(userEmailClean);
                 localStorage.setItem('masjid_sophia_last_login_' + userEmailClean, nowISO);
 
@@ -5091,7 +5417,7 @@
                     try {
                         realtimeHub.track({
                             email: userEmailClean,
-                            user_name: getUserDisplayName(user),
+                            user_name: getUserDisplayName(currentUser),
                             online_at: nowISO,
                             is_idle: false
                         });
@@ -5101,7 +5427,7 @@
                             payload: {
                                 email: userEmailClean,
                                 timestamp: nowISO,
-                                full_name: getUserDisplayName(user)
+                                full_name: getUserDisplayName(currentUser)
                             }
                         });
                     } catch (e) {}
@@ -5251,7 +5577,6 @@
         let selectedTaskIds = new Set();
         let masterTableSort = { column: 'due_date', direction: 'asc' };
         let draggedTaskId = null;
-        let realtimeHub = null;
 
         // Helper UUID generator (RFC4122 compliant)
         function generateUUID() {
@@ -6135,7 +6460,12 @@
         // ==========================================================================
         function getUserRole() {
             if (!currentUser || !currentUser.email) return 'STAFF';
-            const email = currentUser.email.toLowerCase();
+            const email = currentUser.email.toLowerCase().trim();
+            const matched = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === email);
+            if (matched && matched.role) return matched.role;
+            if (currentUser.role && currentUser.role !== 'authenticated') return currentUser.role;
+            if (currentUser.user_metadata && currentUser.user_metadata.role) return currentUser.user_metadata.role;
+
             if (email.includes('superadmin') || email === 'habibmaulana@masjidsophiajatiwarna.com') return 'SUPER_ADMIN';
             if (email.includes('superuser')) return 'SUPER_USER';
             if (email.includes('dkm') || email.includes('ketua')) return 'KETUA_DKM';
@@ -6169,18 +6499,28 @@
         }
 
         function getUserDivision() {
+            if (currentUser && currentUser.email) {
+                const email = currentUser.email.toLowerCase().trim();
+                const matched = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === email);
+                if (matched && matched.division) return matched.division;
+                if (currentUser.division) return currentUser.division;
+                if (currentUser.user_metadata && currentUser.user_metadata.division) return currentUser.user_metadata.division;
+            }
             const role = getUserRole();
             const map = {
-                'PJ_MEDIA': 'Divisi Media & Dakwah',
-                'PJ_LOGISTIK': 'Divisi Logistik & Sarpras',
-                'PJ_SANTRI': 'Divisi Pembinaan Santri Tahfidz',
-                'PJ_MUSAFIR': 'Divisi Pelayanan Musafir & Sosial',
-                'PJ_IBADAH': 'Divisi Ibadah & Acara',
-                'PJ_KEUANGAN': 'Divisi Keuangan & ZISWAF',
-                'PJ_KEAMANAN': 'Divisi Keamanan',
-                'PJ_KEBERSIHAN': 'Divisi Kebersihan & Sanitasi'
+                'SUPER_ADMIN': 'IT & Ekosistem Digital',
+                'KETUA_DKM': 'Pimpinan DKM',
+                'SUPER_USER': 'Quality Assurance & Audit',
+                'PJ_MEDIA': 'Media & Dakwah',
+                'PJ_LOGISTIK': 'Logistik & Sarpras',
+                'PJ_SANTRI': 'Santri & Tahfidz',
+                'PJ_MUSAFIR': 'Pelayanan Musafir',
+                'PJ_IBADAH': 'Peribadatan & Acara',
+                'PJ_KEUANGAN': 'Keuangan & Akuntansi',
+                'PJ_KEAMANAN': 'Keamanan & Ketertiban',
+                'PJ_KEBERSIHAN': 'Kebersihan & Sanitasi'
             };
-            return map[role] || 'ALL';
+            return map[role] || 'Operasional Masjid';
         }
 
         function canApproveTask() {
@@ -8394,257 +8734,6 @@
         // ==========================================================================
         // 11. ACCOUNT CONTROL, USER MANAGEMENT & GRANULAR RBAC ENGINE
         // ==========================================================================
-        const DEFAULT_ADMIN_USERS_SEED = [
-            {
-                id: "5f439559-74ae-4406-bac6-1d5b2ce0a90d",
-                email: "superadmin@masjidsophiajatiwarna.com",
-                full_name: "Super Administrator Sophia",
-                role: "SUPER_ADMIN",
-                division: "IT & Ekosistem Digital",
-                phone_number: "+6281234567890",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            },
-            {
-                id: "6a937ea3-1372-4eb9-924b-026cb32652d4",
-                email: "superuser@masjidsophiajatiwarna.com",
-                full_name: "Super User Testing Sophia",
-                role: "SUPER_USER",
-                division: "Quality Assurance & Audit",
-                phone_number: "+6281234567891",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            },
-            {
-                id: "77380ff1-42bd-4285-b727-79803a7e9d97",
-                email: "dkm@masjidsophiajatiwarna.com",
-                full_name: "Ketua DKM Masjid Sophia",
-                role: "KETUA_DKM",
-                division: "Pimpinan DKM",
-                phone_number: "+6281234567892",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            },
-            {
-                id: "38d46664-7070-41b2-a7c5-3c4e4fe91688",
-                email: "media@masjidsophiajatiwarna.com",
-                full_name: "Penanggung Jawab Media & Dakwah",
-                role: "PJ_MEDIA",
-                division: "Media & Dakwah",
-                phone_number: "+6281234567893",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            },
-            {
-                id: "a32b9a78-39f4-40a9-8769-661940333fb6",
-                email: "logistik@masjidsophiajatiwarna.com",
-                full_name: "Penanggung Jawab Logistik & Sarpras",
-                role: "PJ_LOGISTIK",
-                division: "Logistik & Sarpras",
-                phone_number: "+6281234567894",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            },
-            {
-                id: "146ddfbc-81d4-4dc8-b783-799a1c8621b4",
-                email: "santri@masjidsophiajatiwarna.com",
-                full_name: "Penanggung Jawab Santri Tahfidz",
-                role: "PJ_SANTRI",
-                division: "Santri & Tahfidz",
-                phone_number: "+6281234567895",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            },
-            {
-                id: "cc146860-c400-4408-8135-c710f739ba88",
-                email: "musafir@masjidsophiajatiwarna.com",
-                full_name: "Penanggung Jawab Layanan Musafir",
-                role: "PJ_MUSAFIR",
-                division: "Pelayanan Musafir",
-                phone_number: "+6281234567896",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            },
-            {
-                id: "7260075c-ae31-48ed-944e-1b1984e808da",
-                email: "ibadah@masjidsophiajatiwarna.com",
-                full_name: "Penanggung Jawab Peribadatan & Acara",
-                role: "PJ_IBADAH",
-                division: "Peribadatan & Acara",
-                phone_number: "+6281234567897",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            },
-            {
-                id: "e9084be8-1f18-4380-a31f-65f0024a6225",
-                email: "keuangan@masjidsophiajatiwarna.com",
-                full_name: "Bendahara & Akuntansi DKM",
-                role: "PJ_KEUANGAN",
-                division: "Keuangan & Akuntansi",
-                phone_number: "+6281234567898",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            },
-            {
-                id: "9ff7cd7f-eaf6-42e2-8d8e-4aec8508ab5d",
-                email: "keamanan@masjidsophiajatiwarna.com",
-                full_name: "Penanggung Jawab Keamanan & Ketertiban",
-                role: "PJ_KEAMANAN",
-                division: "Keamanan & Ketertiban",
-                phone_number: "+6281234567899",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            },
-            {
-                id: "8aae0c0a-3beb-4b43-af49-bfd91d94db91",
-                email: "kebersihan@masjidsophiajatiwarna.com",
-                full_name: "Penanggung Jawab Kebersihan & Sanitasi",
-                role: "PJ_KEBERSIHAN",
-                division: "Kebersihan & Sanitasi",
-                phone_number: "+6281234567800",
-                is_active: true,
-                avatar_url: null,
-                last_login: null
-            }
-        ];
-
-        const SYSTEM_MODULES = [
-            { key: "system_config", name: "Konfigurasi Sistem & API", icon: "fa-sliders" },
-            { key: "account_control", name: "Manajemen Pengguna DKM (Account Control)", icon: "fa-users-gear" },
-            { key: "tasks", name: "Task Management (5 Tampilan)", icon: "fa-list-check" },
-            { key: "history", name: "Riwayat Pengelolaan Realtime", icon: "fa-clock-rotate-left" },
-            { key: "chat", name: "Chat Koordinasi Multi-Arah", icon: "fa-comments" },
-            { key: "leave_requests", name: "Pengajuan Izin & Cuti Pengurus", icon: "fa-calendar-day" },
-            { key: "articles", name: "Penerbitan Artikel & Berita (CMS)", icon: "fa-newspaper" },
-            { key: "home_curation", name: "Pengatur Beranda (Self-Sustain)", icon: "fa-house-laptop" },
-            { key: "sarpras_logistics", name: "Logistik Makan & Aset Masjid", icon: "fa-utensils" },
-            { key: "santri", name: "Data Santri & Mutaba'ah Tahfidz", icon: "fa-graduation-cap" },
-            { key: "musafir", name: "Buku Tamu Musafir & Loker 24 Jam", icon: "fa-bed" },
-            { key: "prayer_calibration", name: "Kalibrasi Shalat & Rotasi Petugas", icon: "fa-kaaba" },
-            { key: "finance", name: "Akuntansi, Kas & Laporan Keuangan", icon: "fa-hand-holding-dollar" },
-            { key: "security", name: "Report Keamanan & Upload Bukti", icon: "fa-shield-halved" },
-            { key: "sanitation", name: "Report Kebersihan & Upload Bukti", icon: "fa-broom" },
-            { key: "health", name: "Monitor 7 Pilar Cloud", icon: "fa-server" },
-            { key: "pwa_mobile", name: "PWA & Akses Mobile App APK", icon: "fa-mobile-screen-button" }
-        ];
-
-        const ROLE_PERMISSION_TEMPLATES = {
-            "SUPER_ADMIN": {
-                system_config: "Penuh", account_control: "Penuh", tasks: "Penuh", history: "Penuh", chat: "Penuh",
-                leave_requests: "Penuh", articles: "Penuh", home_curation: "Penuh", sarpras_logistics: "Penuh",
-                santri: "Penuh", musafir: "Penuh", prayer_calibration: "Penuh", finance: "Penuh", security: "Penuh",
-                sanitation: "Penuh", health: "Penuh", pwa_mobile: "Penuh"
-            },
-            "KETUA_DKM": {
-                system_config: "Baca", account_control: "Baca", tasks: "Penuh", history: "Baca", chat: "Penuh",
-                leave_requests: "Penuh", articles: "Review", home_curation: "Review", sarpras_logistics: "Laporan",
-                santri: "Laporan", musafir: "Laporan", prayer_calibration: "Persetujuan", finance: "Penuh",
-                security: "Laporan", sanitation: "Laporan", health: "Baca", pwa_mobile: "Penuh"
-            },
-            "SUPER_USER": {
-                system_config: "Baca", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
-                leave_requests: "Request", articles: "Baca", home_curation: "Baca", sarpras_logistics: "Baca",
-                santri: "Baca", musafir: "Baca", prayer_calibration: "Baca", finance: "Request", security: "Baca",
-                sanitation: "Baca", health: "Baca", pwa_mobile: "Penuh"
-            },
-            "PJ_MEDIA": {
-                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
-                leave_requests: "Request", articles: "Penuh", home_curation: "Penuh", sarpras_logistics: "TIDAK_ADA_AKSES",
-                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "Baca", finance: "Request",
-                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
-            },
-            "PJ_LOGISTIK": {
-                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
-                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "Penuh",
-                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
-                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
-            },
-            "PJ_SANTRI": {
-                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
-                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
-                santri: "Penuh", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
-                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
-            },
-            "PJ_MUSAFIR": {
-                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
-                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
-                santri: "TIDAK_ADA_AKSES", musafir: "Penuh", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
-                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
-            },
-            "PJ_IBADAH": {
-                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
-                leave_requests: "Request", articles: "Kajian", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
-                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "Penuh", finance: "Request",
-                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
-            },
-            "PJ_KEUANGAN": {
-                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
-                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "Laporan",
-                santri: "TIDAK_ADA_AKSES", musafir: "TIDAK_ADA_AKSES", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Penuh",
-                security: "TIDAK_ADA_AKSES", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
-            },
-            "PJ_KEAMANAN": {
-                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
-                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
-                santri: "TIDAK_ADA_AKSES", musafir: "Baca", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
-                security: "Penuh", sanitation: "TIDAK_ADA_AKSES", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
-            },
-            "PJ_KEBERSIHAN": {
-                system_config: "TIDAK_ADA_AKSES", account_control: "TIDAK_ADA_AKSES", tasks: "Penuh", history: "Baca", chat: "Penuh",
-                leave_requests: "Request", articles: "TIDAK_ADA_AKSES", home_curation: "TIDAK_ADA_AKSES", sarpras_logistics: "TIDAK_ADA_AKSES",
-                santri: "TIDAK_ADA_AKSES", musafir: "Baca", prayer_calibration: "TIDAK_ADA_AKSES", finance: "Request",
-                security: "TIDAK_ADA_AKSES", sanitation: "Penuh", health: "TIDAK_ADA_AKSES", pwa_mobile: "Penuh"
-            }
-        };
-
-        let adminUsersList = [];
-        let tempSelfAvatarUrl = null;
-        const onlineUsersSet = new Set();
-        const idleUsersSet = new Set();
-
-        function getDivisionPrefix(division) {
-            const map = {
-                "Media & Dakwah": "media",
-                "Logistik & Sarpras": "logistik",
-                "Santri & Tahfidz": "santri",
-                "Pelayanan Musafir": "musafir",
-                "Peribadatan & Acara": "ibadah",
-                "Keuangan & Akuntansi": "keuangan",
-                "Keamanan & Ketertiban": "keamanan",
-                "Kebersihan & Sanitasi": "kebersihan",
-                "IT & Ekosistem Digital": "it",
-                "Pimpinan DKM": "dkm",
-                "Quality Assurance & Audit": "superuser"
-            };
-            return map[division] || "pengurus";
-        }
-
-        function getRoleFromDivision(division) {
-            const map = {
-                "Media & Dakwah": "PJ_MEDIA",
-                "Logistik & Sarpras": "PJ_LOGISTIK",
-                "Santri & Tahfidz": "PJ_SANTRI",
-                "Pelayanan Musafir": "PJ_MUSAFIR",
-                "Peribadatan & Acara": "PJ_IBADAH",
-                "Keuangan & Akuntansi": "PJ_KEUANGAN",
-                "Keamanan & Ketertiban": "PJ_KEAMANAN",
-                "Kebersihan & Sanitasi": "PJ_KEBERSIHAN",
-                "IT & Ekosistem Digital": "SUPER_ADMIN",
-                "Pimpinan DKM": "KETUA_DKM",
-                "Quality Assurance & Audit": "SUPER_USER"
-            };
-            return map[division] || "STAFF";
-        }
 
         // ==========================================================================
         // ACTIVITY EVENT-LISTENER & INACTIVITY AUTO-LOGOUT (STANDAR SIABE-PORTO)
@@ -8799,6 +8888,7 @@
                     adminUsersList = [...DEFAULT_ADMIN_USERS_SEED];
                 }
             } else {
+                // Jika sukses memuat dari DB, hanya gabungkan akun lokal yang belum terdaftar di DB (fail-safe offline)
                 try {
                     const localMaster = localStorage.getItem('masjid_sophia_admin_users_master');
                     if (localMaster) {
@@ -8808,13 +8898,6 @@
                                 const exists = adminUsersList.some(dbU => (dbU.email || '').toLowerCase().trim() === (lu.email || '').toLowerCase().trim());
                                 if (!exists) {
                                     adminUsersList.push(lu);
-                                } else {
-                                    const idx = adminUsersList.findIndex(dbU => (dbU.email || '').toLowerCase().trim() === (lu.email || '').toLowerCase().trim());
-                                    if (idx !== -1) {
-                                        if (lu.full_name && lu.full_name !== adminUsersList[idx].full_name) adminUsersList[idx].full_name = lu.full_name;
-                                        if (lu.permissions) adminUsersList[idx].permissions = lu.permissions;
-                                        if (lu.avatar_url) adminUsersList[idx].avatar_url = lu.avatar_url;
-                                    }
                                 }
                             });
                         }
@@ -8831,7 +8914,16 @@
                 const me = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === currentEmail);
                 if (me) {
                     me.last_login = nowISO;
+                    currentUser = {
+                        ...currentUser,
+                        ...me,
+                        full_name: me.full_name || currentUser.full_name,
+                        role: me.role || currentUser.role,
+                        division: me.division || currentUser.division,
+                        avatar_url: me.avatar_url || currentUser.avatar_url
+                    };
                 }
+                updateCurrentUserProfileUI(currentUser);
             }
 
             // Check localStorage fallbacks for all users
@@ -9313,6 +9405,20 @@
 
             saveCustomUsersToLocal();
 
+            // Jika akun yang diedit adalah user yang sedang aktif login, sinkronkan currentUser & UI sidebar
+            if (currentUser && currentUser.email && currentUser.email.toLowerCase().trim() === email) {
+                currentUser = {
+                    ...currentUser,
+                    ...user,
+                    full_name: user.full_name,
+                    role: user.role,
+                    division: user.division,
+                    is_active: user.is_active,
+                    permissions: user.permissions
+                };
+                updateCurrentUserProfileUI(currentUser);
+            }
+
             // Realtime Broadcast
             if (realtimeHub) {
                 realtimeHub.send({
@@ -9682,29 +9788,30 @@
                         await sbClient.from('admin_users').update({
                             full_name: newName,
                             avatar_url: currentUser.avatar_url
-                        }).eq('email', currentUser.email.toLowerCase());
+                        }).eq('email', currentUser.email.toLowerCase().trim());
                     }
                 } catch (err) {
                     console.warn("Save self profile notice:", err);
                 }
 
-                // Update UI in sidebar
-                document.getElementById('display-user-email').textContent = newName;
-                const avatarBox = document.getElementById('display-user-avatar');
-                if (avatarBox) {
-                    if (currentUser.avatar_url) {
-                        avatarBox.innerHTML = `<img src="${escapeHtml(currentUser.avatar_url)}" alt="Avatar">`;
-                    } else {
-                        const initials = newName.substring(0, 2).toUpperCase();
-                        avatarBox.innerHTML = `<span>${initials}</span>`;
-                    }
+                // Update in adminUsersList & Local Storage
+                const curEmail = (currentUser.email || '').toLowerCase().trim();
+                const idx = adminUsersList.findIndex(u => (u.email || '').toLowerCase().trim() === curEmail);
+                if (idx !== -1) {
+                    adminUsersList[idx].full_name = newName;
+                    if (currentUser.avatar_url) adminUsersList[idx].avatar_url = currentUser.avatar_url;
                 }
+                saveCustomUsersToLocal();
+                renderAdminUsersTable();
+
+                // Update UI in sidebar
+                updateCurrentUserProfileUI(currentUser);
 
                 if (realtimeHub) {
                     realtimeHub.send({
                         type: 'broadcast',
                         event: 'USER_SYNC',
-                        payload: currentUser
+                        payload: adminUsersList[idx] || currentUser
                     });
                 }
 
@@ -9765,13 +9872,25 @@
         function handleRealtimeAdminUserChange(payload) {
             if (!payload) return;
             const updatedUser = payload.new || payload;
-            if (!updatedUser || !updatedUser.id) return;
+            if (!updatedUser || (!updatedUser.id && !updatedUser.email)) return;
 
-            const idx = adminUsersList.findIndex(u => String(u.id) === String(updatedUser.id) || (u.email && u.email.toLowerCase() === (updatedUser.email || '').toLowerCase()));
+            const uEmail = (updatedUser.email || '').toLowerCase().trim();
+            const uId = String(updatedUser.id || '');
+
+            const idx = adminUsersList.findIndex(u => (uId && String(u.id) === uId) || (uEmail && (u.email || '').toLowerCase().trim() === uEmail));
             if (idx !== -1) {
                 adminUsersList[idx] = { ...adminUsersList[idx], ...updatedUser };
             } else {
                 adminUsersList.push(updatedUser);
+            }
+
+            // Jika akun yang diperbarui adalah user yang sedang aktif login, sinkronkan currentUser & UI sidebar
+            if (currentUser && currentUser.email && currentUser.email.toLowerCase().trim() === uEmail) {
+                currentUser = {
+                    ...currentUser,
+                    ...(adminUsersList[idx] || updatedUser)
+                };
+                updateCurrentUserProfileUI(currentUser);
             }
 
             saveCustomUsersToLocal();

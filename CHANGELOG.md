@@ -4,6 +4,20 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.8.1] - 2026-08-24
+
+### Resolusi Dinamis Profil Pengurus, Eliminasi Hardcoded Override & Sanitasi Sinkronisasi Master Database
+
+#### Perbaikan & Keandalan (Fixed & Reliability)
+- `[USER_PROFILE_SYNC_BUGFIX]` Mengatasi masalah persistensi nama profil pengurus pada sidebar dan modal profil mandiri (`#modal-user-self-profile`):
+  - **Multi-Tier Dynamic Name Resolver (`getUserDisplayName`):** Mengeliminasi seluruh string statis hardcoded dan menggantinya dengan logika resolusi dinamis multi-tingkat (Database `admin_users.full_name` $\rightarrow$ Auth `user_metadata` $\rightarrow$ Live `adminUsersList` $\rightarrow$ Default Seed $\rightarrow$ Formatted Prefix).
+  - **PostgreSQL Single Source of Truth:** Memperbaiki algoritma penggabungan pada `loadAdminUsers()` sehingga data aktual dari tabel database Supabase tidak lagi tertimpa (*overwritten*) oleh string usang dari cache `localStorage`.
+  - **Inisialisasi Asinkron Terjamin:** Memperbarui listener `DOMContentLoaded` menjadi `async/await` untuk menjamin `loadAdminUsers()` selesai memuat data sebelum `showAdminDashboard(user)` dieksekusi.
+  - **Reaktivitas UI Terpadu (`updateCurrentUserProfileUI`):** Menghubungkan perubahan profil mandiri (`handleSaveSelfProfile`), otorisasi matriks RBAC (`handleSaveUserRBAC`), dan pembaruan realtime CDC (`handleRealtimeAdminUserChange`) ke pembaruan antarmuka kartu profil sidebar, inisial avatar, dan modal secara instan (*zero refresh*).
+  - **Penyelarasan Master Seed Pengurus:** Memperbarui data baku pada `DEFAULT_ADMIN_USERS_SEED` agar selaras dengan basis data riil (seperti Habib Maulana untuk superuser dan Silvih Damayanti untuk PJ Ibadah).
+
+---
+
 ## [1.8.0] - 2026-08-23
 
 ### Peluncuran Modul Pengajuan Izin & Cuti Pengurus (Approval DKM / Super Admin) di Branch Dev
