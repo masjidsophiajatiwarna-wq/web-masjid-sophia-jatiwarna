@@ -4,6 +4,22 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.8.4] - 2026-08-24
+
+### Alur Lupa Kata Sandi & Pengamanan Kata Sandi Lama
+
+#### Fitur Baru (Added)
+- `[AUTH_RECOVERY_FLOW]` Menambahkan alur pemulihan akun (Lupa Kata Sandi) bagi pengurus.
+  - Tautan **Lupa Kata Sandi** di halaman login untuk pengguna yang tidak memiliki sesi.
+  - Tautan **Lupa Sandi Lama** di Modal Profil Mandiri bagi pengurus yang sedang login namun lupa sandi lamanya saat ingin mengganti sandi baru.
+  - Implementasi modal khusus `#modal-reset-password` untuk mengatur sandi baru dengan tampilan rapi ala Masjid Sophia setelah klik tautan dari email.
+- `[AUTH_SECURE_PASSWORD]` Penambahan input **Kata Sandi Lama** di Modal Profil Mandiri (Tab Security) yang dikaitkan langsung dengan parameter `current_password` di Supabase untuk memenuhi standar pengamanan otentikasi.
+
+#### Perbaikan (Fixed)
+- `[AUTH_FORCED_RELOGIN]` Otomatis menghapus sesi secara paksa setelah pengguna sukses mengeklik tautan konfirmasi email atau tautan pemulihan sandi, lalu menampilkan pesan yang mengarahkan mereka untuk *login ulang* menggunakan kredensial yang baru demi mencegah sesi macet atau bug autorisasi ganda.
+
+---
+
 ## [1.8.3] - 2026-08-24
 
 ### Perbaikan Alur Konfirmasi Email & Sinkronisasi Logout Keamanan

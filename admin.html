@@ -2781,6 +2781,9 @@
                 <div class="form-group">
                     <label class="form-label" for="login-password">Kata Sandi</label>
                     <input type="password" id="login-password" class="form-input" placeholder="••••••••••••" required>
+                    <div style="margin-top: 0.35rem; text-align: right;">
+                        <a href="#" onclick="handleForgotPasswordFromLogin(event)" style="font-size: 0.72rem; color: var(--color-gold-deep); text-decoration: none; font-weight: 700;">Lupa Kata Sandi?</a>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-auth-primary" id="btn-login-submit">
@@ -4493,6 +4496,13 @@
                         Memperbarui kata sandi akan otomatis memutus sesi aktif di perangkat lain demi keamanan, dan Anda akan diminta login ulang.
                     </div>
                     <div class="form-group">
+                        <label class="form-label" style="font-size: 0.72rem; letter-spacing: 0.5px;">KATA SANDI LAMA</label>
+                        <input type="password" id="self-current-password-input" class="form-input" placeholder="Masukkan kata sandi saat ini">
+                        <div style="margin-top: 0.35rem; text-align: right;">
+                            <a href="#" onclick="handleForgotPasswordFromProfile(event)" style="font-size: 0.72rem; color: var(--color-gold-deep); text-decoration: none; font-weight: 700;">Lupa Sandi Lama?</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="form-label" style="font-size: 0.72rem; letter-spacing: 0.5px;">KATA SANDI BARU</label>
                         <input type="password" id="self-new-password-input" class="form-input" placeholder="Masukkan kata sandi baru (Minimal 6 karakter)">
                     </div>
@@ -4518,6 +4528,36 @@
                     </button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Reset Password (Recovery) -->
+    <div class="modal-overlay" id="modal-reset-password" style="display: none; align-items: center; justify-content: center;">
+        <div class="modal-box" style="max-width: 440px;">
+            <div class="modal-header" style="border-bottom: 1px solid var(--color-border); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                <h3 style="display: flex; align-items: center; gap: 0.6rem; color: var(--color-charcoal); font-size: 1.15rem;">
+                    <i class="fa-solid fa-key" style="color: var(--color-gold-deep);"></i> Atur Kata Sandi Baru
+                </h3>
+            </div>
+            
+            <div style="font-size: 0.8rem; color: var(--color-charcoal-muted); margin-bottom: 1.5rem; line-height: 1.5;">
+                Silakan masukkan kata sandi baru untuk akun Anda. Pastikan kata sandi kuat dan tidak mudah ditebak.
+            </div>
+
+            <form id="form-reset-password" onsubmit="handleResetPasswordSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">KATA SANDI BARU</label>
+                    <input type="password" id="recovery-new-password" class="form-input" placeholder="Minimal 6 karakter" required minlength="6">
+                </div>
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label class="form-label">KONFIRMASI KATA SANDI</label>
+                    <input type="password" id="recovery-confirm-password" class="form-input" placeholder="Ulangi kata sandi baru" required minlength="6">
+                </div>
+                
+                <button type="submit" class="btn-auth-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.85rem; padding: 0.85rem; background: var(--color-charcoal); color: var(--color-gold-primary); border: none; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer;">
+                    <i class="fa-solid fa-save"></i> Simpan Kata Sandi Baru
+                </button>
+            </form>
         </div>
     </div>
 
@@ -5139,6 +5179,13 @@
                     window.location.replace(window.location.pathname);
                 }, 1500);
                 return;
+            } else if (rawHash.includes('type=recovery') && rawHash.includes('access_token=')) {
+                showAuthScreen();
+                // Tunggu sebentar agar session recovery aktif di background
+                setTimeout(() => {
+                    document.getElementById('modal-reset-password').style.display = 'flex';
+                }, 500);
+                return;
             }
 
             await loadAdminUsers();
@@ -5154,6 +5201,74 @@
                 showAuthScreen();
             }
         });
+        // Lupa Kata Sandi dari Halaman Login
+        async function handleForgotPasswordFromLogin(e) {
+            if (e) e.preventDefault();
+            const email = prompt("Masukkan alamat email pengurus Anda yang terdaftar:\n\nKami akan mengirimkan tautan untuk mereset kata sandi ke email tersebut.");
+            if (!email) return;
+            
+            const emailTrimmed = email.trim().toLowerCase();
+            if (!emailTrimmed.includes('@')) {
+                alert("Format email tidak valid.");
+                return;
+            }
+
+            try {
+                if (sbClient) {
+                    const currentOrigin = window.location.origin;
+                    const currentPath = window.location.pathname.endsWith('.html') 
+                        ? window.location.pathname 
+                        : (window.location.pathname.replace(/\/?$/, '') + '/admin.html');
+                    
+                    const { error } = await sbClient.auth.resetPasswordForEmail(emailTrimmed, {
+                        redirectTo: currentOrigin + currentPath
+                    });
+                    
+                    if (error) {
+                        alert("Gagal mengirim email pemulihan: " + error.message);
+                        return;
+                    }
+                    alert("Email pemulihan kata sandi berhasil dikirim!\n\nSilakan cek kotak masuk atau folder spam Anda, lalu klik tautan di dalamnya.");
+                } else {
+                    alert("Koneksi ke database belum tersedia.");
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan: " + (err.message || err));
+            }
+        }
+
+        // Submit form kata sandi baru (dari tautan pemulihan email)
+        async function handleResetPasswordSubmit(e) {
+            if (e) e.preventDefault();
+            
+            const newPass = document.getElementById('recovery-new-password').value;
+            const confirmPass = document.getElementById('recovery-confirm-password').value;
+            
+            if (!newPass || newPass.length < 6) {
+                alert("Kata sandi baru minimal 6 karakter.");
+                return;
+            }
+            if (newPass !== confirmPass) {
+                alert("Konfirmasi kata sandi tidak cocok. Silakan ulangi.");
+                return;
+            }
+            
+            try {
+                if (sbClient) {
+                    const { error } = await sbClient.auth.updateUser({ password: newPass });
+                    if (error) {
+                        alert("Gagal mereset kata sandi: " + error.message);
+                        return;
+                    }
+                    
+                    alert("Kata sandi Anda berhasil diperbarui!\n\nSilakan masuk kembali (login) menggunakan kata sandi yang baru.");
+                    await sbClient.auth.signOut();
+                    window.location.replace(window.location.pathname);
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan saat menyimpan kata sandi: " + (err.message || err));
+            }
+        }
 
         // Handle Login (Dual-Tier Seamless Auth & Auto-Provisioning)
         async function handleLogin(e) {
@@ -9894,7 +10009,13 @@
         }
 
         async function handleSelfUpdatePasswordAndLogout() {
+            const currentPass = document.getElementById('self-current-password-input').value;
             const pass = document.getElementById('self-new-password-input').value;
+            
+            if (!currentPass) {
+                alert('Harap masukkan kata sandi Anda saat ini.');
+                return;
+            }
             if (!pass || pass.length < 6) {
                 alert('Kata sandi baru minimal harus 6 karakter.');
                 return;
@@ -9902,7 +10023,10 @@
 
             try {
                 if (sbClient) {
-                    const { error } = await sbClient.auth.updateUser({ password: pass });
+                    const { error } = await sbClient.auth.updateUser({ 
+                        password: pass,
+                        current_password: currentPass
+                    });
                     if (error) {
                         alert('Gagal memperbarui kata sandi: ' + error.message);
                         return;
@@ -9917,6 +10041,42 @@
                 handleLogout();
             } catch (err) {
                 alert('Terjadi kesalahan saat memperbarui kata sandi.');
+            }
+        }
+
+        async function handleForgotPasswordFromProfile(e) {
+            if (e) e.preventDefault();
+            
+            if (!currentUser || !currentUser.email) {
+                alert('Sesi pengguna tidak valid.');
+                return;
+            }
+            
+            const confirmReset = confirm(`Kami akan mengirimkan tautan pemulihan ke email Anda:\n${currentUser.email}\n\nAnda akan dikeluarkan dari sistem untuk mereset sandi. Lanjutkan?`);
+            if (!confirmReset) return;
+
+            try {
+                const currentOrigin = window.location.origin;
+                const currentPath = window.location.pathname.endsWith('.html') 
+                    ? window.location.pathname 
+                    : (window.location.pathname.replace(/\/?$/, '') + '/admin.html');
+                const redirectUrl = currentOrigin + currentPath;
+
+                if (sbClient) {
+                    const { error } = await sbClient.auth.resetPasswordForEmail(currentUser.email, {
+                        redirectTo: redirectUrl,
+                    });
+                    if (error) {
+                        alert('Gagal mengirim email pemulihan: ' + error.message);
+                        return;
+                    }
+                }
+                
+                alert(`Tautan pemulihan sandi telah dikirim ke ${currentUser.email}.\n\nSilakan cek kotak masuk Anda. Sistem akan mengeluarkan Anda sekarang.`);
+                closeSelfProfileModal();
+                handleLogout();
+            } catch (err) {
+                alert('Terjadi kesalahan: ' + (err.message || err));
             }
         }
 
