@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -3532,6 +3532,80 @@
             background: #FFFFFF;
         }
 
+    
+        /* ==========================================================================
+           MODUL 2: LOGISTIK & SARPRAS (DAPUR & INVENTARIS ASET)
+           ========================================================================== */
+        .btn-subview-logistik {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.25rem;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: var(--color-charcoal-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            font-family: inherit;
+        }
+
+        .btn-subview-logistik:hover {
+            background: #F8FAFC;
+            color: var(--color-charcoal);
+            border-color: #CBD5E1;
+            transform: translateY(-1px);
+        }
+
+        .btn-subview-logistik.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+
+        .status-badge-dapur {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.65rem;
+            border-radius: var(--radius-full);
+            font-size: 0.72rem;
+            font-weight: 700;
+            line-height: 1;
+            border: 1px solid transparent;
+        }
+
+        .status-dapur-persiapan { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+        .status-dapur-memasak { background: #FFEDD5; color: #9A3412; border-color: #FED7AA; }
+        .status-dapur-siap-bagi { background: #DBEAFE; color: #1E40AF; border-color: #BFDBFE; }
+        .status-dapur-selesai { background: var(--color-success-bg); color: var(--color-success); border-color: #A7F3D0; }
+
+        .status-kondisi-baik { background: var(--color-success-bg); color: var(--color-success); border-color: #A7F3D0; }
+        .status-kondisi-rusak-ringan { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+        .status-kondisi-rusak-berat { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
+        .status-kondisi-servis { background: #E0E7FF; color: #3730A3; border-color: #C7D2FE; }
+        .status-kondisi-hilang { background: #F3F4F6; color: #4B5563; border-color: #E5E7EB; }
+
+        .porsi-progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: #E5E7EB;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .porsi-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #C9A84C 0%, #10B981 100%);
+            border-radius: 999px;
+            transition: width 0.3s ease;
+        }
+
     </style>
 </head>
 <body>
@@ -5223,6 +5297,233 @@
             </div>
 
             <!-- TAB: MODUL PERIBADATAN & PENUGASAN PETUGAS IBADAH (R3) -->
+            
+            <!-- Tab: Modul 2 — PJ Logistik & Sarpras (Dapur Sedekah Makan & Inventaris Aset) -->
+            <div id="tab-logistik" class="tab-content-panel" style="display: none;">
+                <!-- Subview Navigation -->
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-subview-logistik active" id="btn-subview-logistik-dapur" onclick="switchLogistikSubView('dapur')">
+                            <i class="fa-solid fa-utensils"></i> Sedekah Makan Dzuhur (70+ Porsi/Hari)
+                        </button>
+                        <button type="button" class="btn-subview-logistik" id="btn-subview-logistik-aset" onclick="switchLogistikSubView('aset')">
+                            <i class="fa-solid fa-boxes-stacked"></i> Manajemen Inventaris Aset &amp; Sarpras
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn-action-gold" onclick="loadLogistikData(true)">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Logistik
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 1: DAPUR SEDEKAH MAKAN DZUHUR -->
+                <div id="subview-logistik-dapur" class="logistik-subview-pane" style="display: block;">
+                    <!-- KPI Row -->
+                    <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: var(--color-gold-light); color: var(--color-gold-deep);">
+                                <i class="fa-solid fa-bowl-rice"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>TOTAL PORSI TERBAGI</span>
+                                <h3 id="stat-dapur-total-porsi">0 Porsi</h3>
+                                <div class="kpi-badge" style="color: var(--color-gold-deep);"><i class="fa-solid fa-calendar-check"></i> Seluruh Catatan</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #ECFDF5; color: #059669;">
+                                <i class="fa-solid fa-fire-burner"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>STATUS DAPUR HARI INI</span>
+                                <h3 id="stat-dapur-today-status" style="font-size: 1.05rem;">Belum Ada Sesi</h3>
+                                <div class="kpi-badge" id="stat-dapur-today-badge" style="color: var(--color-success);">Ba'da Dzuhur</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #EFF6FF; color: #2563EB;">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>REALISASI HARI INI</span>
+                                <h3 id="stat-dapur-today-realisasi">0 / 70 Porsi</h3>
+                                <div class="kpi-badge" style="color: #2563EB;">Target: 70+ Porsi/Hari</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #FEF3C7; color: #D97706;">
+                                <i class="fa-solid fa-calculator"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>RATA-RATA HARIAN</span>
+                                <h3 id="stat-dapur-avg-porsi">0 Porsi</h3>
+                                <div class="kpi-badge" style="color: #D97706;"><i class="fa-solid fa-users"></i> Jamaah &amp; Musafir</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action & Filter Bar -->
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-utensils" style="color: var(--color-gold-deep);"></i> Log Operasional Dapur Sedekah Makan Dzuhur</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Perekaman menu harian, target vs realisasi pembagian, logistik bahan baku, dan dokumentasi foto distribusi
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="openAddDapurModal()">
+                                <i class="fa-solid fa-plus"></i> Catat Sesi Dapur Baru
+                            </button>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                <input type="text" id="dapur-search-input" class="search-input" placeholder="Cari menu hidangan, bahan belanja, atau catatan..." oninput="filterDapurTable()">
+                            </div>
+                            <select id="dapur-status-filter" class="form-select" onchange="filterDapurTable()">
+                                <option value="ALL">Semua Status Dapur</option>
+                                <option value="PERSIAPAN">Persiapan Bahan</option>
+                                <option value="MEMASAK">Sedang Memasak</option>
+                                <option value="SIAP_BAGI">Siap Dibagikan</option>
+                                <option value="SELESAI_TERBAGI">Selesai Terbagi</option>
+                            </select>
+                            <select id="dapur-sort-filter" class="form-select" onchange="filterDapurTable()">
+                                <option value="newest">Tanggal Terbaru</option>
+                                <option value="oldest">Tanggal Terlama</option>
+                                <option value="porsi_desc">Porsi Terbanyak</option>
+                            </select>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 130px;">Tanggal &amp; Hari</th>
+                                        <th style="min-width: 220px;">Menu Utama Hidangan</th>
+                                        <th style="min-width: 140px;">Porsi (Realisasi/Target)</th>
+                                        <th style="min-width: 130px;">Status Distribusi</th>
+                                        <th style="min-width: 200px;">Bahan &amp; Logistik Belanja</th>
+                                        <th style="min-width: 90px; text-align: center;">Dokumentasi</th>
+                                        <th style="text-align: right; min-width: 110px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-dapur-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 2: MANAJEMEN INVENTARIS ASET & SARPRAS -->
+                <div id="subview-logistik-aset" class="logistik-subview-pane" style="display: none;">
+                    <!-- KPI Row -->
+                    <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: var(--color-gold-light); color: var(--color-gold-deep);">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>TOTAL ASET TERDAFTAR</span>
+                                <h3 id="stat-aset-total-item">0 Item</h3>
+                                <div class="kpi-badge" style="color: var(--color-gold-deep);"><i class="fa-solid fa-barcode"></i> Terinventarisasi</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #EFF6FF; color: #2563EB;">
+                                <i class="fa-solid fa-rupiah-sign"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>TOTAL ESTIMASI NILAI</span>
+                                <h3 id="stat-aset-total-nilai" style="font-size: 1.1rem;">Rp 0</h3>
+                                <div class="kpi-badge" style="color: #2563EB;">Nilai Perolehan Aset</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #ECFDF5; color: #059669;">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>KONDISI BAIK &amp; PRIMA</span>
+                                <h3 id="stat-aset-kondisi-baik">0 Item</h3>
+                                <div class="kpi-badge" style="color: var(--color-success);">Siap Pakai Operasional</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #FEF2F2; color: #DC2626;">
+                                <i class="fa-solid fa-wrench"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>PERLU PERHATIAN / SERVIS</span>
+                                <h3 id="stat-aset-kondisi-perhatian">0 Item</h3>
+                                <div class="kpi-badge" style="color: #DC2626;">Rusak / Dalam Servis</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action & Filter Bar -->
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-boxes-stacked" style="color: var(--color-gold-deep);"></i> Direktori Inventaris Sarana &amp; Prasarana Fisik</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Pencatatan kode inventaris, lokasi penempatan ruangan, kondisi kelayakan, estimasi nilai perolehan, dan riwayat pemeliharaan
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="openAddAssetModal()">
+                                <i class="fa-solid fa-plus"></i> Registrasi Aset Baru
+                            </button>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                <input type="text" id="aset-search-input" class="search-input" placeholder="Cari kode aset, nama barang, atau lokasi..." oninput="filterAssetsTable()">
+                            </div>
+                            <select id="aset-cat-filter" class="form-select" onchange="filterAssetsTable()">
+                                <option value="ALL">Semua Kategori</option>
+                                <option value="Elektronik &amp; Sound">Elektronik &amp; Sound</option>
+                                <option value="Kebersihan &amp; Sanitasi">Kebersihan &amp; Sanitasi</option>
+                                <option value="Perlengkapan Ibadah">Perlengkapan Ibadah</option>
+                                <option value="Dapur &amp; Logistik">Dapur &amp; Logistik</option>
+                                <option value="Kendaraan">Kendaraan</option>
+                                <option value="Furnitur">Furnitur</option>
+                            </select>
+                            <select id="aset-kondisi-filter" class="form-select" onchange="filterAssetsTable()">
+                                <option value="ALL">Semua Kondisi</option>
+                                <option value="BAIK">Baik / Prima</option>
+                                <option value="RUSAK_RINGAN">Rusak Ringan</option>
+                                <option value="RUSAK_BERAT">Rusak Berat</option>
+                                <option value="DALAM_SERVIS">Dalam Servis</option>
+                                <option value="HILANG">Hilang</option>
+                            </select>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 140px;">Kode &amp; Foto</th>
+                                        <th style="min-width: 200px;">Nama Barang &amp; Kategori</th>
+                                        <th style="min-width: 140px;">Lokasi Ruangan</th>
+                                        <th style="min-width: 100px;">Jumlah</th>
+                                        <th style="min-width: 120px;">Kondisi Kelayakan</th>
+                                        <th style="min-width: 130px;">Nilai Estimasi (Rp)</th>
+                                        <th style="min-width: 120px; text-align: center;">Riwayat Servis</th>
+                                        <th style="text-align: right; min-width: 110px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-assets-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="tab-ibadah" class="tab-content-panel" style="display: none;">
                 
                 <!-- Stat Cards KPI Summary -->
@@ -7565,14 +7866,39 @@
                 ]
             },
             {
+                id: 'logistik_sarpras',
+                title: 'LOGISTIK & SARPRAS',
+                icon: 'fa-solid fa-boxes-stacked',
+                items: [
+                    {
+                        id: 'logistik',
+                        label: 'Dapur & Inventaris Aset',
+                        icon: 'fa-solid fa-boxes-stacked',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_LOGISTIK']
+                    }
+                ]
+            },
+            {
                 id: 'publikasi_media',
                 title: 'PUBLIKASI & MEDIA',
                 icon: 'fa-solid fa-bullhorn',
                 items: [
                     {
                         id: 'articles',
-                        label: 'Warta & Artikel',
+                        label: 'Warta & Artikel (CMS)',
                         icon: 'fa-solid fa-newspaper',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA']
+                    },
+                    {
+                        id: 'media',
+                        label: 'Visual Builder & Beranda',
+                        icon: 'fa-solid fa-laptop-code',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA']
+                    },
+                    {
+                        id: 'gallery',
+                        label: 'Galeri Media & WebP',
+                        icon: 'fa-solid fa-images',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA']
                     }
                 ]
@@ -7762,7 +8088,7 @@
 
             // Restore active tab from URL Hash or localStorage (Memory Browser)
             const rawHash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
-            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah'];
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik'];
             const savedTab = (rawHash && validTabs.includes(rawHash))
                 ? rawHash 
                 : (localStorage.getItem('masjid_sophia_active_tab') || 'overview');
@@ -7775,6 +8101,7 @@
             loadIbadahKajian();
             getArticles();
             getMediaItems();
+            if (typeof loadLogistikData === 'function') loadLogistikData();
             setTimeout(() => {
                 checkSubstituteDutyNotification();
             }, 800);
@@ -7782,7 +8109,7 @@
 
         // Switch Navigation Tabs with Browser Memory & URL Hash Persistence
         function switchTab(tabId, btn = null) {
-            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'health', 'accounts', 'ibadah'];
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik'];
             if (!tabId || !validTabs.includes(tabId)) tabId = 'overview';
 
             const role = getUserRole();
@@ -7790,6 +8117,11 @@
             // Strict Role Gates
             if (tabId === 'accounts' && !['SUPER_ADMIN', 'KETUA_DKM'].includes(role)) {
                 alert('Akses Ditolak: Modul Manajemen Pengguna DKM hanya dapat diakses oleh Super Administrator dan Ketua DKM.');
+                switchTab('overview');
+                return;
+            }
+            if (tabId === 'logistik' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_LOGISTIK'].includes(role)) {
+                alert('Akses Ditolak: Modul Logistik & Sarpras hanya dapat diakses oleh PJ Logistik & Sarpras dan Pimpinan DKM.');
                 switchTab('overview');
                 return;
             }
@@ -7858,7 +8190,8 @@
                 'gallery': ['Galeri Media & Kompresi WebP', 'Manajemen aset foto dan engine kompresi otomatis WebP Supabase Storage'],
                 'health': ['Multi-Cloud Free-Tier Monitor', 'Sistem pemantauan 7 pilar infrastruktur cloud gratis (Zero-Cost Production Stack)'],
                 'accounts': ['Direktori & Manajemen Pengguna DKM', 'Kontrol hak akses multi-divisi, riwayat login live, reset kredensial baku, dan manajemen sesi pengurus'],
-                'ibadah': ['Modul Peribadatan & Penugasan Petugas', 'Kalibrasi hisab jadwal shalat presisi Kemenag Jatiwarna, penugasan imam & khatib, serta alur persetujuan jadwal DKM']
+                'ibadah': ['Modul Peribadatan & Penugasan Petugas', 'Kalibrasi hisab jadwal shalat presisi Kemenag Jatiwarna, penugasan imam & khatib, serta alur persetujuan jadwal DKM'],
+                'logistik': ['Logistik Dapur & Inventaris Sarpras', 'Pencatatan sedekah makan siang gratis (70+ porsi/hari) dan manajemen aset fisik masjid']
             };
 
             if (titles[tabId]) {
@@ -7887,7 +8220,10 @@
                 loadAdminUsers();
             } else if (tabId === 'health') {
                 fetchSystemHealth();
-            } else if (tabId === 'articles') {
+            } else if (tabId === 'logistik') {
+                loadLogistikData();
+            }
+            else if (tabId === 'articles') {
                 loadArticlesTable();
             } else if (tabId === 'media') {
                 initHomepageBuilder();
@@ -15815,6 +16151,778 @@
             alert('Konfigurasi beranda berhasil dikembalikan ke standar.');
         }
 
+        
+        // ==========================================================================
+        // MODUL 2: PJ LOGISTIK & SARPRAS JAVASCRIPT ENGINE
+        // ==========================================================================
+        let dapurLogList = [];
+        let assetsList = [];
+        let currentLogistikSubView = 'dapur';
+        let activeAssetServiceId = null;
+
+        const HARI_NAMES = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+        function getDayNameFromDate(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr + 'T00:00:00');
+            return HARI_NAMES[d.getDay()] || '';
+        }
+
+        function formatRupiah(num) {
+            const val = parseFloat(num || 0);
+            return 'Rp ' + Math.floor(val).toLocaleString('id-ID');
+        }
+
+        // Subview Switcher
+        function switchLogistikSubView(subView) {
+            currentLogistikSubView = subView;
+            try {
+                localStorage.setItem('masjid_sophia_logistik_subview', subView);
+            } catch (e) {}
+
+            document.querySelectorAll('.btn-subview-logistik').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.logistik-subview-pane').forEach(p => p.style.display = 'none');
+
+            const btn = document.getElementById('btn-subview-logistik-' + subView);
+            if (btn) btn.classList.add('active');
+
+            const pane = document.getElementById('subview-logistik-' + subView);
+            if (pane) pane.style.display = 'block';
+
+            if (subView === 'dapur') {
+                renderDapurTable();
+            } else if (subView === 'aset') {
+                renderAssetsTable();
+            }
+        }
+
+        // --------------------------------------------------------------------------
+        // DAPUR ENGINE (SEDDAKAH MAKAN DZUHUR 70+ PORSI/HARI)
+        // --------------------------------------------------------------------------
+        async function loadDapurData() {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('dapur_makan_siang')
+                        .select('*')
+                        .order('tanggal', { ascending: false });
+
+                    if (!error && Array.isArray(data)) {
+                        dapurLogList = data;
+                        localStorage.setItem('masjid_sophia_dapur_master', JSON.stringify(data));
+                        renderDapurTable();
+                        updateDapurKpiStats();
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('[Dapur] Supabase fetch notice:', e);
+                }
+            }
+
+            try {
+                const saved = localStorage.getItem('masjid_sophia_dapur_master');
+                if (saved) {
+                    dapurLogList = JSON.parse(saved);
+                } else {
+                    dapurLogList = [];
+                }
+            } catch (e) {
+                dapurLogList = [];
+            }
+            renderDapurTable();
+            updateDapurKpiStats();
+        }
+
+        function renderDapurTable(data = null) {
+            const tbody = document.getElementById('tbody-dapur-list');
+            if (!tbody) return;
+
+            const list = data || dapurLogList;
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--color-charcoal-muted); padding: 3rem 1.5rem;"><div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-bowl-rice"></i></div><div style="font-weight: 700; font-size: 0.95rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Belum Ada Sesi Dapur Makan Dzuhur</div><p style="font-size: 0.8rem; margin: 0; color: var(--color-charcoal-muted);">Klik tombol <b>"+ Catat Sesi Dapur Baru"</b> untuk mulai merekam distribusi sedekah makan hari ini.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                const target = parseInt(item.target_porsi || 70);
+                const realisasi = parseInt(item.realisasi_porsi || 0);
+                const pct = Math.min(100, Math.round((realisasi / target) * 100));
+
+                let statusBadgeClass = 'status-dapur-persiapan';
+                let statusLabel = 'Persiapan';
+                if (item.status_distribusi === 'MEMASAK') {
+                    statusBadgeClass = 'status-dapur-memasak';
+                    statusLabel = 'Memasak';
+                } else if (item.status_distribusi === 'SIAP_BAGI') {
+                    statusBadgeClass = 'status-dapur-siap-bagi';
+                    statusLabel = 'Siap Bagi';
+                } else if (item.status_distribusi === 'SELESAI_TERBAGI') {
+                    statusBadgeClass = 'status-dapur-selesai';
+                    statusLabel = 'Selesai';
+                }
+
+                const photoUrl = item.foto_dokumentasi_url || '';
+                const photoThumb = photoUrl
+                    ? '<div style="width: 42px; height: 32px; border-radius: 4px; overflow: hidden; background: #F3F4F6; margin: 0 auto; cursor: pointer; border: 1px solid var(--color-border);" onclick="openLogistikLightbox(\'' + photoUrl + '\', \'Dokumentasi ' + escapeHtml(item.menu_utama) + '\')"><img src="' + photoUrl + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'"></div>'
+                    : '<span style="font-size: 0.72rem; color: #9CA3AF;">-</span>';
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.825rem;">' + item.tanggal + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-gold-deep); font-weight: 600;">' + (item.hari || getDayNameFromDate(item.tanggal)) + '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem; line-height: 1.3;">' + escapeHtml(item.menu_utama) + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted); margin-top: 2px;"><i class="fa-solid fa-user-tag"></i> ' + (item.pj_dapur || 'PJ Logistik') + '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 800; font-size: 0.85rem; color: ' + (realisasi >= target ? 'var(--color-success)' : 'var(--color-charcoal)') + ';">' + realisasi + ' / ' + target + ' <span style="font-size: 0.7rem; font-weight: 600;">Porsi</span></div>' +
+                        '<div class="porsi-progress-bar-bg"><div class="porsi-progress-bar-fill" style="width: ' + pct + '%;"></div></div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div class="dropdown-status-wrap" style="position: relative; display: inline-block;">' +
+                            '<span class="status-badge-dapur ' + statusBadgeClass + '" style="cursor: pointer;" onclick="promptChangeDapurStatus(\'' + item.id + '\', \'' + item.status_distribusi + '\')" title="Klik untuk mengubah status tahapan dapur">' +
+                                '<i class="fa-solid fa-circle-dot"></i> ' + statusLabel +
+                            '</span>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td><div style="font-size: 0.75rem; color: var(--color-charcoal-muted); line-height: 1.3; max-width: 240px;">' + (item.logistik_bahan_catatan ? escapeHtml(item.logistik_bahan_catatan) : '<em style="color:#9CA3AF;">Tidak ada catatan bahan</em>') + '</div></td>' +
+                    '<td style="text-align: center;">' + photoThumb + '</td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                            '<button type="button" class="btn-action edit" onclick="openEditDapurModal(\'' + item.id + '\')" title="Edit Sesi Dapur"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                            '<button type="button" class="btn-action delete" onclick="deleteDapurEntry(\'' + item.id + '\')" title="Hapus Sesi Dapur"><i class="fa-solid fa-trash"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function filterDapurTable() {
+            const query = (document.getElementById('dapur-search-input')?.value || '').toLowerCase().trim();
+            const status = document.getElementById('dapur-status-filter')?.value || 'ALL';
+            const sort = document.getElementById('dapur-sort-filter')?.value || 'newest';
+
+            let list = [...dapurLogList];
+
+            if (query) {
+                list = list.filter(i => (i.menu_utama || '').toLowerCase().includes(query) || (i.logistik_bahan_catatan || '').toLowerCase().includes(query));
+            }
+            if (status !== 'ALL') {
+                list = list.filter(i => i.status_distribusi === status);
+            }
+
+            if (sort === 'oldest') {
+                list.sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+            } else if (sort === 'porsi_desc') {
+                list.sort((a, b) => (b.realisasi_porsi || 0) - (a.realisasi_porsi || 0));
+            } else {
+                list.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+            }
+
+            renderDapurTable(list);
+        }
+
+        function updateDapurKpiStats() {
+            let totalPorsi = 0;
+            let count = dapurLogList.length;
+            dapurLogList.forEach(d => { totalPorsi += parseInt(d.realisasi_porsi || 0); });
+
+            const statTotal = document.getElementById('stat-dapur-total-porsi');
+            if (statTotal) statTotal.textContent = totalPorsi.toLocaleString('id-ID') + ' Porsi';
+
+            const statAvg = document.getElementById('stat-dapur-avg-porsi');
+            if (statAvg) statAvg.textContent = count > 0 ? Math.round(totalPorsi / count) + ' Porsi' : '0 Porsi';
+
+            // Today's stats
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayItem = dapurLogList.find(d => d.tanggal === todayStr);
+
+            const statTodayStatus = document.getElementById('stat-dapur-today-status');
+            const statTodayRealisasi = document.getElementById('stat-dapur-today-realisasi');
+
+            if (todayItem) {
+                if (statTodayStatus) statTodayStatus.textContent = (todayItem.status_distribusi || '').replace('_', ' ');
+                if (statTodayRealisasi) statTodayRealisasi.textContent = (todayItem.realisasi_porsi || 0) + ' / ' + (todayItem.target_porsi || 70) + ' Porsi';
+            } else {
+                if (statTodayStatus) statTodayStatus.textContent = 'Belum Ada Sesi';
+                if (statTodayRealisasi) statTodayRealisasi.textContent = '0 / 70 Porsi';
+            }
+        }
+
+        function handleDapurDateChange(dateVal) {
+            const hariInput = document.getElementById('dapur-form-hari');
+            if (hariInput) hariInput.value = getDayNameFromDate(dateVal);
+        }
+
+        function openAddDapurModal() {
+            document.getElementById('form-dapur-entry').reset();
+            document.getElementById('dapur-entry-id').value = '';
+            document.getElementById('modal-dapur-title').innerHTML = '<i class="fa-solid fa-utensils" style="color: var(--color-gold-deep);"></i> Catat Sesi Dapur Sedekah Makan Baru';
+            
+            const todayStr = new Date().toISOString().split('T')[0];
+            document.getElementById('dapur-form-tanggal').value = todayStr;
+            document.getElementById('dapur-form-hari').value = getDayNameFromDate(todayStr);
+            document.getElementById('dapur-form-target').value = 70;
+            document.getElementById('dapur-form-realisasi').value = 0;
+            document.getElementById('dapur-form-status').value = 'PERSIAPAN';
+            document.getElementById('dapur-form-pj').value = getUserDisplayName(currentUser) + ' (PJ Logistik)';
+            document.getElementById('dapur-form-preview-box').style.display = 'none';
+
+            openModal('modal-dapur-entry');
+        }
+
+        function openEditDapurModal(id) {
+            const item = dapurLogList.find(d => d.id === id);
+            if (!item) return;
+
+            document.getElementById('dapur-entry-id').value = item.id;
+            document.getElementById('modal-dapur-title').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Edit Sesi Dapur (' + item.tanggal + ')';
+            
+            document.getElementById('dapur-form-tanggal').value = item.tanggal;
+            document.getElementById('dapur-form-hari').value = item.hari || getDayNameFromDate(item.tanggal);
+            document.getElementById('dapur-form-menu').value = item.menu_utama;
+            document.getElementById('dapur-form-target').value = item.target_porsi || 70;
+            document.getElementById('dapur-form-realisasi').value = item.realisasi_porsi || 0;
+            document.getElementById('dapur-form-status').value = item.status_distribusi || 'PERSIAPAN';
+            document.getElementById('dapur-form-catatan').value = item.logistik_bahan_catatan || '';
+            document.getElementById('dapur-form-foto-url').value = item.foto_dokumentasi_url || '';
+            document.getElementById('dapur-form-pj').value = item.pj_dapur || (getUserDisplayName(currentUser) + ' (PJ Logistik)');
+
+            const previewBox = document.getElementById('dapur-form-preview-box');
+            const previewImg = document.getElementById('dapur-form-preview-img');
+            if (item.foto_dokumentasi_url) {
+                previewImg.src = item.foto_dokumentasi_url;
+                previewBox.style.display = 'block';
+            } else {
+                previewBox.style.display = 'none';
+            }
+
+            openModal('modal-dapur-entry');
+        }
+
+        async function handleDapurPhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const compressed = await compressImageToWebP(file, 1000, 0.8);
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    document.getElementById('dapur-form-foto-url').value = dataUrl;
+                    const previewBox = document.getElementById('dapur-form-preview-box');
+                    const previewImg = document.getElementById('dapur-form-preview-img');
+                    previewImg.src = dataUrl;
+                    previewBox.style.display = 'block';
+                };
+                reader.readAsDataURL(compressed.blob);
+            } catch (err) {
+                alert('Gagal memproses foto: ' + err.message);
+            }
+        }
+
+        async function handleDapurFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('dapur-entry-id').value || ('dpr_' + Date.now());
+            const tanggal = document.getElementById('dapur-form-tanggal').value;
+            const hari = document.getElementById('dapur-form-hari').value || getDayNameFromDate(tanggal);
+            const menu = document.getElementById('dapur-form-menu').value.trim();
+            const target = parseInt(document.getElementById('dapur-form-target').value || 70);
+            const realisasi = parseInt(document.getElementById('dapur-form-realisasi').value || 0);
+            const status = document.getElementById('dapur-form-status').value;
+            const catatan = document.getElementById('dapur-form-catatan').value.trim();
+            const fotoUrl = document.getElementById('dapur-form-foto-url').value.trim();
+            const pj = document.getElementById('dapur-form-pj').value.trim() || getUserDisplayName(currentUser);
+
+            const record = {
+                id: id,
+                tanggal: tanggal,
+                hari: hari,
+                menu_utama: menu,
+                target_porsi: target,
+                realisasi_porsi: realisasi,
+                status_distribusi: status,
+                logistik_bahan_catatan: catatan,
+                foto_dokumentasi_url: fotoUrl,
+                pj_dapur: pj,
+                updated_at: new Date().toISOString()
+            };
+
+            const existingIdx = dapurLogList.findIndex(d => d.id === id);
+            if (existingIdx !== -1) {
+                dapurLogList[existingIdx] = { ...dapurLogList[existingIdx], ...record };
+            } else {
+                record.created_at = new Date().toISOString();
+                dapurLogList.unshift(record);
+            }
+
+            localStorage.setItem('masjid_sophia_dapur_master', JSON.stringify(dapurLogList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('dapur_makan_siang').upsert([record], { onConflict: 'id' });
+                } catch (err) {
+                    console.warn('[Dapur] Supabase upsert notice:', err);
+                }
+            }
+
+            closeModal('modal-dapur-entry');
+            renderDapurTable();
+            updateDapurKpiStats();
+            alert('Sesi dapur sedekah makan berhasil disimpan!');
+        }
+
+        async function promptChangeDapurStatus(id, currentStatus) {
+            const statuses = ['PERSIAPAN', 'MEMASAK', 'SIAP_BAGI', 'SELESAI_TERBAGI'];
+            const curIdx = statuses.indexOf(currentStatus);
+            const nextStatus = statuses[(curIdx + 1) % statuses.length];
+
+            const item = dapurLogList.find(d => d.id === id);
+            if (!item) return;
+
+            item.status_distribusi = nextStatus;
+            item.updated_at = new Date().toISOString();
+
+            localStorage.setItem('masjid_sophia_dapur_master', JSON.stringify(dapurLogList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('dapur_makan_siang').update({
+                        status_distribusi: nextStatus,
+                        updated_at: item.updated_at
+                    }).eq('id', id);
+                } catch (e) {}
+            }
+
+            renderDapurTable();
+            updateDapurKpiStats();
+        }
+
+        async function deleteDapurEntry(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus sesi dapur sedekah makan ini?')) return;
+
+            dapurLogList = dapurLogList.filter(d => d.id !== id);
+            localStorage.setItem('masjid_sophia_dapur_master', JSON.stringify(dapurLogList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('dapur_makan_siang').delete().eq('id', id);
+                } catch (e) {}
+            }
+
+            renderDapurTable();
+            updateDapurKpiStats();
+        }
+
+        // --------------------------------------------------------------------------
+        // INVENTARIS ASET ENGINE (MASJID_ASSETS)
+        // --------------------------------------------------------------------------
+        async function loadAssetsData() {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('masjid_assets')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (!error && Array.isArray(data)) {
+                        assetsList = data;
+                        localStorage.setItem('masjid_sophia_assets_master', JSON.stringify(data));
+                        renderAssetsTable();
+                        updateAssetsKpiStats();
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('[Assets] Supabase fetch notice:', e);
+                }
+            }
+
+            try {
+                const saved = localStorage.getItem('masjid_sophia_assets_master');
+                if (saved) {
+                    assetsList = JSON.parse(saved);
+                } else {
+                    assetsList = [];
+                }
+            } catch (e) {
+                assetsList = [];
+            }
+            renderAssetsTable();
+            updateAssetsKpiStats();
+        }
+
+        function renderAssetsTable(data = null) {
+            const tbody = document.getElementById('tbody-assets-list');
+            if (!tbody) return;
+
+            const list = data || assetsList;
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--color-charcoal-muted); padding: 3rem 1.5rem;"><div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-boxes-stacked"></i></div><div style="font-weight: 700; font-size: 0.95rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Belum Ada Inventaris Aset Terdaftar</div><p style="font-size: 0.8rem; margin: 0; color: var(--color-charcoal-muted);">Klik tombol <b>"+ Registrasi Aset Baru"</b> untuk mulai mencatat barang dan fasilitas fisik masjid.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                let kondisiClass = 'status-kondisi-baik';
+                let kondisiLabel = 'Baik';
+                if (item.kondisi === 'RUSAK_RINGAN') { kondisiClass = 'status-kondisi-rusak-ringan'; kondisiLabel = 'Rusak Ringan'; }
+                else if (item.kondisi === 'RUSAK_BERAT') { kondisiClass = 'status-kondisi-rusak-berat'; kondisiLabel = 'Rusak Berat'; }
+                else if (item.kondisi === 'DALAM_SERVIS') { kondisiClass = 'status-kondisi-servis'; kondisiLabel = 'Dalam Servis'; }
+                else if (item.kondisi === 'HILANG') { kondisiClass = 'status-kondisi-hilang'; kondisiLabel = 'Hilang'; }
+
+                const serviceLogs = Array.isArray(item.riwayat_servis) ? item.riwayat_servis : [];
+                const serviceBadge = serviceLogs.length > 0
+                    ? '<button type="button" class="btn btn-outline btn-sm" onclick="openAssetServiceModal(\'' + item.id + '\')" style="font-size: 0.7rem; padding: 0.2rem 0.5rem; gap: 0.3rem;"><i class="fa-solid fa-wrench" style="color: var(--color-gold-deep);"></i> ' + serviceLogs.length + ' Log</button>'
+                    : '<button type="button" class="btn btn-outline btn-sm" onclick="openAssetServiceModal(\'' + item.id + '\')" style="font-size: 0.7rem; padding: 0.2rem 0.5rem; color: #9CA3AF; gap: 0.3rem;"><i class="fa-solid fa-plus"></i> Servis</button>';
+
+                const photoUrl = item.foto_aset_url || '';
+                const photoBox = photoUrl
+                    ? '<div style="width: 36px; height: 36px; border-radius: 6px; overflow: hidden; background: #F3F4F6; flex-shrink: 0; border: 1px solid var(--color-border); cursor: pointer;" onclick="openLogistikLightbox(\'' + photoUrl + '\', \'' + escapeHtml(item.nama_barang) + '\')"><img src="' + photoUrl + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'"></div>'
+                    : '<div style="width: 36px; height: 36px; border-radius: 6px; background: var(--color-gold-light); color: var(--color-gold-deep); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.85rem;"><i class="fa-solid fa-cube"></i></div>';
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="display: flex; align-items: center; gap: 0.6rem;">' +
+                            photoBox +
+                            '<div>' +
+                                '<div style="font-weight: 800; font-family: monospace; font-size: 0.825rem; color: var(--color-charcoal);">' + item.kode_aset + '</div>' +
+                                '<div style="font-size: 0.7rem; color: var(--color-charcoal-muted);">' + (item.tanggal_perolehan || '-') + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.nama_barang) + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-gold-deep); font-weight: 600; margin-top: 1px;">' + (item.kategori || 'Fasilitas') + '</div>' +
+                    '</td>' +
+                    '<td><span style="font-size: 0.8rem; color: var(--color-charcoal); font-weight: 600;"><i class="fa-solid fa-location-dot" style="color: #9CA3AF; margin-right: 3px;"></i> ' + escapeHtml(item.lokasi_penyimpanan || 'Ruang Utama') + '</span></td>' +
+                    '<td><span style="font-weight: 700; font-size: 0.825rem;">' + (item.jumlah || 1) + ' ' + (item.satuan || 'Unit') + '</span></td>' +
+                    '<td><span class="status-badge-dapur ' + kondisiClass + '"><i class="fa-solid fa-circle-dot"></i> ' + kondisiLabel + '</span></td>' +
+                    '<td><span style="font-weight: 700; font-size: 0.825rem; color: var(--color-charcoal);">' + formatRupiah(item.nilai_estimasi) + '</span></td>' +
+                    '<td style="text-align: center;">' + serviceBadge + '</td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                            '<button type="button" class="btn-action edit" onclick="openEditAssetModal(\'' + item.id + '\')" title="Edit Aset"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                            '<button type="button" class="btn-action delete" onclick="deleteAssetEntry(\'' + item.id + '\')" title="Hapus Aset"><i class="fa-solid fa-trash"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function filterAssetsTable() {
+            const query = (document.getElementById('aset-search-input')?.value || '').toLowerCase().trim();
+            const cat = document.getElementById('aset-cat-filter')?.value || 'ALL';
+            const kondisi = document.getElementById('aset-kondisi-filter')?.value || 'ALL';
+
+            let list = [...assetsList];
+
+            if (query) {
+                list = list.filter(a => (a.kode_aset || '').toLowerCase().includes(query) || (a.nama_barang || '').toLowerCase().includes(query) || (a.lokasi_penyimpanan || '').toLowerCase().includes(query));
+            }
+            if (cat !== 'ALL') {
+                list = list.filter(a => a.kategori === cat);
+            }
+            if (kondisi !== 'ALL') {
+                list = list.filter(a => a.kondisi === kondisi);
+            }
+
+            renderAssetsTable(list);
+        }
+
+        function updateAssetsKpiStats() {
+            let totalNilai = 0;
+            let countBaik = 0;
+            let countPerhatian = 0;
+
+            assetsList.forEach(a => {
+                totalNilai += parseFloat(a.nilai_estimasi || 0);
+                if (a.kondisi === 'BAIK') countBaik++;
+                if (['RUSAK_RINGAN', 'RUSAK_BERAT', 'DALAM_SERVIS'].includes(a.kondisi)) countPerhatian++;
+            });
+
+            const statTotal = document.getElementById('stat-aset-total-item');
+            if (statTotal) statTotal.textContent = assetsList.length + ' Item';
+
+            const statNilai = document.getElementById('stat-aset-total-nilai');
+            if (statNilai) statNilai.textContent = formatRupiah(totalNilai);
+
+            const statBaik = document.getElementById('stat-aset-kondisi-baik');
+            if (statBaik) statBaik.textContent = countBaik + ' Item';
+
+            const statPerhatian = document.getElementById('stat-aset-kondisi-perhatian');
+            if (statPerhatian) statPerhatian.textContent = countPerhatian + ' Item';
+        }
+
+        function generateNextAssetCode(category) {
+            const catPrefixes = {
+                'Elektronik & Sound': 'AST-ELK',
+                'Kebersihan & Sanitasi': 'AST-KBR',
+                'Perlengkapan Ibadah': 'AST-IBD',
+                'Dapur & Logistik': 'AST-DPR',
+                'Kendaraan': 'AST-KND',
+                'Furnitur': 'AST-FRN'
+            };
+            const prefix = catPrefixes[category] || 'AST-GEN';
+            const count = assetsList.filter(a => (a.kode_aset || '').startsWith(prefix)).length + 1;
+            return prefix + '-' + String(count).padStart(3, '0');
+        }
+
+        function handleAssetCategoryChange(cat) {
+            const kodeInput = document.getElementById('asset-form-kode');
+            if (kodeInput && !document.getElementById('asset-entry-id').value) {
+                kodeInput.value = generateNextAssetCode(cat);
+            }
+        }
+
+        function openAddAssetModal() {
+            document.getElementById('form-asset-entry').reset();
+            document.getElementById('asset-entry-id').value = '';
+            document.getElementById('modal-asset-title').innerHTML = '<i class="fa-solid fa-boxes-stacked" style="color: var(--color-gold-deep);"></i> Registrasi Aset Fisik Baru';
+            
+            const cat = 'Elektronik & Sound';
+            document.getElementById('asset-form-kategori').value = cat;
+            document.getElementById('asset-form-kode').value = generateNextAssetCode(cat);
+            document.getElementById('asset-form-tanggal').value = new Date().toISOString().split('T')[0];
+            document.getElementById('asset-form-jumlah').value = 1;
+            document.getElementById('asset-form-satuan').value = 'Unit';
+            document.getElementById('asset-form-kondisi').value = 'BAIK';
+            document.getElementById('asset-form-preview-box').style.display = 'none';
+
+            openModal('modal-asset-entry');
+        }
+
+        function openEditAssetModal(id) {
+            const item = assetsList.find(a => a.id === id);
+            if (!item) return;
+
+            document.getElementById('asset-entry-id').value = item.id;
+            document.getElementById('modal-asset-title').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Edit Aset (' + item.kode_aset + ')';
+            
+            document.getElementById('asset-form-kode').value = item.kode_aset;
+            document.getElementById('asset-form-kategori').value = item.kategori || 'Elektronik & Sound';
+            document.getElementById('asset-form-nama').value = item.nama_barang;
+            document.getElementById('asset-form-lokasi').value = item.lokasi_penyimpanan || 'Ruang Utama';
+            document.getElementById('asset-form-jumlah').value = item.jumlah || 1;
+            document.getElementById('asset-form-satuan').value = item.satuan || 'Unit';
+            document.getElementById('asset-form-kondisi').value = item.kondisi || 'BAIK';
+            document.getElementById('asset-form-tanggal').value = item.tanggal_perolehan || '';
+            document.getElementById('asset-form-nilai').value = item.nilai_estimasi || 0;
+            document.getElementById('asset-form-foto-url').value = item.foto_aset_url || '';
+
+            const previewBox = document.getElementById('asset-form-preview-box');
+            const previewImg = document.getElementById('asset-form-preview-img');
+            if (item.foto_aset_url) {
+                previewImg.src = item.foto_aset_url;
+                previewBox.style.display = 'block';
+            } else {
+                previewBox.style.display = 'none';
+            }
+
+            openModal('modal-asset-entry');
+        }
+
+        async function handleAssetPhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const compressed = await compressImageToWebP(file, 1000, 0.8);
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    document.getElementById('asset-form-foto-url').value = dataUrl;
+                    const previewBox = document.getElementById('asset-form-preview-box');
+                    const previewImg = document.getElementById('asset-form-preview-img');
+                    previewImg.src = dataUrl;
+                    previewBox.style.display = 'block';
+                };
+                reader.readAsDataURL(compressed.blob);
+            } catch (err) {
+                alert('Gagal memproses foto aset: ' + err.message);
+            }
+        }
+
+        async function handleAssetFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('asset-entry-id').value || ('ast_' + Date.now());
+            const kode = document.getElementById('asset-form-kode').value.trim();
+            const kategori = document.getElementById('asset-form-kategori').value;
+            const nama = document.getElementById('asset-form-nama').value.trim();
+            const lokasi = document.getElementById('asset-form-lokasi').value.trim();
+            const jumlah = parseInt(document.getElementById('asset-form-jumlah').value || 1);
+            const satuan = document.getElementById('asset-form-satuan').value;
+            const kondisi = document.getElementById('asset-form-kondisi').value;
+            const tanggal = document.getElementById('asset-form-tanggal').value;
+            const nilai = parseFloat(document.getElementById('asset-form-nilai').value || 0);
+            const fotoUrl = document.getElementById('asset-form-foto-url').value.trim();
+
+            const existing = assetsList.find(a => a.id === id);
+            const record = {
+                id: id,
+                kode_aset: kode,
+                kategori: kategori,
+                nama_barang: nama,
+                lokasi_penyimpanan: lokasi,
+                jumlah: jumlah,
+                satuan: satuan,
+                kondisi: kondisi,
+                tanggal_perolehan: tanggal || new Date().toISOString().split('T')[0],
+                nilai_estimasi: nilai,
+                foto_aset_url: fotoUrl,
+                pj_aset: getUserDisplayName(currentUser),
+                riwayat_servis: existing ? existing.riwayat_servis : [],
+                updated_at: new Date().toISOString()
+            };
+
+            const existingIdx = assetsList.findIndex(a => a.id === id);
+            if (existingIdx !== -1) {
+                assetsList[existingIdx] = { ...assetsList[existingIdx], ...record };
+            } else {
+                record.created_at = new Date().toISOString();
+                assetsList.unshift(record);
+            }
+
+            localStorage.setItem('masjid_sophia_assets_master', JSON.stringify(assetsList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('masjid_assets').upsert([record], { onConflict: 'id' });
+                } catch (err) {
+                    console.warn('[Assets] Supabase upsert notice:', err);
+                }
+            }
+
+            closeModal('modal-asset-entry');
+            renderAssetsTable();
+            updateAssetsKpiStats();
+            alert('Data inventaris aset berhasil disimpan!');
+        }
+
+        async function deleteAssetEntry(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus data inventaris aset ini?')) return;
+
+            assetsList = assetsList.filter(a => a.id !== id);
+            localStorage.setItem('masjid_sophia_assets_master', JSON.stringify(assetsList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('masjid_assets').delete().eq('id', id);
+                } catch (e) {}
+            }
+
+            renderAssetsTable();
+            updateAssetsKpiStats();
+        }
+
+        // Service Logs Engine
+        function openAssetServiceModal(id) {
+            activeAssetServiceId = id;
+            const asset = assetsList.find(a => a.id === id);
+            if (!asset) return;
+
+            document.getElementById('service-modal-asset-name').textContent = asset.nama_barang;
+            document.getElementById('service-modal-asset-meta').textContent = 'Kode: ' + asset.kode_aset + ' • Lokasi: ' + (asset.lokasi_penyimpanan || 'Ruang Utama') + ' • Kondisi: ' + asset.kondisi;
+            document.getElementById('service-log-tanggal').value = new Date().toISOString().split('T')[0];
+            document.getElementById('form-asset-add-service').reset();
+            document.getElementById('service-log-tanggal').value = new Date().toISOString().split('T')[0];
+
+            renderAssetServiceLogsTimeline(asset);
+            openModal('modal-asset-service');
+        }
+
+        function renderAssetServiceLogsTimeline(asset) {
+            const container = document.getElementById('service-logs-timeline-list');
+            if (!container) return;
+
+            const logs = Array.isArray(asset.riwayat_servis) ? asset.riwayat_servis : [];
+
+            if (logs.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 1.5rem; color: #9CA3AF; font-size: 0.8rem; background: #FAFAFA; border-radius: var(--radius-sm); border: 1px dashed var(--color-border);">Belum ada riwayat perbaikan/servis yang dicatat untuk aset ini.</div>';
+                return;
+            }
+
+            container.innerHTML = logs.map((log, idx) => {
+                return '<div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.75rem 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">' +
+                        '<div style="font-weight: 700; font-size: 0.825rem; color: var(--color-charcoal);"><i class="fa-solid fa-calendar-day" style="color: var(--color-gold-deep); margin-right: 4px;"></i> ' + log.tanggal + ' &bull; ' + escapeHtml(log.teknisi) + '</div>' +
+                        '<span style="font-weight: 700; font-size: 0.75rem; color: var(--color-charcoal);">' + formatRupiah(log.biaya) + '</span>' +
+                    '</div>' +
+                    '<div style="font-size: 0.775rem; color: var(--color-charcoal-muted); line-height: 1.4;">' + escapeHtml(log.catatan) + '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        async function handleAddServiceLog(e) {
+            e.preventDefault();
+            if (!activeAssetServiceId) return;
+
+            const asset = assetsList.find(a => a.id === activeAssetServiceId);
+            if (!asset) return;
+
+            const tanggal = document.getElementById('service-log-tanggal').value;
+            const teknisi = document.getElementById('service-log-teknisi').value.trim();
+            const biaya = parseFloat(document.getElementById('service-log-biaya').value || 0);
+            const catatan = document.getElementById('service-log-catatan').value.trim();
+            const newKondisi = document.getElementById('service-log-update-kondisi').value;
+
+            const serviceEntry = {
+                id: 'srv_' + Date.now(),
+                tanggal: tanggal,
+                teknisi: teknisi,
+                biaya: biaya,
+                catatan: catatan,
+                created_at: new Date().toISOString(),
+                created_by: getUserDisplayName(currentUser)
+            };
+
+            if (!Array.isArray(asset.riwayat_servis)) {
+                asset.riwayat_servis = [];
+            }
+            asset.riwayat_servis.unshift(serviceEntry);
+
+            if (newKondisi) {
+                asset.kondisi = newKondisi;
+            }
+            asset.updated_at = new Date().toISOString();
+
+            localStorage.setItem('masjid_sophia_assets_master', JSON.stringify(assetsList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('masjid_assets').update({
+                        riwayat_servis: asset.riwayat_servis,
+                        kondisi: asset.kondisi,
+                        updated_at: asset.updated_at
+                    }).eq('id', activeAssetServiceId);
+                } catch (err) {
+                    console.warn('[Assets] Update service log notice:', err);
+                }
+            }
+
+            renderAssetServiceLogsTimeline(asset);
+            renderAssetsTable();
+            updateAssetsKpiStats();
+            document.getElementById('form-asset-add-service').reset();
+            document.getElementById('service-log-tanggal').value = new Date().toISOString().split('T')[0];
+            alert('Catatan riwayat servis berhasil ditambahkan!');
+        }
+
+        // Lightbox Helper for Logistik Photos
+        function openLogistikLightbox(url, title) {
+            if (!url) return;
+            openCoverPreviewUrl(url);
+        }
+
+        // Master Loader for Modul 2
+        async function loadLogistikData(forceRefresh = false) {
+            await loadDapurData();
+            await loadAssetsData();
+            const savedSubView = localStorage.getItem('masjid_sophia_logistik_subview') || 'dapur';
+            switchLogistikSubView(savedSubView);
+        }
+
         // 10. General Modal Helper & Dismissers
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
@@ -15856,6 +16964,9 @@
             else if (id === 'modal-review-leave' && typeof closeReviewLeaveModal === 'function') closeReviewLeaveModal();
             else if (id === 'modal-leave-lightbox' && typeof closeLeaveDocLightbox === 'function') closeLeaveDocLightbox();
             else if (id === 'modal-substitute-alert' && typeof closeSubstituteAlertModal === 'function') closeSubstituteAlertModal();
+            else if (id === 'modal-dapur-entry') closeModal('modal-dapur-entry');
+            else if (id === 'modal-asset-entry') closeModal('modal-asset-entry');
+            else if (id === 'modal-asset-service') closeModal('modal-asset-service');
             else if (id === 'modal-add-article') closeModal('modal-add-article');
             else if (id === 'modal-media-picker') closeModal('modal-media-picker');
             else if (id === 'modal-cover-preview') closeCoverFullPreview();

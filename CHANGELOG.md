@@ -4,6 +4,26 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.6] - 2026-08-29
+
+### Pembangunan Modul 2: PJ Logistik & Sarpras (Dapur Sedekah Makan & Inventaris Aset)
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[DAPUR_SEDEKAH_MAKAN]` Membangun Sub-Modul Sedekah Makan Dzuhur (`dapur_makan_siang`):
+  - **Perekaman Porsi Harian:** Input menu makanan bergizi, target porsi (default 70+ porsi), dan realisasi pembagian ba'da Dzuhur.
+  - **Indikator Siklus Dapur:** Pelacak 4 tahapan siklus dapur (*Persiapan Bahan* ➔ *Sedang Memasak* ➔ *Siap Dibagikan* ➔ *Selesai Terbagi*) dengan saklar pengubah status 1-klik.
+  - **Manajemen Logistik Belanja:** Kolom rincian belanja bahan baku pasar dan catatan kebutuhan dapur.
+  - **Dokumentasi Distribusi WebP:** Pengunggah foto dokumentasi dengan kompresi HTML5 Canvas otomatis ke format WebP dan viewer popup lightbox.
+  - **Metrik KPI Dapur:** Papan ringkasan total porsi terbagi bulanan, status dapur hari ini, dan rata-rata porsi harian.
+- `[INVENTARIS_ASET_SARPRAS]` Membangun Sub-Modul Manajemen Inventaris Aset Masjid (`masjid_assets`):
+  - **Standarisasi Kode Inventaris:** Auto-generator kode unik terstruktur (`AST-ELK-xxx`, `AST-KBR-xxx`, `AST-IBD-xxx`, `AST-DPR-xxx`, `AST-KND-xxx`, `AST-FRN-xxx`).
+  - **Pemantauan Kondisi & Lokasi:** Status kelayakan (*Baik / Prima*, *Rusak Ringan*, *Rusak Berat*, *Dalam Servis*, *Hilang*) dan lokasi penempatan ruangan.
+  - **Valuasi Aset & Format Mata Uang:** Kalkulasi estimasi nilai seluruh aset fisik masjid dalam format Rupiah (`Rp`).
+  - **Timeline Riwayat Servis:** Log riwayat pemeliharaan berkala (tanggal servis, teknisi/vendor, biaya, dan catatan perbaikan komponen) yang tersimpan dalam format JSONB.
+- `[SIDEBAR_ACCORDION_UPDATE]` Menambahkan menu *LOGISTIK & SARPRAS* (`#tab-logistik`) pada navigasi bilah samping dengan proteksi hak akses RBAC khusus PJ Logistik dan pimpinan DKM.
+
+---
+
 ## [1.9.5] - 2026-08-29
 
 ### Pembangunan Modul 1: PJ Media & Dakwah (Article Studio Standar UMAR & Homepage Visual Builder)
