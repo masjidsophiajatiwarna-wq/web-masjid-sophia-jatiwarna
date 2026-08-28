@@ -152,15 +152,14 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - [x] **Tab 1 - Profil Umum:** Ubah Nama Lengkap dan **Upload Foto Profil (Avatar)** dari perangkat lokal langsung teroptimasi (auto WebP 400x400) ke **ImageKit.io CDN**.
     - [x] **Tab 2 - Keamanan & Sandi:** Ganti kata sandi dan ganti email dengan **Strict Security Rule: Otomatis Logout & Wajib Login Ulang**.
     - [x] **Penyelarasan Visual Brand Sophia:** Latar belakang putih bersih `.modal-box`, indikator tab aktif garis bawah emas Sophia Gold tebal, tombol aksi bergradasi *Charcoal Gold Glow*, dan 100% bahasa Indonesia santun & formal.
-  - [ ] **Suite Modul Khusus per Divisi PJ:**
-    - **PJ Media & Dakwah:** Article Studio (Quill.js Rich Text, slug generator, ImageKit cover WebP) & Dynamic Homepage Media Manager (review Ketua DKM).
-    - **PJ Logistik & Sarpras:** Porsi Makan Gratis ba'da Dzuhur (70+ porsi/hari, dapur) & Inventaris Aset Fisik Masjid (kode inventaris, lokasi, kondisi, servis).
-    - **PJ Santri & Pendidikan:** Direktori Santri Tahfidz & Log Mutaba'ah Setoran Hafalan Qur'an (Subuh & Maghrib) serta rapor perkembangan.
-    - **PJ Musafir & Pelayanan:** Buku Tamu Musafir Digital, Izin Menginap / Istirahat 24 Jam, dan Log Penitipan Kendaraan & Loker Barang.
-    - **PJ Ibadah & Acara:** Kalibrasi Menit Ikhtiyat Shalat, Rotasi Petugas Harian (Imam, Muadzin, Khatib, Bilal), Kalender Acara/Kajian & Arsip Khutbah.
-    - **PJ Keuangan:** Buku Kas Masuk, Buku Kas Keluar, Alur Form Pengajuan Anggaran (*Budget Request*) & Klaim Nota Bon (*Expense Claim*) bagi seluruh 7 PJ divisi dengan persetujuan Ketua DKM & PJ Keuangan, Laporan Arus Kas, dan Neraca Kas Berkala (CSV & PDF).
-    - **PJ Keamanan:** Log Piket Keamanan 24 Jam, Patroli Area, dan Input Laporan Kejadian dengan unggah foto/video ke ImageKit CDN (auto WebP/WebM).
-    - **PJ Kebersihan:** Checklist Sanitasi Harian (Wudhu, Toilet, Ruang Shalat, Halaman) dan Input Laporan Kebersihan dengan unggah foto/video ke ImageKit CDN (auto WebP/WebM).
+  - [ ] **Suite Modul Khusus per Divisi PJ (Pembangunan Bertahap 1-by-1):**
+    - [x] **PJ Ibadah & Acara (SELESAI):** Kalibrasi Menit Ikhtiyat Shalat, Rotasi Petugas Harian (Imam, Muadzin, Khatib, Bilal), Approval Batch DKM, Kalender Acara/Kajian Tematik & Arsip Khutbah (`#tab-ibadah`).
+    - [ ] **Modul 1 — PJ Media & Dakwah:** Article Studio (Quill.js Rich Text, slug generator, ImageKit cover WebP, filter kategori) & Dynamic Homepage Media Manager (`#tab-articles` & `#tab-media`).
+    - [ ] **Modul 2 — PJ Logistik & Sarpras:** Dapur Sedekah Makan Ba'da Dzuhur (70+ porsi/hari, logistik bahan, foto distribusi) & Manajemen Inventaris Aset Fisik Masjid (kode inventaris `AST-...`, lokasi, kondisi, nilai aset, riwayat servis) (`#tab-logistik`).
+    - [ ] **Modul 3 — PJ Keuangan (Bendahara):** Jurnal Buku Kas Masuk/Keluar (Infaq BSI, QRIS, Kotak Tunai, Dapur, Operasional, export CSV) & Alur Pengajuan Anggaran (*Budget Request*) & Klaim Nota Bon (*Reimbursement*) bagi seluruh 7 PJ divisi dengan persetujuan Ketua DKM (`#tab-keuangan`).
+    - [ ] **Modul 4 — PJ Santri & Pendidikan:** Direktori Santri Tahfidz (`STR-2026-xxx`) & Log Mutaba'ah Setoran Hafalan Qur'an Harian (Subuh & Maghrib, juz, surat, ayat, predikat tajwid, catatan ustadz) (`#tab-santri`).
+    - [ ] **Modul 5 — PJ Musafir & Pelayanan:** Buku Tamu Musafir Digital, Log Tamu Menginap/Istirahat Darurat 24 Jam (lampiran identitas KTP), dan Log Penitipan Kendaraan & Loker Barang (`#tab-musafir`).
+    - [ ] **Modul 6 — PJ Keamanan & Kebersihan:** Log Piket Keamanan Ronda 24 Jam (shift, patroli, laporan kejadian, bukti ImageKit) & Checklist Sanitasi Harian (Wudhu, Toilet, Ruang Shalat, status harum, upload foto sebelum/sesudah) (`#tab-keamanan` / `#tab-kebersihan`).
   - [x] **Modul Pengajuan Izin & Cuti Pengurus DKM (Leave & Absence Management Suite - SELESAI):**
     - **Formulir Pengajuan Izin Mandiri (Seluruh Pengurus):** Formulir bagi seluruh PJ divisi untuk mengajukan izin (Izin Sakit + bukti surat dokter auto-WebP, Keperluan Pribadi, Tugas Luar, Cuti Operasional) dengan tanggal mulai, tanggal selesai, alasan, dan status transparan.
     - **Alur Persetujuan Terpusat (Approval Flow):** Panel khusus bagi **Ketua DKM & Super Admin** untuk menyetujui (*Approve*) atau menolak (*Reject*) permohonan izin dengan catatan evaluasi dan penunjukan petugas pengganti piket.
