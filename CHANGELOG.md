@@ -4,6 +4,28 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.5] - 2026-08-29
+
+### Pembangunan Modul 1: PJ Media & Dakwah (Article Studio Standar UMAR & Homepage Visual Builder)
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[ARTICLE_STUDIO_CMS]` Mengintegrasikan Content Studio Warta & Dakwah (`#tab-articles`) 100% identik dengan standar referensi UMAR Travel:
+  - **Quill.js Rich Text Editor:** Mendukung penulisan judul H1-H3, kutipan ayat (*blockquote* bergaris emas), format teks, tautan, dan penyisipan gambar WebP langsung di tengah teks.
+  - **Engine Kompresi WebP Otomatis:** Mengompresi setiap gambar yang diunggah ke format WebP (~50-120 KB) secara instan via HTML5 Canvas client-side.
+  - **Layout Adjustment Toolbar:** Pengaturan tampilan foto sampul (*cover / contain / fill*), fokus posisi 5 arah, tinggi kotak pratinjau (140px / 200px / 260px), dan popup zoom gambar penuh (*lightbox*).
+  - **Panel SEO Terpadu & Google Live Mockup Snippet:** Sinkronisasi otomatis judul dan ringkasan cuplikan ke pratinjau hasil pencarian Google secara real-time dengan counter karakter ideal (0/60 dan 0/160).
+  - **Manajemen Status & Operasi CRUD:** Beralih cepat status *Draft* / *Published* langsung dari tabel, auto-slug generator, dan integrasi penuh ke Supabase `artikel_berita`.
+- `[HOMEPAGE_VISUAL_BUILDER]` Membangun Visual Web Builder Beranda Publik (`#tab-media`):
+  - **Editor Hero Banner & Sambutan:** Kustomisasi teks badge, judul utama beraksen emas, ayat Al-Qur'an, subjudul, 2 tombol aksi CTA, dan 3 kartu statistik ringkas.
+  - **Pengatur Visibilitas Section:** Saklar aktif/nonaktif untuk 5 section beranda (Jadwal Shalat, Petugas Ibadah, Sedekah Makan Dzuhur, Layanan Musafir 24 Jam, dan Warta Masjid).
+  - **Pratinjau Responsif Terpadu (*Split-View Live Preview*):** Perubahan teks pada panel kustomisasi langsung terender seketika pada mockup layar perangkat (Desktop, Tablet, dan Mobile).
+- `[MEDIA_GALLERY_LIBRARY]` Menyediakan Galeri Media & Library (`#tab-gallery`):
+  - **Indikator Kuota Supabase Free Tier:** Meteran penggunaan penyimpanan 1.0 GB dengan persentase bar dinamis dan penghitung file.
+  - **Modal Media Picker:** Memudahkan pemilihan gambar yang sudah ada untuk dijadikan foto sampul artikel baru tanpa perlu mengunggah ulang.
+- `[SIDEBAR_ACCORDION_UPDATE]` Menambahkan menu *Warta & Artikel (CMS)*, *Visual Builder & Beranda*, dan *Galeri Media & WebP* di bawah grup *PUBLIKASI & MEDIA*.
+
+---
+
 ## [1.9.4] - 2026-08-28
 
 ### Penyusunan Skema Master Database & Kebijakan RLS Seluruh 10 Modul PJ Divisi (v2.0)
