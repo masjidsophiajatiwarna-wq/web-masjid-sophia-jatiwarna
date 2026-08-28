@@ -5689,8 +5689,7 @@
                         <div style="margin-top: 0.4rem;">
                             <span style="font-size: 0.75rem; color: var(--color-charcoal-muted); margin-right: 0.4rem;">Pilihan Cepat:</span>
                             <span class="image-preset-pill" onclick="setPresetImage('asset/favicon/logo-black/android-chrome-192x192.png')"><i class="fa-solid fa-mosque"></i> Masjid Sophia</span>
-                            <span class="image-preset-pill" onclick="setPresetImage('images/pictures/gallery-feed/feed1.webp')"><i class="fa-solid fa-kaaba"></i> Baitullah</span>
-                            <span class="image-preset-pill" onclick="setPresetImage('images/pictures/hero-images/hero-1.webp')"><i class="fa-solid fa-book-quran"></i> Santri Tahfidz</span>
+                            <span class="image-preset-pill" onclick="setPresetImage('asset/favicon/logo-black/android-chrome-192x192.png')"><i class="fa-solid fa-mosque"></i> Logo Sophia</span>
                         </div>
 
                         <!-- Layout Adjustment Toolbar -->
@@ -13626,7 +13625,7 @@
                     const { data, error } = await sbClient
                         .from('kajian_acara_ibadah')
                         .select('*')
-                        .order('tanggal_pelaksanaan', { ascending: true });
+                        .order('tanggal', { ascending: true });
 
                     if (!error && Array.isArray(data) && data.length > 0) {
                         ibadahKajianList = data;
@@ -14597,38 +14596,7 @@
 
         const DEFAULT_ARTICLES = [];
 
-        const DEFAULT_MEDIA_ITEMS = [
-            {
-                id: 'med-01',
-                file_name: 'masjid-sophia.webp',
-                public_url: 'asset/favicon/logo-black/android-chrome-192x192.png',
-                file_size_kb: 84.5,
-                file_type: 'image/webp',
-                dimensions: '1200x800',
-                folder: 'covers',
-                uploaded_at: new Date(Date.now() - 86400000 * 5).toISOString()
-            },
-            {
-                id: 'med-02',
-                file_name: 'hero-1.webp',
-                public_url: 'images/pictures/hero-images/hero-1.webp',
-                file_size_kb: 68.2,
-                file_type: 'image/webp',
-                dimensions: '1200x800',
-                folder: 'covers',
-                uploaded_at: new Date(Date.now() - 86400000 * 10).toISOString()
-            },
-            {
-                id: 'med-03',
-                file_name: 'feed1.webp',
-                public_url: 'images/pictures/gallery-feed/feed1.webp',
-                file_size_kb: 92.0,
-                file_type: 'image/webp',
-                dimensions: '1200x800',
-                folder: 'gallery',
-                uploaded_at: new Date(Date.now() - 86400000 * 12).toISOString()
-            }
-        ];
+        const DEFAULT_MEDIA_ITEMS = [];
 
         // 1. Client-Side WebP Compression Engine
         function compressImageToWebP(file, maxWidth = 1200, quality = 0.82) {
@@ -14801,9 +14769,15 @@
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        cmsArticlesList = parsed;
-                        return parsed;
+                    if (Array.isArray(parsed)) {
+                        // Filter out old legacy dummy articles
+                        const filtered = parsed.filter(p => !p.id.startsWith('art-0') && !p.id.startsWith('art-00') && !p.title.includes('Penyaluran 85 Porsi') && !p.title.includes('Ujian Tasmi'));
+                        if (filtered.length > 0) {
+                            cmsArticlesList = filtered;
+                            return filtered;
+                        } else {
+                            localStorage.removeItem('masjid_sophia_cms_articles');
+                        }
                     }
                 } catch (e) {}
             }
