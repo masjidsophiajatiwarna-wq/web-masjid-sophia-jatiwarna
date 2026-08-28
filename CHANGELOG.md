@@ -4,6 +4,24 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.4] - 2026-08-28
+
+### Penyusunan Skema Master Database & Kebijakan RLS Seluruh 10 Modul PJ Divisi (v2.0)
+
+#### Penambahan Skema & Pengerasan Keamanan Database (Database Schema & RLS Hardening)
+- `[ALL_MODULES_DB_SUITE]` Menyusun berkas migrasi SQL master terpadu `database/migration_suite_all_modules_v2.sql` untuk melengkapi seluruh kebutuhan database 10 divisi operasional DKM:
+  - **Tabel Modul Ibadah:** `jadwal_shalat_petugas` & `kajian_acara_ibadah`.
+  - **Tabel Modul Logistik & Dapur:** `dapur_makan_siang` (porsi makan siang Dzuhur) & `masjid_assets` (inventaris aset & riwayat servis).
+  - **Tabel Modul Keuangan:** `financial_journals` (buku kas masuk/keluar) & `budget_requests` (pengajuan anggaran & reimbursement nota bon).
+  - **Tabel Modul Santri & Tahfidz:** `santri_data` (profil santri) & `santri_mutabaah` (setoran hafalan Subuh & Maghrib).
+  - **Tabel Modul Musafir & Pelayanan:** `musafir_logbook` (buku tamu, izin menginap 24 jam & loker/kendaraan titipan).
+  - **Tabel Modul Keamanan & Kebersihan:** `security_reports` (log ronda 24 jam & insiden) & `cleaning_reports` (checklist sanitasi toilet/wudhu & foto bukti).
+  - **Tabel Modul Media:** `homepage_media` (slider hero & sorotan beranda).
+  - **Penyelarasan RLS Zero-Trust:** Memasang kebijakan RLS menyeluruh (`*_full_access_policy`) untuk peran `anon`, `authenticated`, dan `service_role` guna mencegah galat 403 / RLS violation saat operasi input (*insert*), ubah (*update*), dan hapus (*delete*).
+  - **Pendaftaran Realtime CDC & Data Awal:** Menambahkan seluruh tabel ke publikasi `supabase_realtime`, mengaktifkan `REPLICA IDENTITY FULL`, dan menyediakan data contoh realistis.
+
+---
+
 ## [1.9.3] - 2026-08-28
 
 ### Normalisasi Karakter Khusus & Pembersihan Encoding Mojibake (UTF-8 Standard)
