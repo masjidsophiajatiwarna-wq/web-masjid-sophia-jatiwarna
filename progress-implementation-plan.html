@@ -875,6 +875,9 @@
                         <span class="meta-pill">
                             <i class="fa-solid fa-globe"></i> masjidsophiajatiwarna.com
                         </span>
+                        <span class="meta-pill">
+                            <i class="fa-solid fa-code-branch"></i> v1.8.2 (24 Agustus 2026)
+                        </span>
                     </div>
                 </div>
             </div>
@@ -1310,6 +1313,26 @@
                             <div class="task-desc">Tabel riwayat aktivitas (task_activity_logs), komentar tugas (task_comments), pesan koordinasi (task_chat_messages), kolom jadwal baru, dan skema Account Control (permissions JSONB & avatar_url).</div>
                         </div>
                     </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Alur Lupa Kata Sandi & Pengamanan Sandi Lama
+                                <span class="task-badge-pill">Supabase Auth</span>
+                            </div>
+                            <div class="task-desc">Penerapan Lupa Kata Sandi dari login dan profil, konfirmasi sandi lama, serta intersepsi URL token recovery otomatis.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Peningkatan UX Kata Sandi (Visibilitas & Kekuatan)
+                                <span class="task-badge-pill">UI/UX</span>
+                            </div>
+                            <div class="task-desc">Penambahan ikon mata (toggle visibilitas) pada semua input kata sandi dan indikator checklist keamanan real-time untuk mendukung syarat Supabase.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1516,6 +1539,16 @@
                             <div class="task-desc">Tampilan desktop leluasa dan adaptasi fluid di layar HP (Table Drag Grabber Engine, target sentuh min 48px, gestur swipe touch pan, auto-center Today, modal backdrop scroll lock).</div>
                         </div>
                     </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pengelompokan Sidebar Dinamis Berbasis Accordion &amp; RBAC (R1)
+                                <span class="task-badge-pill">Accordion RBAC</span>
+                            </div>
+                            <div class="task-desc">Pengelompokan menu ke dalam 4 grup (Dashboard &amp; Tugas, Layanan &amp; Ibadah, Publikasi &amp; Media, Akses &amp; Sistem) dengan penyaringan otomatis sesuai peran pengurus.</div>
+                        </div>
+                    </div>
 
                     <!-- Sub-group: Task Management 5 View -->
                     <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-info-bg); border-left: 3px solid var(--color-info); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
@@ -1624,51 +1657,51 @@
 
                     <!-- Sub-group: PJ Media & Dakwah -->
                     <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-gold-light); border-left: 3px solid var(--color-gold-deep); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #785800;">
-                        <i class="fa-solid fa-newspaper" style="color: var(--color-gold-deep);"></i> Publikasi Dakwah & Media (PJ Media) - SELESAI
+                        <i class="fa-solid fa-newspaper" style="color: var(--color-gold-deep);"></i> Publikasi Dakwah & Media (PJ Media)
                     </div>
-                    <div class="task-item completed">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()" checked>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Studio Penerbitan Berita & Artikel Dakwah (Standar UMAR Travel)
-                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                                Studio Penerbitan Berita & Artikel Dakwah
+                                <span class="task-badge-pill">CMS Studio</span>
                             </div>
-                            <div class="task-desc">Quill.js Rich Text Editor, kompresi otomatis foto WebP (~50-120 KB), layout adjustment toolbar, modal media picker, kalkulasi reading time, status Draft/Published, dan live Google Search Mockup Snippet.</div>
+                            <div class="task-desc">Editor teks lengkap artikel, upload foto sampul, format otomatis, kategori dakwah, dan pratinjau cuplikan pencarian.</div>
                         </div>
                     </div>
-                    <div class="task-item completed">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()" checked>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Visual Web Builder & Manajemen Beranda (index.html)
-                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                                Pengatur Tampilan Beranda & Galeri (Self-Sustain)
+                                <span class="task-badge-pill">Homepage Manager</span>
                             </div>
-                            <div class="task-desc">Kustomisasi hero banner, ayat Al-Qur'an, tombol CTA, kartu statistik ringkas, pengatur susunan section, serta responsive live preview split-view.</div>
+                            <div class="task-desc">Pengaturan banner slider foto/video dan sorotan kegiatan yang muncul di beranda publik. Melalui jalur review Ketua DKM.</div>
                         </div>
                     </div>
 
                     <!-- Sub-group: PJ Logistik & Sarpras -->
                     <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #FEF2F2; border-left: 3px solid #EF4444; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #991B1B;">
-                        <i class="fa-solid fa-boxes-stacked" style="color: #EF4444;"></i> Dapur &amp; Manajemen Aset (PJ Logistik) - SELESAI
+                        <i class="fa-solid fa-boxes-stacked" style="color: #EF4444;"></i> Dapur & Manajemen Aset (PJ Logistik)
                     </div>
-                    <div class="task-item completed">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()" checked>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Pencatatan Makan Siang Gratis (70+ Porsi/Hari) &amp; Logistik Dapur
-                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                                Pencatatan Makan Siang Gratis (70+ Porsi/Hari) & Logistik Dapur
+                                <span class="task-badge-pill">Dapur Makan</span>
                             </div>
-                            <div class="task-desc">Perekaman jumlah porsi makan harian, belanja bahan baku dapur, tahapan siklus memasak/distribusi, upload foto dokumentasi, dan rekapitulasi distribusi kepada musafir &amp; ojol.</div>
+                            <div class="task-desc">Perekaman jumlah porsi makan harian, belanja bahan baku dapur, dan rekapitulasi distribusi kepada musafir & ojol.</div>
                         </div>
                     </div>
-                    <div class="task-item completed">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()" checked>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Manajemen Inventaris &amp; Kondisi Aset Sarana Prasarana
-                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                                Manajemen Inventaris & Kondisi Aset Sarana Prasarana
+                                <span class="task-badge-pill">Aset Masjid</span>
                             </div>
-                            <div class="task-desc">Pencatatan aset fisik masjid, auto-kode inventaris, lokasi ruangan, status kondisi, estimasi nilai perolehan Rupiah, dan timeline riwayat servis berkala.</div>
+                            <div class="task-desc">Pencatatan aset fisik masjid (sound system, AC, karpet, genset, dispenser), kode inventaris, lokasi, dan status kondisi (Baik/Perlu Servis).</div>
                         </div>
                     </div>
 
@@ -1723,17 +1756,27 @@
                     </div>
 
                     <!-- Sub-group: PJ Ibadah & Acara (SELESAI) -->
-                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: #FAF5FF; border-left: 3px solid #A855F7; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #6B21A8;">
-                        <i class="fa-solid fa-kaaba" style="color: #A855F7;"></i> Ibadah & Kegiatan Masjid (PJ Ibadah - Selesai)
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-success-bg); border-left: 3px solid var(--color-success); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: var(--color-charcoal);">
+                        <i class="fa-solid fa-kaaba" style="color: var(--color-success);"></i> Modul Peribadatan, Penugasan Petugas & Alur Persetujuan DKM (Selesai)
                     </div>
                     <div class="task-item completed">
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Pengaturan Waktu Shalat & Rotasi Petugas Ibadah
+                                Pengaturan Waktu Shalat Presisi Kemenag & Rotasi Petugas Ibadah (Sisi PJ Input)
                                 <span class="task-badge-pill">Jadwal Shalat</span>
                             </div>
-                            <div class="task-desc">Kalibrasi menit ikhtiyat dan penugasan Imam Rawatib (5 waktu), Muadzin, Khatib Jumat, dan Bilal.</div>
+                            <div class="task-desc">Kalibrasi menit ikhtiyat astronomis Jatiwarna, penugasan Imam Rawatib (5 waktu), Muadzin, Khatib Jumat, Bilal, opsi draf, dan pengajuan persetujuan DKM.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Tabel Peninjauan & Persetujuan Massal Pimpinan DKM (Sisi Approval Batch)
+                                <span class="task-badge-pill">Approval DKM</span>
+                            </div>
+                            <div class="task-desc">Tabel approval batch pengajuan jadwal ibadah, persetujuan 1-klik, modal catatan revisi, dan inspeksi detail komprehensif.</div>
                         </div>
                     </div>
                     <div class="task-item completed">
@@ -1743,7 +1786,7 @@
                                 Jadwal Kajian Tematik, Acara Besar & Arsip Khutbah
                                 <span class="task-badge-pill">Kajian & Acara</span>
                             </div>
-                            <div class="task-desc">Kalender acara dan kajian rutin, peringatan hari besar Islam, serta penyimpanan naskah khutbah Jumat.</div>
+                            <div class="task-desc">Kalender acara dan kajian rutin, peringatan hari besar Islam, serta alur persetujuan agenda kajian oleh Pimpinan DKM.</div>
                         </div>
                     </div>
 
@@ -1864,6 +1907,16 @@
                                 <span class="task-badge-pill">Profil Mandiri</span>
                             </div>
                             <div class="task-desc">Modal profil & keamanan mandiri dengan desain bersih bernuansa Sophia Gold, normalisasi tab tanpa border kuning ter-hardcode, dan tombol aksi bergradasi Charcoal Gold Glow.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Peningkatan UX Kata Sandi & Penutupan Celah Security Bypass
+                                <span class="task-badge-pill">Security Update</span>
+                            </div>
+                            <div class="task-desc">Menambahkan toggle visibility & validasi live checklist syarat sandi. Serta menutup celah bypass di form login lokal agar 100% tunduk pada respons Supabase tanpa celah pintu belakang.</div>
                         </div>
                     </div>
                     <div class="task-item completed">
@@ -1991,26 +2044,6 @@
                                 <span class="task-badge-pill">SEO &amp; Routing</span>
                             </div>
                             <div class="task-desc">Peta situs terstruktur dan halaman error bertema terang resmi.</div>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Migrasi Domain Utama ke masjidsophia.com &amp; 301 Redirect Arsitektur 7 Pilar
-                                <span class="task-badge-pill">Migrasi Domain</span>
-                            </div>
-                            <div class="task-desc">Pengalihan domain produksi utama ke masjidsophia.com dengan redirect 301 permanen dari masjidsophiajatiwarna.com, sinkronisasi DNS Cloudflare, Vercel, Supabase Auth, dan ImageKit CDN (dieksekusi pasca-verifikasi rilis stabil).</div>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Konfigurasi Email Resmi Baru Resend &amp; Cloudflare Email Routing
-                                <span class="task-badge-pill">Email Resmi</span>
-                            </div>
-                            <div class="task-desc">Penyelarasan 3 alamat surat elektronik resmi: info@masjidsophia.com, saran@masjidsophia.com, dan pengaduan@masjidsophia.com via verifikasi DNS DKIM/SPF.</div>
                         </div>
                     </div>
                 </div>

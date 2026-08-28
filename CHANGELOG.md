@@ -4,121 +4,88 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
-## [1.9.6] - 2026-08-29
+## [1.8.5] - 2026-08-24
 
-### Pembangunan Modul 2: PJ Logistik & Sarpras (Dapur Sedekah Makan & Inventaris Aset)
+### Pengelompokan Sidebar Dinamis Berbasis Peran, Skema Alur Persetujuan Modul Ibadah, dan Antarmuka Dwi-Sisi Input & Approval Batch
 
-#### Fitur & Peningkatan Baru (New Features & Enhancements)
-- `[DAPUR_SEDEKAH_MAKAN]` Membangun Sub-Modul Sedekah Makan Dzuhur (`dapur_makan_siang`):
-  - **Perekaman Porsi Harian:** Input menu makanan bergizi, target porsi (default 70+ porsi), dan realisasi pembagian ba'da Dzuhur.
-  - **Indikator Siklus Dapur:** Pelacak 4 tahapan siklus dapur (*Persiapan Bahan* ➔ *Sedang Memasak* ➔ *Siap Dibagikan* ➔ *Selesai Terbagi*) dengan saklar pengubah status 1-klik.
-  - **Manajemen Logistik Belanja:** Kolom rincian belanja bahan baku pasar dan catatan kebutuhan dapur.
-  - **Dokumentasi Distribusi WebP:** Pengunggah foto dokumentasi dengan kompresi HTML5 Canvas otomatis ke format WebP dan viewer popup lightbox.
-  - **Metrik KPI Dapur:** Papan ringkasan total porsi terbagi bulanan, status dapur hari ini, dan rata-rata porsi harian.
-- `[INVENTARIS_ASET_SARPRAS]` Membangun Sub-Modul Manajemen Inventaris Aset Masjid (`masjid_assets`):
-  - **Standarisasi Kode Inventaris:** Auto-generator kode unik terstruktur (`AST-ELK-xxx`, `AST-KBR-xxx`, `AST-IBD-xxx`, `AST-DPR-xxx`, `AST-KND-xxx`, `AST-FRN-xxx`).
-  - **Pemantauan Kondisi & Lokasi:** Status kelayakan (*Baik / Prima*, *Rusak Ringan*, *Rusak Berat*, *Dalam Servis*, *Hilang*) dan lokasi penempatan ruangan.
-  - **Valuasi Aset & Format Mata Uang:** Kalkulasi estimasi nilai seluruh aset fisik masjid dalam format Rupiah (`Rp`).
-  - **Timeline Riwayat Servis:** Log riwayat pemeliharaan berkala (tanggal servis, teknisi/vendor, biaya, dan catatan perbaikan komponen) yang tersimpan dalam format JSONB.
-- `[SIDEBAR_ACCORDION_UPDATE]` Menambahkan menu *LOGISTIK & SARPRAS* (`#tab-logistik`) pada navigasi bilah samping dengan proteksi hak akses RBAC khusus PJ Logistik dan pimpinan DKM.
+#### Fitur Baru (Added)
+- `[SIDEBAR_ACCORDION_GROUPS]` Implementasi arsitektur menu sidebar dinamis berbasis accordion (`SIDEBAR_MENU_GROUPS`) yang mengelompokkan menu operasional ke dalam 4 grup terstruktur ("DASHBOARD & TUGAS", "LAYANAN & IBADAH", "PUBLIKASI & MEDIA", "AKSES & SISTEM").
+- `[RBAC_DYNAMIC_FILTERING]` Penyaringan menu berbasis peran (RBAC) pada fungsi `renderSidebar(role)` di mana grup accordion disembunyikan secara otomatis dari DOM jika pengguna tidak memiliki hak akses pada minimal satu menu di dalamnya (misal: login sebagai `PJ_IBADAH` secara otomatis menyembunyikan grup "PUBLIKASI & MEDIA", dan login sebagai `PJ_MEDIA` secara otomatis menyembunyikan grup "LAYANAN & IBADAH").
+- `[IBADAH_APPROVAL_SCHEMA]` Berkas migrasi database `database/migration_modul_ibadah_media.sql` dan sinkronisasi master `database/schema.sql` untuk tabel `public.jadwal_shalat_petugas` dan `public.kajian_acara_ibadah` lengkap dengan kolom alur persetujuan (`status_approval` ['Draft', 'Pending Approval', 'Approved', 'Rejected'], `submitted_by`, `reviewed_by`, `reviewed_by_email`, `review_notes`), indeks performa, RLS, serta Supabase Realtime publication.
+- `[IBADAH_TWO_SIDED_UI]` Antarmuka dwi-sisi terpadu pada Modul Peribadatan (`#tab-ibadah`):
+  - **Sisi PJ Ibadah (`#subview-ibadah-input`):** Form input jadwal shalat 5 waktu & penugasan imam/khatib/muadzin, terintegrasi mesin hisab astronomis presisi Jatiwarna (Kemenag WIB UTC+7), kalibrasi ikhtiyat, opsi simpan Draf, dan tombol Pengajuan Persetujuan ke DKM.
+  - **Sisi Pimpinan DKM (`#subview-ibadah-approval`):** Tabel tinjauan jadwal dengan fitur persetujuan massal (Batch Approve), penolakan/revisi massal (Batch Reject), sinkronisasi status checkbox master, tombol persetujuan cepat per baris, dialog catatan revisi (`#modal-ibadah-review-note`), dan inspeksi komprehensif (`#modal-ibadah-detail`).
+  - **Sub-view Agenda Kajian (`#subview-ibadah-kajian`):** Manajemen agenda kajian tematik & rutin ba'da subuh dengan persetujuan pimpinan.
+- `[VERIFICATION_AUTOMATION]` Skrip pengujian otomatis `scratch/verify_sidebar_and_ui.js`, `scratch/adversarial_verification.js`, dan `scratch/test_batch_and_edge_cases.js` yang memvalidasi integritas RBAC sidebar untuk seluruh 11 peran DKM, ketahanan batch approval >50 item, toleransi gangguan jaringan (offline fallback), kelengkapan elemen UI, kepatuhan standar No-Emoji, dan struktur skema database.
 
----
-
-## [1.9.5] - 2026-08-29
-
-### Pembangunan Modul 1: PJ Media & Dakwah (Article Studio Standar UMAR & Homepage Visual Builder)
-
-#### Fitur & Peningkatan Baru (New Features & Enhancements)
-- `[ARTICLE_STUDIO_CMS]` Mengintegrasikan Content Studio Warta & Dakwah (`#tab-articles`) 100% identik dengan standar referensi UMAR Travel:
-  - **Quill.js Rich Text Editor:** Mendukung penulisan judul H1-H3, kutipan ayat (*blockquote* bergaris emas), format teks, tautan, dan penyisipan gambar WebP langsung di tengah teks.
-  - **Engine Kompresi WebP Otomatis:** Mengompresi setiap gambar yang diunggah ke format WebP (~50-120 KB) secara instan via HTML5 Canvas client-side.
-  - **Layout Adjustment Toolbar:** Pengaturan tampilan foto sampul (*cover / contain / fill*), fokus posisi 5 arah, tinggi kotak pratinjau (140px / 200px / 260px), dan popup zoom gambar penuh (*lightbox*).
-  - **Panel SEO Terpadu & Google Live Mockup Snippet:** Sinkronisasi otomatis judul dan ringkasan cuplikan ke pratinjau hasil pencarian Google secara real-time dengan counter karakter ideal (0/60 dan 0/160).
-  - **Manajemen Status & Operasi CRUD:** Beralih cepat status *Draft* / *Published* langsung dari tabel, auto-slug generator, dan integrasi penuh ke Supabase `artikel_berita`.
-- `[HOMEPAGE_VISUAL_BUILDER]` Membangun Visual Web Builder Beranda Publik (`#tab-media`):
-  - **Editor Hero Banner & Sambutan:** Kustomisasi teks badge, judul utama beraksen emas, ayat Al-Qur'an, subjudul, 2 tombol aksi CTA, dan 3 kartu statistik ringkas.
-  - **Pengatur Visibilitas Section:** Saklar aktif/nonaktif untuk 5 section beranda (Jadwal Shalat, Petugas Ibadah, Sedekah Makan Dzuhur, Layanan Musafir 24 Jam, dan Warta Masjid).
-  - **Pratinjau Responsif Terpadu (*Split-View Live Preview*):** Perubahan teks pada panel kustomisasi langsung terender seketika pada mockup layar perangkat (Desktop, Tablet, dan Mobile).
-- `[MEDIA_GALLERY_LIBRARY]` Menyediakan Galeri Media & Library (`#tab-gallery`):
-  - **Indikator Kuota Supabase Free Tier:** Meteran penggunaan penyimpanan 1.0 GB dengan persentase bar dinamis dan penghitung file.
-  - **Modal Media Picker:** Memudahkan pemilihan gambar yang sudah ada untuk dijadikan foto sampul artikel baru tanpa perlu mengunggah ulang.
-- `[SIDEBAR_ACCORDION_UPDATE]` Menambahkan menu *Warta & Artikel (CMS)*, *Visual Builder & Beranda*, dan *Galeri Media & WebP* di bawah grup *PUBLIKASI & MEDIA*.
-- `[UI_BUTTON_REFINEMENT]` Mempercantik sistem tombol dan elemen input di seluruh portal admin (`.btn`, `.btn-primary`, `.btn-outline`, `.btn-action`, `.search-box`, `.form-select`) dengan palet Sophia Charcoal Gold Glow, elevasi halus, dan efek hover responsif.
-- `[CLEAN_EMPTY_STATE]` Menghapus seluruh data dummy artikel statis bawaan sehingga tabel menggunakan database Supabase murni sebagai Single Source of Truth dengan tampilan *empty state* yang informatif.
-- `[INDEX_DYNAMIC_NEWS_INTEGRATION]` Menghubungkan section *Warta & Kabar Masjid* pada halaman publik `index.html` langsung ke database Supabase `artikel_berita` dengan dukungan listener WebSocket Realtime CDC.
+#### Perbaikan & Keandalan (Fixed & Reliability)
+- `[RBAC_GROUP_ISOLATION_FIX]` Memindahkan menu Kotak Saran Jamaah (`feedback`) ke dalam grup `DASHBOARD & TUGAS` agar grup `LAYANAN & IBADAH` murni terisolasi dan hanya muncul bagi peran yang memiliki hak akses peribadatan (`PJ_IBADAH`) atau keuangan (`PJ_KEUANGAN`).
+- `[RFC_UUID_COMPLIANCE]` Memperbaiki format ID pada seed data baku dan form generator agar selalu menggunakan RFC4122 UUID yang valid dan kompatibel dengan kolom bertipe `UUID` di database PostgreSQL Supabase.
+- `[BATCH_REJECT_DB_SYNC]` Memperbaiki logika penolakan massal (*Batch Reject*) agar mengeksekusi pembaruan status dan `reviewed_by_email` secara langsung ke Supabase DB.
+- `[ACCESSIBILITY_ENHANCEMENT]` Menambahkan atribut aksesibilitas WAI-ARIA lengkap (`aria-expanded`, `aria-controls`, `role="region"`, `aria-label`) pada header dan wadah daftar menu accordion sidebar di `admin.html`, tersinkronisasi secara dinamis pada interaksi klik maupun ekspansi otomatis tab aktif.
+- `[ROLE_SECURITY_GATES_HARDENING]` Memperkuat validasi otorisasi peran pada `handleSaveIbadahSchedule`, `openIbadahReviewModal`, `openBatchRejectModal`, `handleIbadahReviewSubmit`, `handleSaveKajian`, `handleDeleteIbadahSchedule`, dan `handleDeleteKajian` serta memastikan persistensi `reviewed_by_email` pada agenda kajian.
+- `[MODAL_DISMISS_KEYBOARD_BACKDROP]` Menambahkan arsitektur penutup modal global (`closeAnyOpenModal`) yang mendukung penutupan modal via tombol keyboard `Escape` dan klik pada area luar overlay modal (*backdrop click*), serta sinkronisasi kunci gulir layar (`document.body.style.overflow = 'hidden' / ''`) pada seluruh dialog modal modul peribadatan.
+- `[TABLE_GRABBER_AUTOINIT]` Menginisialisasi listener Table Drag Grabber Engine secara otomatis setiap kali tab `#tab-ibadah` dibuka guna menjamin kelancaran interaksi drag-to-scroll pada perangkat layar sentuh dan desktop.
 
 ---
 
-## [1.9.4] - 2026-08-28
+## [1.8.4] - 2026-08-24
 
-### Penyusunan Skema Master Database & Kebijakan RLS Seluruh 10 Modul PJ Divisi (v2.0)
+### Alur Lupa Kata Sandi & Pengamanan Kata Sandi Lama
 
-#### Penambahan Skema & Pengerasan Keamanan Database (Database Schema & RLS Hardening)
-- `[ALL_MODULES_DB_SUITE]` Menyusun berkas migrasi SQL master terpadu `database/migration_suite_all_modules_v2.sql` untuk melengkapi seluruh kebutuhan database 10 divisi operasional DKM:
-  - **Tabel Modul Ibadah:** `jadwal_shalat_petugas` & `kajian_acara_ibadah`.
-  - **Tabel Modul Logistik & Dapur:** `dapur_makan_siang` (porsi makan siang Dzuhur) & `masjid_assets` (inventaris aset & riwayat servis).
-  - **Tabel Modul Keuangan:** `financial_journals` (buku kas masuk/keluar) & `budget_requests` (pengajuan anggaran & reimbursement nota bon).
-  - **Tabel Modul Santri & Tahfidz:** `santri_data` (profil santri) & `santri_mutabaah` (setoran hafalan Subuh & Maghrib).
-  - **Tabel Modul Musafir & Pelayanan:** `musafir_logbook` (buku tamu, izin menginap 24 jam & loker/kendaraan titipan).
-  - **Tabel Modul Keamanan & Kebersihan:** `security_reports` (log ronda 24 jam & insiden) & `cleaning_reports` (checklist sanitasi toilet/wudhu & foto bukti).
-  - **Tabel Modul Media:** `homepage_media` (slider hero & sorotan beranda).
-  - **Penyelarasan RLS Zero-Trust:** Memasang kebijakan RLS menyeluruh (`*_full_access_policy`) untuk peran `anon`, `authenticated`, dan `service_role` guna mencegah galat 403 / RLS violation saat operasi input (*insert*), ubah (*update*), dan hapus (*delete*).
-  - **Pendaftaran Realtime CDC & Data Awal:** Menambahkan seluruh tabel ke publikasi `supabase_realtime`, mengaktifkan `REPLICA IDENTITY FULL`, dan menyediakan data contoh realistis.
+#### Fitur Baru (Added)
+- `[AUTH_RECOVERY_FLOW]` Menambahkan alur pemulihan akun (Lupa Kata Sandi) bagi pengurus.
+  - Tautan **Lupa Kata Sandi** di halaman login untuk pengguna yang tidak memiliki sesi.
+  - Tautan **Lupa Sandi Lama** di Modal Profil Mandiri bagi pengurus yang sedang login namun lupa sandi lamanya saat ingin mengganti sandi baru.
+  - Implementasi modal khusus `#modal-reset-password` untuk mengatur sandi baru dengan tampilan rapi ala Masjid Sophia setelah klik tautan dari email.
+- `[AUTH_SECURE_PASSWORD]` Penambahan input **Kata Sandi Lama** di Modal Profil Mandiri (Tab Security) yang dikaitkan langsung dengan parameter `current_password` di Supabase untuk memenuhi standar pengamanan otentikasi.
+- `[AUTH_UX_IMPROVEMENT]` Peningkatan UX (User Experience) Input Kata Sandi:
+  - **Toggle Visibilitas Sandi:** Menambahkan ikon mata interaktif pada seluruh form kata sandi (login, profil, reset sandi) agar pengguna bisa mengecek ketikan mereka.
+  - **Validasi Kekuatan Sandi Real-time:** Menambahkan *checklist* indikator keamanan dinamis di bawah kolom sandi baru untuk mengawal syarat keamanan Supabase secara ketat (minimal 8 karakter, huruf besar/kecil, angka, simbol) sebelum diklik simpan.
 
----
-
-## [1.9.3] - 2026-08-28
-
-### Normalisasi Karakter Khusus & Pembersihan Encoding Mojibake (UTF-8 Standard)
-
-#### Perbaikan Tampilan & Integritas Teks (UI Text Formatting & Encoding Fix)
-- `[ENCODING_MOJIBAKE_CLEANUP]` Membersihkan seluruh anomali karakter encoding (*Mojibake*) yang sebelumnya muncul di tabel modul peribadatan, dialog modal, dan format string teks:
-  - **Pembersihan Bullet Separator:** Mengganti karakter anomali `ÔÇó` menjadi tanda pemisah titik bulat standar `•` (`&bull;`) pada teks waktu shalat, rincian peran pengurus, dan dialog konfirmasi.
-  - **Pembersihan Garis Dialog:** Mengganti karakter anomali `ÔöÇ` dan `ÔÇö` menjadi garis horizontal `─` dan em-dash `—` pada dialog konfirmasi pengajuan izin dan gantt bar tooltip.
+#### Perbaikan (Fixed)
+- `[AUTH_FORCED_RELOGIN]` Otomatis menghapus sesi secara paksa setelah pengguna sukses mengeklik tautan konfirmasi email atau tautan pemulihan sandi, lalu menampilkan pesan yang mengarahkan mereka untuk *login ulang* menggunakan kredensial yang baru demi mencegah sesi macet atau bug autorisasi ganda.
+- `[AUTH_BYPASS_FIX]` Memperbaiki celah keamanan logika login (*fallback bypass*) di mana sebelumnya sistem mengizinkan login lokal menggunakan kata sandi *default* (SophiaJatiwarna2026!) meskipun pengguna sebenarnya sudah mengganti kata sandinya di database Supabase.
 
 ---
 
-## [1.9.2] - 2026-08-28
+## [1.8.3] - 2026-08-24
 
-### Penyelarasan Penuh Modul Peribadatan, Sidebar Accordion & Perbaikan Overflow Badge
+### Perbaikan Alur Konfirmasi Email & Sinkronisasi Logout Keamanan
 
-#### Penyempurnaan Antarmuka & Penyelarasan Fitur (UI Polish & Feature Sync)
-- `[SIDEBAR_ACCORDION_REFINEMENT]` Memperbaiki tata letak menu navigasi samping (*Sidebar*) dan mencegah terpotongnya badge notifikasi (*Badge Clipping Fix*):
-  - **Pencegahan Terpotongnya Badge:** Menyesuaikan lebar sidebar menjadi 264px, menambahkan aturan flex layout `min-width: 0` dan teks elipsis pada tombol menu agar badge notifikasi pending (misal notifikasi merah pada *Layanan & Petugas Ibadah*) tampil utuh 100% tanpa terpotong di tepi sidebar.
-  - **Kerapian & Kepadatan Menu:** Spasi antar-grup diperhalus menjadi 0.45rem dengan scrollbar kustom tipis beraksen emas Sophia Gold, sehingga seluruh menu navigasi muat dengan proporsional pada resolusi layar laptop/desktop standar.
-  - **Integrasi Penuh Modul Peribadatan (`#tab-ibadah`):** Menyatukan Modul Peribadatan & Penugasan Petugas (Jadwal Shalat, Penugasan Imam & Khatib, Tabel Approval Batch DKM, dan Agenda Kajian/Acara) ke dalam branch `dev` secara utuh dan terintegrasi dengan modul Izin & Cuti.
-
----
-
-## [1.9.1] - 2026-08-28
-
-### Perbaikan Bug Duplikasi Pengguna Hantu (Phantom User) pada Tabel Manajemen Pengurus
-
-#### Perbaikan Bug & Integritas Data (Bug Fixes & Data Integrity)
-- `[USER_DIRECTORY_DUPLICATE_FIX]` Memperbaiki penyebab munculnya entri ganda akun Super User pada tabel manajemen pengurus (`#tab-users` / `loadAdminUsers`):
-  - **Akar Masalah:** Logika lama menggabungkan kembali entri lama dari `localStorage` (`masjid_sophia_admin_users_master`) jika email tidak ditemukan di database, sehingga akun yang telah diubah emailnya di database Supabase (misal dari `superuser@masjidsophiajatiwarna.com` menjadi `ajaabe50@gmail.com`) kembali terduplikasi sebagai pengguna hantu.
-  - **Penyelesaian Tunggal (Single Source of Truth):** Database Supabase kini menjadi sumber kebenaran mutlak saat aplikasi terhubung ke cloud. `localStorage` otomatis ditimpa dan diselaraskan secara bersih tanpa membangkitkan data lawas.
-  - **Penyempurnaan Realtime CDC & DELETE:** Event `DELETE` pada Supabase Realtime CDC kini langsung menyaring dan membuang user yang dihapus dari memori dan antarmuka seketika.
+#### Perbaikan Bug (Fixed)
+- `[AUTH_EMAIL_LOGOUT_FIX]` Memperbaiki masalah alur pergantian email pada profil mandiri pengurus:
+  - **Auto Logout Security:** Menambahkan pemanggilan `handleLogout()` secara eksplisit setelah pengguna mengonfirmasi permintaan penggantian email, memastikan sesi lama segera ditutup demi keamanan.
+  - **Perbaikan Pesan Instruksi:** Memperbarui alert peringatan penggantian email agar lebih jelas menginformasikan pengguna bahwa mereka akan dikeluarkan dari sesi secara otomatis dan harus login kembali.
+  - **Panduan Konfigurasi Supabase:** Dokumentasi dan instruksi langsung untuk menonaktifkan fitur *Secure email change* di dashboard Supabase guna memangkas keharusan konfirmasi dari email lama, serta pengaturan *Site URL* agar redirect tidak lagi nyasar ke `localhost:3000`.
 
 ---
 
-## [1.9.0] - 2026-08-28
+## [1.8.2] - 2026-08-24
 
-### Integrasi Rencana Strategis & Modul Coaching 1-by-1 Migrasi Domain ke masjidsophia.com
+### Resolusi Redirect URL Konfirmasi Email Supabase Auth & Trigger Sinkronisasi Otomatis Database
 
-#### Perencanaan & Arsitektur Sistem (Planning & Architecture)
-- `[DOMAIN_MIGRATION_PLAN]` Merumuskan arsitektur dan modul panduan langkah-demi-langkah (*1-by-1 Coaching Guide*) untuk migrasi domain utama produksi dari `masjidsophiajatiwarna.com` ke `masjidsophia.com` pada Rencana Induk (`implementation-plan.md` v5.3) dan Dashboard Pelacak Progres (`progress-implementation-plan.html`):
-  - **Prinsip & Jadwal Eksekusi:** Migrasi domain dijadwalkan secara aman setelah seluruh fungsionalitas portal admin dan beranda publik (`index.html`) selesai diuji dan dirilis stabil di branch `main` menggunakan domain awal.
-  - **Arsitektur 7 Pilar Terintegrasi:**
-    - **GitHub:** Pembaruan konfigurasi repositori, environment secrets, dan endpoint dokumentasi.
-    - **Cloudflare:** Penyiapan DNS Zone `masjidsophia.com`, mode enkripsi SSL/TLS Full Strict, dan aturan pengalihan permanen (HTTP 301 Redirect Rules) dari seluruh lalu lintas domain lawas ke domain baru.
-    - **Email Resmi & Resend SMTP:** Penyelarasan pengiriman email transaksional via Resend (DKIM, SPF, MX) dan Cloudflare Email Routing untuk 3 alamat resmi: `info@masjidsophia.com`, `saran@masjidsophia.com`, dan `pengaduan@masjidsophia.com`.
-    - **Vercel Hosting:** Penambahan custom domains (`masjidsophia.com`, `admin.masjidsophia.com`, `progdev.masjidsophia.com`, `dev.masjidsophia.com`) dengan verifikasi DNS CNAME.
-    - **Supabase Backend:** Penyelarasan Site URL, Redirect URLs Allowlist pada Supabase Auth, serta penyesuaian URI OAuth Google.
-    - **ImageKit.io CDN:** Pembaruan Web Proxy Origin dan CORS Domain Whitelist untuk domain baru.
-    - **Environment Variables:** Sinkronisasi berkas `.env` dan Project Environment Variables di Vercel.
-    - **Link Equity SEO:** Penjaminan tidak adanya broken link atau penurunan reputasi mesin pencari melalui pemetaan wildcard 301 redirect.
-    - **Handover & Kolaborasi:** Prosedur transfer kepemilikan dan delegasi hak akses tim DKM.
+#### Perbaikan & Keandalan (Fixed & Reliability)
+- `[AUTH_EMAIL_REDIRECT_FIX]` Mengatasi masalah pengalihan (*redirect*) tautan konfirmasi email yang mengarah ke `localhost:3000`:
+  - **Dynamic Email Redirect URL:** Menambahkan parameter `{ emailRedirectTo: redirectUrl }` secara dinamis pada pemanggilan `sbClient.auth.updateUser({ email: newEmail })` sehingga tautan konfirmasi email Supabase mengarahkan kembali ke origin domain aktif (`https://dev.masjidsophiajatiwarna.com/admin.html` atau `https://admin.masjidsophiajatiwarna.com/admin.html`).
+  - **Penanganan Hash Callback & Notifikasi:** Menambahkan parser parameter `#access_token=...`, `#message=...`, dan `#error=...` pada saat inisialisasi `DOMContentLoaded` untuk memberikan umpan balik yang ramah dan membersihkan hash routing secara aman.
+  - **Sanitasi Routing Tab:** Memperbarui fungsi `switchTab()` dan parser hash agar tidak mengalami benturan saat URL mengandung token/parameter otentikasi.
+  - **PostgreSQL Trigger Sinkronisasi Email:** Membuat berkas migrasi `database/migration_sync_auth_email.sql` dan memperbarui `database/schema.sql` dengan trigger `on_auth_user_email_updated` pada tabel `auth.users` agar kolom `email` pada `public.admin_users` otomatis terbarukan saat verifikasi email selesai.
+  - **Penyelarasan Template Email:** Menyediakan koleksi template email konfirmasi, reset kata sandi, magic link OTP, dan undangan di direktori `email-smtp-config/` yang telah teruji bebas emoji dan siap disinkronkan ke Supabase Dashboard.
+
+---
+
+## [1.8.1] - 2026-08-24
+
+### Resolusi Dinamis Profil Pengurus, Eliminasi Hardcoded Override & Sanitasi Sinkronisasi Master Database
+
+#### Perbaikan & Keandalan (Fixed & Reliability)
+- `[USER_PROFILE_SYNC_BUGFIX]` Mengatasi masalah persistensi nama profil pengurus pada sidebar dan modal profil mandiri (`#modal-user-self-profile`):
+  - **Multi-Tier Dynamic Name Resolver (`getUserDisplayName`):** Mengeliminasi seluruh string statis hardcoded dan menggantinya dengan logika resolusi dinamis multi-tingkat (Database `admin_users.full_name` $\rightarrow$ Auth `user_metadata` $\rightarrow$ Live `adminUsersList` $\rightarrow$ Default Seed $\rightarrow$ Formatted Prefix).
+  - **PostgreSQL Single Source of Truth:** Memperbaiki algoritma penggabungan pada `loadAdminUsers()` sehingga data aktual dari tabel database Supabase tidak lagi tertimpa (*overwritten*) oleh string usang dari cache `localStorage`.
+  - **Inisialisasi Asinkron Terjamin:** Memperbarui listener `DOMContentLoaded` menjadi `async/await` untuk menjamin `loadAdminUsers()` selesai memuat data sebelum `showAdminDashboard(user)` dieksekusi.
+  - **Reaktivitas UI Terpadu (`updateCurrentUserProfileUI`):** Menghubungkan perubahan profil mandiri (`handleSaveSelfProfile`), otorisasi matriks RBAC (`handleSaveUserRBAC`), dan pembaruan realtime CDC (`handleRealtimeAdminUserChange`) ke pembaruan antarmuka kartu profil sidebar, inisial avatar, dan modal secara instan (*zero refresh*).
+  - **Penyelarasan Master Seed Pengurus:** Memperbarui data baku pada `DEFAULT_ADMIN_USERS_SEED` agar selaras dengan basis data riil (seperti Habib Maulana untuk superuser dan Silvih Damayanti untuk PJ Ibadah).
 
 ---
 

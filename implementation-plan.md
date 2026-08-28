@@ -4,11 +4,11 @@
 **Lokasi Koordinat Astronomis:** Latitude `-6.310391`, Longitude `106.921264` (Zona Waktu: WIB / UTC+7)  
 **Alamat:** Jl. Raya Hankam, RT.001/RW.011, Jatiwarna, Pondok Melati, Kota Bekasi, Jawa Barat 17415  
 **Target Repositori:** `https://github.com/masjidsophiajatiwarna-wq/web-masjid-sophia-jatiwarna.git`  
-**Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
-**Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
-**Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v5.3 (Integrasi Master Plan & Panduan 1-by-1 Coaching Migrasi Domain Arsitektur 7 Pilar masjidsophia.com, Suite Akun DKM, Dynamic RBAC 17 Modul, dan Presensi 3-Tier)  
-**Terakhir Diperbarui:** 2026-08-28  
+**Domain Utama Produksi:** `https://masjidsophiajatiwarna.com/`  
+**Domain Sekunder (Redirect 301):** `https://masjidsophiajatiwarna.my.id/`, `https://masjidsophia.com/`  
+**Subdomain Pemantauan & Admin:** `https://progdev.masjidsophiajatiwarna.com/`, `https://admin.masjidsophiajatiwarna.com/`  
+**Versi Rencana Induk:** v5.6 (Pengelompokan Sidebar Dinamis Berbasis Peran, Skema Alur Persetujuan Modul Ibadah, dan Antarmuka Dwi-Sisi Input & Approval Batch)  
+**Terakhir Diperbarui:** 2026-08-24  
 
 ---
 
@@ -127,12 +127,17 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 
 ### Fase 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ
 - **Benchmark Rujukan:** SIABE-PORTO (Task Engine & Cloud Monitor), WEB-UMAR Admin (Article Studio), dan Standard Modul Odoo/Masjid (`.unused-modul-web-sophia`)
-- **Status:** 50% Selesai (Admin Core, Task Management 5 View, Obrolan Koordinasi Multi-Arah, Account Control & Dynamic RBAC, Profil Mandiri & Mobile Grabber Selesai)
+- **Status:** 60% Selesai (Admin Core, Task Management 5 View, Obrolan Koordinasi Multi-Arah, Account Control & Dynamic RBAC, Profil Mandiri, Izin & Cuti Pengurus, Pengelompokan Sidebar Dinamis Accordion, dan Modul Peribadatan & Alur Persetujuan Selesai)
 - **Daftar Tugas:**
   - [x] **Pondasi Admin Core & Auth Gate (`admin.html`):** Gerbang login Supabase Auth JWT, sidebar adaptif RBAC 10 peran, panel KPI Real-Time, inbox kotak saran, dan rekonsiliasi kas harian.
+  - [x] **Pengelompokan Sidebar Dinamis Berbasis Accordion & RBAC Filtering (R1 - SELESAI):**
+    - Arsitektur pengelompokan menu multi-tier (`SIDEBAR_MENU_GROUPS`) yang mengorganisasikan menu ke dalam 4 grup terstruktur: "DASHBOARD & TUGAS", "LAYANAN & IBADAH", "PUBLIKASI & MEDIA", "AKSES & SISTEM".
+    - Penyaringan visibilitas berbasis peran pada `renderSidebar(role)`: grup hanya dirender ke dalam DOM apabila peran aktif memiliki izin minimal satu menu di dalamnya (misal: peran `PJ_IBADAH` secara otomatis tidak menampilkan grup "PUBLIKASI & MEDIA").
+    - Fitur collapse/expand interaktif per grup dengan persistensi status lokal `localStorage`, auto-expand saat tab di dalamnya aktif, serta kelengkapan atribut aksesibilitas WAI-ARIA (`aria-expanded`, `aria-controls`, `role="region"`, `aria-label`).
   - [x] **Optimasi Antarmuka Fluid Desktop & Mobile-First Touch UI (`admin.html`):**
     - **Tampilan Desktop / Laptop:** Multi-kolom lebar, split-pane layout gantt (fixed sidebar 250px + timeline), tabel data komprehensif, sidebar collapse to icon mode (72px).
     - **Tampilan Smartphone (Android & iPhone):** Table Drag Grabber Engine (`.table-responsive`), drag-to-scroll kursor grab/grabbing, target sentuh min 48px, gestur swipe touch pan, auto-center Today view, modal backdrop scroll lock (`overflow: hidden`).
+    - **Aksesibilitas & Penutup Modal Interaktif:** Penutupan modal global via keyboard `Escape` dan klik backdrop overlay (`closeAnyOpenModal`), serta sinkronisasi kunci gulir layar body (`document.body.style.overflow`).
   - [x] **Task Management Terpadu (5 View + 2 Panel):**
     - [x] Kanban Board (drag-and-drop HTML5, filter divisi, badge prioritas, dan tombol cepat sentuh status).
     - [x] Gantt Timeline (arsitektur split-pane zero leakage, bar jadwal mulai hingga tenggat per PJ dengan skala Hari/Pekanan ISO 8601 W01-W53/Bulan, Auto-Fit all tasks, grab-to-scroll pan, auto-center Today).
@@ -151,15 +156,22 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - [x] **Akses Mandiri PJ Divisi:** Dibuka lewat klik kartu profil/avatar di pojok kiri bawah sidebar.
     - [x] **Tab 1 - Profil Umum:** Ubah Nama Lengkap dan **Upload Foto Profil (Avatar)** dari perangkat lokal langsung teroptimasi (auto WebP 400x400) ke **ImageKit.io CDN**.
     - [x] **Tab 2 - Keamanan & Sandi:** Ganti kata sandi dan ganti email dengan **Strict Security Rule: Otomatis Logout & Wajib Login Ulang**.
+    - [x] **Peningkatan UX & Validasi Keamanan Form Kata Sandi:** Tombol *toggle* lihat/sembunyikan sandi (ikon mata SVG/FA) di seluruh form sandi, validasi kerumitan sandi *real-time* dengan indikator hijau/merah (*Live Checklist*: 8 karakter, huruf besar/kecil, angka, simbol), dan penolakan *submit* jika belum memenuhi syarat keamanan.
+    - [x] **Penutupan Celah Keamanan (Auth Security Bypass Fix):** Menghapus mekanisme *fallback bypass* (akses otomatis menggunakan kata sandi default `SophiaJatiwarna2026!`) apabila proyek telah terhubung ke server Supabase. Hal ini menjamin bahwa seluruh verifikasi sandi mutlak tunduk pada keputusan *database* otoritatif tanpa celah jalur belakang (*backdoor*).
     - [x] **Penyelarasan Visual Brand Sophia:** Latar belakang putih bersih `.modal-box`, indikator tab aktif garis bawah emas Sophia Gold tebal, tombol aksi bergradasi *Charcoal Gold Glow*, dan 100% bahasa Indonesia santun & formal.
-  - [ ] **Suite Modul Khusus per Divisi PJ (Pembangunan Bertahap 1-by-1):**
-    - [x] **PJ Ibadah & Acara (SELESAI):** Kalibrasi Menit Ikhtiyat Shalat, Rotasi Petugas Harian (Imam, Muadzin, Khatib, Bilal), Approval Batch DKM, Kalender Acara/Kajian Tematik & Arsip Khutbah (`#tab-ibadah`).
-    - [x] **Modul 1 — PJ Media & Dakwah (SELESAI):** Article Studio 100% Standar UMAR Travel (Quill.js Rich Text, auto-slug generator, kompresi WebP client-side, layout adjustment toolbar, modal media picker & storage usage bar, SEO panel Google search mockup preview live, status draft/publish toggle) & Visual Web Builder Beranda (kustomisasi hero banner, susunan section, live preview responsive index.html, sinkronisasi Supabase `artikel_berita` & `homepage_media`) (`#tab-articles`, `#tab-media` & `#tab-gallery`).
-    - [x] **Modul 2 — PJ Logistik & Sarpras (SELESAI):** Dapur Sedekah Makan Ba'da Dzuhur (target 70+ porsi/hari, indikator siklus persiapan/memasak/siap bagi/selesai, logistik belanja bahan, upload foto dokumentasi WebP) & Manajemen Inventaris Aset Fisik Masjid (auto-kode `AST-ELK/KBR/IBD/DPR/KND/FRN-...`, lokasi ruangan, kondisi kelayakan, nilai estimasi Rupiah, riwayat pemeliharaan/servis berkala) (`#tab-logistik`).
-    - [ ] **Modul 3 — PJ Keuangan (Bendahara):** Jurnal Buku Kas Masuk/Keluar (Infaq BSI, QRIS, Kotak Tunai, Dapur, Operasional, export CSV) & Alur Pengajuan Anggaran (*Budget Request*) & Klaim Nota Bon (*Reimbursement*) bagi seluruh 7 PJ divisi dengan persetujuan Ketua DKM (`#tab-keuangan`).
-    - [ ] **Modul 4 — PJ Santri & Pendidikan:** Direktori Santri Tahfidz (`STR-2026-xxx`) & Log Mutaba'ah Setoran Hafalan Qur'an Harian (Subuh & Maghrib, juz, surat, ayat, predikat tajwid, catatan ustadz) (`#tab-santri`).
-    - [ ] **Modul 5 — PJ Musafir & Pelayanan:** Buku Tamu Musafir Digital, Log Tamu Menginap/Istirahat Darurat 24 Jam (lampiran identitas KTP), dan Log Penitipan Kendaraan & Loker Barang (`#tab-musafir`).
-    - [ ] **Modul 6 — PJ Keamanan & Kebersihan:** Log Piket Keamanan Ronda 24 Jam (shift, patroli, laporan kejadian, bukti ImageKit) & Checklist Sanitasi Harian (Wudhu, Toilet, Ruang Shalat, status harum, upload foto sebelum/sesudah) (`#tab-keamanan` / `#tab-kebersihan`).
+  - [x] **Modul Peribadatan, Penugasan Petugas & Alur Persetujuan DKM (R2 & R3 - SELESAI):**
+    - [x] **Skema Migrasi Database Alur Persetujuan (`database/migration_modul_ibadah_media.sql`):** Tabel `public.jadwal_shalat_petugas` dan `public.kajian_acara_ibadah` dengan kolom status persetujuan (`status_approval` ['Draft', 'Pending Approval', 'Approved', 'Rejected'], `submitted_by`, `reviewed_by`, `reviewed_by_email`, `review_notes`), RLS Zero-Trust, dan Realtime Replication.
+    - [x] **Sisi PJ Ibadah (`#subview-ibadah-input`):** Form input jadwal shalat 5 waktu terkalibrasi mesin Hisab Astronomis Jatiwarna Kemenag WIB UTC+7, kalibrasi menit ikhtiyat, susunan imam rawatib & muadzin, susunan petugas Shalat Jumat (Khatib, Muadzin, Bilal), opsi simpan draf, dan tombol pengajuan persetujuan ke DKM (dengan pengamanan gerbang peran ketat).
+    - [x] **Sisi Pimpinan DKM (`#subview-ibadah-approval`):** Tabel tinjauan jadwal dengan fitur persetujuan massal (*Batch Approve*), penolakan/revisi massal (*Batch Reject*), tombol persetujuan cepat per baris, modal catatan revisi (`#modal-ibadah-review-note`), dan inspeksi detail komprehensif (`#modal-ibadah-detail`).
+    - [x] **Sub-view Agenda Kajian (`#subview-ibadah-kajian`):** Manajemen agenda kajian akhir pekan dan kajian rutin ba'da subuh dengan alur persetujuan pimpinan DKM.
+  - [ ] **Suite Modul Khusus per Divisi PJ (Sisa):**
+    - **PJ Media & Dakwah:** Article Studio (Quill.js Rich Text, slug generator, ImageKit cover WebP) & Dynamic Homepage Media Manager (review Ketua DKM).
+    - **PJ Logistik & Sarpras:** Porsi Makan Gratis ba'da Dzuhur (70+ porsi/hari, dapur) & Inventaris Aset Fisik Masjid (kode inventaris, lokasi, kondisi, servis).
+    - **PJ Santri & Pendidikan:** Direktori Santri Tahfidz & Log Mutaba'ah Setoran Hafalan Qur'an (Subuh & Maghrib) serta rapor perkembangan.
+    - **PJ Musafir & Pelayanan:** Buku Tamu Musafir Digital, Izin Menginap / Istirahat 24 Jam, dan Log Penitipan Kendaraan & Loker Barang.
+    - **PJ Keuangan:** Buku Kas Masuk, Buku Kas Keluar, Alur Form Pengajuan Anggaran (*Budget Request*) & Klaim Nota Bon (*Expense Claim*) bagi seluruh 7 PJ divisi dengan persetujuan Ketua DKM & PJ Keuangan, Laporan Arus Kas, dan Neraca Kas Berkala (CSV & PDF).
+    - **PJ Keamanan:** Log Piket Keamanan 24 Jam, Patroli Area, dan Input Laporan Kejadian dengan unggah foto/video ke ImageKit CDN (auto WebP/WebM).
+    - **PJ Kebersihan:** Checklist Sanitasi Harian (Wudhu, Toilet, Ruang Shalat, Halaman) dan Input Laporan Kebersihan dengan unggah foto/video ke ImageKit CDN (auto WebP/WebM).
   - [x] **Modul Pengajuan Izin & Cuti Pengurus DKM (Leave & Absence Management Suite - SELESAI):**
     - **Formulir Pengajuan Izin Mandiri (Seluruh Pengurus):** Formulir bagi seluruh PJ divisi untuk mengajukan izin (Izin Sakit + bukti surat dokter auto-WebP, Keperluan Pribadi, Tugas Luar, Cuti Operasional) dengan tanggal mulai, tanggal selesai, alasan, dan status transparan.
     - **Alur Persetujuan Terpusat (Approval Flow):** Panel khusus bagi **Ketua DKM & Super Admin** untuk menyetujui (*Approve*) atau menolak (*Reject*) permohonan izin dengan catatan evaluasi dan penunjukan petugas pengganti piket.
@@ -184,116 +196,14 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 
 ---
 
-### Fase 6: Finalisasi Produksi, SEO, Migrasi Domain ke masjidsophia.com & Go-Live
+### Fase 6: Finalisasi Produksi, SEO, Email Routing, DNS Cutover & Go-Live
 - **Status:** 40% Selesai
-- **Prasyarat & Jadwal Eksekusi:** Migrasi domain dieksekusi **SETELAH** seluruh setup portal admin (`admin.html`) dan portal publik (`index.html`, `artikel.html`, `galeri.html`) selesai dibangun, diuji, dan dipublikasikan ke branch `main` produksi melalui domain awal (`masjidsophiajatiwarna.com`) untuk memastikan kestabilan sistem terlebih dahulu.
 - **Daftar Tugas:**
-  - [x] **Email Routing & SMTP Gateway Awal:** Cloudflare Email Routing & Resend SMTP aktif untuk domain awal.
+  - [x] **Email Routing & SMTP Gateway:** Cloudflare Email Routing & Resend SMTP aktif.
   - [x] **SEO Dasar:** Berkas `robots.txt` dan `sitemap.xml` terpasang.
-  - [ ] **SEO Lanjutan & Schema.org JSON-LD:** Metadata OpenGraph, Twitter Card, Rich Snippets Mosque/Organization/Article disesuaikan ke `https://masjidsophia.com/`.
+  - [ ] **SEO Lanjutan & Schema.org JSON-LD:** Metadata OpenGraph, Twitter Card, Rich Snippets Mosque/Organization/Article.
   - [ ] **Halaman Error Kustom:** `404.html` bertema terang resmi Masjid Sophia.
-  - [ ] **Pendaftaran Mesin Pencari:** Google Search Console & Bing Webmaster Tools untuk domain baru `masjidsophia.com`.
-  - [ ] **Eksekusi Migrasi Domain Utama ke masjidsophia.com (Arsitektur 7 Pilar):**
-    - [ ] **Pilar 1 - GitHub:** Repositori tetap di `web-masjid-sophia-jatiwarna`, pembaruan secret tokens dan URL dokumentasi.
-    - [ ] **Pilar 2 - Cloudflare:** Setup DNS Zone `masjidsophia.com`, SSL/TLS Full Strict, dan Page/Redirect Rules 301 dari `masjidsophiajatiwarna.com/*` ke `masjidsophia.com/$1`.
-    - [ ] **Pilar 3 - Email Resmi (Resend & Cloudflare):** Domain sending baru `masjidsophia.com` di Resend (DKIM, SPF, MX), serta forwarding Cloudflare Email Routing untuk 3 alamat resmi:
-      - `info@masjidsophia.com` -> Email inbox pengurus DKM
-      - `saran@masjidsophia.com` -> Kotak saran jamaah
-      - `pengaduan@masjidsophia.com` -> Layanan aduan fasilitas
-    - [ ] **Pilar 4 - Vercel Hosting:** Penambahan custom domains (`masjidsophia.com`, `admin.masjidsophia.com`, `progdev.masjidsophia.com`, `dev.masjidsophia.com`) dan konfigurasi 301 redirect di Vercel Dashboard.
-    - [ ] **Pilar 5 - Supabase Backend:** Pembaruan Site URL & Redirect URLs di Supabase Auth Settings, penyesuaian redirect OAuth Google (jika diaktifkan), dan CORS headers.
-    - [ ] **Pilar 6 - ImageKit.io CDN:** Pembaruan origin URL endpoint dan CORS domain whitelist ke `https://masjidsophia.com` & `https://admin.masjidsophia.com`.
-    - [ ] **Pilar 7 - Environment Variables & Codebase:** Sinkronisasi berkas `.env`, Vercel Project Environment Variables (`SITE_URL`, `RESEND_FROM_EMAIL`), dan pembaruan tautan statis internal.
-    - [ ] **Pilar 8 - SEO Link Equity & 301 Redirect:** Pemetaan menyeluruh pengalihan permanen (HTTP 301) dari seluruh URL lawas ke URL baru tanpa kehilangan reputasi search engine.
-    - [ ] **Pilar 9 - Handover & Delegasi Hak Akses Tim:** Prosedur transfer kepemilikan/undangan akun (GitHub, Cloudflare, Vercel, Supabase) ke email resmi DKM.
-
----
-
-### Panduan Teknis 1-by-1 Coaching: Eksekusi Migrasi Domain ke masjidsophia.com
-
-Berikut adalah modul coaching langkah-demi-langkah yang akan dipandu secara interaktif saat fase migrasi domain dimulai:
-
-#### Langkah 1: Persiapan Domain & Cloudflare DNS
-1. Buka dashboard Cloudflare (`dash.cloudflare.com`) -> Klik **Add a Domain** -> Masukkan `masjidsophia.com` -> Pilih paket **Free**.
-2. Ubah Name Server di registrar tempat membeli domain `masjidsophia.com` agar mengarah ke 2 NS Cloudflare yang diberikan.
-3. Di tab **DNS Records** Cloudflare untuk `masjidsophia.com`, buat entri:
-   - `CNAME` | `@` (root) -> `cname.vercel-dns.com` (Proxy: ON / Orange Cloud)
-   - `CNAME` | `www` -> `cname.vercel-dns.com` (Proxy: ON)
-   - `CNAME` | `admin` -> `cname.vercel-dns.com` (Proxy: ON)
-   - `CNAME` | `progdev` -> `cname.vercel-dns.com` (Proxy: ON)
-   - `CNAME` | `dev` -> `cname.vercel-dns.com` (Proxy: ON)
-4. Di tab **SSL/TLS**, pastikan mode enkripsi disetel ke **Full (Strict)** dan aktifkan **Always Use HTTPS**.
-
-#### Langkah 2: Setup Email Routing Cloudflare & Resend SMTP
-1. **Cloudflare Email Routing:**
-   - Di zone `masjidsophia.com`, buka menu **Email** -> **Email Routing** -> Klik **Enable Email Routing**.
-   - Cloudflare akan meminta penambahan record DNS MX dan TXT SPF secara otomatis (klik **Add records automatically**).
-   - Buat 3 Destination Rules / Custom Addresses:
-     - `info@masjidsophia.com` -> arahkan ke `masjidsophiajatiwarna@gmail.com`
-     - `saran@masjidsophia.com` -> arahkan ke `masjidsophiajatiwarna@gmail.com`
-     - `pengaduan@masjidsophia.com` -> arahkan ke `masjidsophiajatiwarna@gmail.com`
-   - Verifikasi email tujuan dengan mengklik tautan konfirmasi yang masuk ke Gmail DKM.
-2. **Resend.com (Pengiriman Email Keluar / Transactional SMTP):**
-   - Buka dashboard Resend (`resend.com/domains`) -> Klik **Add Domain** -> Masukkan `masjidsophia.com`.
-   - Salin record verifikasi yang diberikan Resend (1 record MX, 1 record TXT SPF, dan 3 record TXT DKIM `resend._domainkey`).
-   - Masukkan seluruh record tersebut ke DNS Cloudflare `masjidsophia.com` (Proxy: DNS Only / Grey Cloud).
-   - Klik **Verify DNS Records** di Resend hingga status menjadi **Verified**.
-
-#### Langkah 3: Konfigurasi Custom Domain di Vercel
-1. Buka dashboard Vercel (`vercel.com`) -> Pilih proyek `web-masjid-sophia-jatiwarna` -> Buka tab **Settings** -> **Domains**.
-2. Klik **Add Domain** dan daftarkan domain-domain berikut:
-   - `masjidsophia.com` (Pilih opsi: Assign to `main` branch, dan centang redirect otomatis dari `www.masjidsophia.com`).
-   - `admin.masjidsophia.com` (Assign to `main` branch).
-   - `progdev.masjidsophia.com` (Assign to `main` branch).
-   - `dev.masjidsophia.com` (Assign to `dev` branch).
-3. Pastikan indikator status di Vercel berubah menjadi centang hijau **Valid Configuration**.
-
-#### Langkah 4: Pembuatan Aturan 301 Permanent Redirect di Cloudflare (Domain Lawas ke Baru)
-1. Buka zone domain lawas `masjidsophiajatiwarna.com` di Cloudflare.
-2. Buka menu **Rules** -> **Redirect Rules** (atau **Page Rules**) -> Klik **Create Rule**.
-3. Beri nama: `Redirect masjidsophiajatiwarna.com to masjidsophia.com (301)`.
-4. Kriteria pencocokan (Expression):
-   - `Incoming Request` -> `Hostname` equals `masjidsophiajatiwarna.com` ATAU `www.masjidsophiajatiwarna.com`
-5. Target URL:
-   - Type: `Dynamic`
-   - Expression: `concat("https://masjidsophia.com", http.request.uri.path)`
-   - Status Code: `301 (Moved Permanently)`
-6. Ulangi aturan redirect serupa untuk subdomain:
-   - `admin.masjidsophiajatiwarna.com/*` -> `https://admin.masjidsophia.com/$1`
-   - `progdev.masjidsophiajatiwarna.com/*` -> `https://progdev.masjidsophia.com/$1`
-
-#### Langkah 5: Penyelarasan Supabase Auth & Redirect URLs
-1. Buka Supabase Dashboard (`supabase.com/dashboard`) -> Pilih proyek Masjid Sophia -> Buka **Authentication** -> **URL Configuration**.
-2. **Site URL:** Ubah dari `https://admin.masjidsophiajatiwarna.com` menjadi `https://admin.masjidsophia.com` (atau `https://masjidsophia.com`).
-3. **Redirect URLs (Allow list):** Tambahkan entri baru:
-   - `https://masjidsophia.com/**`
-   - `https://admin.masjidsophia.com/**`
-   - `https://progdev.masjidsophia.com/**`
-   - `https://dev.masjidsophia.com/**`
-   - `http://localhost:3000/**`
-4. Jika Google OAuth aktif, buka Google Cloud Console -> Credentials -> Authorized redirect URIs -> Tambahkan URI baru dari Supabase.
-
-#### Langkah 6: Penyelarasan ImageKit.io CDN
-1. Buka dashboard ImageKit.io (`imagekit.io`) -> Buka **Settings** -> **External Storage / Origin**.
-2. Jika ada Web Proxy Origin atau URL whitelisting, perbarui ke domain `https://masjidsophia.com`.
-3. Di menu **Security** -> **Allowed Domains / CORS**, tambahkan `https://masjidsophia.com` dan `https://admin.masjidsophia.com`.
-
-#### Langkah 7: Pembaruan Environment Variables & Deploy Ulang
-1. Di Vercel Settings -> **Environment Variables**, perbarui variabel:
-   - `SITE_URL` = `https://masjidsophia.com`
-   - `RESEND_FROM_EMAIL` = `Masjid Sophia <info@masjidsophia.com>`
-2. Lakukan deployment ulang (*Redeploy*) di Vercel agar fungsi serverless membaca konfigurasi variabel lingkungan yang baru.
-
-#### Langkah 8: Pengujian & Validasi Kestabilan
-1. Uji akses domain baru `https://masjidsophia.com/` dan `https://admin.masjidsophia.com/`.
-2. Uji redirect otomatis dari domain lawas: akses `https://masjidsophiajatiwarna.com/jadwal` -> pastikan langsung terlempar ke `https://masjidsophia.com/jadwal` dengan status HTTP 301.
-3. Uji pengiriman formulir pengaduan & kontak: pastikan email notifikasi terkirim via `info@masjidsophia.com` dan diterima di inbox DKM.
-4. Uji login admin di `https://admin.masjidsophia.com/` dan fungsi Realtime Supabase.
-
-#### Langkah 9: Panduan Transfer Kepemilikan & Akses Akun (Handover)
-1. **GitHub:** Repositori `web-masjid-sophia-jatiwarna` dapat diundang anggota tim DKM lain via Settings -> Collaborators, atau dipindahkan (*Transfer Ownership*) ke organisasi resmi DKM.
-2. **Cloudflare:** Settings -> Members -> Invite `masjidsophiajatiwarna@gmail.com` sebagai Super Administrator.
-3. **Vercel & Supabase:** Invite email DKM sebagai Project Member / Owner.
+  - [ ] **Pendaftaran Mesin Pencari:** Google Search Console & Bing Webmaster Tools.
 
 ---
 

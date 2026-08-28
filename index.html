@@ -1211,8 +1211,6 @@
             }
         }
     </style>
-    <!-- Supabase JS Client v2 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -1658,15 +1656,40 @@
             </div>
 
             <div class="news-grid">
-                <!-- Populated dynamically from Supabase (artikel_berita) -->
-                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: var(--color-bg-white); border-radius: var(--radius-md); border: 1px solid var(--color-border);">
-                    <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;">
-                        <i class="fa-solid fa-newspaper"></i>
+                <div class="news-card">
+                    <div class="news-placeholder"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <div class="news-body">
+                        <div><span class="news-badge">Kabar Masjid</span></div>
+                        <h3 class="news-title">Penyaluran 85 Porsi Makan Berjamaah Gratis Hari Ini Berjalan Khidmat</h3>
+                        <p class="news-excerpt">
+                            Alhamdulillah, hidangan makan siang bergizi telah dinikmati oleh para musafir dan warga sekitar ba'da Dzuhur.
+                        </p>
+                        <small style="color: var(--color-charcoal-muted); font-weight: 600;"><i class="fa-solid fa-clock"></i> 3 Menit Baca</small>
                     </div>
-                    <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--color-charcoal); margin-bottom: 0.35rem;">Warta &amp; Kabar Dakwah Segera Hadir</h3>
-                    <p style="font-size: 0.85rem; color: var(--color-charcoal-muted); max-width: 500px; margin: 0 auto;">
-                        Dokumentasi penyaluran sedekah makan, kegiatan santri, dan artikel panduan ibadah akan tampil di sini setelah diterbitkan oleh pengurus DKM.
-                    </p>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-placeholder"><i class="fa-solid fa-book-quran"></i></div>
+                    <div class="news-body">
+                        <div><span class="news-badge">Tahfidz Santri</span></div>
+                        <h3 class="news-title">Ujian Tasmi' 5 Juz Sekali Duduk Santri Halaqah Tahfidz Sophia</h3>
+                        <p class="news-excerpt">
+                            Perkembangan hafalan Al-Qur'an para santri binaan Masjid Sophia yang menunjukkan ketekunan dan hafalan mutqin.
+                        </p>
+                        <small style="color: var(--color-charcoal-muted); font-weight: 600;"><i class="fa-solid fa-clock"></i> 4 Menit Baca</small>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-placeholder"><i class="fa-solid fa-kaaba"></i></div>
+                    <div class="news-body">
+                        <div><span class="news-badge">Tausiyah</span></div>
+                        <h3 class="news-title">Keutamaan Memberi Makan Orang yang Berpuasa & Musafir di Jalan Allah</h3>
+                        <p class="news-excerpt">
+                            Mengupas dalil hadits shahih mengenai balasan pahala sedekah makanan dan memuliakan musafir.
+                        </p>
+                        <small style="color: var(--color-charcoal-muted); font-weight: 600;"><i class="fa-solid fa-clock"></i> 5 Menit Baca</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1895,95 +1918,7 @@
             setInterval(tick, 1000);
         }
 
-        
-        // ==========================================================================
-        // DYNAMIC ARTICLES & NEWS FETCHER FROM SUPABASE (artikel_berita)
-        // ==========================================================================
-        const SUPABASE_PROJECT_URL = "https://fcwajbemkbhkogwtqcmx.supabase.co";
-        const SUPABASE_ANON_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjd2FqYmVta2Joa29nd3RxY214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzg2ODMsImV4cCI6MjEwMjcxNDY4M30.SdkWOVO8TyWzQn_96SCLUzryv-blvKKCi1poXlPk5Y4";
-        let sbClientIndex = null;
-
-        try {
-            if (window.supabase && typeof window.supabase.createClient === 'function') {
-                sbClientIndex = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_PUBLIC_KEY);
-            }
-        } catch (e) {
-            console.warn('Supabase Index init note:', e);
-        }
-
-        async function loadPublishedArticles() {
-            const grid = document.querySelector('#berita-kajian .news-grid');
-            if (!grid) return;
-
-            try {
-                if (sbClientIndex) {
-                    const { data, error } = await sbClientIndex
-                        .from('artikel_berita')
-                        .select('*')
-                        .eq('is_published', true)
-                        .order('published_at', { ascending: false })
-                        .limit(6);
-
-                    if (!error && data && data.length > 0) {
-                        grid.innerHTML = data.map(item => {
-                            const coverImg = item.thumbnail_url || 'asset/favicon/logo-black/android-chrome-192x192.png';
-                            const category = item.category || 'Warta Masjid';
-                            const readTime = item.read_time || '3 Menit Baca';
-                            const excerpt = item.excerpt || 'Klik untuk membaca selengkapnya warta dan kabar Masjid Sophia Jatiwarna.';
-                            
-                            return `
-                                <div class="news-card">
-                                    <div class="news-placeholder" style="background-image: url('${coverImg}'); background-size: cover; background-position: center;">
-                                        ${!item.thumbnail_url ? '<i class="fa-solid fa-newspaper"></i>' : ''}
-                                    </div>
-                                    <div class="news-body">
-                                        <div><span class="news-badge">${category}</span></div>
-                                        <h3 class="news-title">${item.title}</h3>
-                                        <p class="news-excerpt">${excerpt}</p>
-                                        <small style="color: var(--color-charcoal-muted); font-weight: 600;">
-                                            <i class="fa-solid fa-clock"></i> ${readTime}
-                                        </small>
-                                    </div>
-                                </div>
-                            `;
-                        }).join('');
-                        return;
-                    }
-                }
-            } catch (e) {
-                console.warn('Load published articles exception:', e);
-            }
-
-            // Clean Empty State if no articles in database
-            grid.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: var(--color-bg-white); border-radius: var(--radius-md); border: 1px solid var(--color-border);">
-                    <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;">
-                        <i class="fa-solid fa-newspaper"></i>
-                    </div>
-                    <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--color-charcoal); margin-bottom: 0.35rem;">Warta &amp; Kabar Dakwah Segera Hadir</h3>
-                    <p style="font-size: 0.85rem; color: var(--color-charcoal-muted); max-width: 500px; margin: 0 auto;">
-                        Dokumentasi penyaluran sedekah makan, kegiatan santri, dan artikel panduan ibadah akan tampil di sini setelah diterbitkan oleh pengurus DKM.
-                    </p>
-                </div>
-            `;
-        }
-
-        // Realtime Subscription for Live Updates on index.html
-        function initRealtimeArticles() {
-            if (sbClientIndex && typeof sbClientIndex.channel === 'function') {
-                sbClientIndex
-                    .channel('public:artikel_berita:index')
-                    .on('postgres_changes', { event: '*', schema: 'public', table: 'artikel_berita' }, () => {
-                        loadPublishedArticles();
-                    })
-                    .subscribe();
-            }
-        }
-
-
         document.addEventListener('DOMContentLoaded', () => {
-            loadPublishedArticles();
-            initRealtimeArticles();
             setHeaderDate();
             initPrayerCountdown();
         });

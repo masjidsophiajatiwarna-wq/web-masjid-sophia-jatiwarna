@@ -50,12 +50,83 @@ CREATE TABLE IF NOT EXISTS public.jadwal_petugas (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     hari VARCHAR(20) NOT NULL, -- 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Ahad'
     tanggal DATE,
-    waktu_ibadah VARCHAR(50) NOT NULL, -- 'Subuh', 'Dzuhur', 'Ashar', 'Maghrib', 'Isya', 'Shalat Jumat', 'Kajian Ba'da Subuh', 'Kajian Akhir Pekan'
+    waktu_ibadah VARCHAR(50) NOT NULL, -- 'Subuh', 'Dzuhur', 'Ashar', 'Maghrib', 'Isya', 'Shalat Jumat', 'Kajian Ba''da Subuh', 'Kajian Akhir Pekan'
     nama_petugas VARCHAR(150) NOT NULL,
     peran VARCHAR(100) NOT NULL, -- 'Imam Rawatib', 'Muadzin', 'Khatib Shalat Jumat', 'Penceramah / Ustadz'
     judul_tema VARCHAR(255),
     foto_url TEXT,
     is_active BOOLEAN DEFAULT TRUE,
+    status_approval VARCHAR(30) DEFAULT 'Approved',
+    submitted_by VARCHAR(150),
+    reviewed_by VARCHAR(150),
+    reviewed_at TIMESTAMP WITH TIME ZONE,
+    review_notes TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ==============================================================================
+-- 4.1. TABEL JADWAL SHALAT & PENUGASAN PETUGAS (APPROVAL WORKFLOW)
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.jadwal_shalat_petugas (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    tanggal DATE NOT NULL DEFAULT CURRENT_DATE,
+    hari VARCHAR(20) NOT NULL DEFAULT 'Senin',
+    imsak VARCHAR(10) NOT NULL DEFAULT '04:30',
+    subuh VARCHAR(10) NOT NULL DEFAULT '04:40',
+    terbit VARCHAR(10) NOT NULL DEFAULT '05:55',
+    dhuha VARCHAR(10) NOT NULL DEFAULT '06:20',
+    dzuhur VARCHAR(10) NOT NULL DEFAULT '12:00',
+    ashar VARCHAR(10) NOT NULL DEFAULT '15:15',
+    maghrib VARCHAR(10) NOT NULL DEFAULT '18:05',
+    isya VARCHAR(10) NOT NULL DEFAULT '19:15',
+    ikhtiyat_minutes INT NOT NULL DEFAULT 2,
+    is_manual_override BOOLEAN NOT NULL DEFAULT FALSE,
+    imam_subuh VARCHAR(150) NOT NULL DEFAULT 'Ust. Rawatib Subuh',
+    imam_dzuhur VARCHAR(150) NOT NULL DEFAULT 'Ust. Rawatib Dzuhur',
+    imam_ashar VARCHAR(150) NOT NULL DEFAULT 'Ust. Rawatib Ashar',
+    imam_maghrib VARCHAR(150) NOT NULL DEFAULT 'Ust. Rawatib Maghrib',
+    imam_isya VARCHAR(150) NOT NULL DEFAULT 'Ust. Rawatib Isya',
+    khatib_jumat VARCHAR(150) DEFAULT '',
+    muadzin_jumat VARCHAR(150) DEFAULT '',
+    bilal_jumat VARCHAR(150) DEFAULT '',
+    muadzin_rawatib VARCHAR(150) NOT NULL DEFAULT 'Muadzin Bertugas',
+    status_approval VARCHAR(30) NOT NULL DEFAULT 'Draft', -- 'Draft', 'Pending Approval', 'Approved', 'Rejected'
+    submitted_by VARCHAR(150) DEFAULT '',
+    submitted_by_email VARCHAR(150) DEFAULT '',
+    submitted_at TIMESTAMP WITH TIME ZONE,
+    reviewed_by VARCHAR(150) DEFAULT '',
+    reviewed_by_email VARCHAR(150) DEFAULT '',
+    reviewed_at TIMESTAMP WITH TIME ZONE,
+    review_notes TEXT DEFAULT '',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ==============================================================================
+-- 4.2. TABEL KAJIAN & ACARA PERIBADATAN (APPROVAL WORKFLOW)
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.kajian_acara_ibadah (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    judul_kajian VARCHAR(255) NOT NULL DEFAULT '',
+    pemateri VARCHAR(150) NOT NULL DEFAULT '',
+    tema_kategori VARCHAR(100) NOT NULL DEFAULT 'Kajian Rutin',
+    tanggal_pelaksanaan DATE NOT NULL DEFAULT CURRENT_DATE,
+    waktu_mulai VARCHAR(10) NOT NULL DEFAULT '05:30',
+    waktu_selesai VARCHAR(10) NOT NULL DEFAULT '07:00',
+    lokasi VARCHAR(150) NOT NULL DEFAULT 'Ruang Shalat Utama',
+    target_jamaah VARCHAR(100) NOT NULL DEFAULT 'Umum & Musafir',
+    flyer_url TEXT,
+    deskripsi TEXT DEFAULT '',
+    status_approval VARCHAR(30) NOT NULL DEFAULT 'Draft', -- 'Draft', 'Pending Approval', 'Approved', 'Rejected'
+    submitted_by VARCHAR(150) DEFAULT '',
+    submitted_by_email VARCHAR(150) DEFAULT '',
+    submitted_at TIMESTAMP WITH TIME ZONE,
+    reviewed_by VARCHAR(150) DEFAULT '',
+    reviewed_by_email VARCHAR(150) DEFAULT '',
+    reviewed_at TIMESTAMP WITH TIME ZONE,
+    review_notes TEXT DEFAULT '',
+    is_published_to_web BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -358,6 +429,16 @@ BEGIN
         ALTER PUBLICATION supabase_realtime ADD TABLE public.dkm_leave_requests;
     EXCEPTION WHEN duplicate_object THEN NULL;
     END;
+
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.jadwal_shalat_petugas;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
+
+    BEGIN
+        ALTER PUBLICATION supabase_realtime ADD TABLE public.kajian_acara_ibadah;
+    EXCEPTION WHEN duplicate_object THEN NULL;
+    END;
 END $$;
 
 -- Enable REPLICA IDENTITY FULL for proper CDC WebSocket payload broadcast
@@ -367,4 +448,30 @@ ALTER TABLE public.task_chat_messages REPLICA IDENTITY FULL;
 ALTER TABLE public.donations REPLICA IDENTITY FULL;
 ALTER TABLE public.feedback_complaints REPLICA IDENTITY FULL;
 ALTER TABLE public.dkm_leave_requests REPLICA IDENTITY FULL;
+ALTER TABLE public.admin_users REPLICA IDENTITY FULL;
+ALTER TABLE public.jadwal_shalat_petugas REPLICA IDENTITY FULL;
+ALTER TABLE public.kajian_acara_ibadah REPLICA IDENTITY FULL;
+
+-- ==============================================================================
+-- 11. SINKRONISASI OTOMATIS EMAIL AUTH.USERS KE PUBLIC.ADMIN_USERS
+-- ==============================================================================
+CREATE OR REPLACE FUNCTION public.handle_auth_user_email_update()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.email IS DISTINCT FROM OLD.email THEN
+        UPDATE public.admin_users
+        SET email = LOWER(TRIM(NEW.email)),
+            updated_at = NOW()
+        WHERE id = NEW.id OR LOWER(TRIM(email)) = LOWER(TRIM(OLD.email));
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_email_updated ON auth.users;
+CREATE TRIGGER on_auth_user_email_updated
+    AFTER UPDATE OF email ON auth.users
+    FOR EACH ROW
+    EXECUTE FUNCTION public.handle_auth_user_email_update();
+
 
