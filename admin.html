@@ -12325,7 +12325,7 @@
             const imsakHour = subuhHour - (10 / 60);
             const dhuhaHour = terbitHour + (25 / 60);
 
-            const ikh = parseInt(ikhtiyatMin, 10) || 2;
+            const ikh = (ikhtiyatMin !== undefined && !isNaN(parseInt(ikhtiyatMin, 10))) ? parseInt(ikhtiyatMin, 10) : 2;
 
             return {
                 imsak: toTimeString(imsakHour, ikh),

@@ -102,6 +102,7 @@ desktop.ini
 asset/images/
 
 # Direktori Uji Coba & Arsip Internal Sementara
+.agents/
 scratch/
 tmp/
 temp/

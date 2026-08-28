@@ -180,22 +180,47 @@ masjid-sophia/
 
 ---
 
-## 8. Panduan Kontribusi & Alur Rilis
+## 8. Pengujian Otomatis (Automated Testing Suite)
+
+Repositori ini telah dilengkapi dengan testing suite berbasis modul bawaan Node.js (`node:test` & `node:assert/strict`) tanpa dependensi berat eksternal:
+
+### Menjalankan Seluruh Pengujian di Terminal:
+```bash
+npm test
+```
+
+### Menjalankan Pengujian dalam Mode Watch (Otomatis jalan saat file disimpan):
+```bash
+npm run test:watch
+```
+
+### Cakupan Pengujian (Test Suites):
+1. **API Contract Verification (`tests/api_contract.test.js`):** Memvalidasi keberadaan `API_CONTRACT.md`, kelengkapan endpoint, dan penguncian isolasi Supabase Project ID `fcwajbemkbhkogwtqcmx`.
+2. **Serverless Donasi Ingestion (`tests/api_donasi.test.js`):** Menguji validasi nominal, format nomor WhatsApp, kode unik 3 digit, dan perlindungan incognito.
+3. **Serverless Aspirasi & Pengaduan (`tests/api_pengaduan.test.js`):** Menguji sanitasi payload, penolakan input kosong, dan pencatatan ke database.
+4. **Serverless Health & Storage Monitor (`tests/api_health.test.js`):** Menguji laporan kesehatan 4 pilar dan penguncian project ref `fcwajbemkbhkogwtqcmx`.
+5. **Hisab Shalat & Ikhtiyat Kemenag (`tests/hisab_shalat.test.js`):** Menguji algoritma astronomis jadwal shalat Jatiwarna (-6.310391, 106.921264, WIB) dan akurasi kalibrasi ikhtiyat +2 menit.
+
+---
+
+## 9. Panduan Kontribusi & Alur Rilis
 
 1. Buat branch baru untuk setiap fitur atau perbaikan:
    ```bash
    git checkout -b feat/nama-fitur
    ```
-2. Pastikan kode mematuhi aturan penulisan dan bebas dari emoji.
-3. Gunakan format pesan commit terstandarisasi:
+2. Pastikan seluruh pengujian otomatis lulus (`npm test` mengembalikan status hijau / exit code 0).
+3. Pastikan kode mematuhi aturan penulisan dan bebas dari emoji.
+4. Gunakan format pesan commit terstandarisasi:
    - `feat: [deskripsi fitur baru]`
    - `fix: [deskripsi perbaikan kendala]`
    - `docs: [deskripsi pembaruan dokumentasi]`
+   - `test: [deskripsi penambahan atau perbaikan pengujian]`
    - `refactor: [deskripsi restrukturisasi kode]`
-4. Buat Pull Request ke branch `main` untuk peninjauan dan integrasi otomatis ke Vercel.
+5. Buat Pull Request ke branch `main` untuk peninjauan dan integrasi otomatis ke Vercel serta GitHub Actions CI.
 
 ---
 
-## 9. Lisensi & Hak Cipta
+## 10. Lisensi & Hak Cipta
 
 Seluruh kode sumber, dokumentasi, dan aset visual dalam repositori ini dikembangkan khusus untuk kepentingan operasional dan dakwah sosial **Masjid Musafir Sophia Jatiwarna**. Hak cipta dilindungi oleh DKM Masjid Sophia Jatiwarna dan mitra pengembang.

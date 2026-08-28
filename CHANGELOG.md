@@ -4,6 +4,42 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.8.7] - 2026-08-29
+
+### Pemasangan Testing Suite Otomatis (Node:Test), Alur Kerja GitHub Actions CI, dan Database Security Hardening via MCP
+
+#### Fitur Baru & Keamanan (Added & Security Hardening)
+- `[DATABASE_SECURITY_HARDENING]` Eksekusi berkas migrasi `database/migration_security_hardening.sql` langsung ke database Supabase `fcwajbemkbhkogwtqcmx` via MCP tool `execute_sql`:
+  - Mengunci `SET search_path = public` pada fungsi `force_end_user_session`, `handle_auth_user_email_update`, dan `create_dkm_user` guna mencegah celah *schema search-path mutable*.
+  - Mencabut total hak akses eksekusi publik (`REVOKE EXECUTE ... FROM anon`) pada fungsi sistem dan pembuatan akun DKM, membatasi izin hanya untuk pengguna terotentikasi (`authenticated` & `service_role`).
+  - Verifikasi live via MCP `get_advisors` membuktikan seluruh peringatan keamanan search-path dan anon execution berhasil diatasi 100%.
+- `[AUTOMATED_TESTING_SUITE]` Implementasi testing suite berbasis modul bawaan Node.js (`node:test` dan `node:assert/strict`) tanpa dependensi berat pihak ketiga:
+  - `tests/api_contract.test.js`: Validasi keberadaan kontrak API dan isolasi ketat Supabase Project ID `fcwajbemkbhkogwtqcmx`.
+  - `tests/api_donasi.test.js`: Validasi nominal donasi, nomor WhatsApp, perlindungan incognito ("Hamba Allah"), dan pembuatan kode unik 3 digit.
+  - `tests/api_pengaduan.test.js`: Validasi kelengkapan subjek/pesan dan penanganan penyimpanan data aspirasi jamaah.
+  - `tests/api_health.test.js`: Validasi format envelope kesehatan sistem dan penguncian project ref `fcwajbemkbhkogwtqcmx`.
+  - `tests/hisab_shalat.test.js`: Validasi algoritma astronomis jadwal shalat Jatiwarna dan penambahan menit ikhtiyat Kemenag.
+- `[GITHUB_ACTIONS_CI]` Pembuatan alur kerja `.github/workflows/ci-test.yml` untuk menjalankan `npm test` otomatis pada setiap push dan pull request ke branch `main`.
+- `[PACKAGE_JSON_SCRIPTS]` Pembuatan `package.json` dengan skrip `npm test`, `npm run test:watch`, dan `npm run test:coverage`.
+
+#### Perbaikan Bug (Fixed)
+- `[IKHTIYAT_ZERO_PARSING_FIX]` Memperbaiki penanganan nilai ikhtiyat = 0 menit pada fungsi `calculatePrayerTimes` di `admin.html` agar tidak keliru jatuh ke nilai default 2 akibat evaluasi falsy `parseInt(0) || 2`.
+- `[API_DYNAMIC_KEY_EVALUATION]` Memperbaiki pembacaan `SUPABASE_ANON_KEY` di dalam fungsi handler `/api/pengaduan.js` agar dievaluasi secara dinamis saat runtime.
+
+---
+
+## [1.8.6] - 2026-08-29
+
+### Standarisasi API Contract, Isolasi Absolut Target Supabase (Project ID: fcwajbemkbhkogwtqcmx), dan Pruning AI Rules ECC
+
+#### Fitur Baru & Tata Kelola (Added & Governance)
+- `[API_CONTRACT_STANDARDIZATION]` Pembuatan dokumen resmi `API_CONTRACT.md` yang menetapkan format baku request/response envelope, status codes, dan validation rules untuk seluruh 5 endpoint serverless Vercel (`/api/donasi`, `/api/pengaduan`, `/api/health`, `/api/send-receipt`, `/api/cloud-usage`).
+- `[SUPABASE_HARD_BOUNDARY]` Penguncian aturan batas isolasi mutlak di `.agent/AGENTS.md`, `.agent/SUB_AGENT_RULES.md`, `.agent/rules/supabase-database.md`, dan `API_CONTRACT.md` bahwa seluruh operasi database, RPC, query, dan MCP WAJIB HANYA mengakses **Supabase Project ID `fcwajbemkbhkogwtqcmx`** (Server: `supabase-masjid-sophia`). Dilarang keras menyentuh `supabase-siabe` (`znqstcnlykgsfzfdiltm`) atau proyek luar lainnya.
+- `[AI_RULES_PRUNING]` Pembersihan 99 berkas aturan AI non-JS yang tidak relevan dari `.agent/rules/`, menyisakan 23 berkas aturan inti teroptimasi untuk stack HTML5, CSS3, Vanilla JS, Vercel Serverless, dan Supabase PostgreSQL.
+- `[SUB_AGENT_RULES_CLEANUP]` Pembersihan emoji dan penyelarasan identitas brand resmi Masjid Musafir Sophia Jatiwarna pada `.agent/SUB_AGENT_RULES.md`.
+
+---
+
 ## [1.8.5] - 2026-08-24
 
 ### Pengelompokan Sidebar Dinamis Berbasis Peran, Skema Alur Persetujuan Modul Ibadah, dan Antarmuka Dwi-Sisi Input & Approval Batch

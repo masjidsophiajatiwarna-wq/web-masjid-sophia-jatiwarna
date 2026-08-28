@@ -1,0 +1,25 @@
+{
+  "name": "web-masjid-sophia-jatiwarna",
+  "version": "1.8.7",
+  "description": "Ekosistem Web Portal & Employee Dashboard DKM Masjid Musafir Sophia Jatiwarna",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/**/*.test.js",
+    "test:watch": "node --test --watch tests/**/*.test.js",
+    "test:coverage": "node --test --experimental-test-coverage tests/**/*.test.js"
+  },
+  "keywords": [
+    "masjid",
+    "sophia-jatiwarna",
+    "hisab-kemenag",
+    "dkm-management",
+    "qris-sedekah"
+  ],
+  "author": "Masjid Sophia <masjidsophiajatiwarna@gmail.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

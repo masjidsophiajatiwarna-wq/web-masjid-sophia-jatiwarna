@@ -185,4 +185,11 @@ tests/           — Test suite
    - Portal Admin DKM & Employee Dashboard hanya diakses tertutup via subdomain `admin.masjidsophiajatiwarna.com` / `admin.html`.
 4. **Strict No-Emoji & Human-First Tone:**
    Dilarang keras menggunakan emoji di seluruh kode, antarmuka, dan dokumentasi. Gunakan icon SVG/Font Awesome dan bahasa Indonesia yang santun, hangat, serta berbasis data riil.
+5. **Supabase Project Boundary & MCP Isolation (MUTLAK):**
+   Setiap operasi database, migrasi SQL, RPC, query REST, maupun pemanggilan alat MCP di repositori ini WAJIB dan HANYA BOLEH mengakses:
+   - **Supabase Project ID:** `fcwajbemkbhkogwtqcmx`
+   - **Supabase Project URL:** `https://fcwajbemkbhkogwtqcmx.supabase.co`
+   - **MCP Server:** `supabase-masjid-sophia`
+   
+   DILARANG KERAS memanggil atau mengeksekusi MCP server proyek lain seperti `supabase-siabe` (Project ID: `znqstcnlykgsfzfdiltm`) atau database di luar `fcwajbemkbhkogwtqcmx` saat bekerja di dalam repositori ini, tanpa terkecuali.
 

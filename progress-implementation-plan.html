@@ -1226,10 +1226,20 @@
                         <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
+                                Standarisasi API_CONTRACT.md &amp; Isolasi Supabase
+                                <span class="task-badge-pill">API_CONTRACT.md</span>
+                            </div>
+                            <div class="task-desc">Spesifikasi 5 endpoint serverless /api/ dan penguncian mutlak Project ID fcwajbemkbhkogwtqcmx.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
                                 Web Pelacak Progres Interaktif
                                 <span class="task-badge-pill">progress-implementation-plan.html</span>
                             </div>
-                            <div class="task-desc">Dashboard pemantauan live pada subdomain progdev.masjidsophiajatiwarna.com.</div>
+                            <div class="task-desc">Dashboard visual pemantau milestone real-time dengan status interaktif.</div>
                         </div>
                     </div>
                     <div class="task-item completed">
@@ -1311,6 +1321,16 @@
                                 <span class="task-badge-pill">SQL Migration v2</span>
                             </div>
                             <div class="task-desc">Tabel riwayat aktivitas (task_activity_logs), komentar tugas (task_comments), pesan koordinasi (task_chat_messages), kolom jadwal baru, dan skema Account Control (permissions JSONB & avatar_url).</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Hardening Keamanan Database &amp; Search Path Protection
+                                <span class="task-badge-pill">Security Hardening</span>
+                            </div>
+                            <div class="task-desc">Penguncian search_path = public dan pencabutan izin eksekusi anonim pada fungsi sistem/RPC via MCP.</div>
                         </div>
                     </div>
                     <div class="task-item completed">
@@ -1972,37 +1992,57 @@
         <div class="phase-card collapsed" id="card-fase-5">
             <div class="phase-header" onclick="togglePhase('card-fase-5')">
                 <div class="phase-title-group">
-                    <div class="phase-badge">5</div>
+                    <div class="phase-badge in-progress">5</div>
                     <div class="phase-name">
                         <h3>Fase 5: Pengujian Terpadu, Audit Keamanan &amp; UAT</h3>
-                        <p>Validasi hisab Kemenag, uji beban formulir, sanitasi XSS, dan uji responsif</p>
+                        <p>Testing suite otomatis node:test, hisab Kemenag, validasi form, dan alur kerja CI</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-pending">Menunggu Fase 3 &amp; 4</span>
+                    <span class="status-tag status-inprogress">60% Selesai</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
             <div class="phase-body">
                 <div class="task-list">
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Automated Testing Suite Terpadu (Node:Test)
+                                <span class="task-badge-pill">npm test</span>
+                            </div>
+                            <div class="task-desc">16 unit &amp; integration tests untuk API donasi, pengaduan, health, dan hisab astronomis shalat.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Continuous Integration (CI) GitHub Actions
+                                <span class="task-badge-pill">.github/workflows/ci-test.yml</span>
+                            </div>
+                            <div class="task-desc">Verifikasi otomatis seluruh kode dan test suite pada setiap git push ke branch main.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Validasi Akurasi Hisab Shalat vs Jadwal Kemenag Kota Bekasi
                                 <span class="task-badge-pill">Testing</span>
                             </div>
-                            <div class="task-desc">Verifikasi kesesuaian waktu hisab astronomis lokal dengan kalender resmi Kemenag.</div>
+                            <div class="task-desc">Verifikasi kesesuaian waktu hisab astronomis lokal dan penanganan menit ikhtiyat.</div>
                         </div>
                     </div>
                     <div class="task-item">
                         <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Audit Keamanan Form &amp; Row Level Security (RLS)
-                                <span class="task-badge-pill">Security</span>
+                                UAT Pengurus DKM &amp; Uji Mobile Lapangan
+                                <span class="task-badge-pill">Mobile UAT</span>
                             </div>
-                            <div class="task-desc">Pencegahan SQLi, pembersihan payload XSS, dan proteksi honeypot anti-spam.</div>
+                            <div class="task-desc">Simulasi alur operasional 10 peran pengurus DKM via smartphone di lapangan.</div>
                         </div>
                     </div>
                 </div>

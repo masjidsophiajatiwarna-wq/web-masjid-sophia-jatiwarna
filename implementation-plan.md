@@ -87,6 +87,9 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 - **Daftar Tugas:**
   - [x] Penyusunan berkas acuan `BRAND_GUIDE.md` (Tema Terang: `#FFFFFF`, `#F8F6F0`, `#1D1D1B`, `#E3C466`, `#C9A84C`).
   - [x] Penyusunan `Master-Fullstack-Web-App-Services-v1.md` (Arsitektur 7 Pilar).
+  - [x] Penyusunan `API_CONTRACT.md` (Standarisasi kontrak endpoint serverless `/api/` & isolasi mutlak Supabase Project ID `fcwajbemkbhkogwtqcmx`).
+  - [x] Optimasi & Pruning AI Rules `.agent/rules/` (Pembersihan 99 rules non-JS menjadi 23 rules web terfokus).
+  - [x] Penguncian aturan batas MCP Supabase `supabase-masjid-sophia` di `.agent/AGENTS.md` & `.agent/SUB_AGENT_RULES.md`.
   - [x] Pembuatan `.gitignore`, `README.md`, dan `CHANGELOG.md`.
   - [x] Pembuatan `implementation-plan.md` & antarmuka `progress-implementation-plan.html`.
   - [x] Konfigurasi Redirect 301 di Cloudflare DNS untuk domain sekunder (`masjidsophia.com`, `masjidsophiajatiwarna.my.id`).
@@ -106,6 +109,10 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
   - [x] **Migrasi Skema Modul Account & Access Control (`database/migration_account_control.sql`):**
     - `admin_users` (ALTER: `avatar_url`, `permissions JSONB`, `session_version`).
     - Fungsi `force_end_user_session()` dan Realtime CDC `admin_users`.
+  - [x] **Hardening Keamanan Database & Search Path Protection (`database/migration_security_hardening.sql` - Eksekusi via MCP):**
+    - Mengunci `SET search_path = public` pada seluruh fungsi sistem/RPC.
+    - Mencabut total izin eksekusi publik (`anon`) pada fungsi pembuatan akun DKM dan fungsi trigger.
+    - Verifikasi linter Supabase Security Advisors bersih 100%.
   - [ ] **Migrasi Skema Lanjutan Suite Modul PJ Operasional (Menyesuaikan Implementasi Modul PJ):**
     - `masjid_assets`, `santri_data`, `santri_mutabaah`, `musafir_logbook`, `financial_journals`, `security_reports`, `cleaning_reports`.
 
@@ -187,10 +194,15 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ---
 
 ### Fase 5: Pengujian Terpadu, Audit Keamanan & UAT
-- **Status:** Menunggu Fase 3 & 4
+- **Status:** Berjalan (60% Selesai)
 - **Daftar Tugas:**
-  - [ ] **Unit & Accuracy Testing:** Hisab shalat lokal vs kalender resmi Kemenag Kota Bekasi.
-  - [ ] **Form & Security Testing:** Validasi sanitasi form, pencegahan SQLi/XSS, dan audit Zero-Trust RLS Supabase.
+  - [x] **Unit & Integration Automated Testing Suite (`npm test`):**
+    - `tests/api_contract.test.js` (Verifikasi kepatuhan kontrak API dan isolasi Project ID `fcwajbemkbhkogwtqcmx`).
+    - `tests/api_donasi.test.js` (Pengujian validasi donasi, WhatsApp, kode unik 3 digit, dan incognito).
+    - `tests/api_pengaduan.test.js` (Pengujian penolakan input kosong dan penyimpanan aspirasi).
+    - `tests/api_health.test.js` (Pengujian status kesehatan 4 pilar dan isolasi target Supabase).
+    - `tests/hisab_shalat.test.js` (Pengujian hisab jadwal shalat astronomis Jatiwarna dan kalibrasi ikhtiyat +2 menit).
+  - [x] **Continuous Integration (CI) Pipeline:** Workflow `.github/workflows/ci-test.yml` aktif menjalankan tes otomatis pada setiap push ke branch `main`.
   - [ ] **Cross-Device & Mobile Performance Testing:** Uji responsif dan kelancaran touch pada Android (layar 360px–430px) dan iPhone.
   - [ ] **UAT Pengurus DKM:** Simulasi alur kerja 10 peran pengurus via smartphone di lapangan.
 
