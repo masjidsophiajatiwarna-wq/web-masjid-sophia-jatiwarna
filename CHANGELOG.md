@@ -23,6 +23,9 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
   - **Indikator Kuota Supabase Free Tier:** Meteran penggunaan penyimpanan 1.0 GB dengan persentase bar dinamis dan penghitung file.
   - **Modal Media Picker:** Memudahkan pemilihan gambar yang sudah ada untuk dijadikan foto sampul artikel baru tanpa perlu mengunggah ulang.
 - `[SIDEBAR_ACCORDION_UPDATE]` Menambahkan menu *Warta & Artikel (CMS)*, *Visual Builder & Beranda*, dan *Galeri Media & WebP* di bawah grup *PUBLIKASI & MEDIA*.
+- `[UI_BUTTON_REFINEMENT]` Mempercantik sistem tombol dan elemen input di seluruh portal admin (`.btn`, `.btn-primary`, `.btn-outline`, `.btn-action`, `.search-box`, `.form-select`) dengan palet Sophia Charcoal Gold Glow, elevasi halus, dan efek hover responsif.
+- `[CLEAN_EMPTY_STATE]` Menghapus seluruh data dummy artikel statis bawaan sehingga tabel menggunakan database Supabase murni sebagai Single Source of Truth dengan tampilan *empty state* yang informatif.
+- `[INDEX_DYNAMIC_NEWS_INTEGRATION]` Menghubungkan section *Warta & Kabar Masjid* pada halaman publik `index.html` langsung ke database Supabase `artikel_berita` dengan dukungan listener WebSocket Realtime CDC.
 
 ---
 
