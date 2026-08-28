@@ -4,6 +4,18 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.2] - 2026-08-28
+
+### Penyelarasan Penuh Modul Peribadatan, Sidebar Accordion & Perbaikan Overflow Badge
+
+#### Penyempurnaan Antarmuka & Penyelarasan Fitur (UI Polish & Feature Sync)
+- `[SIDEBAR_ACCORDION_REFINEMENT]` Memperbaiki tata letak menu navigasi samping (*Sidebar*) dan mencegah terpotongnya badge notifikasi (*Badge Clipping Fix*):
+  - **Pencegahan Terpotongnya Badge:** Menyesuaikan lebar sidebar menjadi 264px, menambahkan aturan flex layout `min-width: 0` dan teks elipsis pada tombol menu agar badge notifikasi pending (misal notifikasi merah pada *Layanan & Petugas Ibadah*) tampil utuh 100% tanpa terpotong di tepi sidebar.
+  - **Kerapian & Kepadatan Menu:** Spasi antar-grup diperhalus menjadi 0.45rem dengan scrollbar kustom tipis beraksen emas Sophia Gold, sehingga seluruh menu navigasi muat dengan proporsional pada resolusi layar laptop/desktop standar.
+  - **Integrasi Penuh Modul Peribadatan (`#tab-ibadah`):** Menyatukan Modul Peribadatan & Penugasan Petugas (Jadwal Shalat, Penugasan Imam & Khatib, Tabel Approval Batch DKM, dan Agenda Kajian/Acara) ke dalam branch `dev` secara utuh dan terintegrasi dengan modul Izin & Cuti.
+
+---
+
 ## [1.9.1] - 2026-08-28
 
 ### Perbaikan Bug Duplikasi Pengguna Hantu (Phantom User) pada Tabel Manajemen Pengurus
