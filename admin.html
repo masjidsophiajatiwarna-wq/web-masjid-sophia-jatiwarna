@@ -3039,7 +3039,7 @@
                     <i class="fa-solid fa-mosque"></i>
                 </div>
                 <h1>Portal Pengurus DKM</h1>
-                <p>Masjid Musafir Sophia Jatiwarna ÔÇó Akses Terbatas</p>
+                <p>Masjid Musafir Sophia Jatiwarna • Akses Terbatas</p>
             </div>
 
             <form id="login-form" onsubmit="handleLogin(event)">
@@ -3051,7 +3051,7 @@
                 <div class="form-group">
                     <label class="form-label" for="login-password">Kata Sandi</label>
                     <div class="password-wrapper">
-                        <input type="password" id="login-password" class="form-input" placeholder="ÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇóÔÇó" required>
+                        <input type="password" id="login-password" class="form-input" placeholder="••••••••••••" required>
                         <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('login-password', this)">
                             <i class="fa-solid fa-eye"></i>
                         </button>
@@ -3224,7 +3224,7 @@
                             <i class="fa-solid fa-receipt" style="color: var(--color-gold-deep);"></i> Manajemen Seluruh Infaq & Donasi
                         </div>
                         <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal-muted);">
-                            Rekening BSI: 7235464297 ÔÇó QRIS NMID: ID2025401816769
+                            Rekening BSI: 7235464297 • QRIS NMID: ID2025401816769
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -7956,7 +7956,7 @@
 
                 if (periodDisplay) {
                     const curISO = getISOWeekNumber(ganttCurrentDate);
-                    periodDisplay.textContent = `Pekan ISO W${curISO.week} ÔÇó ${ganttCurrentDate.getFullYear()}`;
+                    periodDisplay.textContent = `Pekan ISO W${curISO.week} • ${ganttCurrentDate.getFullYear()}`;
                 }
             } else {
                 // Skala 12 Bulan Kalender (Januari s/d Desember)
@@ -8040,12 +8040,12 @@
                 return `
                     <div class="gantt-timeline-track-row" style="--col-w: ${defaultColWidth}px;">
                         ${!isOutOfRange ? `
-                            <div class="gantt-bar ${statusClass}" style="left: ${leftPx}px; width: ${widthPx}px;" onclick="openTaskDetailModal('${t.id}')" title="${t.title} (${pct}% ÔÇó ${tStart.toLocaleDateString('id-ID')} s/d ${tDue.toLocaleDateString('id-ID')})">
-                                <span>${pct}% ÔÇó ${t.title}</span>
+                            <div class="gantt-bar ${statusClass}" style="left: ${leftPx}px; width: ${widthPx}px;" onclick="openTaskDetailModal('${t.id}')" title="${t.title} (${pct}% • ${tStart.toLocaleDateString('id-ID')} s/d ${tDue.toLocaleDateString('id-ID')})">
+                                <span>${pct}% • ${t.title}</span>
                             </div>
                         ` : `
                             <div style="font-size: 0.65rem; color: #9CA3AF; padding: 0 1rem; font-style: italic;">
-                                Jadwal (${tStart.toLocaleDateString('id-ID')} - ${tDue.toLocaleDateString('id-ID')}) ÔÇö Geser timeline atau gunakan Auto-Fit
+                                Jadwal (${tStart.toLocaleDateString('id-ID')} - ${tDue.toLocaleDateString('id-ID')}) — Geser timeline atau gunakan Auto-Fit
                             </div>
                         `}
                     </div>
@@ -8395,7 +8395,7 @@
                     }
 
                     bar.innerHTML = `
-                        <span class="cal-bar-title" title="${escapeHtml(item.task.title)} (${item.start} s/d ${item.end} ÔÇó ${item.task.assigned_to || '-'})">${displayTitle}</span>
+                        <span class="cal-bar-title" title="${escapeHtml(item.task.title)} (${item.start} s/d ${item.end} • ${item.task.assigned_to || '-'})">${displayTitle}</span>
                         ${item.isOverdue ? '<span style="font-size: 0.6rem; font-weight: 800; background: rgba(0,0,0,0.25); padding: 0 4px; border-radius: 2px;">Terlambat</span>' : ''}
                     `;
 
@@ -8941,7 +8941,7 @@
             const textEl = document.getElementById('reply-preview-text');
 
             if (bar && senderEl && textEl) {
-                senderEl.textContent = `${msg.sender_name} ÔÇó ${msg.sender_division || msg.sender_role || 'DKM'}`;
+                senderEl.textContent = `${msg.sender_name} • ${msg.sender_division || msg.sender_role || 'DKM'}`;
                 textEl.textContent = msg.message || (msg.attachment_url ? '[Lampiran Media]' : 'Pesan...');
                 bar.style.display = 'flex';
             }
@@ -9356,7 +9356,7 @@
                 return `
                     <div class="chat-bubble ${isMine ? 'mine' : 'other'}" id="chat-msg-${msg.id}" ondblclick="setReplyToMessage('${msg.id}')" oncontextmenu="event.preventDefault(); setReplyToMessage('${msg.id}')" title="Double click (PC) atau tekan tahan (HP) untuk balas pesan">
                         <div class="chat-bubble-sender">
-                            <span><i class="fa-solid fa-user"></i> ${msg.sender_name} ÔÇó <span style="opacity: 0.85;">${msg.sender_division || msg.sender_role || 'DKM'}</span></span>
+                            <span><i class="fa-solid fa-user"></i> ${msg.sender_name} • <span style="opacity: 0.85;">${msg.sender_division || msg.sender_role || 'DKM'}</span></span>
                             <div class="chat-bubble-actions">
                                 <button type="button" class="btn-bubble-reply" onclick="event.stopPropagation(); setReplyToMessage('${msg.id}')" title="Balas Pesan">
                                     <i class="fa-solid fa-reply"></i>
@@ -10427,7 +10427,7 @@
             document.getElementById('edit-user-new-password').value = '';
 
             document.getElementById('edit-user-modal-title').innerHTML = `<i class="fa-solid fa-user-gear" style="color: var(--color-gold-deep);"></i> Edit & Otorisasi: ${escapeHtml(user.full_name || user.email)}`;
-            document.getElementById('edit-user-modal-subtitle').textContent = `Role: ${getUserRoleLabel(user.role || 'STAFF')} ÔÇó Email: ${user.email}`;
+            document.getElementById('edit-user-modal-subtitle').textContent = `Role: ${getUserRoleLabel(user.role || 'STAFF')} • Email: ${user.email}`;
 
             // Populate RBAC Matrix Table
             const tbody = document.getElementById('rbac-matrix-tbody');
@@ -11220,12 +11220,12 @@
                     .order('created_at', { ascending: false });
 
                 if (error) {
-                    // DB tidak tersedia ÔÇö tetap pakai data localStorage (offline mode)
+                    // DB tidak tersedia — tetap pakai data localStorage (offline mode)
                     console.debug('[Leave] DB not ready, using local data:', error.code || error.message);
                     return;
                 }
 
-                // Tahap 2: DB berhasil diquery ÔÇö DB adalah sumber kebenaran mutlak
+                // Tahap 2: DB berhasil diquery — DB adalah sumber kebenaran mutlak
                 // Jika DB kosong, bersihkan juga localStorage agar tidak tampilkan data stale/seed lama
                 if (!data || data.length === 0) {
                     leaveRequestsList = [];
@@ -11395,7 +11395,7 @@
                                         ${escapeHtml(item.full_name)}
                                     </div>
                                     <div style="font-size: 0.72rem; color: var(--color-charcoal-muted);">
-                                        ${escapeHtml(item.division)} ÔÇó <span style="font-weight: 600;">${escapeHtml(item.role)}</span>
+                                        ${escapeHtml(item.division)} • <span style="font-weight: 600;">${escapeHtml(item.role)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -11451,7 +11451,7 @@
                         <div>
                             <div style="font-weight: 800; color: #92400E; font-size: 0.82rem;">${escapeHtml(item.full_name)}</div>
                             <div style="font-size: 0.72rem; color: #B45309;">
-                                ${escapeHtml(item.division)} ÔÇó <span style="font-weight: 700;">${typeText} (${item.start_date} s/d ${item.end_date})</span>
+                                ${escapeHtml(item.division)} • <span style="font-weight: 700;">${typeText} (${item.start_date} s/d ${item.end_date})</span>
                             </div>
                             ${item.substitute_officer ? `
                                 <div style="font-size: 0.7rem; color: #78350F; margin-top: 0.15rem;">
@@ -11706,13 +11706,13 @@
 
             const isConfirmed = confirm(
                 `Konfirmasi Pengajuan Izin & Cuti\n` +
-                `ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ\n` +
+                `─────────────────────────────────\n` +
                 `Jenis Izin   : ${typeLabel}\n` +
                 `Tanggal Mulai: ${startVal}\n` +
                 `Tanggal Selesai: ${endVal}\n` +
                 `Durasi       : ${diffDays} Hari\n` +
                 `Pengganti    : ${substituteOfficer || '(tidak ada)'}\n` +
-                `ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ\n` +
+                `─────────────────────────────────\n` +
                 `Pastikan seluruh informasi sudah benar sebelum dikirim.\n` +
                 `Tekan OK untuk mengirim pengajuan, atau Batal untuk kembali mengedit.`
             );
@@ -11804,7 +11804,7 @@
 
             document.getElementById('review-leave-id').value = item.id;
             document.getElementById('review-applicant-name').textContent = item.full_name;
-            document.getElementById('review-applicant-role').textContent = `${item.division} ÔÇó ${item.role}`;
+            document.getElementById('review-applicant-role').textContent = `${item.division} • ${item.role}`;
             document.getElementById('review-start-date').textContent = item.start_date;
             document.getElementById('review-end-date').textContent = item.end_date;
             document.getElementById('review-duration').textContent = `${item.total_days} Hari`;
@@ -12622,10 +12622,10 @@
                         </td>
                         <td>
                             <div style="font-size: 0.78rem; color: var(--color-charcoal);">
-                                <strong>Sbh:</strong> ${escapeHtml(s.subuh || '-')} ÔÇó <strong>Dzh:</strong> ${escapeHtml(s.dzuhur || '-')}
+                                <strong>Sbh:</strong> ${escapeHtml(s.subuh || '-')} • <strong>Dzh:</strong> ${escapeHtml(s.dzuhur || '-')}
                             </div>
                             <div style="font-size: 0.75rem; color: var(--color-charcoal-muted);">
-                                <strong>Ash:</strong> ${escapeHtml(s.ashar || '-')} ÔÇó <strong>Mag:</strong> ${escapeHtml(s.maghrib || '-')} ÔÇó <strong>Isy:</strong> ${escapeHtml(s.isya || '-')}
+                                <strong>Ash:</strong> ${escapeHtml(s.ashar || '-')} • <strong>Mag:</strong> ${escapeHtml(s.maghrib || '-')} • <strong>Isy:</strong> ${escapeHtml(s.isya || '-')}
                             </div>
                         </td>
                         <td>
@@ -12709,10 +12709,10 @@
                         </td>
                         <td>
                             <div style="font-size: 0.78rem; color: var(--color-charcoal);">
-                                Sbh ${escapeHtml(s.subuh || '-')} ÔÇó Dzh ${escapeHtml(s.dzuhur || '-')}
+                                Sbh ${escapeHtml(s.subuh || '-')} • Dzh ${escapeHtml(s.dzuhur || '-')}
                             </div>
                             <div style="font-size: 0.74rem; color: var(--color-charcoal-muted);">
-                                Ash ${escapeHtml(s.ashar || '-')} ÔÇó Mag ${escapeHtml(s.maghrib || '-')} ÔÇó Isy ${escapeHtml(s.isya || '-')}
+                                Ash ${escapeHtml(s.ashar || '-')} • Mag ${escapeHtml(s.maghrib || '-')} • Isy ${escapeHtml(s.isya || '-')}
                             </div>
                         </td>
                         <td>
@@ -12977,7 +12977,7 @@
 
             document.getElementById('review-ibadah-schedule-id').value = id;
             document.getElementById('review-ibadah-action-type').value = actionType;
-            document.getElementById('review-ibadah-summary').textContent = `Jadwal Shalat: ${schedule.tanggal} (${schedule.hari}) ÔÇó Pengaju: ${schedule.submitted_by || 'PJ Ibadah'}`;
+            document.getElementById('review-ibadah-summary').textContent = `Jadwal Shalat: ${schedule.tanggal} (${schedule.hari}) • Pengaju: ${schedule.submitted_by || 'PJ Ibadah'}`;
             document.getElementById('review-ibadah-notes').value = schedule.review_notes || '';
             document.getElementById('modal-ibadah-review-note').style.display = 'flex';
             document.body.style.overflow = 'hidden';

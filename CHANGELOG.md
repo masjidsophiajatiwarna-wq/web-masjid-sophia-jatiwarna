@@ -4,6 +4,17 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.3] - 2026-08-28
+
+### Normalisasi Karakter Khusus & Pembersihan Encoding Mojibake (UTF-8 Standard)
+
+#### Perbaikan Tampilan & Integritas Teks (UI Text Formatting & Encoding Fix)
+- `[ENCODING_MOJIBAKE_CLEANUP]` Membersihkan seluruh anomali karakter encoding (*Mojibake*) yang sebelumnya muncul di tabel modul peribadatan, dialog modal, dan format string teks:
+  - **Pembersihan Bullet Separator:** Mengganti karakter anomali `ÔÇó` menjadi tanda pemisah titik bulat standar `•` (`&bull;`) pada teks waktu shalat, rincian peran pengurus, dan dialog konfirmasi.
+  - **Pembersihan Garis Dialog:** Mengganti karakter anomali `ÔöÇ` dan `ÔÇö` menjadi garis horizontal `─` dan em-dash `—` pada dialog konfirmasi pengajuan izin dan gantt bar tooltip.
+
+---
+
 ## [1.9.2] - 2026-08-28
 
 ### Penyelarasan Penuh Modul Peribadatan, Sidebar Accordion & Perbaikan Overflow Badge
