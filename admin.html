@@ -14740,25 +14740,40 @@
                         .order('created_at', { ascending: false });
 
                     if (!error && data && data.length > 0) {
-                        const mapped = data.map(d => ({
-                            id: d.id,
-                            slug: d.slug,
-                            title: d.title,
-                            category: d.category || 'Dakwah & Tausiyah',
-                            author_name: d.author_name || 'Tim Media DKM Sophia',
-                            featured_image: d.thumbnail_url || 'asset/favicon/logo-black/android-chrome-192x192.png',
-                            excerpt: d.excerpt || '',
-                            content: d.content_html || '',
-                            reading_time: d.read_time || '3 Menit',
-                            view_count: d.view_count || 0,
-                            is_published: d.is_published !== false,
-                            status: (d.is_published !== false) ? 'Published' : 'Draft',
-                            published_at: d.published_at || d.created_at,
-                            created_at: d.created_at
-                        }));
-                        localStorage.setItem('masjid_sophia_cms_articles', JSON.stringify(mapped));
-                        cmsArticlesList = mapped;
-                        return mapped;
+                        // Filter out any legacy dummy articles from DB if present
+                        const cleanData = data.filter(d => {
+                            const title = (d.title || '').toLowerCase();
+                            const id = String(d.id || '');
+                            if (id.startsWith('art-') || id.startsWith('art0')) return false;
+                            if (title.includes('penyaluran 85 porsi') || title.includes('ujian tasmi') || title.includes('keutamaan memberi makan')) return false;
+                            return true;
+                        });
+
+                        if (cleanData.length > 0) {
+                            const mapped = cleanData.map(d => {
+                                const rawThumb = d.thumbnail_url || '';
+                                const cleanImg = (rawThumb && !rawThumb.includes('images/pictures/')) ? rawThumb : 'asset/favicon/logo-black/android-chrome-192x192.png';
+                                return {
+                                    id: d.id,
+                                    slug: d.slug,
+                                    title: d.title,
+                                    category: d.category || 'Dakwah & Tausiyah',
+                                    author_name: d.author_name || 'Tim Media DKM Sophia',
+                                    featured_image: cleanImg,
+                                    excerpt: d.excerpt || '',
+                                    content: d.content_html || '',
+                                    reading_time: d.read_time || '3 Menit',
+                                    view_count: d.view_count || 0,
+                                    is_published: d.is_published !== false,
+                                    status: (d.is_published !== false) ? 'Published' : 'Draft',
+                                    published_at: d.published_at || d.created_at,
+                                    created_at: d.created_at
+                                };
+                            });
+                            localStorage.setItem('masjid_sophia_cms_articles', JSON.stringify(mapped));
+                            cmsArticlesList = mapped;
+                            return mapped;
+                        }
                     }
                 } catch (e) {
                     console.warn('Supabase articles fetch note:', e);
@@ -14770,8 +14785,14 @@
                 try {
                     const parsed = JSON.parse(saved);
                     if (Array.isArray(parsed)) {
-                        // Filter out old legacy dummy articles
-                        const filtered = parsed.filter(p => !p.id.startsWith('art-0') && !p.id.startsWith('art-00') && !p.title.includes('Penyaluran 85 Porsi') && !p.title.includes('Ujian Tasmi'));
+                        // Filter out any old dummy articles
+                        const filtered = parsed.filter(p => {
+                            const title = (p.title || '').toLowerCase();
+                            const id = String(p.id || '');
+                            if (id.startsWith('art-') || id.startsWith('art0')) return false;
+                            if (title.includes('penyaluran 85 porsi') || title.includes('ujian tasmi') || title.includes('keutamaan memberi makan')) return false;
+                            return true;
+                        });
                         if (filtered.length > 0) {
                             cmsArticlesList = filtered;
                             return filtered;
@@ -14850,7 +14871,8 @@
             }
 
             tbody.innerHTML = list.map(art => {
-                const coverImg = art.featured_image || 'asset/favicon/logo-black/android-chrome-192x192.png';
+                let coverImg = art.featured_image || 'asset/favicon/logo-black/android-chrome-192x192.png';
+                if (coverImg.includes('images/pictures/')) coverImg = 'asset/favicon/logo-black/android-chrome-192x192.png';
                 const author = art.author_name || 'Tim Media DKM Sophia';
                 const viewsCount = art.view_count || 0;
                 const isDraft = (art.status || '').toLowerCase() === 'draft';
