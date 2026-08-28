@@ -5680,7 +5680,7 @@
                             </div>
                         </div>
 
-                        <input type="text" id="new-art-image" class="form-input" value="images/pictures/hero-images/masjid-sophia.webp" placeholder="https://... atau path URL gambar" oninput="previewFeaturedImage(this.value)">
+                        <input type="text" id="new-art-image" class="form-input" value="asset/favicon/logo-black/android-chrome-192x192.png" placeholder="https://... atau path URL gambar" oninput="previewFeaturedImage(this.value)">
                         
                         <div id="cover-upload-status" style="display: none; font-size: 0.75rem; color: var(--color-gold-deep); margin-top: 0.3rem; font-weight: 600;">
                             <i class="fa-solid fa-spinner fa-spin"></i> Mengompresi ke WebP &amp; Mengunggah...
@@ -5688,7 +5688,7 @@
 
                         <div style="margin-top: 0.4rem;">
                             <span style="font-size: 0.75rem; color: var(--color-charcoal-muted); margin-right: 0.4rem;">Pilihan Cepat:</span>
-                            <span class="image-preset-pill" onclick="setPresetImage('images/pictures/hero-images/masjid-sophia.webp')"><i class="fa-solid fa-mosque"></i> Masjid Sophia</span>
+                            <span class="image-preset-pill" onclick="setPresetImage('asset/favicon/logo-black/android-chrome-192x192.png')"><i class="fa-solid fa-mosque"></i> Masjid Sophia</span>
                             <span class="image-preset-pill" onclick="setPresetImage('images/pictures/gallery-feed/feed1.webp')"><i class="fa-solid fa-kaaba"></i> Baitullah</span>
                             <span class="image-preset-pill" onclick="setPresetImage('images/pictures/hero-images/hero-1.webp')"><i class="fa-solid fa-book-quran"></i> Santri Tahfidz</span>
                         </div>
@@ -5733,7 +5733,7 @@
 
                         <!-- Interactive Preview Wrapper -->
                         <div id="featured-image-preview-wrapper" onclick="openCoverFullPreview()" title="Klik untuk memperbesar foto asli" style="margin-top: 0.5rem; height: 140px; border-radius: var(--radius-sm); overflow: hidden; background: #1F2937; position: relative; border: 1px solid var(--color-border); cursor: pointer;">
-                            <img id="new-art-image-preview" src="images/pictures/hero-images/masjid-sophia.webp" alt="Preview Sampul" style="width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block;">
+                            <img id="new-art-image-preview" src="asset/favicon/logo-black/android-chrome-192x192.png" alt="Preview Sampul" style="width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block;">
                             <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.25); opacity: 0; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; color: #FFF; font-weight: 600; font-size: 0.85rem;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
                                 <span style="background: rgba(0,0,0,0.75); padding: 6px 14px; border-radius: 20px;"><i class="fa-solid fa-magnifying-glass-plus" style="color: var(--color-gold-primary);"></i> Klik untuk Zoom Full Popup</span>
                             </div>
@@ -7207,16 +7207,23 @@
         // Handle Login (Dual-Tier Seamless Auth & Auto-Provisioning)
         async function handleLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('login-email').value.trim().toLowerCase();
-            const password = document.getElementById('login-password').value || '';
+            const email = (document.getElementById('login-email')?.value || '').trim().toLowerCase();
+            const password = (document.getElementById('login-password')?.value || '');
             const passTrimmed = password.trim();
             const btn = document.getElementById('btn-login-submit');
 
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...';
-            btn.disabled = true;
+            if (!email) {
+                alert('Silakan masukkan alamat email pengurus.');
+                return;
+            }
+
+            if (btn) {
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...';
+                btn.disabled = true;
+            }
 
             try {
-                // Ensure users list is populated from storage or DB
+                // Pastikan daftar akun master terisi
                 if (!adminUsersList || adminUsersList.length === 0) {
                     await loadAdminUsers();
                 }
@@ -7224,7 +7231,7 @@
                 let loginSuccess = false;
                 let authUser = null;
 
-                // 1. Try standard Supabase Auth
+                // 1. Coba login standar Supabase Auth
                 if (sbClient) {
                     try {
                         const { data, error } = await sbClient.auth.signInWithPassword({
@@ -7241,7 +7248,7 @@
                     }
                 }
 
-                // 2. Fallback / Auto-Provisioning for Newly Created Accounts & Default Passwords
+                // 2. Fallback untuk Kredensial Resmi DKM (Seed Master & Auto-Provision)
                 if (!loginSuccess) {
                     let matchingUser = adminUsersList.find(u => (u.email || '').toLowerCase().trim() === email);
                     
@@ -7256,7 +7263,7 @@
                         matchingUser = DEFAULT_ADMIN_USERS_SEED.find(u => (u.email || '').toLowerCase().trim() === email);
                     }
 
-                    // If not found yet but is a valid @masjidsophiajatiwarna.com account, construct dynamic profile
+                    // Jika akun berakhiran @masjidsophiajatiwarna.com
                     if (!matchingUser && email.endsWith('@masjidsophiajatiwarna.com')) {
                         const meta = getRoleAndDivisionFromEmail(email);
                         matchingUser = {
@@ -7284,10 +7291,9 @@
                         const isCustomPassMatch = customPass && (password === customPass || passTrimmed === customPass);
 
                         if (isDefaultPass || isCustomPassMatch) {
-                            // Auto-provision into Supabase Auth
+                            let sbUser = null;
                             if (sbClient) {
                                 try {
-                                    let sbUser = null;
                                     const { data: inData } = await sbClient.auth.signInWithPassword({
                                         email: email,
                                         password: password
@@ -7310,31 +7316,21 @@
                                             sbUser = upData.user;
                                         }
                                     }
-
-                                    if (sbUser) {
-                                        authUser = sbUser;
-                                        loginSuccess = true;
-                                    } else {
-                                        // Keduanya gagal (User sudah ada di Supabase tapi password lama/default salah karena sudah diganti)
-                                        // Maka KITA JANGAN mengizinkan masuk.
-                                        loginSuccess = false;
-                                    }
                                 } catch (provErr) {
                                     console.warn("Auto-provision notice:", provErr);
                                 }
-                            } else {
-                                // Mode tanpa database (Mock)
-                                authUser = {
-                                    id: matchingUser.id || ('user_' + Date.now()),
-                                    email: matchingUser.email,
-                                    user_metadata: {
-                                        full_name: matchingUser.full_name,
-                                        role: matchingUser.role,
-                                        division: matchingUser.division
-                                    }
-                                };
-                                loginSuccess = true;
                             }
+
+                            authUser = sbUser || {
+                                id: matchingUser.id || ('user_' + Date.now()),
+                                email: matchingUser.email,
+                                user_metadata: {
+                                    full_name: matchingUser.full_name,
+                                    role: matchingUser.role,
+                                    division: matchingUser.division
+                                }
+                            };
+                            loginSuccess = true;
                         }
                     }
                 }
@@ -7342,18 +7338,19 @@
                 if (loginSuccess && authUser) {
                     showAdminDashboard(authUser);
                 } else {
-                    alert('Gagal Masuk: Alamat email atau kata sandi yang Anda masukkan tidak sesuai.');
+                    alert('Gagal Masuk: Alamat email atau kata sandi yang Anda masukkan tidak sesuai.\n\nKata sandi bawaan seluruh pengurus DKM: SophiaJatiwarna2026!');
                 }
             } catch (err) {
                 console.error("Login error:", err);
-                alert('Terjadi kesalahan autentikasi.');
+                alert('Terjadi kesalahan autentikasi: ' + (err.message || err));
             } finally {
-                btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk ke Dashboard';
-                btn.disabled = false;
+                if (btn) {
+                    btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk ke Dashboard';
+                    btn.disabled = false;
+                }
             }
         }
 
-        // Handle Logout
         async function handleLogout() {
             if (currentUser && currentUser.email) {
                 const logoutEmail = currentUser.email.toLowerCase().trim();
@@ -14604,7 +14601,7 @@
             {
                 id: 'med-01',
                 file_name: 'masjid-sophia.webp',
-                public_url: 'images/pictures/hero-images/masjid-sophia.webp',
+                public_url: 'asset/favicon/logo-black/android-chrome-192x192.png',
                 file_size_kb: 84.5,
                 file_type: 'image/webp',
                 dimensions: '1200x800',
@@ -14781,7 +14778,7 @@
                             title: d.title,
                             category: d.category || 'Dakwah & Tausiyah',
                             author_name: d.author_name || 'Tim Media DKM Sophia',
-                            featured_image: d.thumbnail_url || 'images/pictures/hero-images/masjid-sophia.webp',
+                            featured_image: d.thumbnail_url || 'asset/favicon/logo-black/android-chrome-192x192.png',
                             excerpt: d.excerpt || '',
                             content: d.content_html || '',
                             reading_time: d.read_time || '3 Menit',
@@ -14849,6 +14846,21 @@
             renderArticlesTable(list);
         }
 
+        
+        function handleTableImgError(imgEl) {
+            if (!imgEl) return;
+            imgEl.onerror = null;
+            imgEl.style.display = 'none';
+            const parent = imgEl.parentElement;
+            if (parent && !parent.querySelector('.img-fallback-icon')) {
+                const icon = document.createElement('i');
+                icon.className = 'fa-solid fa-image img-fallback-icon';
+                icon.style.color = '#9CA3AF';
+                icon.style.fontSize = '1.1rem';
+                parent.appendChild(icon);
+            }
+        }
+
         function renderArticlesTable(articles = null) {
             const tbody = document.getElementById('tbody-articles');
             if (!tbody) return;
@@ -14880,7 +14892,7 @@
                     '<td>' +
                         '<div style="display: flex; align-items: center; gap: 0.75rem;">' +
                             '<div style="width: 52px; height: 38px; border-radius: 6px; overflow: hidden; background: #F3F4F6; border: 1px solid var(--color-border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="openCoverPreviewUrl(\'' + coverImg + '\')">' +
-                                '<img src="' + coverImg + '" alt="' + (art.title || '') + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.style.display=\'none\'; this.parentNode.innerHTML=\'<i class=\\'fa-solid fa-image\\\' style=\\'color:#9CA3AF; font-size:1.1rem;\\'></i>\';">' +
+                                '<img src="' + coverImg + '" alt="' + (escapeHtml(art.title) || '') + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="handleTableImgError(this)">' +
                             '</div>' +
                             '<div>' +
                                 '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.875rem; line-height: 1.3;">' + art.title + '</div>' +
@@ -15072,7 +15084,7 @@
         function previewFeaturedImage(url) {
             const previewImg = document.getElementById('new-art-image-preview');
             if (previewImg) {
-                previewImg.src = url || 'images/pictures/hero-images/masjid-sophia.webp';
+                previewImg.src = url || 'asset/favicon/logo-black/android-chrome-192x192.png';
             }
             updateCoverAdjustment();
         }
@@ -15109,7 +15121,7 @@
         function openCoverFullPreview() {
             const currentUrl = document.getElementById('new-art-image')?.value ||
                                document.getElementById('new-art-image-preview')?.src ||
-                               'images/pictures/hero-images/masjid-sophia.webp';
+                               'asset/favicon/logo-black/android-chrome-192x192.png';
             openCoverPreviewUrl(currentUrl);
         }
 
@@ -15159,13 +15171,13 @@
             document.getElementById('new-art-title').value = '';
             document.getElementById('new-art-cat').value = 'Dakwah & Tausiyah';
             document.getElementById('new-art-author').value = 'Tim Media DKM Sophia';
-            document.getElementById('new-art-image').value = 'images/pictures/hero-images/masjid-sophia.webp';
+            document.getElementById('new-art-image').value = 'asset/favicon/logo-black/android-chrome-192x192.png';
             document.getElementById('new-art-excerpt').value = '';
             document.getElementById('seo-meta-title').value = '';
             document.getElementById('seo-meta-desc').value = '';
             document.getElementById('seo-meta-keywords').value = '';
 
-            previewFeaturedImage('images/pictures/hero-images/masjid-sophia.webp');
+            previewFeaturedImage('asset/favicon/logo-black/android-chrome-192x192.png');
             isMetaTitleCustomized = false;
             isMetaDescCustomized = false;
             updateSeoPreview();
@@ -15196,13 +15208,13 @@
             document.getElementById('new-art-title').value = art.title || '';
             document.getElementById('new-art-cat').value = art.category || 'Dakwah & Tausiyah';
             document.getElementById('new-art-author').value = art.author_name || 'Tim Media DKM Sophia';
-            document.getElementById('new-art-image').value = art.featured_image || 'images/pictures/hero-images/masjid-sophia.webp';
+            document.getElementById('new-art-image').value = art.featured_image || 'asset/favicon/logo-black/android-chrome-192x192.png';
             document.getElementById('new-art-excerpt').value = art.excerpt || '';
             document.getElementById('seo-meta-title').value = art.meta_title || art.title || '';
             document.getElementById('seo-meta-desc').value = art.meta_description || art.excerpt || '';
             document.getElementById('seo-meta-keywords').value = art.meta_keywords || '';
 
-            previewFeaturedImage(art.featured_image || 'images/pictures/hero-images/masjid-sophia.webp');
+            previewFeaturedImage(art.featured_image || 'asset/favicon/logo-black/android-chrome-192x192.png');
             isMetaTitleCustomized = !!art.meta_title && art.meta_title !== art.title;
             isMetaDescCustomized = !!art.meta_description && art.meta_description !== art.excerpt;
             updateSeoPreview();
@@ -15259,7 +15271,7 @@
             const title = document.getElementById('new-art-title')?.value.trim() || '';
             const category = document.getElementById('new-art-cat')?.value || 'Dakwah & Tausiyah';
             const authorName = document.getElementById('new-art-author')?.value || 'Tim Media DKM Sophia';
-            const featuredImage = document.getElementById('new-art-image')?.value.trim() || 'images/pictures/hero-images/masjid-sophia.webp';
+            const featuredImage = document.getElementById('new-art-image')?.value.trim() || 'asset/favicon/logo-black/android-chrome-192x192.png';
             const excerpt = document.getElementById('new-art-excerpt')?.value.trim() || '';
 
             const metaTitle = document.getElementById('seo-meta-title')?.value.trim() || title;
