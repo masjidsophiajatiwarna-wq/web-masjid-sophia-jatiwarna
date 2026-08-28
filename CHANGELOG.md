@@ -4,6 +4,18 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.1] - 2026-08-28
+
+### Perbaikan Bug Duplikasi Pengguna Hantu (Phantom User) pada Tabel Manajemen Pengurus
+
+#### Perbaikan Bug & Integritas Data (Bug Fixes & Data Integrity)
+- `[USER_DIRECTORY_DUPLICATE_FIX]` Memperbaiki penyebab munculnya entri ganda akun Super User pada tabel manajemen pengurus (`#tab-users` / `loadAdminUsers`):
+  - **Akar Masalah:** Logika lama menggabungkan kembali entri lama dari `localStorage` (`masjid_sophia_admin_users_master`) jika email tidak ditemukan di database, sehingga akun yang telah diubah emailnya di database Supabase (misal dari `superuser@masjidsophiajatiwarna.com` menjadi `ajaabe50@gmail.com`) kembali terduplikasi sebagai pengguna hantu.
+  - **Penyelesaian Tunggal (Single Source of Truth):** Database Supabase kini menjadi sumber kebenaran mutlak saat aplikasi terhubung ke cloud. `localStorage` otomatis ditimpa dan diselaraskan secara bersih tanpa membangkitkan data lawas.
+  - **Penyempurnaan Realtime CDC & DELETE:** Event `DELETE` pada Supabase Realtime CDC kini langsung menyaring dan membuang user yang dihapus dari memori dan antarmuka seketika.
+
+---
+
 ## [1.9.0] - 2026-08-28
 
 ### Integrasi Rencana Strategis & Modul Coaching 1-by-1 Migrasi Domain ke masjidsophia.com

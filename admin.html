@@ -8798,28 +8798,6 @@
                 } catch (e) {
                     adminUsersList = [...DEFAULT_ADMIN_USERS_SEED];
                 }
-            } else {
-                try {
-                    const localMaster = localStorage.getItem('masjid_sophia_admin_users_master');
-                    if (localMaster) {
-                        const parsed = JSON.parse(localMaster);
-                        if (Array.isArray(parsed)) {
-                            parsed.forEach(lu => {
-                                const exists = adminUsersList.some(dbU => (dbU.email || '').toLowerCase().trim() === (lu.email || '').toLowerCase().trim());
-                                if (!exists) {
-                                    adminUsersList.push(lu);
-                                } else {
-                                    const idx = adminUsersList.findIndex(dbU => (dbU.email || '').toLowerCase().trim() === (lu.email || '').toLowerCase().trim());
-                                    if (idx !== -1) {
-                                        if (lu.full_name && lu.full_name !== adminUsersList[idx].full_name) adminUsersList[idx].full_name = lu.full_name;
-                                        if (lu.permissions) adminUsersList[idx].permissions = lu.permissions;
-                                        if (lu.avatar_url) adminUsersList[idx].avatar_url = lu.avatar_url;
-                                    }
-                                }
-                            });
-                        }
-                    }
-                } catch (e) {}
             }
 
             // Sync currently logged-in user and localStorage timestamps
@@ -9764,14 +9742,30 @@
 
         function handleRealtimeAdminUserChange(payload) {
             if (!payload) return;
+
+            // Handle CDC DELETE event from Supabase DB
+            if (payload.eventType === 'DELETE' && payload.old && (payload.old.id || payload.old.email)) {
+                const delId = String(payload.old.id || '');
+                const delEmail = (payload.old.email || '').toLowerCase().trim();
+                adminUsersList = adminUsersList.filter(u => (delId && String(u.id) !== delId) && (delEmail && (u.email || '').toLowerCase().trim() !== delEmail));
+                saveCustomUsersToLocal();
+                renderAdminUsersTable();
+                return;
+            }
+
             const updatedUser = payload.new || payload;
             if (!updatedUser || !updatedUser.id) return;
 
-            const idx = adminUsersList.findIndex(u => String(u.id) === String(updatedUser.id) || (u.email && u.email.toLowerCase() === (updatedUser.email || '').toLowerCase()));
+            const idx = adminUsersList.findIndex(u => String(u.id) === String(updatedUser.id));
             if (idx !== -1) {
                 adminUsersList[idx] = { ...adminUsersList[idx], ...updatedUser };
             } else {
-                adminUsersList.push(updatedUser);
+                const emailIdx = adminUsersList.findIndex(u => (u.email || '').toLowerCase().trim() === (updatedUser.email || '').toLowerCase().trim());
+                if (emailIdx !== -1) {
+                    adminUsersList[emailIdx] = { ...adminUsersList[emailIdx], ...updatedUser };
+                } else {
+                    adminUsersList.push(updatedUser);
+                }
             }
 
             saveCustomUsersToLocal();
