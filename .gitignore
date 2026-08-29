@@ -99,10 +99,8 @@ desktop.ini
 *.7z
 *.backup
 *.sql.gz
-asset/images/
 
 # Direktori Uji Coba & Arsip Internal Sementara
-.agents/
 scratch/
 tmp/
 temp/

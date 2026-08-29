@@ -41,13 +41,12 @@ export default async function handler(req, res) {
         };
 
         // 1. Simpan ke database Supabase
-        const activeKey = process.env.SUPABASE_ANON_KEY || SUPABASE_KEY;
-        if (activeKey) {
+        if (SUPABASE_KEY) {
             await fetch(`${SUPABASE_URL}/rest/v1/feedback_complaints`, {
                 method: 'POST',
                 headers: {
-                    'apikey': activeKey,
-                    'Authorization': `Bearer ${activeKey}`,
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
                     'Content-Type': 'application/json',
                     'Prefer': 'return=minimal'
                 },
