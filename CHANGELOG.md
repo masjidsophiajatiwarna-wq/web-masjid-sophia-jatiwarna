@@ -4,6 +4,25 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.12] - 2026-08-29
+
+### Peluncuran Halaman Matriks QA & Testing Suite Interaktif (`testing-suite.html`)
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[QA_TESTING_SUITE_PAGE]` Menghadirkan portal pengujian menyeluruh terdedikasi (`testing-suite.html`) untuk memfasilitasi pengujian mandiri per modul dan verifikasi ketat RBAC:
+  - **Matriks 35 Skenario Uji Komprehensif:** Mencakup Modul 1 (Media CMS), Modul 2 (Logistik & Dapur), Modul 3 (Keuangan & Bon), Modul 4 (Santri & Mutaba'ah), Modul 5 (Musafir & Transit), Modul 6a (Keamanan Ronda), Modul 6b (Kebersihan Sanitasi), serta Modul Ibadah, Izin Cuti & Akun Pengurus.
+  - **Status Toggle Interaktif:** Pemilihan status pengujian per skenario (*LULUS*, *GAGAL*, *PENDING*) dengan feedback visual langsung.
+  - **Lampiran Catatan Penguji:** Kolom input catatan/feedback khusus pada setiap skenario serta textarea besar untuk Ringkasan Eksekutif Pengujian (*Overall Notes*).
+  - **Live KPI Counter & Progress Track:** Visualisasi real-time tingkat kesiapan sistem (% Lulus, Total Teruji, Gagal, Pending).
+  - **Tabel Referensi Kredensial RBAC:** Daftar seluruh akun login resmi pengurus DKM (@masjidsophiajatiwarna.com) beserta kata sandi default `SophiaJatiwarna2026!`.
+  - **Fitur Ekspor Lengkap:**
+    - Ekspor Laporan Hasil Uji dalam format Markdown (`.md`) siap arsip.
+    - Ekspor Data Terstruktur JSON (`.json`) untuk analisis teknis.
+    - Opsi Cetak Dokumen / Simpan PDF dengan print styling yang dioptimalkan.
+  - **Auto-Persistence:** Penyimpanan lokal otomatis progres pengujian via `localStorage` agar tidak hilang saat browser dimuat ulang.
+
+---
+
 ## [1.9.11] - 2026-08-29
 
 ### Pembangunan Modul 6b: PJ Kebersihan & Sanitasi (Checklist Sanitasi Harian)

@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal QA &amp; Testing Suite — Masjid Musafir Sophia Jatiwarna</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --color-gold-primary: #C9A84C;
+            --color-gold-light: #F4E8C1;
+            --color-gold-deep: #9A7B2C;
+            --color-charcoal: #1A1A1A;
+            --color-charcoal-light: #2D2D2D;
+            --color-charcoal-muted: #555555;
+            --color-bg: #F8FAFC;
+            --color-card-bg: #FFFFFF;
+            --color-border: #E2E8F0;
+            --color-success: #10B981;
+            --color-success-bg: #ECFDF5;
+            --color-danger: #EF4444;
+            --color-danger-bg: #FEF2F2;
+            --color-warning: #F59E0B;
+            --color-warning-bg: #FFFBEB;
+            --color-info: #3B82F6;
+            --color-info-bg: #EFF6FF;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.12);
+            --transition: all 0.2s ease-in-out;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-charcoal);
+            line-height: 1.6;
+            padding: 1.5rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Header Bar */
+        .qa-header {
+            background: var(--color-charcoal);
+            color: #FFFFFF;
+            padding: 1.75rem 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border-left: 6px solid var(--color-gold-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+        }
+
+        .qa-header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-gold-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .qa-header p {
+            font-size: 0.85rem;
+            color: #CBD5E1;
+            margin-top: 0.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.15rem;
+            font-size: 0.825rem;
+            font-weight: 700;
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-gold {
+            background: var(--color-gold-primary);
+            color: var(--color-charcoal);
+            border-color: var(--color-gold-deep);
+        }
+        .btn-gold:hover {
+            background: #D8B75B;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: rgba(255,255,255,0.08);
+            color: #FFFFFF;
+            border-color: rgba(255,255,255,0.25);
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.18);
+            border-color: #FFFFFF;
+        }
+
+        .btn-light {
+            background: #FFFFFF;
+            color: var(--color-charcoal);
+            border-color: var(--color-border);
+        }
+        .btn-light:hover {
+            background: #F1F5F9;
+            border-color: #CBD5E1;
+        }
+
+        /* KPI Stat Cards */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .kpi-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .kpi-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .kpi-data h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .kpi-data span {
+            font-size: 0.725rem;
+            font-weight: 700;
+            color: var(--color-charcoal-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .progress-track {
+            height: 10px;
+            background: #E2E8F0;
+            border-radius: 999px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .progress-fill-pass {
+            background: var(--color-success);
+            transition: width 0.3s ease;
+        }
+        .progress-fill-fail {
+            background: var(--color-danger);
+            transition: width 0.3s ease;
+        }
+
+        /* RBAC Table */
+        .section-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.775rem;
+            color: var(--color-charcoal-muted);
+            margin-bottom: 1rem;
+        }
+
+        .rbac-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .rbac-table th {
+            background: #F8FAFC;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: var(--color-charcoal);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .rbac-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--color-border);
+            vertical-align: middle;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.72rem;
+            font-family: monospace;
+        }
+
+        /* Test Scenario Modules */
+        .module-block {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .module-header {
+            background: #F8FAFC;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .module-header h2 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .module-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: #E2E8F0;
+            color: var(--color-charcoal);
+        }
+
+        .module-body {
+            padding: 1.25rem;
+        }
+
+        .test-item {
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .test-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .test-item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--color-charcoal);
+        }
+
+        .test-desc {
+            font-size: 0.775rem;
+            color: var(--color-charcoal-muted);
+            margin-top: 2px;
+        }
+
+        .status-toggle-group {
+            display: inline-flex;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .btn-status-toggle {
+            padding: 0.35rem 0.65rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            border: none;
+            background: #FFFFFF;
+            color: var(--color-charcoal-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .btn-status-toggle.active-pass {
+            background: var(--color-success);
+            color: #FFFFFF;
+        }
+
+        .btn-status-toggle.active-fail {
+            background: var(--color-danger);
+            color: #FFFFFF;
+        }
+
+        .btn-status-toggle.active-pending {
+            background: #64748B;
+            color: #FFFFFF;
+        }
+
+        .note-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.775rem;
+            font-family: inherit;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: #F8FAFC;
+            color: var(--color-charcoal);
+            transition: var(--transition);
+            resize: vertical;
+            min-height: 38px;
+        }
+
+        .note-input:focus {
+            outline: none;
+            border-color: var(--color-gold-primary);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 2px rgba(201,168,76,0.2);
+        }
+
+        /* Note Section */
+        .general-note-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.825rem;
+            font-family: inherit;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: #FFFFFF;
+            color: var(--color-charcoal);
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .general-note-textarea:focus {
+            outline: none;
+            border-color: var(--color-gold-primary);
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.2);
+        }
+
+        /* Print Media Styles */
+        @media print {
+            body {
+                background: #FFFFFF;
+                padding: 0;
+                color: #000000;
+            }
+            .qa-header {
+                border-left: none;
+                background: #F8FAFC !important;
+                color: #000000 !important;
+                border: 1px solid #000000;
+            }
+            .qa-header h1 {
+                color: #000000 !important;
+            }
+            .qa-header p {
+                color: #333333 !important;
+            }
+            .header-actions, .btn-status-toggle, .btn {
+                display: none !important;
+            }
+            .section-card, .module-block, .kpi-card, .progress-wrapper {
+                border: 1px solid #000000 !important;
+                box-shadow: none !important;
+                break-inside: avoid;
+            }
+            .module-body {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header class="qa-header">
+        <div>
+            <h1><i class="fa-solid fa-vial-circle-check"></i> QA &amp; Testing Suite — Masjid Sophia Jatiwarna</h1>
+            <p>Matriks Pengujian Mandiri Seluruh Modul Operasional DKM &amp; Verifikasi Ketat Hak Akses RBAC</p>
+        </div>
+        <div class="header-actions">
+            <a href="admin.html" target="_blank" class="btn btn-gold">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Portal Admin (Tab Baru)
+            </a>
+            <button type="button" class="btn btn-outline" onclick="exportMarkdownReport()">
+                <i class="fa-solid fa-file-arrow-down"></i> Export Laporan (.MD)
+            </button>
+            <button type="button" class="btn btn-outline" onclick="exportJSONData()">
+                <i class="fa-solid fa-code"></i> Export JSON
+            </button>
+            <button type="button" class="btn btn-outline" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Cetak / PDF
+            </button>
+        </div>
+    </header>
+
+    <!-- KPI Summary Row -->
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background: var(--color-info-bg); color: var(--color-info);">
+                <i class="fa-solid fa-list-check"></i>
+            </div>
+            <div class="kpi-data">
+                <h3 id="stat-total-test">35 Skenario</h3>
+                <span>Total Skenario Uji</span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background: var(--color-success-bg); color: var(--color-success);">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="kpi-data">
+                <h3 id="stat-pass-count" style="color: var(--color-success);">0 Lulus</h3>
+                <span>Skenario Lulus (PASS)</span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background: var(--color-danger-bg); color: var(--color-danger);">
+                <i class="fa-solid fa-circle-xmark"></i>
+            </div>
+            <div class="kpi-data">
+                <h3 id="stat-fail-count" style="color: var(--color-danger);">0 Gagal</h3>
+                <span>Skenario Gagal (FAIL)</span>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon" style="background: #F1F5F9; color: #64748B;">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+            <div class="kpi-data">
+                <h3 id="stat-pending-count" style="color: #64748B;">35 Pending</h3>
+                <span>Belum Diuji</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Progress Bar -->
+    <div class="progress-wrapper">
+        <div class="progress-header">
+            <span><i class="fa-solid fa-chart-pie" style="color: var(--color-gold-deep);"></i> Kesiapan &amp; Kualitas Sistem Terverifikasi</span>
+            <span id="progress-percentage-label" style="font-weight: 800; color: var(--color-gold-deep);">0% Teruji</span>
+        </div>
+        <div class="progress-track">
+            <div id="progress-pass-bar" class="progress-fill-pass" style="width: 0%;"></div>
+            <div id="progress-fail-bar" class="progress-fill-fail" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <!-- Quick Reference: Akun DKM & Matrix RBAC -->
+    <div class="section-card">
+        <div class="section-title">
+            <i class="fa-solid fa-users-gear" style="color: var(--color-gold-deep);"></i> Kredensial Akun DKM untuk Pengujian RBAC
+        </div>
+        <div class="section-subtitle">
+            Gunakan akun-akun berikut untuk masuk ke <code>admin.html</code> dengan kata sandi bawaan: <b><code>SophiaJatiwarna2026!</code></b>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="rbac-table">
+                <thead>
+                    <tr>
+                        <th>Jabatan / Divisi</th>
+                        <th>Alamat Email Login</th>
+                        <th>Role RBAC</th>
+                        <th>Akses Modul Utama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Ketua DKM</b></td>
+                        <td><code>ketua@masjidsophiajatiwarna.com</code></td>
+                        <td><span class="role-badge" style="background: #FEF3C7; color: #92400E;">KETUA_DKM</span></td>
+                        <td>Akses Seluruh Modul &amp; Approval Izin / Anggaran</td>
+                    </tr>
+                    <tr>
+                        <td><b>Super Admin</b></td>
+                        <td><code>admin@masjidsophiajatiwarna.com</code></td>
+                        <td><span class="role-badge" style="background: #FEE2E2; color: #991B1B;">SUPER_ADMIN</span></td>
+                        <td>Akses Penuh Sistem, Manajemen Akun &amp; Monitor Cloud</td>
+                    </tr>
+                    <tr>
+                        <td><b>PJ Media &amp; Dakwah</b></td>
+                        <td><code>media@masjidsophiajatiwarna.com</code></td>
+                        <td><span class="role-badge" style="background: #EFF6FF; color: #1E40AF;">PJ_MEDIA</span></td>
+                        <td>Modul 1: Article Studio (CMS), Visual Builder, Galeri Media</td>
+                    </tr>
+                    <tr>
+                        <td><b>PJ Logistik &amp; Sarpras</b></td>
+                        <td><code>sarpras@masjidsophiajatiwarna.com</code></td>
+                        <td><span class="role-badge" style="background: #F0FDF4; color: #166534;">PJ_LOGISTIK</span></td>
+                        <td>Modul 2: Dapur Makan Siang Gratis (70+ Porsi) &amp; Inventaris Aset</td>
+                    </tr>
+                    <tr>
+                        <td><b>PJ Keuangan &amp; Bendahara</b></td>
+                        <td><code>bendahara@masjidsophiajatiwarna.com</code></td>
+                        <td><span class="role-badge" style="background: #FEF3C7; color: #B45309;">PJ_KEUANGAN</span></td>
+                        <td>Modul 3: Jurnal Kas Masuk/Keluar, Pengajuan Anggaran, Infaq</td>
+                    </tr>
+                    <tr>
+                        <td><b>PJ Santri &amp; Pendidikan</b></td>
+                        <td><code>santri@masjidsophiajatiwarna.com</code></td>
+                        <td><span class="role-badge" style="background: #F5F3FF; color: #5B21B6;">PJ_SANTRI</span></td>
+                        <td>Modul 4: Direktori Santri Tahfidz &amp; Log Mutaba'ah 30 Juz</td>
+                    </tr>
+                    <tr>
+                        <td><b>PJ Musafir &amp; Pelayanan 24 Jam</b></td>
+                        <td><code>musafir@masjidsophiajatiwarna.com</code></td>
+                        <td><span class="role-badge" style="background: #F0F9FF; color: #075985;">PJ_MUSAFIR</span></td>
+                        <td>Modul 5: Buku Tamu Digital, Transit Menginap KTP &amp; Loker</td>
+                    </tr>
+                    <tr>
+                        <td><b>PJ Keamanan &amp; Ketertiban</b></td>
+                        <td><code>keamanan@masjidsophiajatiwarna.com</code></td>
+                        <td><span class="role-badge" style="background: #FFFBEB; color: #78350F;">PJ_KEAMANAN</span></td>
+                        <td>Modul 6a: Log Piket Ronda 24 Jam, Patroli &amp; Eskalasi Insiden DKM</td>
+                    </tr>
+                    <tr>
+                        <td><b>PJ Kebersihan &amp; Sanitasi</b></td>
+                        <td><code>kebersihan@masjidsophiajatiwarna.com</code></td>
+                        <td><span class="role-badge" style="background: #F0FDFA; color: #134E4A;">PJ_KEBERSIHAN</span></td>
+                        <td>Modul 6b: Checklist Sanitasi Harian, Area Wudhu &amp; Log Stok Sabun</td>
+                    </tr>
+                    <tr>
+                        <td><b>PJ Ibadah &amp; Acara</b></td>
+                        <td><code>ibadah@masjidsophiajatiwarna.com</code></td>
+                        <td><span class="role-badge" style="background: #FAF5FF; color: #6B21A8;">PJ_IBADAH</span></td>
+                        <td>Jadwal Shalat, Rotasi Petugas Rawatib/Jumat &amp; Kalibrasi Ikhtiyat</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Container Skenario Uji Interaktif -->
+    <div id="test-matrix-container">
+        <!-- Generated Dynamically by JS -->
+    </div>
+
+    <!-- Catatan & Rekomendasi Penguji Bebas -->
+    <div class="section-card">
+        <div class="section-title">
+            <i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Catatan Umum &amp; Ringkasan Evaluasi Penguji
+        </div>
+        <div class="section-subtitle">
+            Tuliskan ringkasan hasil uji coba, temuan khusus, atau saran perbaikan sebelum rilis ke production.
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <div>
+                <label style="font-size: 0.75rem; font-weight: 700;">Nama Penguji / Tester:</label>
+                <input type="text" id="tester-name" class="note-input" placeholder="Misal: Habib Maulana (QA Lead)" style="background: #FFFFFF;" oninput="saveQaState()">
+            </div>
+            <div>
+                <label style="font-size: 0.75rem; font-weight: 700;">Tanggal Pengujian:</label>
+                <input type="date" id="tester-date" class="note-input" style="background: #FFFFFF;" oninput="saveQaState()">
+            </div>
+        </div>
+
+        <textarea id="tester-overall-notes" class="general-note-textarea" placeholder="Tuliskan catatan menyeluruh pengujian, hasil observasi integrasi Supabase, kestabilan WebP upload, atau respon UI di sini..." oninput="saveQaState()"></textarea>
+    </div>
+
+    <!-- Footer Action -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <button type="button" class="btn btn-light" onclick="resetQaState()">
+            <i class="fa-solid fa-rotate-left"></i> Reset Hasil Pengujian
+        </button>
+        <div style="display: flex; gap: 0.5rem;">
+            <button type="button" class="btn btn-gold" onclick="exportMarkdownReport()">
+                <i class="fa-solid fa-file-export"></i> Ekspor Laporan Hasil Uji (.MD)
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ==========================================================================
+    // DEFINISI MASTER SKENARIO UJI LENGKAP
+    // ==========================================================================
+    const QA_MODULES = [
+        {
+            id: 'modul_1',
+            title: 'Modul 1 — PJ Media & Dakwah (CMS Artikel, Beranda & Galeri)',
+            badge: 'PJ_MEDIA & DKM',
+            icon: 'fa-solid fa-newspaper',
+            scenarios: [
+                {
+                    id: 'm1_1',
+                    title: '1.1 Pembuatan & Publikasi Artikel Baru (Quill.js Rich Text)',
+                    desc: 'Uji input artikel baru dengan judul, auto-slug generator, format tebal/miring/heading, tag kategori, unggah foto cover WebP, dan simpan.'
+                },
+                {
+                    id: 'm1_2',
+                    title: '1.2 Status Toggle Draft vs Publish Artikel',
+                    desc: 'Pastikan artikel berstatus DRAFT tidak tampil di halaman utama publik index.html, dan artikel PUBLISHED langsung tersinkronisasi.'
+                },
+                {
+                    id: 'm1_3',
+                    title: '1.3 Homepage Visual Builder (Kustomisasi Hero Banner & Section)',
+                    desc: 'Uji pengubahan teks hero banner, urutan section beranda, dan pratinjau live responsive.'
+                },
+                {
+                    id: 'm1_4',
+                    title: '1.4 Galeri Media & Kompresi WebP Client-Side',
+                    desc: 'Uji unggah gambar ke galeri media, pastikan otomatis terkompresi ke WebP dan kuota storage bar terhitung akurat.'
+                },
+                {
+                    id: 'm1_5',
+                    title: '1.5 Batasan Hak Akses RBAC PJ Media',
+                    desc: 'Login sebagai media@masjidsophiajatiwarna.com. Pastikan hanya dapat mengakses tab Publikasi & Media, dan diblokir saat mencoba akses Keuangan/Logistik/Santri.'
+                }
+            ]
+        },
+        {
+            id: 'modul_2',
+            title: 'Modul 2 — PJ Logistik & Sarpras (Dapur Sedekah & Inventaris Aset)',
+            badge: 'PJ_LOGISTIK & DKM',
+            icon: 'fa-solid fa-boxes-stacked',
+            scenarios: [
+                {
+                    id: 'm2_1',
+                    title: '2.1 Pencatatan Siklus Dapur Sedekah Makan Siang Gratis (70+ Porsi)',
+                    desc: 'Uji input log dapur hari ini dengan target porsi, siklus 4 tahap (Persiapan, Memasak, Siap Dibagikan, Selesai), menu hidangan, dan belanja bahan.'
+                },
+                {
+                    id: 'm2_2',
+                    title: '2.2 Perekaman Aset Fisik Masjid (Auto-Kode AST-...)',
+                    desc: 'Uji registrasi aset baru dengan auto-kode inventaris, penentuan lokasi ruangan, estimasi nilai Rupiah, dan status kelayakan aset.'
+                },
+                {
+                    id: 'm2_3',
+                    title: '2.3 Log Riwayat Servis & Pemeliharaan Berkala Aset',
+                    desc: 'Uji pencatatan pemeliharaan aset pada timeline JSONB dan pastikan riwayat tersimpan permanen.'
+                },
+                {
+                    id: 'm2_4',
+                    title: '2.4 Batasan Hak Akses RBAC PJ Logistik',
+                    desc: 'Login sebagai sarpras@masjidsophiajatiwarna.com. Pastikan menu Logistik & Sarpras terbuka penuh, dan akses menu Keuangan/Santri/Musafir ditolak.'
+                }
+            ]
+        },
+        {
+            id: 'modul_3',
+            title: 'Modul 3 — PJ Keuangan & Bendahara (Jurnal Kas & Pengajuan Anggaran)',
+            badge: 'PJ_KEUANGAN & DKM',
+            icon: 'fa-solid fa-hand-holding-dollar',
+            scenarios: [
+                {
+                    id: 'm3_1',
+                    title: '3.1 Pencatatan Jurnal Kas Masuk (Auto TRX-IN-...)',
+                    desc: 'Uji catat penerimaan Infaq Transfer BSI, QRIS Sedekah Makan, dan Kotak Tunai dengan unggah bukti transfer WebP.'
+                },
+                {
+                    id: 'm3_2',
+                    title: '3.2 Pencatatan Jurnal Kas Keluar (Auto TRX-OUT-...)',
+                    desc: 'Uji catat pengeluaran operasional dapur, sarpras, kafalah, dan utilitas dengan struk kuitansi.'
+                },
+                {
+                    id: 'm3_3',
+                    title: '3.3 Saldo Kas Bersih Live & Ekspor Laporan CSV',
+                    desc: 'Pastikan counter saldo kas masjid terhitung live (Total Masuk - Total Keluar) dan tombol Ekspor CSV menghasilkan file akuntansi yang valid.'
+                },
+                {
+                    id: 'm3_4',
+                    title: '3.4 Pengajuan Anggaran & Klaim Nota Bon (Budget Requests)',
+                    desc: 'Uji formulir pengajuan dana per divisi dengan tanggal kebutuhan, estimasi anggaran, dan nota bon.'
+                },
+                {
+                    id: 'm3_5',
+                    title: '3.5 Persetujuan DKM & Pencairan Otomatis ke Jurnal Kas',
+                    desc: 'Login sebagai ketua@masjidsophiajatiwarna.com, setujui pengajuan, lalu klik Pencairan Dana (Disburse) dan verifikasi data otomatis masuk ke Jurnal Kas Keluar.'
+                },
+                {
+                    id: 'm3_6',
+                    title: '3.6 Batasan Hak Akses RBAC PJ Keuangan',
+                    desc: 'Pastikan hanya Bendahara & Pimpinan DKM yang dapat mengakses jurnal kas dan mencairkan anggaran.'
+                }
+            ]
+        },
+        {
+            id: 'modul_4',
+            title: 'Modul 4 — PJ Santri & Pendidikan (Direktori Santri & Mutabaah Tahfidz)',
+            badge: 'PJ_SANTRI & DKM',
+            icon: 'fa-solid fa-graduation-cap',
+            scenarios: [
+                {
+                    id: 'm4_1',
+                    title: '4.1 Registrasi Profil Santri Baru (Auto-NIS STR-2026-xxx)',
+                    desc: 'Uji pendaftaran santri baru dengan auto-generator NIS, data orang tua/wali, nomor kontak WhatsApp, dan foto santri.'
+                },
+                {
+                    id: 'm4_2',
+                    title: '4.2 Log Mutabaah Setoran Hafalan Quran (Subuh & Maghrib)',
+                    desc: 'Uji perekaman setoran harian dengan pemilihan nama santri, sesi waktu, juz, surat, rentang ayat, dan predikat tajwid (Mumtaz/Jayyid).'
+                },
+                {
+                    id: 'm4_3',
+                    title: '4.3 Papan Milestone Capaian 30 Juz & Progress Bar',
+                    desc: 'Verifikasi bilah progres persentase khatam 30 juz pada subview Capaian & Milestone terupdate secara akurat.'
+                },
+                {
+                    id: 'm4_4',
+                    title: '4.4 Batasan Hak Akses RBAC PJ Santri',
+                    desc: 'Login sebagai santri@masjidsophiajatiwarna.com. Pastikan modul Santri & Pendidikan terbuka dan modul lain terlindungi.'
+                }
+            ]
+        },
+        {
+            id: 'modul_5',
+            title: 'Modul 5 — PJ Musafir & Pelayanan 24 Jam (Buku Tamu, Transit & Loker)',
+            badge: 'PJ_MUSAFIR & DKM',
+            icon: 'fa-solid fa-person-walking-luggage',
+            scenarios: [
+                {
+                    id: 'm5_1',
+                    title: '5.1 Perekaman Buku Tamu Musafir Digital',
+                    desc: 'Uji catat tamu musafir yang singgah dengan waktu masuk otomatis, asal kota, kota tujuan, dan kontak WhatsApp.'
+                },
+                {
+                    id: 'm5_2',
+                    title: '5.2 Manajemen Tamu Menginap / Istirahat Darurat 24 Jam (KTP WebP)',
+                    desc: 'Uji pendaftaran tamu menginap dengan verifikasi unggah foto dokumen KTP dan estimasi durasi jam rehat.'
+                },
+                {
+                    id: 'm5_3',
+                    title: '5.3 Tombol Aksi Quick Checkout (1-Klik)',
+                    desc: 'Uji tombol Checkout pada tamu aktif dan pastikan status seketika berubah menjadi Selesai / Sudah Checkout.'
+                },
+                {
+                    id: 'm5_4',
+                    title: '5.4 Penitipan Kendaraan & Loker Barang 24 Jam',
+                    desc: 'Uji pencatatan plat nomor kendaraan dan nomor loker fasilitas gratis masjid.'
+                },
+                {
+                    id: 'm5_5',
+                    title: '5.5 Batasan Hak Akses RBAC PJ Musafir',
+                    desc: 'Login sebagai musafir@masjidsophiajatiwarna.com. Pastikan akses buku tamu 24 jam berfungsi penuh.'
+                }
+            ]
+        },
+        {
+            id: 'modul_6a',
+            title: 'Modul 6a — PJ Keamanan & Ketertiban (Piket Ronda 24 Jam & Insiden)',
+            badge: 'PJ_KEAMANAN & DKM',
+            icon: 'fa-solid fa-shield-halved',
+            scenarios: [
+                {
+                    id: 'm6a_1',
+                    title: '6a.1 Pencatatan Log Ronda Piket 24 Jam (3 Shift)',
+                    desc: 'Uji input laporan ronda pada Shift Pagi, Siang, atau Malam dengan pemilihan area patroli dan kondisi Kondusif/Perhatian.'
+                },
+                {
+                    id: 'm6a_2',
+                    title: '6a.2 Laporan Kejadian Lapangan & Unggah Foto Bukti WebP',
+                    desc: 'Uji pelaporan kronologi kejadian dengan bukti foto dokumentasi terkompresi.'
+                },
+                {
+                    id: 'm6a_3',
+                    title: '6a.3 Panel Eskalasi Insiden Khusus Pimpinan DKM',
+                    desc: 'Uji filter otomatis laporan berstatus Perhatian/Darurat ke subview Insiden & Eskalasi DKM.'
+                },
+                {
+                    id: 'm6a_4',
+                    title: '6a.4 Batasan Hak Akses RBAC PJ Keamanan',
+                    desc: 'Login sebagai keamanan@masjidsophiajatiwarna.com. Pastikan modul Keamanan & Ketertiban dapat diakses lancar.'
+                }
+            ]
+        },
+        {
+            id: 'modul_6b',
+            title: 'Modul 6b — PJ Kebersihan & Sanitasi (Checklist Sanitasi Harian)',
+            badge: 'PJ_KEBERSIHAN & DKM',
+            icon: 'fa-solid fa-broom',
+            scenarios: [
+                {
+                    id: 'm6b_1',
+                    title: '6b.1 Checklist Sanitasi Berkala 7 Zona (4 Siklus Shift)',
+                    desc: 'Uji perekaman kebersihan pada area Wudhu, Toilet, Ruang Shalat, dan Halaman dengan status Bersih & Harum.'
+                },
+                {
+                    id: 'm6b_2',
+                    title: '6b.2 Monitoring Fasilitas Kran Air Wudhu & Toilet 24 Jam',
+                    desc: 'Uji catatan kelancaran kran air dan ketersediaan sabun cair cuci tangan pada subview Wudhu & Toilet.'
+                },
+                {
+                    id: 'm6b_3',
+                    title: '6b.3 Foto Dokumentasi Sebelum & Sesudah (Before & After WebP)',
+                    desc: 'Uji unggah ganda foto sebelum dan sesudah pembersihan.'
+                },
+                {
+                    id: 'm6b_4',
+                    title: '6b.4 Log Kebutuhan Stok Sabun, Pewangi & Alat Kebersihan',
+                    desc: 'Uji pencatatan kebutuhan pengisian ulang sabun/karbol dan pastikan muncul di subview Log Stok.'
+                },
+                {
+                    id: 'm6b_5',
+                    title: '6b.5 Batasan Hak Akses RBAC PJ Kebersihan',
+                    desc: 'Login sebagai kebersihan@masjidsophiajatiwarna.com. Pastikan hanya dapat mengelola checklist sanitasi.'
+                }
+            ]
+        },
+        {
+            id: 'modul_general',
+            title: 'Modul Ibadah, Izin Cuti & Manajemen Akun Pengurus DKM',
+            badge: 'SELURUH DIVISI',
+            icon: 'fa-solid fa-users',
+            scenarios: [
+                {
+                    id: 'mg_1',
+                    title: 'G.1 Layanan Shalat & Rotasi Petugas Ibadah (PJ Ibadah)',
+                    desc: 'Uji pengaturan Imam Rawatib 5 waktu, Muadzin, Khatib Jumat, dan kalibrasi ikhtiyat jadwal shalat.'
+                },
+                {
+                    id: 'mg_2',
+                    title: 'G.2 Pengajuan Izin & Cuti Mandiri Pengurus DKM',
+                    desc: 'Uji pengajuan izin sakit (dengan surat dokter WebP) atau keperluan keluarga oleh pengurus, dan approval oleh Ketua DKM.'
+                },
+                {
+                    id: 'mg_3',
+                    title: 'G.3 Manajemen Akun Pengurus & Presensi 3-Tier Realtime',
+                    desc: 'Login sebagai Super Admin, uji pembuatan akun pengurus baru, reset sandi, dan monitoring status online/idle.'
+                }
+            ]
+        }
+    ];
+
+    // State Management
+    let qaState = {};
+
+    function loadQaState() {
+        try {
+            const saved = localStorage.getItem('masjid_sophia_qa_testing_state');
+            if (saved) {
+                qaState = JSON.parse(saved);
+            } else {
+                qaState = {
+                    testerName: '',
+                    testerDate: new Date().toISOString().split('T')[0],
+                    overallNotes: '',
+                    results: {}
+                };
+            }
+        } catch (e) {
+            qaState = { results: {} };
+        }
+
+        const nameInput = document.getElementById('tester-name');
+        const dateInput = document.getElementById('tester-date');
+        const notesInput = document.getElementById('tester-overall-notes');
+
+        if (nameInput) nameInput.value = qaState.testerName || '';
+        if (dateInput) dateInput.value = qaState.testerDate || new Date().toISOString().split('T')[0];
+        if (notesInput) notesInput.value = qaState.overallNotes || '';
+    }
+
+    function saveQaState() {
+        qaState.testerName = document.getElementById('tester-name')?.value || '';
+        qaState.testerDate = document.getElementById('tester-date')?.value || '';
+        qaState.overallNotes = document.getElementById('tester-overall-notes')?.value || '';
+
+        try {
+            localStorage.setItem('masjid_sophia_qa_testing_state', JSON.stringify(qaState));
+        } catch (e) {}
+
+        updateStats();
+    }
+
+    function setTestStatus(scenarioId, status) {
+        if (!qaState.results) qaState.results = {};
+        if (!qaState.results[scenarioId]) qaState.results[scenarioId] = {};
+        
+        qaState.results[scenarioId].status = status;
+        saveQaState();
+        renderMatrix();
+    }
+
+    function setTestNote(scenarioId, note) {
+        if (!qaState.results) qaState.results = {};
+        if (!qaState.results[scenarioId]) qaState.results[scenarioId] = {};
+
+        qaState.results[scenarioId].note = note;
+        saveQaState();
+    }
+
+    function toggleModuleAccordion(moduleId) {
+        const body = document.getElementById('body-' + moduleId);
+        const icon = document.getElementById('icon-toggle-' + moduleId);
+        if (!body) return;
+
+        if (body.style.display === 'none') {
+            body.style.display = 'block';
+            if (icon) icon.className = 'fa-solid fa-chevron-up';
+        } else {
+            body.style.display = 'none';
+            if (icon) icon.className = 'fa-solid fa-chevron-down';
+        }
+    }
+
+    function renderMatrix() {
+        const container = document.getElementById('test-matrix-container');
+        if (!container) return;
+
+        let totalScenarios = 0;
+        let passCount = 0;
+        let failCount = 0;
+        let pendingCount = 0;
+
+        container.innerHTML = QA_MODULES.map(mod => {
+            const scenariosHtml = mod.scenarios.map(sc => {
+                totalScenarios++;
+                const itemData = (qaState.results && qaState.results[sc.id]) ? qaState.results[sc.id] : { status: 'PENDING', note: '' };
+                const currentStatus = itemData.status || 'PENDING';
+                const currentNote = itemData.note || '';
+
+                if (currentStatus === 'PASS') passCount++;
+                else if (currentStatus === 'FAIL') failCount++;
+                else pendingCount++;
+
+                return `
+                    <div class="test-item">
+                        <div class="test-item-top">
+                            <div style="flex: 1;">
+                                <div class="test-title">${escapeHtml(sc.title)}</div>
+                                <div class="test-desc">${escapeHtml(sc.desc)}</div>
+                            </div>
+                            <div class="status-toggle-group">
+                                <button type="button" class="btn-status-toggle ${currentStatus === 'PASS' ? 'active-pass' : ''}" onclick="setTestStatus('${sc.id}', 'PASS')">
+                                    <i class="fa-solid fa-check"></i> LULUS
+                                </button>
+                                <button type="button" class="btn-status-toggle ${currentStatus === 'FAIL' ? 'active-fail' : ''}" onclick="setTestStatus('${sc.id}', 'FAIL')">
+                                    <i class="fa-solid fa-xmark"></i> GAGAL
+                                </button>
+                                <button type="button" class="btn-status-toggle ${currentStatus === 'PENDING' ? 'active-pending' : ''}" onclick="setTestStatus('${sc.id}', 'PENDING')">
+                                    <i class="fa-solid fa-clock"></i> PENDING
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <textarea class="note-input" placeholder="Tuliskan catatan hasil pengujian / temuan bug untuk skenario ini..." oninput="setTestNote('${sc.id}', this.value)">${escapeHtml(currentNote)}</textarea>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="module-block">
+                    <div class="module-header" onclick="toggleModuleAccordion('${mod.id}')">
+                        <h2>
+                            <i class="${mod.icon}" style="color: var(--color-gold-deep);"></i>
+                            ${escapeHtml(mod.title)}
+                        </h2>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span class="module-badge">${mod.badge}</span>
+                            <i id="icon-toggle-${mod.id}" class="fa-solid fa-chevron-up" style="color: var(--color-charcoal-muted); font-size: 0.8rem;"></i>
+                        </div>
+                    </div>
+                    <div id="body-${mod.id}" class="module-body" style="display: block;">
+                        ` + scenariosHtml + `
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        updateStats(totalScenarios, passCount, failCount, pendingCount);
+    }
+
+    function updateStats(total = 35, pass = 0, fail = 0, pending = 35) {
+        document.getElementById('stat-total-test').textContent = total + ' Skenario';
+        document.getElementById('stat-pass-count').textContent = pass + ' Lulus';
+        document.getElementById('stat-fail-count').textContent = fail + ' Gagal';
+        document.getElementById('stat-pending-count').textContent = pending + ' Pending';
+
+        const passPct = total > 0 ? Math.round((pass / total) * 100) : 0;
+        const failPct = total > 0 ? Math.round((fail / total) * 100) : 0;
+
+        document.getElementById('progress-pass-bar').style.width = passPct + '%';
+        document.getElementById('progress-fail-bar').style.width = failPct + '%';
+        document.getElementById('progress-percentage-label').textContent = passPct + '% Lulus (' + (pass + fail) + '/' + total + ' Teruji)';
+    }
+
+    function resetQaState() {
+        if (!confirm('Apakah Anda yakin ingin mereset seluruh hasil pengujian dan catatan?')) return;
+        qaState = {
+            testerName: '',
+            testerDate: new Date().toISOString().split('T')[0],
+            overallNotes: '',
+            results: {}
+        };
+        saveQaState();
+        loadQaState();
+        renderMatrix();
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>"']/g, function (m) {
+            return {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[m];
+        });
+    }
+
+    // ==========================================================================
+    // EXPORT FUNCTIONS (MARKDOWN REPORT & JSON)
+    // ==========================================================================
+    function exportMarkdownReport() {
+        let total = 0, pass = 0, fail = 0, pending = 0;
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+        const tester = qaState.testerName || 'Penguji DKM';
+        const date = qaState.testerDate || new Date().toISOString().split('T')[0];
+
+        let mdContent = `# LAPORAN HASIL PENGUJIAN QA (TESTING SUITE) — MASJID SOPHIA JATIWARNA\n\n`;
+        mdContent += `- **Tanggal Pengujian:** ${date}\n`;
+        mdContent += `- **Nama Penguji / QA Lead:** ${tester}\n`;
+        mdContent += `- **Lingkungan Sistem:** Development Branch (\`admin.html\` & \`index.html\`)\n`;
+        mdContent += `- **Waktu Ekspor:** ${new Date().toLocaleString('id-ID')}\n\n`;
+
+        mdContent += `---\n\n## 1. RINGKASAN EKSEKUTIF PENGUJIAN\n\n`;
+        mdContent += `${qaState.overallNotes || '_Tidak ada catatan umum tambahan yang dilampirkan._'}\n\n`;
+
+        mdContent += `---\n\n## 2. MATRIKS DETAIL HASIL UJI COBA PER MODUL\n\n`;
+
+        QA_MODULES.forEach(mod => {
+            mdContent += `### ${mod.title} (${mod.badge})\n\n`;
+            mdContent += `| Skenario Pengujian | Status | Catatan Temuan / Evaluasi |\n`;
+            mdContent += `|:-------------------|:------:|:--------------------------|\n`;
+
+            mod.scenarios.forEach(sc => {
+                total++;
+                const item = (qaState.results && qaState.results[sc.id]) ? qaState.results[sc.id] : { status: 'PENDING', note: '' };
+                const st = item.status || 'PENDING';
+                const note = (item.note && item.note.trim()) ? item.note.replace(/\n/g, ' ') : '-';
+
+                let badgeMd = '[PENDING]';
+                if (st === 'PASS') { pass++; badgeMd = '**LULUS**'; }
+                else if (st === 'FAIL') { fail++; badgeMd = '🔴 **GAGAL**'; }
+                else { pending++; }
+
+                mdContent += `| **${sc.title}**<br>_${sc.desc}_ | ${badgeMd} | ${note} |\n`;
+            });
+            mdContent += `\n`;
+        });
+
+        const passPct = total > 0 ? Math.round((pass / total) * 100) : 0;
+
+        mdContent += `---\n\n## 3. METRIK STATISTIK AKHIR\n\n`;
+        mdContent += `- **Total Skenario Uji:** ${total}\n`;
+        mdContent += `- **Skenario Lulus (PASS):** ${pass} (${passPct}%)\n`;
+        mdContent += `- **Skenario Gagal (FAIL):** ${fail}\n`;
+        mdContent += `- **Skenario Belum Diuji (PENDING):** ${pending}\n`;
+        mdContent += `- **Status Kesiapan Sistem:** ${passPct === 100 ? 'SIAP RILIS KE PRODUCTION' : 'BUTUH PENYELESAIAN PENGUJIAN / PERBAIKAN'}\n\n`;
+        mdContent += `_Dokumen ini dihasilkan secara otomatis oleh Portal QA & Testing Suite Masjid Sophia Jatiwarna._\n`;
+
+        const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `laporan-qa-testing-sophia-${timestamp}.md`;
+        link.click();
+    }
+
+    function exportJSONData() {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+        const exportObj = {
+            system: 'Web Portal Masjid Musafir Sophia Jatiwarna',
+            exportedAt: new Date().toISOString(),
+            testerName: qaState.testerName || '',
+            testerDate: qaState.testerDate || '',
+            overallNotes: qaState.overallNotes || '',
+            modules: QA_MODULES,
+            results: qaState.results || {}
+        };
+
+        const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `hasil-pengujian-qa-sophia-${timestamp}.json`;
+        link.click();
+    }
+
+    // Initialize on Load
+    document.addEventListener('DOMContentLoaded', () => {
+        loadQaState();
+        renderMatrix();
+    });
+</script>
+
+</body>
+</html>
