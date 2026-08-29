@@ -3750,6 +3750,50 @@
             transform: translateY(-2px);
         }
 
+    
+        /* ==========================================================================
+           MODUL 5: MUSAFIR & PELAYANAN 24 JAM (BUKU TAMU & FASILITAS MUSAFIR)
+           ========================================================================== */
+        .btn-subview-musafir {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.25rem;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: var(--color-charcoal-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            font-family: inherit;
+        }
+
+        .btn-subview-musafir:hover {
+            background: #F8FAFC;
+            color: var(--color-charcoal);
+            border-color: #CBD5E1;
+            transform: translateY(-1px);
+        }
+
+        .btn-subview-musafir.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+
+        .badge-layanan-singgah { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; font-weight: 700; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+        .badge-layanan-menginap { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; font-weight: 800; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+        .badge-layanan-kendaraan { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; font-weight: 700; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+        .badge-layanan-loker { background: #F5F3FF; color: #6D28D9; border: 1px solid #DDD6FE; font-weight: 700; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+
+        .status-musafir-aktif { background: var(--color-success-bg); color: var(--color-success); border-color: #A7F3D0; }
+        .status-musafir-selesai { background: #DBEAFE; color: #1E40AF; border-color: #BFDBFE; }
+        .status-musafir-batal { background: #F3F4F6; color: #4B5563; border-color: #E5E7EB; }
+
     </style>
 </head>
 <body>
@@ -5937,6 +5981,205 @@
 
                         <div id="milestone-santri-grid" class="santri-card-grid">
                             <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- Tab: Modul 5 — PJ Musafir & Pelayanan 24 Jam (Buku Tamu Digital, Istirahat/Menginap 24 Jam & Loker) -->
+            <div id="tab-musafir" class="tab-content-panel" style="display: none;">
+                <!-- Subview Navigation -->
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-subview-musafir active" id="btn-subview-musafir-buku" onclick="switchMusafirSubView('buku')">
+                            <i class="fa-solid fa-book-open-reader"></i> Buku Tamu Digital (Seluruh Layanan)
+                        </button>
+                        <button type="button" class="btn-subview-musafir" id="btn-subview-musafir-menginap" onclick="switchMusafirSubView('menginap')">
+                            <i class="fa-solid fa-bed"></i> Tamu Menginap &amp; Istirahat 24 Jam
+                        </button>
+                        <button type="button" class="btn-subview-musafir" id="btn-subview-musafir-loker" onclick="switchMusafirSubView('loker')">
+                            <i class="fa-solid fa-boxes-packing"></i> Penitipan Kendaraan &amp; Loker
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn-action-gold" onclick="loadMusafirData(true)">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Musafir
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 1: BUKU TAMU DIGITAL (SELURUH LAYANAN) -->
+                <div id="subview-musafir-buku" class="musafir-subview-pane" style="display: block;">
+                    <!-- KPI Row -->
+                    <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: var(--color-gold-light); color: var(--color-gold-deep);">
+                                <i class="fa-solid fa-person-walking-luggage"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>TOTAL MUSAFIR SINGGAH</span>
+                                <h3 id="stat-musafir-total">0 Tamu</h3>
+                                <div class="kpi-badge" style="color: var(--color-gold-deep);"><i class="fa-solid fa-clock-rotate-left"></i> Seluruh Catatan</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #ECFDF5; color: #059669;">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>MUSAFIR HARI INI</span>
+                                <h3 id="stat-musafir-today">0 Tamu</h3>
+                                <div class="kpi-badge" style="color: var(--color-success);"><i class="fa-solid fa-calendar-day"></i> Check-in Hari Ini</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #FEF3C7; color: #D97706;">
+                                <i class="fa-solid fa-bed"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>SEDANG MENGINAP / REHAT</span>
+                                <h3 id="stat-musafir-menginap-aktif" style="color: #D97706;">0 Tamu</h3>
+                                <div class="kpi-badge" style="color: #D97706;"><i class="fa-solid fa-moon"></i> Transit Darurat 24 Jam</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #EFF6FF; color: #2563EB;">
+                                <i class="fa-solid fa-motorcycle"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>KENDARAAN &amp; LOKER AKTIF</span>
+                                <h3 id="stat-musafir-fasilitas-aktif">0 Unit</h3>
+                                <div class="kpi-badge" style="color: #2563EB;"><i class="fa-solid fa-shield-halved"></i> Fasilitas Terpakai</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action & Filter Bar -->
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-book-open-reader" style="color: var(--color-gold-deep);"></i> Buku Tamu Digital Musafir 24 Jam</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Perekaman identitas musafir yang singgah untuk ibadah, istirahat transit darurat, penitipan kendaraan, dan loker barang
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="openAddMusafirModal()">
+                                <i class="fa-solid fa-user-plus"></i> Catat Tamu Musafir Baru
+                            </button>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1.2fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                <input type="text" id="musafir-search-input" class="search-input" placeholder="Cari nama musafir, asal kota, tujuan, HP, plat nomor, atau loker..." oninput="filterMusafirTable()">
+                            </div>
+                            <select id="musafir-tipe-filter" class="form-select" onchange="filterMusafirTable()">
+                                <option value="ALL">Semua Tipe Layanan</option>
+                                <option value="SINGGAH_SHALAT">Singgah Shalat &amp; Rehat Sejenak</option>
+                                <option value="ISTIRAHAT_DARURAT_24JAM">Istirahat Darurat 24 Jam (Menginap)</option>
+                                <option value="TITIP_KENDARAAN">Penitipan Kendaraan</option>
+                                <option value="TITIP_LOKER">Penitipan Loker Barang</option>
+                            </select>
+                            <select id="musafir-status-filter" class="form-select" onchange="filterMusafirTable()">
+                                <option value="ALL">Semua Status</option>
+                                <option value="AKTIF">Sedang di Masjid (Aktif)</option>
+                                <option value="SELESAI">Selesai / Sudah Checkout</option>
+                                <option value="BATAL">Batal</option>
+                            </select>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 130px;">Waktu &amp; Tanggal</th>
+                                        <th style="min-width: 180px;">Nama Musafir &amp; Kontak</th>
+                                        <th style="min-width: 180px;">Rute Perjalanan</th>
+                                        <th style="min-width: 140px;">Tipe Layanan</th>
+                                        <th style="min-width: 120px;">No. Kendaraan / Loker</th>
+                                        <th style="min-width: 80px; text-align: center;">KTP</th>
+                                        <th style="min-width: 110px;">Status</th>
+                                        <th style="text-align: right; min-width: 120px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-musafir-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 2: TAMU MENGINAP & ISTIRAHAT DARURAT 24 JAM -->
+                <div id="subview-musafir-menginap" class="musafir-subview-pane" style="display: none;">
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-bed" style="color: var(--color-gold-deep);"></i> Daftar Musafir Menginap / Istirahat Darurat 24 Jam</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Khusus pemantauan tamu musafir yang bermalam atau beristirahat darurat di ruang transit 24 jam dengan verifikasi kartu identitas KTP
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="openAddMusafirModal('ISTIRAHAT_DARURAT_24JAM')">
+                                <i class="fa-solid fa-bed"></i> Registrasi Tamu Menginap Baru
+                            </button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 130px;">Waktu Check-In</th>
+                                        <th style="min-width: 180px;">Nama Musafir &amp; Kontak</th>
+                                        <th style="min-width: 180px;">Asal ➔ Tujuan</th>
+                                        <th style="min-width: 110px;">Estimasi Durasi</th>
+                                        <th style="min-width: 90px; text-align: center;">Bukti KTP</th>
+                                        <th style="min-width: 120px;">Petugas Piket</th>
+                                        <th style="min-width: 110px;">Status Kunjungan</th>
+                                        <th style="text-align: right; min-width: 120px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-musafir-menginap-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 3: PENITIPAN KENDARAAN & LOKER BARANG -->
+                <div id="subview-musafir-loker" class="musafir-subview-pane" style="display: none;">
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-boxes-packing" style="color: var(--color-gold-deep);"></i> Log Penitipan Kendaraan &amp; Loker Barang Bawaan</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Fasilitas penitipan sepeda motor, mobil, dan loker penyimpanan tas/ransel gratis bagi musafir yang singgah
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="openAddMusafirModal('TITIP_LOKER')">
+                                <i class="fa-solid fa-plus"></i> Catat Titip Kendaraan / Loker
+                            </button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 130px;">Waktu Titip</th>
+                                        <th style="min-width: 180px;">Nama Pemilik &amp; Kontak</th>
+                                        <th style="min-width: 120px;">Tipe Penitipan</th>
+                                        <th style="min-width: 140px;">No. Plat / No. Loker</th>
+                                        <th style="min-width: 180px;">Catatan Barang Bawaan</th>
+                                        <th style="min-width: 110px;">Status</th>
+                                        <th style="text-align: right; min-width: 120px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-musafir-loker-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -8522,6 +8765,19 @@
                 ]
             },
             {
+                id: 'layanan_musafir',
+                title: 'PELAYANAN MUSAFIR',
+                icon: 'fa-solid fa-person-walking-luggage',
+                items: [
+                    {
+                        id: 'musafir',
+                        label: 'Buku Tamu & Fasilitas 24 Jam',
+                        icon: 'fa-solid fa-person-walking-luggage',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MUSAFIR']
+                    }
+                ]
+            },
+            {
                 id: 'logistik_sarpras',
                 title: 'LOGISTIK & SARPRAS',
                 icon: 'fa-solid fa-boxes-stacked',
@@ -8744,7 +9000,7 @@
 
             // Restore active tab from URL Hash or localStorage (Memory Browser)
             const rawHash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
-            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik', 'santri'];
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik', 'santri', 'musafir'];
             const savedTab = (rawHash && validTabs.includes(rawHash))
                 ? rawHash 
                 : (localStorage.getItem('masjid_sophia_active_tab') || 'overview');
@@ -8774,6 +9030,11 @@
             // Strict Role Gates
             if (tabId === 'accounts' && !['SUPER_ADMIN', 'KETUA_DKM'].includes(role)) {
                 alert('Akses Ditolak: Modul Manajemen Pengguna DKM hanya dapat diakses oleh Super Administrator dan Ketua DKM.');
+                switchTab('overview');
+                return;
+            }
+            if (tabId === 'musafir' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MUSAFIR'].includes(role)) {
+                alert('Akses Ditolak: Modul Pelayanan Musafir hanya dapat diakses oleh PJ Pelayanan Musafir dan Pimpinan DKM.');
                 switchTab('overview');
                 return;
             }
@@ -8854,7 +9115,8 @@
                 'accounts': ['Direktori & Manajemen Pengguna DKM', 'Kontrol hak akses multi-divisi, riwayat login live, reset kredensial baku, dan manajemen sesi pengurus'],
                 'ibadah': ['Modul Peribadatan & Penugasan Petugas', 'Kalibrasi hisab jadwal shalat presisi Kemenag Jatiwarna, penugasan imam & khatib, serta alur persetujuan jadwal DKM'],
                 'logistik': ['Logistik Dapur & Inventaris Sarpras', 'Pencatatan sedekah makan siang gratis (70+ porsi/hari) dan manajemen aset fisik masjid'],
-                'santri': ['Pembinaan Santri & Mutaba\'ah Tahfidz', 'Direktori profil santri penghafal Al-Qur\'an dan pencatatan mutaba\'ah setoran hafalan harian']
+                'santri': ['Pembinaan Santri & Mutaba\'ah Tahfidz', 'Direktori profil santri penghafal Al-Qur\'an dan pencatatan mutaba\'ah setoran hafalan harian'],
+                'musafir': ['Pelayanan Musafir & Layanan 24 Jam', 'Pencatatan buku tamu digital, izin istirahat/menginap darurat 24 jam, dan loker penitipan barang']
             };
 
             if (titles[tabId]) {
@@ -8885,6 +9147,9 @@
                 fetchSystemHealth();
             } else if (tabId === 'donations') {
                 loadKeuanganData();
+            }
+            else if (tabId === 'musafir') {
+                loadMusafirData();
             }
             else if (tabId === 'santri') {
                 loadSantriData();
@@ -19060,6 +19325,489 @@
             switchSantriSubView(savedSubView);
         }
 
+        
+        // ==========================================================================
+        // MODUL 5: PJ MUSAFIR & PELAYANAN 24 JAM JAVASCRIPT ENGINE
+        // ==========================================================================
+        let musafirLogList = [];
+        let currentMusafirSubView = 'buku';
+
+        function switchMusafirSubView(subView) {
+            currentMusafirSubView = subView;
+            try {
+                localStorage.setItem('masjid_sophia_musafir_subview', subView);
+            } catch (e) {}
+
+            document.querySelectorAll('.btn-subview-musafir').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.musafir-subview-pane').forEach(p => p.style.display = 'none');
+
+            const btn = document.getElementById('btn-subview-musafir-' + subView);
+            if (btn) btn.classList.add('active');
+
+            const pane = document.getElementById('subview-musafir-' + subView);
+            if (pane) pane.style.display = 'block';
+
+            if (subView === 'buku') {
+                renderMusafirTable();
+            } else if (subView === 'menginap') {
+                renderMusafirMenginapTable();
+            } else if (subView === 'loker') {
+                renderMusafirLokerTable();
+            }
+        }
+
+        async function loadMusafirList() {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('musafir_logbook')
+                        .select('*')
+                        .order('tanggal', { ascending: false });
+
+                    if (!error && Array.isArray(data)) {
+                        musafirLogList = data;
+                        localStorage.setItem('masjid_sophia_musafir_master', JSON.stringify(data));
+                        renderMusafirTable();
+                        renderMusafirMenginapTable();
+                        renderMusafirLokerTable();
+                        updateMusafirKpiStats();
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('[Musafir] Supabase musafir notice:', e);
+                }
+            }
+
+            try {
+                const saved = localStorage.getItem('masjid_sophia_musafir_master');
+                if (saved) {
+                    musafirLogList = JSON.parse(saved);
+                } else {
+                    musafirLogList = [];
+                }
+            } catch (e) {
+                musafirLogList = [];
+            }
+            renderMusafirTable();
+            renderMusafirMenginapTable();
+            renderMusafirLokerTable();
+            updateMusafirKpiStats();
+        }
+
+        function renderMusafirTable(data = null) {
+            const tbody = document.getElementById('tbody-musafir-list');
+            if (!tbody) return;
+
+            const list = data || musafirLogList;
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--color-charcoal-muted); padding: 3rem 1.5rem;"><div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-person-walking-luggage"></i></div><div style="font-weight: 700; font-size: 0.95rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Belum Ada Tamu Musafir Terdaftar</div><p style="font-size: 0.8rem; margin: 0; color: var(--color-charcoal-muted);">Klik tombol <b>"+ Catat Tamu Musafir Baru"</b> untuk mulai merekam kunjungan musafir di Masjid Sophia.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                let tipeBadge = '<span class="badge-layanan-singgah">Singgah Shalat</span>';
+                if (item.tipe_layanan === 'ISTIRAHAT_DARURAT_24JAM') {
+                    tipeBadge = '<span class="badge-layanan-menginap"><i class="fa-solid fa-bed"></i> Menginap 24 Jam</span>';
+                } else if (item.tipe_layanan === 'TITIP_KENDARAAN') {
+                    tipeBadge = '<span class="badge-layanan-kendaraan"><i class="fa-solid fa-motorcycle"></i> Titip Kendaraan</span>';
+                } else if (item.tipe_layanan === 'TITIP_LOKER') {
+                    tipeBadge = '<span class="badge-layanan-loker"><i class="fa-solid fa-box"></i> Titip Loker</span>';
+                }
+
+                let statusBadgeClass = 'status-musafir-aktif';
+                let statusLabel = 'Aktif Singgah';
+                if (item.status_kunjungan === 'SELESAI') { statusBadgeClass = 'status-musafir-selesai'; statusLabel = 'Selesai / Pulang'; }
+                else if (item.status_kunjungan === 'BATAL') { statusBadgeClass = 'status-musafir-batal'; statusLabel = 'Batal'; }
+
+                const photoUrl = item.foto_identitas_url || '';
+                const photoThumb = photoUrl
+                    ? '<div style="width: 36px; height: 26px; border-radius: 4px; overflow: hidden; background: #F3F4F6; margin: 0 auto; cursor: pointer; border: 1px solid var(--color-border);" onclick="openCoverPreviewUrl(\'' + photoUrl + '\')"><img src="' + photoUrl + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'"></div>'
+                    : '<span style="font-size: 0.72rem; color: #9CA3AF;">-</span>';
+
+                const infoFasilitas = [];
+                if (item.nomor_kendaraan) infoFasilitas.push('<i class="fa-solid fa-car"></i> ' + escapeHtml(item.nomor_kendaraan));
+                if (item.nomor_loker) infoFasilitas.push('<i class="fa-solid fa-box-archive"></i> ' + escapeHtml(item.nomor_loker));
+                const fasilitasText = infoFasilitas.length > 0 ? infoFasilitas.join(' &bull; ') : '<span style="color:#9CA3AF;">-</span>';
+
+                const checkoutBtn = item.status_kunjungan === 'AKTIF'
+                    ? '<button type="button" class="btn btn-outline btn-sm" onclick="quickCheckoutMusafir(\'' + item.id + '\')" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; color: #059669; border-color: #A7F3D0;" title="Selesaikan Kunjungan (Checkout)"><i class="fa-solid fa-arrow-right-from-bracket"></i> Checkout</button>'
+                    : '';
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.825rem;">' + item.tanggal + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-gold-deep); font-weight: 600;"><i class="fa-solid fa-clock"></i> ' + (item.waktu_masuk ? item.waktu_masuk.substring(0,5) : '-') + ' (' + (item.estimasi_durasi_jam || 2) + ' Jam)</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.nama_musafir) + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted);"><i class="fa-brands fa-whatsapp" style="color: #10B981;"></i> ' + escapeHtml(item.nomor_telepon) + '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-size: 0.8rem; color: var(--color-charcoal); font-weight: 600;">' + escapeHtml(item.asal_kota) + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-gold-deep);"><i class="fa-solid fa-arrow-right"></i> ' + escapeHtml(item.tujuan_perjalanan) + '</div>' +
+                    '</td>' +
+                    '<td>' + tipeBadge + '</td>' +
+                    '<td><div style="font-size: 0.775rem; color: var(--color-charcoal); font-weight: 600;">' + fasilitasText + '</div></td>' +
+                    '<td style="text-align: center;">' + photoThumb + '</td>' +
+                    '<td><span class="status-badge-dapur ' + statusBadgeClass + '"><i class="fa-solid fa-circle-dot"></i> ' + statusLabel + '</span></td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end; align-items: center;">' +
+                            checkoutBtn +
+                            '<button type="button" class="btn-action edit" onclick="openEditMusafirModal(\'' + item.id + '\')" title="Edit Data Tamu"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                            '<button type="button" class="btn-action delete" onclick="deleteMusafirEntry(\'' + item.id + '\')" title="Hapus Data Tamu"><i class="fa-solid fa-trash"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function filterMusafirTable() {
+            const query = (document.getElementById('musafir-search-input')?.value || '').toLowerCase().trim();
+            const tipe = document.getElementById('musafir-tipe-filter')?.value || 'ALL';
+            const status = document.getElementById('musafir-status-filter')?.value || 'ALL';
+
+            let list = [...musafirLogList];
+
+            if (query) {
+                list = list.filter(m => (m.nama_musafir || '').toLowerCase().includes(query) || (m.asal_kota || '').toLowerCase().includes(query) || (m.tujuan_perjalanan || '').toLowerCase().includes(query) || (m.nomor_telepon || '').toLowerCase().includes(query) || (m.nomor_kendaraan || '').toLowerCase().includes(query) || (m.nomor_loker || '').toLowerCase().includes(query));
+            }
+            if (tipe !== 'ALL') {
+                list = list.filter(m => m.tipe_layanan === tipe);
+            }
+            if (status !== 'ALL') {
+                list = list.filter(m => m.status_kunjungan === status);
+            }
+
+            renderMusafirTable(list);
+        }
+
+        function renderMusafirMenginapTable() {
+            const tbody = document.getElementById('tbody-musafir-menginap-list');
+            if (!tbody) return;
+
+            const list = musafirLogList.filter(m => m.tipe_layanan === 'ISTIRAHAT_DARURAT_24JAM');
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--color-charcoal-muted); padding: 2.5rem 1.5rem;"><div style="font-weight: 700; font-size: 0.9rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Tidak Ada Tamu Menginap / Istirahat Darurat</div><p style="font-size: 0.775rem; margin: 0;">Semua tamu musafir saat ini berstatus singgah shalat harian.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                let statusBadgeClass = 'status-musafir-aktif';
+                let statusLabel = 'Sedang Menginap';
+                if (item.status_kunjungan === 'SELESAI') { statusBadgeClass = 'status-musafir-selesai'; statusLabel = 'Sudah Checkout'; }
+                else if (item.status_kunjungan === 'BATAL') { statusBadgeClass = 'status-musafir-batal'; statusLabel = 'Batal'; }
+
+                const photoUrl = item.foto_identitas_url || '';
+                const photoThumb = photoUrl
+                    ? '<div style="width: 42px; height: 28px; border-radius: 4px; overflow: hidden; background: #F3F4F6; margin: 0 auto; cursor: pointer; border: 1px solid var(--color-border);" onclick="openCoverPreviewUrl(\'' + photoUrl + '\')"><img src="' + photoUrl + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'"></div>'
+                    : '<span style="font-size: 0.72rem; color: #DC2626; font-weight: 700;"><i class="fa-solid fa-triangle-exclamation"></i> Tanpa KTP</span>';
+
+                const checkoutBtn = item.status_kunjungan === 'AKTIF'
+                    ? '<button type="button" class="btn btn-outline btn-sm" onclick="quickCheckoutMusafir(\'' + item.id + '\')" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; color: #059669; border-color: #A7F3D0;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Checkout</button>'
+                    : '';
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.825rem;">' + item.tanggal + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted);"><i class="fa-solid fa-clock"></i> ' + (item.waktu_masuk ? item.waktu_masuk.substring(0,5) : '-') + ' WIB</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.nama_musafir) + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted);"><i class="fa-brands fa-whatsapp" style="color: #10B981;"></i> ' + escapeHtml(item.nomor_telepon) + '</div>' +
+                    '</td>' +
+                    '<td><div style="font-size: 0.8rem; color: var(--color-charcoal);">' + escapeHtml(item.asal_kota) + ' ➔ ' + escapeHtml(item.tujuan_perjalanan) + '</div></td>' +
+                    '<td><span style="font-weight: 700; font-size: 0.825rem; color: var(--color-gold-deep);">' + (item.estimasi_durasi_jam || 8) + ' Jam</span></td>' +
+                    '<td style="text-align: center;">' + photoThumb + '</td>' +
+                    '<td><div style="font-size: 0.75rem; color: var(--color-charcoal); font-weight: 600;">' + escapeHtml(item.petugas_layanan || 'PJ Musafir') + '</div></td>' +
+                    '<td><span class="status-badge-dapur ' + statusBadgeClass + '"><i class="fa-solid fa-circle-dot"></i> ' + statusLabel + '</span></td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end; align-items: center;">' +
+                            checkoutBtn +
+                            '<button type="button" class="btn-action edit" onclick="openEditMusafirModal(\'' + item.id + '\')" title="Edit Data"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function renderMusafirLokerTable() {
+            const tbody = document.getElementById('tbody-musafir-loker-list');
+            if (!tbody) return;
+
+            const list = musafirLogList.filter(m => m.tipe_layanan === 'TITIP_KENDARAAN' || m.tipe_layanan === 'TITIP_LOKER');
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--color-charcoal-muted); padding: 2.5rem 1.5rem;"><div style="font-weight: 700; font-size: 0.9rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Tidak Ada Kendaraan atau Loker Aktif</div><p style="font-size: 0.775rem; margin: 0;">Seluruh fasilitas penitipan sedang kosong / siap digunakan.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                const isKendaraan = item.tipe_layanan === 'TITIP_KENDARAAN';
+                const tipeBadge = isKendaraan
+                    ? '<span class="badge-layanan-kendaraan"><i class="fa-solid fa-motorcycle"></i> Titip Kendaraan</span>'
+                    : '<span class="badge-layanan-loker"><i class="fa-solid fa-box"></i> Titip Loker</span>';
+
+                let statusBadgeClass = 'status-musafir-aktif';
+                let statusLabel = 'Sedang Dititipkan';
+                if (item.status_kunjungan === 'SELESAI') { statusBadgeClass = 'status-musafir-selesai'; statusLabel = 'Sudah Diambil'; }
+
+                const checkoutBtn = item.status_kunjungan === 'AKTIF'
+                    ? '<button type="button" class="btn btn-outline btn-sm" onclick="quickCheckoutMusafir(\'' + item.id + '\')" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; color: #059669; border-color: #A7F3D0;"><i class="fa-solid fa-check"></i> Selesai Diambil</button>'
+                    : '';
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.825rem;">' + item.tanggal + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted);"><i class="fa-solid fa-clock"></i> ' + (item.waktu_masuk ? item.waktu_masuk.substring(0,5) : '-') + ' WIB</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.nama_musafir) + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted);"><i class="fa-brands fa-whatsapp" style="color: #10B981;"></i> ' + escapeHtml(item.nomor_telepon) + '</div>' +
+                    '</td>' +
+                    '<td>' + tipeBadge + '</td>' +
+                    '<td><span style="font-weight: 800; font-family: monospace; font-size: 0.85rem; color: var(--color-charcoal);">' + (isKendaraan ? escapeHtml(item.nomor_kendaraan || '-') : escapeHtml(item.nomor_loker || '-')) + '</span></td>' +
+                    '<td><div style="font-size: 0.75rem; color: var(--color-charcoal-muted); line-height: 1.3;">' + (item.catatan_pelayanan ? escapeHtml(item.catatan_pelayanan) : '<em style="color:#9CA3AF;">-</em>') + '</div></td>' +
+                    '<td><span class="status-badge-dapur ' + statusBadgeClass + '">' + statusLabel + '</span></td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end; align-items: center;">' +
+                            checkoutBtn +
+                            '<button type="button" class="btn-action edit" onclick="openEditMusafirModal(\'' + item.id + '\')" title="Edit Data"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function updateMusafirKpiStats() {
+            const total = musafirLogList.length;
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            let todayCount = 0;
+            let menginapAktif = 0;
+            let fasilitasAktif = 0;
+
+            musafirLogList.forEach(m => {
+                if (m.tanggal === todayStr) todayCount++;
+                if (m.status_kunjungan === 'AKTIF') {
+                    if (m.tipe_layanan === 'ISTIRAHAT_DARURAT_24JAM') menginapAktif++;
+                    if (m.tipe_layanan === 'TITIP_KENDARAAN' || m.tipe_layanan === 'TITIP_LOKER') fasilitasAktif++;
+                }
+            });
+
+            const statTotal = document.getElementById('stat-musafir-total');
+            if (statTotal) statTotal.textContent = total + ' Tamu';
+
+            const statToday = document.getElementById('stat-musafir-today');
+            if (statToday) statToday.textContent = todayCount + ' Tamu';
+
+            const statMenginap = document.getElementById('stat-musafir-menginap-aktif');
+            if (statMenginap) statMenginap.textContent = menginapAktif + ' Tamu';
+
+            const statFasilitas = document.getElementById('stat-musafir-fasilitas-aktif');
+            if (statFasilitas) statFasilitas.textContent = fasilitasAktif + ' Unit';
+        }
+
+        function handleMusafirTypeChange(type) {
+            const ktpGroup = document.getElementById('musafir-form-ktp-group');
+            if (ktpGroup) {
+                if (type === 'ISTIRAHAT_DARURAT_24JAM') {
+                    ktpGroup.style.display = 'block';
+                } else {
+                    ktpGroup.style.display = 'block'; // Tetap tampil opsional
+                }
+            }
+        }
+
+        function openAddMusafirModal(defaultType = 'SINGGAH_SHALAT') {
+            document.getElementById('form-musafir-entry').reset();
+            document.getElementById('musafir-entry-id').value = '';
+            document.getElementById('modal-musafir-title').innerHTML = '<i class="fa-solid fa-person-walking-luggage" style="color: var(--color-gold-deep);"></i> Catat Tamu Musafir Baru';
+            
+            document.getElementById('musafir-form-tanggal').value = new Date().toISOString().split('T')[0];
+            const now = new Date();
+            const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('musafir-form-waktu').value = timeStr;
+            document.getElementById('musafir-form-tipe').value = defaultType;
+            handleMusafirTypeChange(defaultType);
+            document.getElementById('musafir-form-durasi').value = defaultType === 'ISTIRAHAT_DARURAT_24JAM' ? 8 : 2;
+            document.getElementById('musafir-form-petugas').value = getUserDisplayName(currentUser) + ' (PJ Pelayanan Musafir)';
+            document.getElementById('musafir-form-preview-box').style.display = 'none';
+
+            openModal('modal-musafir-entry');
+        }
+
+        function openEditMusafirModal(id) {
+            const item = musafirLogList.find(m => m.id === id);
+            if (!item) return;
+
+            document.getElementById('musafir-entry-id').value = item.id;
+            document.getElementById('modal-musafir-title').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Edit Data Musafir (' + escapeHtml(item.nama_musafir) + ')';
+            
+            document.getElementById('musafir-form-tanggal').value = item.tanggal;
+            document.getElementById('musafir-form-waktu').value = item.waktu_masuk ? item.waktu_masuk.substring(0,5) : '';
+            document.getElementById('musafir-form-nama').value = item.nama_musafir;
+            document.getElementById('musafir-form-telp').value = item.nomor_telepon;
+            document.getElementById('musafir-form-asal').value = item.asal_kota;
+            document.getElementById('musafir-form-tujuan').value = item.tujuan_perjalanan;
+            document.getElementById('musafir-form-tipe').value = item.tipe_layanan;
+            handleMusafirTypeChange(item.tipe_layanan);
+            document.getElementById('musafir-form-durasi').value = item.estimasi_durasi_jam || 2;
+            document.getElementById('musafir-form-plat').value = item.nomor_kendaraan || '';
+            document.getElementById('musafir-form-loker').value = item.nomor_loker || '';
+            document.getElementById('musafir-form-foto-url').value = item.foto_identitas_url || '';
+            document.getElementById('musafir-form-catatan').value = item.catatan_pelayanan || '';
+            document.getElementById('musafir-form-petugas').value = item.petugas_layanan || (getUserDisplayName(currentUser) + ' (PJ Pelayanan Musafir)');
+
+            const previewBox = document.getElementById('musafir-form-preview-box');
+            const previewImg = document.getElementById('musafir-form-preview-img');
+            if (item.foto_identitas_url) {
+                previewImg.src = item.foto_identitas_url;
+                previewBox.style.display = 'block';
+            } else {
+                previewBox.style.display = 'none';
+            }
+
+            openModal('modal-musafir-entry');
+        }
+
+        async function handleMusafirPhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const compressed = await compressImageToWebP(file, 1000, 0.8);
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    document.getElementById('musafir-form-foto-url').value = dataUrl;
+                    const previewBox = document.getElementById('musafir-form-preview-box');
+                    const previewImg = document.getElementById('musafir-form-preview-img');
+                    previewImg.src = dataUrl;
+                    previewBox.style.display = 'block';
+                };
+                reader.readAsDataURL(compressed.blob);
+            } catch (err) {
+                alert('Gagal memproses foto identitas: ' + err.message);
+            }
+        }
+
+        async function handleMusafirFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('musafir-entry-id').value || ('msf_' + Date.now());
+            const tanggal = document.getElementById('musafir-form-tanggal').value;
+            const waktu = document.getElementById('musafir-form-waktu').value;
+            const nama = document.getElementById('musafir-form-nama').value.trim();
+            const telp = document.getElementById('musafir-form-telp').value.trim();
+            const asal = document.getElementById('musafir-form-asal').value.trim();
+            const tujuan = document.getElementById('musafir-form-tujuan').value.trim();
+            const tipe = document.getElementById('musafir-form-tipe').value;
+            const durasi = parseInt(document.getElementById('musafir-form-durasi').value || 2);
+            const plat = document.getElementById('musafir-form-plat').value.trim();
+            const loker = document.getElementById('musafir-form-loker').value.trim();
+            const fotoUrl = document.getElementById('musafir-form-foto-url').value.trim();
+            const catatan = document.getElementById('musafir-form-catatan').value.trim();
+            const petugas = document.getElementById('musafir-form-petugas').value.trim() || getUserDisplayName(currentUser);
+
+            const existing = musafirLogList.find(m => m.id === id);
+
+            const record = {
+                id: id,
+                tanggal: tanggal,
+                waktu_masuk: waktu,
+                nama_musafir: nama,
+                nomor_telepon: telp,
+                asal_kota: asal,
+                tujuan_perjalanan: tujuan,
+                tipe_layanan: tipe,
+                estimasi_durasi_jam: durasi,
+                nomor_kendaraan: plat,
+                nomor_loker: loker,
+                foto_identitas_url: fotoUrl,
+                status_kunjungan: existing ? existing.status_kunjungan : 'AKTIF',
+                petugas_layanan: petugas,
+                catatan_pelayanan: catatan,
+                updated_at: new Date().toISOString()
+            };
+
+            const existingIdx = musafirLogList.findIndex(m => m.id === id);
+            if (existingIdx !== -1) {
+                musafirLogList[existingIdx] = { ...musafirLogList[existingIdx], ...record };
+            } else {
+                record.created_at = new Date().toISOString();
+                musafirLogList.unshift(record);
+            }
+
+            localStorage.setItem('masjid_sophia_musafir_master', JSON.stringify(musafirLogList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('musafir_logbook').upsert([record], { onConflict: 'id' });
+                } catch (err) {
+                    console.warn('[Musafir] Supabase upsert notice:', err);
+                }
+            }
+
+            closeModal('modal-musafir-entry');
+            renderMusafirTable();
+            renderMusafirMenginapTable();
+            renderMusafirLokerTable();
+            updateMusafirKpiStats();
+            alert('Data tamu musafir berhasil disimpan ke buku tamu digital!');
+        }
+
+        async function quickCheckoutMusafir(id) {
+            if (!confirm('Apakah musafir ini telah selesai singgah / checkout?')) return;
+
+            const item = musafirLogList.find(m => m.id === id);
+            if (!item) return;
+
+            item.status_kunjungan = 'SELESAI';
+            item.updated_at = new Date().toISOString();
+
+            localStorage.setItem('masjid_sophia_musafir_master', JSON.stringify(musafirLogList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('musafir_logbook').update({
+                        status_kunjungan: 'SELESAI',
+                        updated_at: item.updated_at
+                    }).eq('id', id);
+                } catch (e) {}
+            }
+
+            renderMusafirTable();
+            renderMusafirMenginapTable();
+            renderMusafirLokerTable();
+            updateMusafirKpiStats();
+        }
+
+        async function deleteMusafirEntry(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus data kunjungan musafir ini?')) return;
+
+            musafirLogList = musafirLogList.filter(m => m.id !== id);
+            localStorage.setItem('masjid_sophia_musafir_master', JSON.stringify(musafirLogList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('musafir_logbook').delete().eq('id', id);
+                } catch (e) {}
+            }
+
+            renderMusafirTable();
+            renderMusafirMenginapTable();
+            renderMusafirLokerTable();
+            updateMusafirKpiStats();
+        }
+
+        // Master Loader for Modul 5
+        async function loadMusafirData(forceRefresh = false) {
+            await loadMusafirList();
+            const savedSubView = localStorage.getItem('masjid_sophia_musafir_subview') || 'buku';
+            switchMusafirSubView(savedSubView);
+        }
+
         // 10. General Modal Helper & Dismissers
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
@@ -19101,6 +19849,7 @@
             else if (id === 'modal-review-leave' && typeof closeReviewLeaveModal === 'function') closeReviewLeaveModal();
             else if (id === 'modal-leave-lightbox' && typeof closeLeaveDocLightbox === 'function') closeLeaveDocLightbox();
             else if (id === 'modal-substitute-alert' && typeof closeSubstituteAlertModal === 'function') closeSubstituteAlertModal();
+            else if (id === 'modal-musafir-entry') closeModal('modal-musafir-entry');
             else if (id === 'modal-santri-entry') closeModal('modal-santri-entry');
             else if (id === 'modal-mutabaah-entry') closeModal('modal-mutabaah-entry');
             else if (id === 'modal-journal-entry') closeModal('modal-journal-entry');

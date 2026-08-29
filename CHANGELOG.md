@@ -4,6 +4,25 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.9] - 2026-08-29
+
+### Pembangunan Modul 5: PJ Musafir & Pelayanan 24 Jam (Buku Tamu, Transit Menginap & Loker)
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[BUKU_TAMU_DIGITAL]` Membangun Sub-Modul Buku Tamu Digital Musafir 24 Jam (`musafir_logbook`):
+  - **Pencatatan Identitas & Rute Perjalanan:** Tanggal singgah, waktu masuk otomatis (jam:menit), nama musafir, nomor kontak/WhatsApp, asal kota, dan kota tujuan perjalanan.
+  - **Pemilahan Tipe Layanan Musafir:** *Singgah Shalat & Rehat Sejenak*, *Istirahat Darurat 24 Jam (Menginap)*, *Penitipan Kendaraan*, dan *Penitipan Loker Barang*.
+  - **Aksi Checkout Cepat (1-Klik):** Tombol aksi instan untuk menyelesaikan masa singgah (*Checkout*) tamu musafir ketika telah melanjutkan perjalanan.
+  - **Papan Metrik KPI Musafir:** Counter live total musafir terdata, tamu check-in hari ini, tamu transit menginap aktif, dan total fasilitas kendaraan/loker terpakai.
+- `[TRANSIT_MENGINAP_24JAM]` Membangun Sub-Modul Khusus Tamu Menginap / Istirahat Darurat 24 Jam:
+  - **Verifikasi Kartu Identitas KTP:** Pengunggahan foto KTP dengan kompresi WebP client-side otomatis dan pratinjau zoom modal.
+  - **Estimasi Durasi & Petugas Piket:** Pencatatan estimasi durasi jam istirahat transit dan nama petugas piket pelayanan yang bertugas.
+- `[LOG_PENITIPAN_KENDARAAN_LOKER]` Membangun Sub-Modul Penitipan Fasilitas 24 Jam:
+  - **Pencatatan Nomor Plat & Nomor Loker:** Monitoring keamanan kendaraan roda dua/empat dan loker penyimpanan ransel/barang bawaan musafir secara gratis.
+- `[SIDEBAR_ACCORDION_UPDATE]` Menambahkan menu *PELAYANAN MUSAFIR* (`#tab-musafir`) pada bilah samping navigasi dengan proteksi hak akses RBAC khusus peran `SUPER_ADMIN`, `SUPER_USER`, `KETUA_DKM`, dan `PJ_MUSAFIR`.
+
+---
+
 ## [1.9.8] - 2026-08-29
 
 ### Pembangunan Modul 4: PJ Santri & Pendidikan (Direktori Santri & Mutaba'ah Tahfidz)
