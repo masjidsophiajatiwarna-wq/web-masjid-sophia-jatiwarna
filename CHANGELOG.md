@@ -4,6 +4,24 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.11] - 2026-08-29
+
+### Pembangunan Modul 6b: PJ Kebersihan & Sanitasi (Checklist Sanitasi Harian)
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[CHECKLIST_SANITASI_HARIAN]` Membangun Sub-Modul Checklist Sanitasi Seluruh Zona Lingkungan Masjid (`cleaning_reports`):
+  - **Perekaman 4 Siklus Shift:** *Shift Pagi (Sebelum Dzuhur)*, *Shift Siang (Ba'da Dzuhur)*, *Shift Sore (Sebelum Maghrib)*, dan *Shift Malam (Ba'da Isya)*.
+  - **Pemilahan 7 Zona Sanitasi Kritis:** *Tempat Wudhu Ikhwan*, *Tempat Wudhu Akhwat*, *Toilet Ikhwan*, *Toilet Akhwat*, *Ruang Shalat Utama & Karpet*, *Halaman & Selasar*, *Dapur & Selasar Belakang*.
+  - **Skala Kualitas Sanitasi Standar Sophia:** Klasifikasi status kebersihan (*Bersih & Harum Standar Istiqlal*, *Cukup Bersih*, dan *Perlu Pembersihan Ulang*).
+  - **Pemeriksaan Sarana Kran Wudhu & Air:** Catatan kelancaran kran air, pengisian sabun cair, dan kebersihan lantai wudhu/toilet.
+  - **Dokumentasi Sebelum & Sesudah (*Before & After*):** Unggah 2 foto perbandingan dengan kompresi WebP client-side otomatis dan pratinjau zoom modal.
+  - **Papan Metrik KPI Kebersihan:** Counter live total checklist sanitasi, persentase status Bersih & Harum, laporan hari ini, dan peringatan zona butuh pembersihan ulang.
+- `[MONITORING_WUDHU_TOILET_24JAM]` Membangun Sub-Modul Khusus Fasilitas Wudhu & Toilet 24 Jam Musafir.
+- `[LOG_STOK_SABUN_ALAT]` Membangun Sub-Modul Log Kebutuhan Pengisian Ulang Stok Sabun Cuci Tangan, Karbol & Pewangi Karpet.
+- `[SIDEBAR_ACCORDION_UPDATE]` Menambahkan menu *KEBERSIHAN & SANITASI* (`#tab-kebersihan`) pada bilah samping navigasi dengan proteksi hak akses RBAC khusus peran `SUPER_ADMIN`, `SUPER_USER`, `KETUA_DKM`, dan `PJ_KEBERSIHAN`.
+
+---
+
 ## [1.9.10] - 2026-08-29
 
 ### Pembangunan Modul 6a: PJ Keamanan & Ketertiban (Piket Ronda 24 Jam & Laporan Kejadian)

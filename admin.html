@@ -3841,6 +3841,47 @@
         .status-tindak-proses { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
         .status-tindak-eskalasi { background: #FEE2E2; color: #DC2626; border-color: #FECACA; }
 
+    
+        /* ==========================================================================
+           MODUL 6b: KEBERSIHAN & SANITASI (CHECKLIST SANITASI HARIAN)
+           ========================================================================== */
+        .btn-subview-kebersihan {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.25rem;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: var(--color-charcoal-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            font-family: inherit;
+        }
+
+        .btn-subview-kebersihan:hover {
+            background: #F8FAFC;
+            color: var(--color-charcoal);
+            border-color: #CBD5E1;
+            transform: translateY(-1px);
+        }
+
+        .btn-subview-kebersihan.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+
+        .sanitasi-bersih-harum { background: var(--color-success-bg); color: var(--color-success); border: 1px solid #A7F3D0; font-weight: 800; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+        .sanitasi-cukup-bersih { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; font-weight: 700; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+        .sanitasi-perlu-ulang { background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; font-weight: 800; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+
+        .shift-badge-sore { background: #FFF7ED; color: #C2410C; border: 1px solid #FFEDD5; font-weight: 700; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+
     </style>
 </head>
 <body>
@@ -6435,6 +6476,199 @@
                                 </p>
                                 <div style="font-size: 0.72rem; font-weight: 700; color: var(--color-gold-deep);"><i class="fa-solid fa-check"></i> Ronda Siaga 24 Jam Non-Stop</div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- Tab: Modul 6b — PJ Kebersihan & Sanitasi (Checklist Sanitasi Harian & Fasilitas Wudhu) -->
+            <div id="tab-kebersihan" class="tab-content-panel" style="display: none;">
+                <!-- Subview Navigation -->
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-subview-kebersihan active" id="btn-subview-kebersihan-all" onclick="switchKebersihanSubView('all')">
+                            <i class="fa-solid fa-broom"></i> Checklist Sanitasi Seluruh Zona
+                        </button>
+                        <button type="button" class="btn-subview-kebersihan" id="btn-subview-kebersihan-wudhu" onclick="switchKebersihanSubView('wudhu')">
+                            <i class="fa-solid fa-faucet-drip"></i> Area Wudhu &amp; Toilet 24 Jam
+                        </button>
+                        <button type="button" class="btn-subview-kebersihan" id="btn-subview-kebersihan-stok" onclick="switchKebersihanSubView('stok')">
+                            <i class="fa-solid fa-soap"></i> Kebutuhan Stok Sabun &amp; Alat
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn-action-gold" onclick="loadKebersihanData(true)">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Kebersihan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 1: CHECKLIST SANITASI SELURUH ZONA -->
+                <div id="subview-kebersihan-all" class="kebersihan-subview-pane" style="display: block;">
+                    <!-- KPI Row -->
+                    <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: var(--color-gold-light); color: var(--color-gold-deep);">
+                                <i class="fa-solid fa-broom"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>TOTAL CHECKLIST TERCATAT</span>
+                                <h3 id="stat-kebersihan-total">0 Checklist</h3>
+                                <div class="kpi-badge" style="color: var(--color-gold-deep);"><i class="fa-solid fa-clipboard-check"></i> Seluruh Zona</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #ECFDF5; color: #059669;">
+                                <i class="fa-solid fa-sparkles"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>BERSIH &amp; HARUM (STANDAR)</span>
+                                <h3 id="stat-kebersihan-harum" style="color: #059669;">100%</h3>
+                                <div class="kpi-badge" style="color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Standar Kebersihan Sophia</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #EFF6FF; color: #2563EB;">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>CHECKLIST HARI INI</span>
+                                <h3 id="stat-kebersihan-today" style="color: #2563EB;">0 Laporan</h3>
+                                <div class="kpi-badge" style="color: #2563EB;"><i class="fa-solid fa-calendar-day"></i> 4 Siklus Shift Harian</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #FEE2E2; color: #DC2626;">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>PERLU PEMBERSIHAN ULANG</span>
+                                <h3 id="stat-kebersihan-ulang" style="color: #DC2626;">0 Zona</h3>
+                                <div class="kpi-badge" style="color: #DC2626;"><i class="fa-solid fa-rotate-right"></i> Follow Up Segera</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action & Filter Bar -->
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-broom" style="color: var(--color-gold-deep);"></i> Checklist Sanitasi Harian Seluruh Zona Lingkungan Masjid</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Perekaman sanitasi toilet, tempat wudhu ikhwan/akhwat, keharuman ruang shalat utama, selasar, dan halaman
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="openAddCleaningModal()">
+                                <i class="fa-solid fa-plus"></i> Catat Checklist Sanitasi Baru
+                            </button>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1.2fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                <input type="text" id="kebersihan-search-input" class="search-input" placeholder="Cari zona lokasi, petugas, kondisi kran, atau stok..." oninput="filterCleaningTable()">
+                            </div>
+                            <select id="kebersihan-zona-filter" class="form-select" onchange="filterCleaningTable()">
+                                <option value="ALL">Semua Zona Lokasi</option>
+                                <option value="Tempat Wudhu Ikhwan">Tempat Wudhu Ikhwan</option>
+                                <option value="Tempat Wudhu Akhwat">Tempat Wudhu Akhwat</option>
+                                <option value="Toilet Ikhwan">Toilet Ikhwan</option>
+                                <option value="Toilet Akhwat">Toilet Akhwat</option>
+                                <option value="Ruang Shalat Utama">Ruang Shalat Utama &amp; Karpet</option>
+                                <option value="Halaman &amp; Selasar">Halaman &amp; Selasar</option>
+                                <option value="Dapur &amp; Selasar Belakang">Dapur &amp; Selasar Belakang</option>
+                            </select>
+                            <select id="kebersihan-status-filter" class="form-select" onchange="filterCleaningTable()">
+                                <option value="ALL">Semua Status</option>
+                                <option value="BERSIH_HARUM">Bersih &amp; Harum</option>
+                                <option value="CUKUP_BERSIH">Cukup Bersih</option>
+                                <option value="PERLU_PEMBERSIHAN_ULANG">Perlu Pembersihan Ulang</option>
+                            </select>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 120px;">Tanggal &amp; Shift</th>
+                                        <th style="min-width: 160px;">Zona Lokasi</th>
+                                        <th style="min-width: 150px;">Petugas Kebersihan</th>
+                                        <th style="min-width: 140px;">Status Sanitasi</th>
+                                        <th style="min-width: 190px;">Kondisi Sarana Wudhu &amp; Air</th>
+                                        <th style="min-width: 100px; text-align: center;">Foto Before / After</th>
+                                        <th style="min-width: 150px;">Kebutuhan Stok / Alat</th>
+                                        <th style="text-align: right; min-width: 90px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-cleaning-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 2: AREA WUDHU & TOILET 24 JAM -->
+                <div id="subview-kebersihan-wudhu" class="kebersihan-subview-pane" style="display: none;">
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-faucet-drip" style="color: #0284C7;"></i> Monitoring Fasilitas Tempat Wudhu &amp; Toilet 24 Jam</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Fokus pengawasan kelancaran kran air wudhu, sabun cair cuci tangan, dan sanitasi toilet musafir 24 jam
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 120px;">Tanggal &amp; Shift</th>
+                                        <th style="min-width: 160px;">Area Wudhu / Toilet</th>
+                                        <th style="min-width: 150px;">Petugas Piket</th>
+                                        <th style="min-width: 140px;">Status Kebersihan</th>
+                                        <th style="min-width: 220px;">Kondisi Sarana Wudhu &amp; Kran</th>
+                                        <th style="min-width: 100px; text-align: center;">Dokumentasi</th>
+                                        <th style="text-align: right; min-width: 90px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-cleaning-wudhu-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 3: LOG KEBUTUHAN STOK SABUN & ALAT -->
+                <div id="subview-kebersihan-stok" class="kebersihan-subview-pane" style="display: none;">
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-soap" style="color: var(--color-gold-deep);"></i> Log Kebutuhan Stok Sabun, Pewangi &amp; Alat Sanitasi</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Permintaan pengisian ulang cairan pembersih lantai, sabun cuci tangan, tisu, dan pewangi karpet untuk diajukan ke logistik
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 120px;">Tanggal Catat</th>
+                                        <th style="min-width: 160px;">Zona Terkait</th>
+                                        <th style="min-width: 150px;">Petugas Pelapor</th>
+                                        <th style="min-width: 280px;">Rincian Kebutuhan Stok / Penggantian Alat</th>
+                                        <th style="text-align: right; min-width: 90px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-cleaning-stok-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -9046,6 +9280,19 @@
                 ]
             },
             {
+                id: 'kebersihan_sanitasi',
+                title: 'KEBERSIHAN & SANITASI',
+                icon: 'fa-solid fa-broom',
+                items: [
+                    {
+                        id: 'kebersihan',
+                        label: 'Checklist Sanitasi & Wudhu',
+                        icon: 'fa-solid fa-broom',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEBERSIHAN']
+                    }
+                ]
+            },
+            {
                 id: 'logistik_sarpras',
                 title: 'LOGISTIK & SARPRAS',
                 icon: 'fa-solid fa-boxes-stacked',
@@ -9268,7 +9515,7 @@
 
             // Restore active tab from URL Hash or localStorage (Memory Browser)
             const rawHash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
-            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik', 'santri', 'musafir', 'keamanan'];
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik', 'santri', 'musafir', 'keamanan', 'kebersihan'];
             const savedTab = (rawHash && validTabs.includes(rawHash))
                 ? rawHash 
                 : (localStorage.getItem('masjid_sophia_active_tab') || 'overview');
@@ -9298,6 +9545,11 @@
             // Strict Role Gates
             if (tabId === 'accounts' && !['SUPER_ADMIN', 'KETUA_DKM'].includes(role)) {
                 alert('Akses Ditolak: Modul Manajemen Pengguna DKM hanya dapat diakses oleh Super Administrator dan Ketua DKM.');
+                switchTab('overview');
+                return;
+            }
+            if (tabId === 'kebersihan' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEBERSIHAN'].includes(role)) {
+                alert('Akses Ditolak: Modul Kebersihan & Sanitasi hanya dapat diakses oleh PJ Kebersihan dan Pimpinan DKM.');
                 switchTab('overview');
                 return;
             }
@@ -9390,7 +9642,8 @@
                 'logistik': ['Logistik Dapur & Inventaris Sarpras', 'Pencatatan sedekah makan siang gratis (70+ porsi/hari) dan manajemen aset fisik masjid'],
                 'santri': ['Pembinaan Santri & Mutaba\'ah Tahfidz', 'Direktori profil santri penghafal Al-Qur\'an dan pencatatan mutaba\'ah setoran hafalan harian'],
                 'musafir': ['Pelayanan Musafir & Layanan 24 Jam', 'Pencatatan buku tamu digital, izin istirahat/menginap darurat 24 jam, dan loker penitipan barang'],
-                'keamanan': ['Keamanan & Ketertiban 24 Jam', 'Pencatatan log ronda piket 24 jam, patroli berkala, dan laporan kejadian lapangan']
+                'keamanan': ['Keamanan & Ketertiban 24 Jam', 'Pencatatan log ronda piket 24 jam, patroli berkala, dan laporan kejadian lapangan'],
+                'kebersihan': ['Sanitasi & Kebersihan Harian', 'Checklist sanitasi toilet, sarana kran wudhu lancar, dan standar harum ruang utama ibadah']
             };
 
             if (titles[tabId]) {
@@ -9421,6 +9674,9 @@
                 fetchSystemHealth();
             } else if (tabId === 'donations') {
                 loadKeuanganData();
+            }
+            else if (tabId === 'kebersihan') {
+                loadKebersihanData();
             }
             else if (tabId === 'keamanan') {
                 loadKeamananData();
@@ -20443,6 +20699,417 @@
             switchKeamananSubView(savedSubView);
         }
 
+        
+        // ==========================================================================
+        // MODUL 6b: PJ KEBERSIHAN & SANITASI JAVASCRIPT ENGINE
+        // ==========================================================================
+        let cleaningReportsList = [];
+        let currentKebersihanSubView = 'all';
+
+        function switchKebersihanSubView(subView) {
+            currentKebersihanSubView = subView;
+            try {
+                localStorage.setItem('masjid_sophia_kebersihan_subview', subView);
+            } catch (e) {}
+
+            document.querySelectorAll('.btn-subview-kebersihan').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.kebersihan-subview-pane').forEach(p => p.style.display = 'none');
+
+            const btn = document.getElementById('btn-subview-kebersihan-' + subView);
+            if (btn) btn.classList.add('active');
+
+            const pane = document.getElementById('subview-kebersihan-' + subView);
+            if (pane) pane.style.display = 'block';
+
+            if (subView === 'all') {
+                renderCleaningTable();
+            } else if (subView === 'wudhu') {
+                renderWudhuTable();
+            } else if (subView === 'stok') {
+                renderStokTable();
+            }
+        }
+
+        async function loadCleaningList() {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('cleaning_reports')
+                        .select('*')
+                        .order('tanggal', { ascending: false });
+
+                    if (!error && Array.isArray(data)) {
+                        cleaningReportsList = data;
+                        localStorage.setItem('masjid_sophia_cleaning_master', JSON.stringify(data));
+                        renderCleaningTable();
+                        renderWudhuTable();
+                        renderStokTable();
+                        updateCleaningKpiStats();
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('[Cleaning] Supabase fetch notice:', e);
+                }
+            }
+
+            try {
+                const saved = localStorage.getItem('masjid_sophia_cleaning_master');
+                if (saved) {
+                    cleaningReportsList = JSON.parse(saved);
+                } else {
+                    cleaningReportsList = [];
+                }
+            } catch (e) {
+                cleaningReportsList = [];
+            }
+            renderCleaningTable();
+            renderWudhuTable();
+            renderStokTable();
+            updateCleaningKpiStats();
+        }
+
+        function renderCleaningTable(data = null) {
+            const tbody = document.getElementById('tbody-cleaning-list');
+            if (!tbody) return;
+
+            const list = data || cleaningReportsList;
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--color-charcoal-muted); padding: 3rem 1.5rem;"><div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-broom"></i></div><div style="font-weight: 700; font-size: 0.95rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Belum Ada Checklist Sanitasi Tercatat</div><p style="font-size: 0.8rem; margin: 0; color: var(--color-charcoal-muted);">Klik tombol <b>"+ Catat Checklist Sanitasi Baru"</b> untuk mulai merekam checklist sanitasi berkala.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                let shiftBadge = '<span class="shift-badge-pagi"><i class="fa-solid fa-sun"></i> Pagi</span>';
+                if (item.shift_kebersihan === 'SIANG') shiftBadge = '<span class="shift-badge-siang"><i class="fa-solid fa-cloud-sun"></i> Siang</span>';
+                else if (item.shift_kebersihan === 'SORE') shiftBadge = '<span class="shift-badge-sore"><i class="fa-solid fa-cloud-moon"></i> Sore</span>';
+                else if (item.shift_kebersihan === 'MALAM') shiftBadge = '<span class="shift-badge-malam"><i class="fa-solid fa-moon"></i> Malam</span>';
+
+                let statusBadge = '<span class="sanitasi-bersih-harum"><i class="fa-solid fa-circle-check"></i> Bersih &amp; Harum</span>';
+                if (item.status_sanitasi === 'CUKUP_BERSIH') statusBadge = '<span class="sanitasi-cukup-bersih"><i class="fa-solid fa-circle-dot"></i> Cukup Bersih</span>';
+                else if (item.status_sanitasi === 'PERLU_PEMBERSIHAN_ULANG') statusBadge = '<span class="sanitasi-perlu-ulang"><i class="fa-solid fa-triangle-exclamation"></i> Perlu Ulang</span>';
+
+                const beforeThumb = item.foto_sebelum_url
+                    ? '<span style="cursor: pointer;" onclick="openCoverPreviewUrl(\'' + item.foto_sebelum_url + '\')" title="Foto Sebelum"><img src="' + item.foto_sebelum_url + '" style="width: 28px; height: 24px; border-radius: 3px; object-fit: cover; border: 1px solid var(--color-border);" onerror="this.style.display=\'none\'"></span>'
+                    : '';
+                const afterThumb = item.foto_sesudah_url
+                    ? '<span style="cursor: pointer;" onclick="openCoverPreviewUrl(\'' + item.foto_sesudah_url + '\')" title="Foto Sesudah"><img src="' + item.foto_sesudah_url + '" style="width: 28px; height: 24px; border-radius: 3px; object-fit: cover; border: 1px solid #10B981;" onerror="this.style.display=\'none\'"></span>'
+                    : '';
+                const photoBox = (beforeThumb || afterThumb)
+                    ? '<div style="display: flex; gap: 4px; justify-content: center; align-items: center;">' + beforeThumb + afterThumb + '</div>'
+                    : '<span style="font-size: 0.72rem; color: #9CA3AF;">-</span>';
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.825rem;">' + item.tanggal + '</div>' +
+                        '<div style="margin-top: 2px;">' + shiftBadge + '</div>' +
+                    '</td>' +
+                    '<td><div style="font-weight: 800; color: var(--color-charcoal); font-size: 0.85rem;"><i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep); margin-right: 4px;"></i> ' + escapeHtml(item.zona_lokasi) + '</div></td>' +
+                    '<td><div style="font-size: 0.8rem; color: var(--color-charcoal); font-weight: 600;"><i class="fa-solid fa-user" style="color: #9CA3AF; margin-right: 3px;"></i> ' + escapeHtml(item.petugas_kebersihan) + '</div></td>' +
+                    '<td>' + statusBadge + '</td>' +
+                    '<td><div style="font-size: 0.75rem; color: var(--color-charcoal-muted); line-height: 1.3;">' + (item.kondisi_sarana_wudhu ? escapeHtml(item.kondisi_sarana_wudhu) : '<em style="color:#9CA3AF;">Kran lancar &amp; bersih</em>') + '</div></td>' +
+                    '<td style="text-align: center;">' + photoBox + '</td>' +
+                    '<td><div style="font-size: 0.75rem; color: ' + (item.kebutuhan_stok_sabun_alat ? '#B45309; font-weight: 600;' : '#9CA3AF;') + '">' + (item.kebutuhan_stok_sabun_alat ? escapeHtml(item.kebutuhan_stok_sabun_alat) : 'Stok Terpenuhi') + '</div></td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                            '<button type="button" class="btn-action edit" onclick="openEditCleaningModal(\'' + item.id + '\')" title="Edit Checklist"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                            '<button type="button" class="btn-action delete" onclick="deleteCleaningEntry(\'' + item.id + '\')" title="Hapus Checklist"><i class="fa-solid fa-trash"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function filterCleaningTable() {
+            const query = (document.getElementById('kebersihan-search-input')?.value || '').toLowerCase().trim();
+            const zona = document.getElementById('kebersihan-zona-filter')?.value || 'ALL';
+            const status = document.getElementById('kebersihan-status-filter')?.value || 'ALL';
+
+            let list = [...cleaningReportsList];
+
+            if (query) {
+                list = list.filter(c => (c.zona_lokasi || '').toLowerCase().includes(query) || (c.petugas_kebersihan || '').toLowerCase().includes(query) || (c.kondisi_sarana_wudhu || '').toLowerCase().includes(query) || (c.kebutuhan_stok_sabun_alat || '').toLowerCase().includes(query));
+            }
+            if (zona !== 'ALL') {
+                list = list.filter(c => c.zona_lokasi === zona);
+            }
+            if (status !== 'ALL') {
+                list = list.filter(c => c.status_sanitasi === status);
+            }
+
+            renderCleaningTable(list);
+        }
+
+        function renderWudhuTable() {
+            const tbody = document.getElementById('tbody-cleaning-wudhu-list');
+            if (!tbody) return;
+
+            const list = cleaningReportsList.filter(c => (c.zona_lokasi || '').includes('Wudhu') || (c.zona_lokasi || '').includes('Toilet'));
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--color-charcoal-muted); padding: 2.5rem 1.5rem;"><div style="font-weight: 700; font-size: 0.9rem; color: #059669; margin-bottom: 0.25rem;"><i class="fa-solid fa-faucet-drip"></i> Area Wudhu &amp; Toilet Bersih</div><p style="font-size: 0.775rem; margin: 0;">Belum ada log khusus area wudhu atau toilet.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                let statusBadge = '<span class="sanitasi-bersih-harum"><i class="fa-solid fa-circle-check"></i> Bersih &amp; Harum</span>';
+                if (item.status_sanitasi === 'CUKUP_BERSIH') statusBadge = '<span class="sanitasi-cukup-bersih"><i class="fa-solid fa-circle-dot"></i> Cukup Bersih</span>';
+                else if (item.status_sanitasi === 'PERLU_PEMBERSIHAN_ULANG') statusBadge = '<span class="sanitasi-perlu-ulang"><i class="fa-solid fa-triangle-exclamation"></i> Perlu Ulang</span>';
+
+                const beforeThumb = item.foto_sebelum_url
+                    ? '<span style="cursor: pointer;" onclick="openCoverPreviewUrl(\'' + item.foto_sebelum_url + '\')"><img src="' + item.foto_sebelum_url + '" style="width: 28px; height: 24px; border-radius: 3px; object-fit: cover;" onerror="this.style.display=\'none\'"></span>'
+                    : '';
+                const afterThumb = item.foto_sesudah_url
+                    ? '<span style="cursor: pointer;" onclick="openCoverPreviewUrl(\'' + item.foto_sesudah_url + '\')"><img src="' + item.foto_sesudah_url + '" style="width: 28px; height: 24px; border-radius: 3px; object-fit: cover; border: 1px solid #10B981;" onerror="this.style.display=\'none\'"></span>'
+                    : '';
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.825rem;">' + item.tanggal + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted);">' + item.shift_kebersihan + '</div>' +
+                    '</td>' +
+                    '<td><div style="font-weight: 800; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.zona_lokasi) + '</div></td>' +
+                    '<td><div style="font-size: 0.8rem; color: var(--color-charcoal);">' + escapeHtml(item.petugas_kebersihan) + '</div></td>' +
+                    '<td>' + statusBadge + '</td>' +
+                    '<td><div style="font-size: 0.75rem; color: var(--color-charcoal-muted); line-height: 1.3;">' + (item.kondisi_sarana_wudhu ? escapeHtml(item.kondisi_sarana_wudhu) : 'Kran lancar &amp; bersih') + '</div></td>' +
+                    '<td style="text-align: center;"><div style="display: flex; gap: 4px; justify-content: center;">' + beforeThumb + afterThumb + '</div></td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                            '<button type="button" class="btn-action edit" onclick="openEditCleaningModal(\'' + item.id + '\')" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function renderStokTable() {
+            const tbody = document.getElementById('tbody-cleaning-stok-list');
+            if (!tbody) return;
+
+            const list = cleaningReportsList.filter(c => c.kebutuhan_stok_sabun_alat && c.kebutuhan_stok_sabun_alat.trim().length > 0);
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--color-charcoal-muted); padding: 2.5rem 1.5rem;"><div style="font-weight: 700; font-size: 0.9rem; color: #059669; margin-bottom: 0.25rem;"><i class="fa-solid fa-box-check"></i> Seluruh Stok Sabun &amp; Alat Terpenuhi</div><p style="font-size: 0.775rem; margin: 0;">Tidak ada catatan kekurangan sabun atau kebutuhan alat baru.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                return '<tr>' +
+                    '<td><div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.825rem;">' + item.tanggal + '</div></td>' +
+                    '<td><div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.zona_lokasi) + '</div></td>' +
+                    '<td><div style="font-size: 0.8rem; color: var(--color-charcoal);">' + escapeHtml(item.petugas_kebersihan) + '</div></td>' +
+                    '<td><div style="font-size: 0.8rem; color: #B45309; font-weight: 600; line-height: 1.3;"><i class="fa-solid fa-soap" style="margin-right: 4px;"></i> ' + escapeHtml(item.kebutuhan_stok_sabun_alat) + '</div></td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                            '<button type="button" class="btn-action edit" onclick="openEditCleaningModal(\'' + item.id + '\')" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function updateCleaningKpiStats() {
+            const total = cleaningReportsList.length;
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            let todayCount = 0;
+            let harumCount = 0;
+            let ulangCount = 0;
+
+            cleaningReportsList.forEach(c => {
+                if (c.tanggal === todayStr) todayCount++;
+                if (c.status_sanitasi === 'BERSIH_HARUM') harumCount++;
+                if (c.status_sanitasi === 'PERLU_PEMBERSIHAN_ULANG') ulangCount++;
+            });
+
+            const statTotal = document.getElementById('stat-kebersihan-total');
+            if (statTotal) statTotal.textContent = total + ' Checklist';
+
+            const statHarum = document.getElementById('stat-kebersihan-harum');
+            if (statHarum) statHarum.textContent = total > 0 ? Math.round((harumCount / total) * 100) + '%' : '100%';
+
+            const statToday = document.getElementById('stat-kebersihan-today');
+            if (statToday) statToday.textContent = todayCount + ' Laporan';
+
+            const statUlang = document.getElementById('stat-kebersihan-ulang');
+            if (statUlang) statUlang.textContent = ulangCount + ' Zona';
+        }
+
+        function openAddCleaningModal() {
+            document.getElementById('form-cleaning-entry').reset();
+            document.getElementById('cleaning-entry-id').value = '';
+            document.getElementById('modal-cleaning-title').innerHTML = '<i class="fa-solid fa-broom" style="color: var(--color-gold-deep);"></i> Catat Checklist Sanitasi Kebersihan';
+            
+            document.getElementById('cleaning-form-tanggal').value = new Date().toISOString().split('T')[0];
+            document.getElementById('cleaning-form-petugas').value = getUserDisplayName(currentUser);
+            document.getElementById('cleaning-form-status').value = 'BERSIH_HARUM';
+            document.getElementById('cleaning-form-sarana').value = 'Kran air lancar & bersih, sabun terisi penuh, lantai kering.';
+            document.getElementById('cleaning-form-before-url').value = '';
+            document.getElementById('cleaning-form-after-url').value = '';
+            document.getElementById('cleaning-before-preview').style.display = 'none';
+            document.getElementById('cleaning-after-preview').style.display = 'none';
+
+            openModal('modal-cleaning-entry');
+        }
+
+        function openEditCleaningModal(id) {
+            const item = cleaningReportsList.find(c => c.id === id);
+            if (!item) return;
+
+            document.getElementById('cleaning-entry-id').value = item.id;
+            document.getElementById('modal-cleaning-title').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Edit Checklist Sanitasi (' + escapeHtml(item.zona_lokasi) + ')';
+            
+            document.getElementById('cleaning-form-tanggal').value = item.tanggal;
+            document.getElementById('cleaning-form-shift').value = item.shift_kebersihan;
+            document.getElementById('cleaning-form-zona').value = item.zona_lokasi;
+            document.getElementById('cleaning-form-status').value = item.status_sanitasi;
+            document.getElementById('cleaning-form-petugas').value = item.petugas_kebersihan;
+            document.getElementById('cleaning-form-sarana').value = item.kondisi_sarana_wudhu || '';
+            document.getElementById('cleaning-form-before-url').value = item.foto_sebelum_url || '';
+            document.getElementById('cleaning-form-after-url').value = item.foto_sesudah_url || '';
+            document.getElementById('cleaning-form-stok').value = item.kebutuhan_stok_sabun_alat || '';
+
+            const bBox = document.getElementById('cleaning-before-preview');
+            const bImg = document.getElementById('cleaning-before-img');
+            if (item.foto_sebelum_url) {
+                bImg.src = item.foto_sebelum_url;
+                bBox.style.display = 'block';
+            } else {
+                bBox.style.display = 'none';
+            }
+
+            const aBox = document.getElementById('cleaning-after-preview');
+            const aImg = document.getElementById('cleaning-after-img');
+            if (item.foto_sesudah_url) {
+                aImg.src = item.foto_sesudah_url;
+                aBox.style.display = 'block';
+            } else {
+                aBox.style.display = 'none';
+            }
+
+            openModal('modal-cleaning-entry');
+        }
+
+        async function handleCleaningPhotoBefore(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const compressed = await compressImageToWebP(file, 800, 0.8);
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    document.getElementById('cleaning-form-before-url').value = dataUrl;
+                    const previewBox = document.getElementById('cleaning-before-preview');
+                    const previewImg = document.getElementById('cleaning-before-img');
+                    previewImg.src = dataUrl;
+                    previewBox.style.display = 'block';
+                };
+                reader.readAsDataURL(compressed.blob);
+            } catch (err) {
+                alert('Gagal memproses foto: ' + err.message);
+            }
+        }
+
+        async function handleCleaningPhotoAfter(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const compressed = await compressImageToWebP(file, 800, 0.8);
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    document.getElementById('cleaning-form-after-url').value = dataUrl;
+                    const previewBox = document.getElementById('cleaning-after-preview');
+                    const previewImg = document.getElementById('cleaning-after-img');
+                    previewImg.src = dataUrl;
+                    previewBox.style.display = 'block';
+                };
+                reader.readAsDataURL(compressed.blob);
+            } catch (err) {
+                alert('Gagal memproses foto: ' + err.message);
+            }
+        }
+
+        async function handleCleaningFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('cleaning-entry-id').value || ('cln_' + Date.now());
+            const tanggal = document.getElementById('cleaning-form-tanggal').value;
+            const shift = document.getElementById('cleaning-form-shift').value;
+            const zona = document.getElementById('cleaning-form-zona').value;
+            const status = document.getElementById('cleaning-form-status').value;
+            const petugas = document.getElementById('cleaning-form-petugas').value.trim();
+            const sarana = document.getElementById('cleaning-form-sarana').value.trim();
+            const beforeUrl = document.getElementById('cleaning-form-before-url').value.trim();
+            const afterUrl = document.getElementById('cleaning-form-after-url').value.trim();
+            const stok = document.getElementById('cleaning-form-stok').value.trim();
+
+            const record = {
+                id: id,
+                tanggal: tanggal,
+                shift_kebersihan: shift,
+                zona_lokasi: zona,
+                status_sanitasi: status,
+                petugas_kebersihan: petugas,
+                kondisi_sarana_wudhu: sarana,
+                foto_sebelum_url: beforeUrl,
+                foto_sesudah_url: afterUrl,
+                kebutuhan_stok_sabun_alat: stok,
+                updated_at: new Date().toISOString()
+            };
+
+            const existingIdx = cleaningReportsList.findIndex(c => c.id === id);
+            if (existingIdx !== -1) {
+                cleaningReportsList[existingIdx] = { ...cleaningReportsList[existingIdx], ...record };
+            } else {
+                record.created_at = new Date().toISOString();
+                cleaningReportsList.unshift(record);
+            }
+
+            localStorage.setItem('masjid_sophia_cleaning_master', JSON.stringify(cleaningReportsList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('cleaning_reports').upsert([record], { onConflict: 'id' });
+                } catch (err) {
+                    console.warn('[Cleaning] Supabase upsert notice:', err);
+                }
+            }
+
+            closeModal('modal-cleaning-entry');
+            renderCleaningTable();
+            renderWudhuTable();
+            renderStokTable();
+            updateCleaningKpiStats();
+            alert('Checklist sanitasi kebersihan berhasil disimpan!');
+        }
+
+        async function deleteCleaningEntry(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus catatan checklist sanitasi ini?')) return;
+
+            cleaningReportsList = cleaningReportsList.filter(c => c.id !== id);
+            localStorage.setItem('masjid_sophia_cleaning_master', JSON.stringify(cleaningReportsList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('cleaning_reports').delete().eq('id', id);
+                } catch (e) {}
+            }
+
+            renderCleaningTable();
+            renderWudhuTable();
+            renderStokTable();
+            updateCleaningKpiStats();
+        }
+
+        // Master Loader for Modul 6b
+        async function loadKebersihanData(forceRefresh = false) {
+            await loadCleaningList();
+            const savedSubView = localStorage.getItem('masjid_sophia_kebersihan_subview') || 'all';
+            switchKebersihanSubView(savedSubView);
+        }
+
         // 10. General Modal Helper & Dismissers
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
@@ -20484,6 +21151,7 @@
             else if (id === 'modal-review-leave' && typeof closeReviewLeaveModal === 'function') closeReviewLeaveModal();
             else if (id === 'modal-leave-lightbox' && typeof closeLeaveDocLightbox === 'function') closeLeaveDocLightbox();
             else if (id === 'modal-substitute-alert' && typeof closeSubstituteAlertModal === 'function') closeSubstituteAlertModal();
+            else if (id === 'modal-cleaning-entry') closeModal('modal-cleaning-entry');
             else if (id === 'modal-security-entry') closeModal('modal-security-entry');
             else if (id === 'modal-musafir-entry') closeModal('modal-musafir-entry');
             else if (id === 'modal-santri-entry') closeModal('modal-santri-entry');
