@@ -4,6 +4,27 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.8] - 2026-08-29
+
+### Pembangunan Modul 4: PJ Santri & Pendidikan (Direktori Santri & Mutaba'ah Tahfidz)
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[DIREKTORI_SANTRI_TAHFIDZ]` Membangun Sub-Modul Direktori Profil Santri Penghafal Qur'an (`santri_data`):
+  - **Pencatatan Data Induk Santri:** Auto-NIS unik (`STR-2026-xxx`), nama lengkap, nama panggilan, gender (Ikhwan/Akhwat), tanggal lahir, dan tanggal masuk.
+  - **Kontak Darurat & Wali:** Nama orang tua/wali, nomor kontak WhatsApp, dan alamat asal santri.
+  - **Pelacak Target & Capaian Hafalan:** Pemantauan capaian juz hafalan live dengan progress bar menuju target 30 Juz.
+  - **Unggah Foto Santri WebP:** Kompresi client-side otomatis foto profil santri ke format WebP.
+  - **Papan Metrik KPI Santri:** Counter total santri terdaftar, santri aktif, rasio gender ikhwan/akhwat, dan rata-rata capaian juz.
+- `[MUTABAAH_SETORAN_HARIAN]` Membangun Sub-Modul Log Mutaba'ah Setoran Hafalan Qur'an Harian (`santri_mutabaah`):
+  - **Perekaman Sesi Halaqah:** Pilihan sesi harian (*Sesi Ba'da Subuh / Ziyadah*, *Sesi Ba'da Maghrib / Muraja'ah*, dan *Ziyadah Malam*).
+  - **Detail Surat & Ayat:** Perekaman nomor juz (1-30), nama surat, serta rentang ayat mulai s/d ayat selesai.
+  - **Predikat Tajwid & Kelancaran:** Skala penilaian terstandar (*Mumtaz / Istimewa*, *Jayyid Jiddan / Sangat Baik*, *Jayyid / Baik*, *Maqbul / Cukup*, *Muraja'ah / Wajib Ulang*).
+  - **Evaluasi Ustadz Pembimbing:** Kolom catatan tajwid, makhorijul huruf, shifatul huruf, dan waqaf-ibtida'.
+- `[MILESTONE_30_JUZ]` Menghadirkan Papan Prestasi & Capaian 30 Juz (*Visual Milestone Grid*) untuk memantau kemajuan khatam seluruh santri secara transparan.
+- `[SIDEBAR_ACCORDION_UPDATE]` Menambahkan menu *SANTRI & PENDIDIKAN* (`#tab-santri`) pada bilah samping navigasi dengan proteksi hak akses RBAC khusus PJ Santri dan pimpinan DKM.
+
+---
+
 ## [1.9.7] - 2026-08-29
 
 ### Pembangunan Modul 3: PJ Keuangan & Bendahara (Jurnal Pembukuan Kas & Pengajuan Anggaran)

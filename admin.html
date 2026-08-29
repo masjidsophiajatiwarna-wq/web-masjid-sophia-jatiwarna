@@ -3664,6 +3664,92 @@
         .badge-tipe-request { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; font-weight: 700; border-radius: 4px; font-size: 0.7rem; padding: 2px 6px; }
         .badge-tipe-reimburse { background: #FFF7ED; color: #C2410C; border: 1px solid #FFEDD5; font-weight: 700; border-radius: 4px; font-size: 0.7rem; padding: 2px 6px; }
 
+    
+        /* ==========================================================================
+           MODUL 4: SANTRI & PENDIDIKAN (DIREKTORI & MUTABA'AH TAHFIDZ)
+           ========================================================================== */
+        .btn-subview-santri {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.25rem;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: var(--color-charcoal-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            font-family: inherit;
+        }
+
+        .btn-subview-santri:hover {
+            background: #F8FAFC;
+            color: var(--color-charcoal);
+            border-color: #CBD5E1;
+            transform: translateY(-1px);
+        }
+
+        .btn-subview-santri.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+
+        .status-santri-aktif { background: var(--color-success-bg); color: var(--color-success); border-color: #A7F3D0; }
+        .status-santri-lulus { background: #DBEAFE; color: #1E40AF; border-color: #BFDBFE; }
+        .status-santri-cuti { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+        .status-santri-nonaktif { background: #F3F4F6; color: #4B5563; border-color: #E5E7EB; }
+
+        .predikat-mumtaz { background: var(--color-gold-light); color: var(--color-gold-deep); border: 1px solid #FDE68A; font-weight: 800; }
+        .predikat-jayyid-jiddan { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; font-weight: 700; }
+        .predikat-jayyid { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; font-weight: 700; }
+        .predikat-maqbul { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; font-weight: 700; }
+        .predikat-murajaah { background: #FFF7ED; color: #C2410C; border: 1px solid #FFEDD5; font-weight: 700; }
+
+        .juz-progress-bar-bg {
+            width: 100%;
+            height: 7px;
+            background: #E2E8F0;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .juz-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10B981 0%, #C9A84C 100%);
+            border-radius: 999px;
+            transition: width 0.3s ease;
+        }
+
+        .santri-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .santri-card-item {
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .santri-card-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-color: var(--color-gold-deep);
+            transform: translateY(-2px);
+        }
+
     </style>
 </head>
 <body>
@@ -5611,6 +5697,251 @@
             <!-- TAB: MODUL PERIBADATAN & PENUGASAN PETUGAS IBADAH (R3) -->
             
             <!-- Tab: Modul 2 — PJ Logistik & Sarpras (Dapur Sedekah Makan & Inventaris Aset) -->
+            
+            <!-- Tab: Modul 4 — PJ Santri & Pendidikan (Direktori Santri & Mutaba'ah Hafalan Qur'an) -->
+            <div id="tab-santri" class="tab-content-panel" style="display: none;">
+                <!-- Subview Navigation -->
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-subview-santri active" id="btn-subview-santri-dir" onclick="switchSantriSubView('dir')">
+                            <i class="fa-solid fa-users-line"></i> Direktori Profil Santri Tahfidz
+                        </button>
+                        <button type="button" class="btn-subview-santri" id="btn-subview-santri-mutabaah" onclick="switchSantriSubView('mutabaah')">
+                            <i class="fa-solid fa-quran"></i> Mutaba'ah Setoran Hafalan Harian
+                        </button>
+                        <button type="button" class="btn-subview-santri" id="btn-subview-santri-milestone" onclick="switchSantriSubView('milestone')">
+                            <i class="fa-solid fa-award"></i> Capaian &amp; Milestone 30 Juz
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn-action-gold" onclick="loadSantriData(true)">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Santri
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 1: DIREKTORI PROFIL SANTRI TAHFIDZ -->
+                <div id="subview-santri-dir" class="santri-subview-pane" style="display: block;">
+                    <!-- KPI Row -->
+                    <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: var(--color-gold-light); color: var(--color-gold-deep);">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>TOTAL SANTRI TERDAFTAR</span>
+                                <h3 id="stat-santri-total">0 Santri</h3>
+                                <div class="kpi-badge" style="color: var(--color-gold-deep);"><i class="fa-solid fa-id-card"></i> Terdata di Direktori</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #ECFDF5; color: #059669;">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>SANTRI AKTIF BELAJAR</span>
+                                <h3 id="stat-santri-aktif" style="color: #059669;">0 Santri</h3>
+                                <div class="kpi-badge" style="color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Halaqah Rutin</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #EFF6FF; color: #2563EB;">
+                                <i class="fa-solid fa-venus-mars"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>IKHWAN / AKHWAT</span>
+                                <h3 id="stat-santri-gender">0 / 0</h3>
+                                <div class="kpi-badge" style="color: #2563EB;">Santri Mukim &amp; Non-Mukim</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #FEF3C7; color: #D97706;">
+                                <i class="fa-solid fa-book-bookmark"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>RATA-RATA HAFALAN</span>
+                                <h3 id="stat-santri-avg-juz" style="color: #D97706;">0 Juz</h3>
+                                <div class="kpi-badge" style="color: #D97706;"><i class="fa-solid fa-chart-line"></i> Target: 30 Juz</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action & Filter Bar -->
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-users-line" style="color: var(--color-gold-deep);"></i> Direktori Profil Santri Penghafal Al-Qur'an</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Pencatatan data induk santri, identitas wali, kontak darurat, capaian juz hafalan, dan status perkembangan karakter
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="openAddSantriModal()">
+                                <i class="fa-solid fa-user-plus"></i> Registrasi Santri Baru
+                            </button>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                <input type="text" id="santri-search-input" class="search-input" placeholder="Cari NIS, nama santri, wali, atau kota asal..." oninput="filterSantriTable()">
+                            </div>
+                            <select id="santri-gender-filter" class="form-select" onchange="filterSantriTable()">
+                                <option value="ALL">Semua Gender</option>
+                                <option value="Ikhwan">Ikhwan (Laki-laki)</option>
+                                <option value="Akhwat">Akhwat (Perempuan)</option>
+                            </select>
+                            <select id="santri-status-filter" class="form-select" onchange="filterSantriTable()">
+                                <option value="ALL">Semua Status</option>
+                                <option value="AKTIF">Aktif Belajar</option>
+                                <option value="LULUS">Lulus / Alumni</option>
+                                <option value="CUTI">Cuti / Izin</option>
+                                <option value="NON_AKTIF">Non-Aktif</option>
+                            </select>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 140px;">NIS &amp; Foto</th>
+                                        <th style="min-width: 180px;">Nama Lengkap &amp; Panggilan</th>
+                                        <th style="min-width: 110px;">Gender</th>
+                                        <th style="min-width: 170px;">Wali &amp; Kontak WA</th>
+                                        <th style="min-width: 160px;">Capaian Hafalan (Juz)</th>
+                                        <th style="min-width: 110px;">Status</th>
+                                        <th style="text-align: right; min-width: 120px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-santri-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 2: MUTABA'AH SETORAN HAFALAN QUR'AN HARIAN -->
+                <div id="subview-santri-mutabaah" class="santri-subview-pane" style="display: none;">
+                    <!-- KPI Row -->
+                    <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #EFF6FF; color: #2563EB;">
+                                <i class="fa-solid fa-quran"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>TOTAL SETORAN TERCATAT</span>
+                                <h3 id="stat-mutabaah-total">0 Setoran</h3>
+                                <div class="kpi-badge" style="color: #2563EB;"><i class="fa-solid fa-list-check"></i> Seluruh Sesi</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: var(--color-gold-light); color: var(--color-gold-deep);">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>PREDIKAT MUMTAZ</span>
+                                <h3 id="stat-mutabaah-mumtaz" style="color: var(--color-gold-deep);">0%</h3>
+                                <div class="kpi-badge" style="color: var(--color-gold-deep);"><i class="fa-solid fa-medal"></i> Sangat Istimewa</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #ECFDF5; color: #059669;">
+                                <i class="fa-solid fa-sun"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>SESI SUBUH HARI INI</span>
+                                <h3 id="stat-mutabaah-subuh" style="color: #059669;">0 Setoran</h3>
+                                <div class="kpi-badge" style="color: var(--color-success);">Ziyadah / Muraja'ah</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #FEF3C7; color: #D97706;">
+                                <i class="fa-solid fa-moon"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>SESI MAGHRIB HARI INI</span>
+                                <h3 id="stat-mutabaah-maghrib" style="color: #D97706;">0 Setoran</h3>
+                                <div class="kpi-badge" style="color: #D97706;">Ba'da Maghrib</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action & Filter Bar -->
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-quran" style="color: var(--color-gold-deep);"></i> Log Mutaba'ah Setoran Hafalan Qur'an Harian</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Pencatatan setoran hafalan baru (ziyadah) &amp; pengulangan (muraja'ah) sesi Subuh &amp; Maghrib dengan evaluasi tajwid dan makhorijul huruf
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="openAddMutabaahModal()">
+                                <i class="fa-solid fa-plus"></i> Input Setoran Hafalan Baru
+                            </button>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                <input type="text" id="mutabaah-search-input" class="search-input" placeholder="Cari nama santri, surat, atau ustadz..." oninput="filterMutabaahTable()">
+                            </div>
+                            <select id="mutabaah-sesi-filter" class="form-select" onchange="filterMutabaahTable()">
+                                <option value="ALL">Semua Sesi Halaqah</option>
+                                <option value="SUBUH">Sesi Ba'da Subuh</option>
+                                <option value="MAGHRIB">Sesi Ba'da Maghrib</option>
+                                <option value="ZIYADAH_MALAM">Ziyadah Malam</option>
+                            </select>
+                            <select id="mutabaah-predikat-filter" class="form-select" onchange="filterMutabaahTable()">
+                                <option value="ALL">Semua Predikat Tajwid</option>
+                                <option value="MUMTAZ">Mumtaz (Istimewa)</option>
+                                <option value="JAYYID_JIDDAN">Jayyid Jiddan (Sangat Baik)</option>
+                                <option value="JAYYID">Jayyid (Baik)</option>
+                                <option value="MAQBUL">Maqbul (Cukup)</option>
+                                <option value="MURAJAAH">Muraja'ah Ulang</option>
+                            </select>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 120px;">Tanggal &amp; Sesi</th>
+                                        <th style="min-width: 180px;">Nama Santri</th>
+                                        <th style="min-width: 180px;">Surat &amp; Ayat</th>
+                                        <th style="min-width: 80px;">Juz</th>
+                                        <th style="min-width: 130px;">Predikat Tajwid</th>
+                                        <th style="min-width: 150px;">Ustadz Pengampu</th>
+                                        <th style="min-width: 180px;">Catatan Makhraj / Tajwid</th>
+                                        <th style="text-align: right; min-width: 90px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-mutabaah-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 3: CAPAIAN & MILESTONE 30 JUZ -->
+                <div id="subview-santri-milestone" class="santri-subview-pane" style="display: none;">
+                    <div class="section-panel">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-award" style="color: var(--color-gold-deep);"></i> Papan Capaian &amp; Progres Khatam 30 Juz Al-Qur'an</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Visualisasi persentase progres hafalan seluruh santri menuju target 30 Juz
+                                </p>
+                            </div>
+                        </div>
+
+                        <div id="milestone-santri-grid" class="santri-card-grid">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="tab-logistik" class="tab-content-panel" style="display: none;">
                 <!-- Subview Navigation -->
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
@@ -8178,6 +8509,19 @@
                 ]
             },
             {
+                id: 'santri_pendidikan',
+                title: 'SANTRI & PENDIDIKAN',
+                icon: 'fa-solid fa-graduation-cap',
+                items: [
+                    {
+                        id: 'santri',
+                        label: 'Direktori & Mutaba\'ah Santri',
+                        icon: 'fa-solid fa-graduation-cap',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_SANTRI']
+                    }
+                ]
+            },
+            {
                 id: 'logistik_sarpras',
                 title: 'LOGISTIK & SARPRAS',
                 icon: 'fa-solid fa-boxes-stacked',
@@ -8400,7 +8744,7 @@
 
             // Restore active tab from URL Hash or localStorage (Memory Browser)
             const rawHash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
-            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik'];
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik', 'santri'];
             const savedTab = (rawHash && validTabs.includes(rawHash))
                 ? rawHash 
                 : (localStorage.getItem('masjid_sophia_active_tab') || 'overview');
@@ -8430,6 +8774,11 @@
             // Strict Role Gates
             if (tabId === 'accounts' && !['SUPER_ADMIN', 'KETUA_DKM'].includes(role)) {
                 alert('Akses Ditolak: Modul Manajemen Pengguna DKM hanya dapat diakses oleh Super Administrator dan Ketua DKM.');
+                switchTab('overview');
+                return;
+            }
+            if (tabId === 'santri' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_SANTRI'].includes(role)) {
+                alert('Akses Ditolak: Modul Santri & Pendidikan hanya dapat diakses oleh PJ Santri & Pendidikan dan Pimpinan DKM.');
                 switchTab('overview');
                 return;
             }
@@ -8504,7 +8853,8 @@
                 'health': ['Multi-Cloud Free-Tier Monitor', 'Sistem pemantauan 7 pilar infrastruktur cloud gratis (Zero-Cost Production Stack)'],
                 'accounts': ['Direktori & Manajemen Pengguna DKM', 'Kontrol hak akses multi-divisi, riwayat login live, reset kredensial baku, dan manajemen sesi pengurus'],
                 'ibadah': ['Modul Peribadatan & Penugasan Petugas', 'Kalibrasi hisab jadwal shalat presisi Kemenag Jatiwarna, penugasan imam & khatib, serta alur persetujuan jadwal DKM'],
-                'logistik': ['Logistik Dapur & Inventaris Sarpras', 'Pencatatan sedekah makan siang gratis (70+ porsi/hari) dan manajemen aset fisik masjid']
+                'logistik': ['Logistik Dapur & Inventaris Sarpras', 'Pencatatan sedekah makan siang gratis (70+ porsi/hari) dan manajemen aset fisik masjid'],
+                'santri': ['Pembinaan Santri & Mutaba\'ah Tahfidz', 'Direktori profil santri penghafal Al-Qur\'an dan pencatatan mutaba\'ah setoran hafalan harian']
             };
 
             if (titles[tabId]) {
@@ -8535,6 +8885,9 @@
                 fetchSystemHealth();
             } else if (tabId === 'donations') {
                 loadKeuanganData();
+            }
+            else if (tabId === 'santri') {
+                loadSantriData();
             }
             else if (tabId === 'logistik') {
                 loadLogistikData();
@@ -18040,6 +18393,673 @@
             switchKeuanganSubView(savedSubView);
         }
 
+        
+        // ==========================================================================
+        // MODUL 4: PJ SANTRI & PENDIDIKAN JAVASCRIPT ENGINE
+        // ==========================================================================
+        let santriList = [];
+        let mutabaahList = [];
+        let currentSantriSubView = 'dir';
+
+        function switchSantriSubView(subView) {
+            currentSantriSubView = subView;
+            try {
+                localStorage.setItem('masjid_sophia_santri_subview', subView);
+            } catch (e) {}
+
+            document.querySelectorAll('.btn-subview-santri').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.santri-subview-pane').forEach(p => p.style.display = 'none');
+
+            const btn = document.getElementById('btn-subview-santri-' + subView);
+            if (btn) btn.classList.add('active');
+
+            const pane = document.getElementById('subview-santri-' + subView);
+            if (pane) pane.style.display = 'block';
+
+            if (subView === 'dir') {
+                renderSantriTable();
+            } else if (subView === 'mutabaah') {
+                renderMutabaahTable();
+            } else if (subView === 'milestone') {
+                renderMilestoneGrid();
+            }
+        }
+
+        // --------------------------------------------------------------------------
+        // SANTRI DATA ENGINE (SANTRI_DATA)
+        // --------------------------------------------------------------------------
+        async function loadSantriList() {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('santri_data')
+                        .select('*')
+                        .order('nama_lengkap', { ascending: true });
+
+                    if (!error && Array.isArray(data)) {
+                        santriList = data;
+                        localStorage.setItem('masjid_sophia_santri_master', JSON.stringify(data));
+                        renderSantriTable();
+                        updateSantriKpiStats();
+                        populateSantriSelectDropdown();
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('[Santri] Supabase santri notice:', e);
+                }
+            }
+
+            try {
+                const saved = localStorage.getItem('masjid_sophia_santri_master');
+                if (saved) {
+                    santriList = JSON.parse(saved);
+                } else {
+                    santriList = [];
+                }
+            } catch (e) {
+                santriList = [];
+            }
+            renderSantriTable();
+            updateSantriKpiStats();
+            populateSantriSelectDropdown();
+        }
+
+        function renderSantriTable(data = null) {
+            const tbody = document.getElementById('tbody-santri-list');
+            if (!tbody) return;
+
+            const list = data || santriList;
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--color-charcoal-muted); padding: 3rem 1.5rem;"><div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-graduation-cap"></i></div><div style="font-weight: 700; font-size: 0.95rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Belum Ada Profil Santri Terdaftar</div><p style="font-size: 0.8rem; margin: 0; color: var(--color-charcoal-muted);">Klik tombol <b>"+ Registrasi Santri Baru"</b> untuk mulai mencatat data santri tahfidz Qur\'an.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                const target = parseInt(item.target_hafalan_juz || 30);
+                const capaian = parseInt(item.capaian_hafalan_juz || 0);
+                const pct = Math.min(100, Math.round((capaian / target) * 100));
+
+                let statusBadgeClass = 'status-santri-aktif';
+                let statusLabel = 'Aktif';
+                if (item.status_santri === 'LULUS') { statusBadgeClass = 'status-santri-lulus'; statusLabel = 'Lulus'; }
+                else if (item.status_santri === 'CUTI') { statusBadgeClass = 'status-santri-cuti'; statusLabel = 'Cuti'; }
+                else if (item.status_santri === 'NON_AKTIF') { statusBadgeClass = 'status-santri-nonaktif'; statusLabel = 'Non-Aktif'; }
+
+                const photoUrl = item.foto_santri_url || '';
+                const photoBox = photoUrl
+                    ? '<div style="width: 36px; height: 36px; border-radius: 50%; overflow: hidden; background: #F3F4F6; flex-shrink: 0; border: 1px solid var(--color-border); cursor: pointer;" onclick="openCoverPreviewUrl(\'' + photoUrl + '\')"><img src="' + photoUrl + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'"></div>'
+                    : '<div style="width: 36px; height: 36px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.85rem;"><i class="fa-solid fa-user-graduate"></i></div>';
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="display: flex; align-items: center; gap: 0.6rem;">' +
+                            photoBox +
+                            '<div>' +
+                                '<div style="font-weight: 800; font-family: monospace; font-size: 0.825rem; color: var(--color-charcoal);">' + item.nis + '</div>' +
+                                '<div style="font-size: 0.7rem; color: var(--color-charcoal-muted);">' + (item.tanggal_masuk || '-') + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.nama_lengkap) + '</div>' +
+                        (item.nama_panggilan ? '<div style="font-size: 0.72rem; color: var(--color-gold-deep); font-weight: 600;">(' + escapeHtml(item.nama_panggilan) + ')</div>' : '') +
+                    '</td>' +
+                    '<td><span style="font-size: 0.775rem; font-weight: 600; color: ' + (item.jenis_kelamin === 'Ikhwan' ? '#1D4ED8' : '#BE185D') + ';"><i class="fa-solid ' + (item.jenis_kelamin === 'Ikhwan' ? 'fa-mars' : 'fa-venus') + '"></i> ' + (item.jenis_kelamin || 'Ikhwan') + '</span></td>' +
+                    '<td>' +
+                        '<div style="font-size: 0.8rem; color: var(--color-charcoal); font-weight: 600;">' + escapeHtml(item.nama_wali) + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted);"><i class="fa-brands fa-whatsapp" style="color: #10B981;"></i> ' + escapeHtml(item.kontak_wali) + '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 800; font-size: 0.85rem; color: var(--color-gold-deep);">' + capaian + ' / ' + target + ' <span style="font-size: 0.7rem; font-weight: 600; color: var(--color-charcoal-muted);">Juz (' + pct + '%)</span></div>' +
+                        '<div class="juz-progress-bar-bg"><div class="juz-progress-bar-fill" style="width: ' + pct + '%;"></div></div>' +
+                    '</td>' +
+                    '<td><span class="status-badge-dapur ' + statusBadgeClass + '"><i class="fa-solid fa-circle-dot"></i> ' + statusLabel + '</span></td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                            '<button type="button" class="btn-action edit" onclick="openEditSantriModal(\'' + item.id + '\')" title="Edit Profil Santri"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                            '<button type="button" class="btn-action delete" onclick="deleteSantriEntry(\'' + item.id + '\')" title="Hapus Santri"><i class="fa-solid fa-trash"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function filterSantriTable() {
+            const query = (document.getElementById('santri-search-input')?.value || '').toLowerCase().trim();
+            const gender = document.getElementById('santri-gender-filter')?.value || 'ALL';
+            const status = document.getElementById('santri-status-filter')?.value || 'ALL';
+
+            let list = [...santriList];
+
+            if (query) {
+                list = list.filter(s => (s.nis || '').toLowerCase().includes(query) || (s.nama_lengkap || '').toLowerCase().includes(query) || (s.nama_wali || '').toLowerCase().includes(query) || (s.alamat_asal || '').toLowerCase().includes(query));
+            }
+            if (gender !== 'ALL') {
+                list = list.filter(s => s.jenis_kelamin === gender);
+            }
+            if (status !== 'ALL') {
+                list = list.filter(s => s.status_santri === status);
+            }
+
+            renderSantriTable(list);
+        }
+
+        function updateSantriKpiStats() {
+            let total = santriList.length;
+            let aktifCount = 0;
+            let ikhwanCount = 0;
+            let akhwatCount = 0;
+            let totalJuz = 0;
+
+            santriList.forEach(s => {
+                if (s.status_santri === 'AKTIF') aktifCount++;
+                if (s.jenis_kelamin === 'Akhwat') akhwatCount++;
+                else ikhwanCount++;
+                totalJuz += parseInt(s.capaian_hafalan_juz || 0);
+            });
+
+            const statTotal = document.getElementById('stat-santri-total');
+            if (statTotal) statTotal.textContent = total + ' Santri';
+
+            const statAktif = document.getElementById('stat-santri-aktif');
+            if (statAktif) statAktif.textContent = aktifCount + ' Santri';
+
+            const statGender = document.getElementById('stat-santri-gender');
+            if (statGender) statGender.textContent = ikhwanCount + ' / ' + akhwatCount;
+
+            const statAvg = document.getElementById('stat-santri-avg-juz');
+            if (statAvg) statAvg.textContent = total > 0 ? (totalJuz / total).toFixed(1) + ' Juz' : '0 Juz';
+        }
+
+        function generateNextNIS() {
+            const year = new Date().getFullYear();
+            const prefix = 'STR-' + year + '-';
+            const count = santriList.filter(s => (s.nis || '').startsWith(prefix)).length + 1;
+            return prefix + String(count).padStart(3, '0');
+        }
+
+        function openAddSantriModal() {
+            document.getElementById('form-santri-entry').reset();
+            document.getElementById('santri-entry-id').value = '';
+            document.getElementById('modal-santri-title').innerHTML = '<i class="fa-solid fa-graduation-cap" style="color: var(--color-gold-deep);"></i> Registrasi Profil Santri Baru';
+            
+            document.getElementById('santri-form-nis').value = generateNextNIS();
+            document.getElementById('santri-form-gender').value = 'Ikhwan';
+            document.getElementById('santri-form-tgl-masuk').value = new Date().toISOString().split('T')[0];
+            document.getElementById('santri-form-capaian').value = 0;
+            document.getElementById('santri-form-target').value = 30;
+            document.getElementById('santri-form-status').value = 'AKTIF';
+            document.getElementById('santri-form-preview-box').style.display = 'none';
+
+            openModal('modal-santri-entry');
+        }
+
+        function openEditSantriModal(id) {
+            const item = santriList.find(s => s.id === id);
+            if (!item) return;
+
+            document.getElementById('santri-entry-id').value = item.id;
+            document.getElementById('modal-santri-title').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Edit Profil Santri (' + item.nis + ')';
+            
+            document.getElementById('santri-form-nis').value = item.nis;
+            document.getElementById('santri-form-gender').value = item.jenis_kelamin || 'Ikhwan';
+            document.getElementById('santri-form-nama').value = item.nama_lengkap;
+            document.getElementById('santri-form-panggilan').value = item.nama_panggilan || '';
+            document.getElementById('santri-form-wali').value = item.nama_wali;
+            document.getElementById('santri-form-kontak').value = item.kontak_wali;
+            document.getElementById('santri-form-alamat').value = item.alamat_asal || '';
+            document.getElementById('santri-form-tgl-masuk').value = item.tanggal_masuk || '';
+            document.getElementById('santri-form-tgl-lahir').value = item.tanggal_lahir || '';
+            document.getElementById('santri-form-capaian').value = item.capaian_hafalan_juz || 0;
+            document.getElementById('santri-form-target').value = item.target_hafalan_juz || 30;
+            document.getElementById('santri-form-status').value = item.status_santri || 'AKTIF';
+            document.getElementById('santri-form-foto-url').value = item.foto_santri_url || '';
+            document.getElementById('santri-form-catatan').value = item.catatan_perkembangan || '';
+
+            const previewBox = document.getElementById('santri-form-preview-box');
+            const previewImg = document.getElementById('santri-form-preview-img');
+            if (item.foto_santri_url) {
+                previewImg.src = item.foto_santri_url;
+                previewBox.style.display = 'block';
+            } else {
+                previewBox.style.display = 'none';
+            }
+
+            openModal('modal-santri-entry');
+        }
+
+        async function handleSantriPhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const compressed = await compressImageToWebP(file, 600, 0.85);
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    document.getElementById('santri-form-foto-url').value = dataUrl;
+                    const previewBox = document.getElementById('santri-form-preview-box');
+                    const previewImg = document.getElementById('santri-form-preview-img');
+                    previewImg.src = dataUrl;
+                    previewBox.style.display = 'block';
+                };
+                reader.readAsDataURL(compressed.blob);
+            } catch (err) {
+                alert('Gagal memproses foto santri: ' + err.message);
+            }
+        }
+
+        async function handleSantriFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('santri-entry-id').value || ('str_' + Date.now());
+            const nis = document.getElementById('santri-form-nis').value.trim();
+            const gender = document.getElementById('santri-form-gender').value;
+            const nama = document.getElementById('santri-form-nama').value.trim();
+            const panggilan = document.getElementById('santri-form-panggilan').value.trim();
+            const wali = document.getElementById('santri-form-wali').value.trim();
+            const kontak = document.getElementById('santri-form-kontak').value.trim();
+            const alamat = document.getElementById('santri-form-alamat').value.trim();
+            const tglMasuk = document.getElementById('santri-form-tgl-masuk').value;
+            const tglLahir = document.getElementById('santri-form-tgl-lahir').value;
+            const capaian = parseInt(document.getElementById('santri-form-capaian').value || 0);
+            const target = parseInt(document.getElementById('santri-form-target').value || 30);
+            const status = document.getElementById('santri-form-status').value;
+            const fotoUrl = document.getElementById('santri-form-foto-url').value.trim();
+            const catatan = document.getElementById('santri-form-catatan').value.trim();
+
+            const record = {
+                id: id,
+                nis: nis,
+                nama_lengkap: nama,
+                nama_panggilan: panggilan,
+                jenis_kelamin: gender,
+                nama_wali: wali,
+                kontak_wali: kontak,
+                alamat_asal: alamat,
+                tanggal_masuk: tglMasuk || new Date().toISOString().split('T')[0],
+                tanggal_lahir: tglLahir || null,
+                capaian_hafalan_juz: capaian,
+                target_hafalan_juz: target,
+                status_santri: status,
+                foto_santri_url: fotoUrl,
+                catatan_perkembangan: catatan,
+                updated_at: new Date().toISOString()
+            };
+
+            const existingIdx = santriList.findIndex(s => s.id === id);
+            if (existingIdx !== -1) {
+                santriList[existingIdx] = { ...santriList[existingIdx], ...record };
+            } else {
+                record.created_at = new Date().toISOString();
+                santriList.unshift(record);
+            }
+
+            localStorage.setItem('masjid_sophia_santri_master', JSON.stringify(santriList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('santri_data').upsert([record], { onConflict: 'id' });
+                } catch (err) {
+                    console.warn('[Santri] Supabase upsert notice:', err);
+                }
+            }
+
+            closeModal('modal-santri-entry');
+            renderSantriTable();
+            updateSantriKpiStats();
+            populateSantriSelectDropdown();
+            renderMilestoneGrid();
+            alert('Data santri berhasil disimpan!');
+        }
+
+        async function deleteSantriEntry(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus profil santri ini? Seluruh riwayat mutaba\'ah terkait juga akan dihapus.')) return;
+
+            santriList = santriList.filter(s => s.id !== id);
+            localStorage.setItem('masjid_sophia_santri_master', JSON.stringify(santriList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('santri_data').delete().eq('id', id);
+                } catch (e) {}
+            }
+
+            renderSantriTable();
+            updateSantriKpiStats();
+            populateSantriSelectDropdown();
+            renderMilestoneGrid();
+        }
+
+        function populateSantriSelectDropdown() {
+            const select = document.getElementById('mutabaah-form-santri-id');
+            if (!select) return;
+
+            if (santriList.length === 0) {
+                select.innerHTML = '<option value="">-- Belum ada data santri --</option>';
+                return;
+            }
+
+            select.innerHTML = santriList.map(s => {
+                return '<option value="' + s.id + '">' + escapeHtml(s.nama_lengkap) + ' (' + s.nis + ' &bull; Capaian: ' + (s.capaian_hafalan_juz || 0) + ' Juz)</option>';
+            }).join('');
+        }
+
+        function handleMutabaahSantriChange(santriId) {
+            const santri = santriList.find(s => s.id === santriId);
+            if (santri) {
+                const currentJuz = Math.min(30, (santri.capaian_hafalan_juz || 0) + 1);
+                document.getElementById('mutabaah-form-juz').value = currentJuz;
+            }
+        }
+
+        // --------------------------------------------------------------------------
+        // MUTABA'AH ENGINE (SANTRI_MUTABAAH)
+        // --------------------------------------------------------------------------
+        async function loadMutabaahList() {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('santri_mutabaah')
+                        .select('*')
+                        .order('tanggal', { ascending: false });
+
+                    if (!error && Array.isArray(data)) {
+                        mutabaahList = data;
+                        localStorage.setItem('masjid_sophia_mutabaah_master', JSON.stringify(data));
+                        renderMutabaahTable();
+                        updateMutabaahKpiStats();
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('[Mutabaah] Supabase fetch notice:', e);
+                }
+            }
+
+            try {
+                const saved = localStorage.getItem('masjid_sophia_mutabaah_master');
+                if (saved) {
+                    mutabaahList = JSON.parse(saved);
+                } else {
+                    mutabaahList = [];
+                }
+            } catch (e) {
+                mutabaahList = [];
+            }
+            renderMutabaahTable();
+            updateMutabaahKpiStats();
+        }
+
+        function renderMutabaahTable(data = null) {
+            const tbody = document.getElementById('tbody-mutabaah-list');
+            if (!tbody) return;
+
+            const list = data || mutabaahList;
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--color-charcoal-muted); padding: 3rem 1.5rem;"><div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-quran"></i></div><div style="font-weight: 700; font-size: 0.95rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Belum Ada Catatan Mutaba\'ah Setoran</div><p style="font-size: 0.8rem; margin: 0; color: var(--color-charcoal-muted);">Klik tombol <b>"+ Input Setoran Hafalan Baru"</b> untuk merekam setoran hafalan santri hari ini.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                let sesiBadge = '<span style="font-weight: 700; font-size: 0.72rem; color: #059669; background: #ECFDF5; padding: 2px 6px; border-radius: 4px;">Subuh</span>';
+                if (item.sesi_halaqah === 'MAGHRIB') {
+                    sesiBadge = '<span style="font-weight: 700; font-size: 0.72rem; color: #D97706; background: #FEF3C7; padding: 2px 6px; border-radius: 4px;">Maghrib</span>';
+                } else if (item.sesi_halaqah === 'ZIYADAH_MALAM') {
+                    sesiBadge = '<span style="font-weight: 700; font-size: 0.72rem; color: #1E40AF; background: #DBEAFE; padding: 2px 6px; border-radius: 4px;">Malam</span>';
+                }
+
+                let predikatClass = 'predikat-mumtaz';
+                let predikatLabel = 'Mumtaz';
+                if (item.predikat_tajwid === 'JAYYID_JIDDAN') { predikatClass = 'predikat-jayyid-jiddan'; predikatLabel = 'Jayyid Jiddan'; }
+                else if (item.predikat_tajwid === 'JAYYID') { predikatClass = 'predikat-jayyid'; predikatLabel = 'Jayyid'; }
+                else if (item.predikat_tajwid === 'MAQBUL') { predikatClass = 'predikat-maqbul'; predikatLabel = 'Maqbul'; }
+                else if (item.predikat_tajwid === 'MURAJAAH') { predikatClass = 'predikat-murajaah'; predikatLabel = 'Muraja\'ah'; }
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.825rem;">' + item.tanggal + '</div>' +
+                        '<div style="margin-top: 2px;">' + sesiBadge + '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 800; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.nama_santri) + '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;">Surat ' + escapeHtml(item.nama_surat) + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-gold-deep); font-weight: 600;">Ayat ' + (item.ayat_mulai || 1) + ' - ' + (item.ayat_selesai || 10) + '</div>' +
+                    '</td>' +
+                    '<td><span style="font-weight: 800; font-size: 0.85rem; color: var(--color-gold-deep);">Juz ' + (item.juz || 1) + '</span></td>' +
+                    '<td><span class="status-badge-dapur ' + predikatClass + '">' + predikatLabel + '</span></td>' +
+                    '<td><div style="font-size: 0.775rem; color: var(--color-charcoal); font-weight: 600;"><i class="fa-solid fa-user-tie" style="color: #9CA3AF; margin-right: 3px;"></i> ' + escapeHtml(item.ustadz_pembimbing || 'Ustadz') + '</div></td>' +
+                    '<td><div style="font-size: 0.75rem; color: var(--color-charcoal-muted); line-height: 1.3; max-width: 220px;">' + (item.catatan_evaluasi ? escapeHtml(item.catatan_evaluasi) : '<em style="color:#9CA3AF;">Lancar &amp; tertib</em>') + '</div></td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                            '<button type="button" class="btn-action edit" onclick="openEditMutabaahModal(\'' + item.id + '\')" title="Edit Setoran"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                            '<button type="button" class="btn-action delete" onclick="deleteMutabaahEntry(\'' + item.id + '\')" title="Hapus Setoran"><i class="fa-solid fa-trash"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function filterMutabaahTable() {
+            const query = (document.getElementById('mutabaah-search-input')?.value || '').toLowerCase().trim();
+            const sesi = document.getElementById('mutabaah-sesi-filter')?.value || 'ALL';
+            const predikat = document.getElementById('mutabaah-predikat-filter')?.value || 'ALL';
+
+            let list = [...mutabaahList];
+
+            if (query) {
+                list = list.filter(m => (m.nama_santri || '').toLowerCase().includes(query) || (m.nama_surat || '').toLowerCase().includes(query) || (m.ustadz_pembimbing || '').toLowerCase().includes(query));
+            }
+            if (sesi !== 'ALL') {
+                list = list.filter(m => m.sesi_halaqah === sesi);
+            }
+            if (predikat !== 'ALL') {
+                list = list.filter(m => m.predikat_tajwid === predikat);
+            }
+
+            renderMutabaahTable(list);
+        }
+
+        function updateMutabaahKpiStats() {
+            const total = mutabaahList.length;
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            let subuhToday = 0;
+            let maghribToday = 0;
+            let mumtazCount = 0;
+
+            mutabaahList.forEach(m => {
+                if (m.predikat_tajwid === 'MUMTAZ') mumtazCount++;
+                if (m.tanggal === todayStr) {
+                    if (m.sesi_halaqah === 'SUBUH') subuhToday++;
+                    if (m.sesi_halaqah === 'MAGHRIB') maghribToday++;
+                }
+            });
+
+            const statTotal = document.getElementById('stat-mutabaah-total');
+            if (statTotal) statTotal.textContent = total + ' Setoran';
+
+            const statMumtaz = document.getElementById('stat-mutabaah-mumtaz');
+            if (statMumtaz) statMumtaz.textContent = total > 0 ? Math.round((mumtazCount / total) * 100) + '%' : '0%';
+
+            const statSubuh = document.getElementById('stat-mutabaah-subuh');
+            if (statSubuh) statSubuh.textContent = subuhToday + ' Setoran';
+
+            const statMaghrib = document.getElementById('stat-mutabaah-maghrib');
+            if (statMaghrib) statMaghrib.textContent = maghribToday + ' Setoran';
+        }
+
+        function openAddMutabaahModal() {
+            document.getElementById('form-mutabaah-entry').reset();
+            document.getElementById('mutabaah-entry-id').value = '';
+            document.getElementById('modal-mutabaah-title').innerHTML = '<i class="fa-solid fa-quran" style="color: var(--color-gold-deep);"></i> Catat Setoran Hafalan Qur\'an Baru';
+            
+            document.getElementById('mutabaah-form-tanggal').value = new Date().toISOString().split('T')[0];
+            document.getElementById('mutabaah-form-sesi').value = 'SUBUH';
+            document.getElementById('mutabaah-form-predikat').value = 'MUMTAZ';
+            document.getElementById('mutabaah-form-ustadz').value = getUserDisplayName(currentUser);
+
+            populateSantriSelectDropdown();
+            if (santriList.length > 0) {
+                handleMutabaahSantriChange(santriList[0].id);
+            }
+
+            openModal('modal-mutabaah-entry');
+        }
+
+        function openEditMutabaahModal(id) {
+            const item = mutabaahList.find(m => m.id === id);
+            if (!item) return;
+
+            document.getElementById('mutabaah-entry-id').value = item.id;
+            document.getElementById('modal-mutabaah-title').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Edit Setoran Mutaba\'ah';
+            
+            populateSantriSelectDropdown();
+            document.getElementById('mutabaah-form-santri-id').value = item.santri_id;
+            document.getElementById('mutabaah-form-tanggal').value = item.tanggal;
+            document.getElementById('mutabaah-form-sesi').value = item.sesi_halaqah;
+            document.getElementById('mutabaah-form-juz').value = item.juz;
+            document.getElementById('mutabaah-form-surat').value = item.nama_surat;
+            document.getElementById('mutabaah-form-ayat-mulai').value = item.ayat_mulai;
+            document.getElementById('mutabaah-form-ayat-selesai').value = item.ayat_selesai;
+            document.getElementById('mutabaah-form-predikat').value = item.predikat_tajwid;
+            document.getElementById('mutabaah-form-ustadz').value = item.ustadz_pembimbing || getUserDisplayName(currentUser);
+            document.getElementById('mutabaah-form-catatan').value = item.catatan_evaluasi || '';
+
+            openModal('modal-mutabaah-entry');
+        }
+
+        async function handleMutabaahFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('mutabaah-entry-id').value || ('mtb_' + Date.now());
+            const santriId = document.getElementById('mutabaah-form-santri-id').value;
+            const santri = santriList.find(s => s.id === santriId);
+            const namaSantri = santri ? santri.nama_lengkap : 'Santri';
+
+            const tanggal = document.getElementById('mutabaah-form-tanggal').value;
+            const sesi = document.getElementById('mutabaah-form-sesi').value;
+            const juz = parseInt(document.getElementById('mutabaah-form-juz').value || 1);
+            const surat = document.getElementById('mutabaah-form-surat').value.trim();
+            const ayatMulai = parseInt(document.getElementById('mutabaah-form-ayat-mulai').value || 1);
+            const ayatSelesai = parseInt(document.getElementById('mutabaah-form-ayat-selesai').value || 10);
+            const predikat = document.getElementById('mutabaah-form-predikat').value;
+            const ustadz = document.getElementById('mutabaah-form-ustadz').value.trim() || getUserDisplayName(currentUser);
+            const catatan = document.getElementById('mutabaah-form-catatan').value.trim();
+
+            const record = {
+                id: id,
+                santri_id: santriId,
+                nama_santri: namaSantri,
+                tanggal: tanggal,
+                sesi_halaqah: sesi,
+                juz: juz,
+                nama_surat: surat,
+                ayat_mulai: ayatMulai,
+                ayat_selesai: ayatSelesai,
+                predikat_tajwid: predikat,
+                ustadz_pembimbing: ustadz,
+                catatan_evaluasi: catatan
+            };
+
+            const existingIdx = mutabaahList.findIndex(m => m.id === id);
+            if (existingIdx !== -1) {
+                mutabaahList[existingIdx] = { ...mutabaahList[existingIdx], ...record };
+            } else {
+                record.created_at = new Date().toISOString();
+                mutabaahList.unshift(record);
+            }
+
+            localStorage.setItem('masjid_sophia_mutabaah_master', JSON.stringify(mutabaahList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('santri_mutabaah').upsert([record], { onConflict: 'id' });
+                } catch (err) {
+                    console.warn('[Mutabaah] Supabase upsert notice:', err);
+                }
+            }
+
+            closeModal('modal-mutabaah-entry');
+            renderMutabaahTable();
+            updateMutabaahKpiStats();
+            alert('Catatan setoran mutaba\'ah berhasil disimpan!');
+        }
+
+        async function deleteMutabaahEntry(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus catatan mutaba\'ah setoran ini?')) return;
+
+            mutabaahList = mutabaahList.filter(m => m.id !== id);
+            localStorage.setItem('masjid_sophia_mutabaah_master', JSON.stringify(mutabaahList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('santri_mutabaah').delete().eq('id', id);
+                } catch (e) {}
+            }
+
+            renderMutabaahTable();
+            updateMutabaahKpiStats();
+        }
+
+        // --------------------------------------------------------------------------
+        // MILESTONE 30 JUZ ENGINE
+        // --------------------------------------------------------------------------
+        function renderMilestoneGrid() {
+            const grid = document.getElementById('milestone-santri-grid');
+            if (!grid) return;
+
+            if (santriList.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: var(--color-charcoal-muted); padding: 3rem 1.5rem;"><div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-award"></i></div><div style="font-weight: 700; font-size: 0.95rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Belum Ada Progres Capaian Santri</div><p style="font-size: 0.8rem; margin: 0;">Tambahkan data santri di subview Direktori Santri untuk melihat visualisasi progres hafalan 30 juz.</p></div>';
+                return;
+            }
+
+            grid.innerHTML = santriList.map(s => {
+                const target = parseInt(s.target_hafalan_juz || 30);
+                const capaian = parseInt(s.capaian_hafalan_juz || 0);
+                const pct = Math.min(100, Math.round((capaian / target) * 100));
+
+                const photoUrl = s.foto_santri_url || '';
+                const photoBox = photoUrl
+                    ? '<img src="' + photoUrl + '" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-gold-deep); flex-shrink: 0;" onerror="this.style.display=\'none\'">'
+                    : '<div style="width: 46px; height: 46px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fa-solid fa-user-graduate"></i></div>';
+
+                return '<div class="santri-card-item">' +
+                    '<div>' +
+                        '<div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">' +
+                            photoBox +
+                            '<div style="flex: 1; min-width: 0;">' +
+                                '<div style="font-weight: 800; font-size: 0.9rem; color: var(--color-charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + escapeHtml(s.nama_lengkap) + '</div>' +
+                                '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted); font-family: monospace;">' + s.nis + ' &bull; ' + (s.jenis_kelamin || 'Ikhwan') + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.75rem; margin-bottom: 0.75rem;">' +
+                            '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">' +
+                                '<span style="font-size: 0.75rem; color: var(--color-charcoal-muted); font-weight: 600;">Capaian Hafalan:</span>' +
+                                '<span style="font-weight: 800; font-size: 0.85rem; color: var(--color-gold-deep);">' + capaian + ' / ' + target + ' Juz</span>' +
+                            '</div>' +
+                            '<div class="juz-progress-bar-bg"><div class="juz-progress-bar-fill" style="width: ' + pct + '%;"></div></div>' +
+                            '<div style="text-align: right; font-size: 0.7rem; color: var(--color-charcoal-muted); margin-top: 3px; font-weight: 600;">' + pct + '% Menuju Khatam 30 Juz</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border); padding-top: 0.75rem;">' +
+                        '<span style="font-size: 0.72rem; color: #10B981; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> ' + (s.status_santri || 'AKTIF') + '</span>' +
+                        '<button type="button" class="btn btn-outline btn-sm" onclick="openAddMutabaahModal()" style="font-size: 0.72rem; padding: 0.25rem 0.5rem;"><i class="fa-solid fa-plus"></i> Setor</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        // Master Loader for Modul 4
+        async function loadSantriData(forceRefresh = false) {
+            await loadSantriList();
+            await loadMutabaahList();
+            renderMilestoneGrid();
+            const savedSubView = localStorage.getItem('masjid_sophia_santri_subview') || 'dir';
+            switchSantriSubView(savedSubView);
+        }
+
         // 10. General Modal Helper & Dismissers
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
@@ -18081,6 +19101,8 @@
             else if (id === 'modal-review-leave' && typeof closeReviewLeaveModal === 'function') closeReviewLeaveModal();
             else if (id === 'modal-leave-lightbox' && typeof closeLeaveDocLightbox === 'function') closeLeaveDocLightbox();
             else if (id === 'modal-substitute-alert' && typeof closeSubstituteAlertModal === 'function') closeSubstituteAlertModal();
+            else if (id === 'modal-santri-entry') closeModal('modal-santri-entry');
+            else if (id === 'modal-mutabaah-entry') closeModal('modal-mutabaah-entry');
             else if (id === 'modal-journal-entry') closeModal('modal-journal-entry');
             else if (id === 'modal-budget-entry') closeModal('modal-budget-entry');
             else if (id === 'modal-budget-review') closeModal('modal-budget-review');
