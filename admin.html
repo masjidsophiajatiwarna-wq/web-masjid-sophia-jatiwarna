@@ -3794,6 +3794,53 @@
         .status-musafir-selesai { background: #DBEAFE; color: #1E40AF; border-color: #BFDBFE; }
         .status-musafir-batal { background: #F3F4F6; color: #4B5563; border-color: #E5E7EB; }
 
+    
+        /* ==========================================================================
+           MODUL 6a: KEAMANAN & KETERTIBAN (LOG RONDA & PIKET 24 JAM)
+           ========================================================================== */
+        .btn-subview-keamanan {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.25rem;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: var(--color-charcoal-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            font-family: inherit;
+        }
+
+        .btn-subview-keamanan:hover {
+            background: #F8FAFC;
+            color: var(--color-charcoal);
+            border-color: #CBD5E1;
+            transform: translateY(-1px);
+        }
+
+        .btn-subview-keamanan.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+
+        .kondisi-aman { background: var(--color-success-bg); color: var(--color-success); border: 1px solid #A7F3D0; font-weight: 700; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+        .kondisi-perhatian { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; font-weight: 800; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+        .kondisi-darurat { background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; font-weight: 800; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+
+        .shift-badge-pagi { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; font-weight: 700; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+        .shift-badge-siang { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; font-weight: 700; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+        .shift-badge-malam { background: #312E81; color: #E0E7FF; border: 1px solid #4338CA; font-weight: 700; border-radius: 4px; font-size: 0.72rem; padding: 2px 6px; }
+
+        .status-tindak-selesai { background: var(--color-success-bg); color: var(--color-success); border-color: #A7F3D0; }
+        .status-tindak-proses { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+        .status-tindak-eskalasi { background: #FEE2E2; color: #DC2626; border-color: #FECACA; }
+
     </style>
 </head>
 <body>
@@ -6180,6 +6227,214 @@
                                     <!-- Dynamic Rows -->
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- Tab: Modul 6a — PJ Keamanan & Ketertiban (Piket Ronda 24 Jam & Laporan Kejadian) -->
+            <div id="tab-keamanan" class="tab-content-panel" style="display: none;">
+                <!-- Subview Navigation -->
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-subview-keamanan active" id="btn-subview-keamanan-log" onclick="switchKeamananSubView('log')">
+                            <i class="fa-solid fa-shield-halved"></i> Log Ronda Piket 24 Jam
+                        </button>
+                        <button type="button" class="btn-subview-keamanan" id="btn-subview-keamanan-insiden" onclick="switchKeamananSubView('insiden')">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Insiden &amp; Eskalasi DKM
+                        </button>
+                        <button type="button" class="btn-subview-keamanan" id="btn-subview-keamanan-jadwal" onclick="switchKeamananSubView('jadwal')">
+                            <i class="fa-solid fa-calendar-week"></i> Jadwal Shift &amp; Pos Patroli
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn-action-gold" onclick="loadKeamananData(true)">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Keamanan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 1: LOG RONDA PIKET 24 JAM -->
+                <div id="subview-keamanan-log" class="keamanan-subview-pane" style="display: block;">
+                    <!-- KPI Row -->
+                    <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: var(--color-gold-light); color: var(--color-gold-deep);">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>TOTAL LAPORAN RONDA</span>
+                                <h3 id="stat-keamanan-total">0 Laporan</h3>
+                                <div class="kpi-badge" style="color: var(--color-gold-deep);"><i class="fa-solid fa-list-check"></i> Seluruh Shift</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #ECFDF5; color: #059669;">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>KONDISI KONDUSIF &amp; AMAN</span>
+                                <h3 id="stat-keamanan-kondusif" style="color: #059669;">100%</h3>
+                                <div class="kpi-badge" style="color: var(--color-success);"><i class="fa-solid fa-shield-heart"></i> Area Masjid Sophia</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #EFF6FF; color: #2563EB;">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>LAPORAN HARI INI</span>
+                                <h3 id="stat-keamanan-today" style="color: #2563EB;">0 Laporan</h3>
+                                <div class="kpi-badge" style="color: #2563EB;"><i class="fa-solid fa-clock"></i> Siklus 24 Jam</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #FEE2E2; color: #DC2626;">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>PERHATIAN / INSIDEN</span>
+                                <h3 id="stat-keamanan-insiden" style="color: #DC2626;">0 Kasus</h3>
+                                <div class="kpi-badge" style="color: #DC2626;"><i class="fa-solid fa-bell"></i> Butuh Tindak Lanjut</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action & Filter Bar -->
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-shield-halved" style="color: var(--color-gold-deep);"></i> Log Piket Ronda &amp; Pengawasan Keamanan 24 Jam</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Perekaman aktivitas ronda keliling, pengawasan gerbang/parkiran, dan situasi lingkungan Masjid Sophia
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="openAddSecurityModal()">
+                                <i class="fa-solid fa-plus"></i> Buat Laporan Ronda Baru
+                            </button>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                <input type="text" id="keamanan-search-input" class="search-input" placeholder="Cari judul laporan, petugas jaga, area, atau kronologi..." oninput="filterSecurityTable()">
+                            </div>
+                            <select id="keamanan-shift-filter" class="form-select" onchange="filterSecurityTable()">
+                                <option value="ALL">Semua Shift Piket</option>
+                                <option value="PAGI">Shift Pagi (06:00 - 14:00)</option>
+                                <option value="SIANG">Shift Siang (14:00 - 22:00)</option>
+                                <option value="MALAM">Shift Malam (22:00 - 06:00)</option>
+                            </select>
+                            <select id="keamanan-kondisi-filter" class="form-select" onchange="filterSecurityTable()">
+                                <option value="ALL">Semua Kondisi</option>
+                                <option value="KONDUSIF">Kondusif &amp; Aman</option>
+                                <option value="PERHATIAN_KHUSUS">Perhatian Khusus</option>
+                                <option value="INSIDEN_DARURAT">Insiden Darurat</option>
+                            </select>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 120px;">Tanggal &amp; Shift</th>
+                                        <th style="min-width: 150px;">Petugas Jaga</th>
+                                        <th style="min-width: 170px;">Area Patroli</th>
+                                        <th style="min-width: 140px;">Kondisi Keamanan</th>
+                                        <th style="min-width: 220px;">Judul Laporan &amp; Kronologi</th>
+                                        <th style="min-width: 80px; text-align: center;">Bukti</th>
+                                        <th style="min-width: 130px;">Tindak Lanjut</th>
+                                        <th style="text-align: right; min-width: 90px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-security-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 2: INSIDEN & ESKALASI DKM -->
+                <div id="subview-keamanan-insiden" class="keamanan-subview-pane" style="display: none;">
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-triangle-exclamation" style="color: #DC2626;"></i> Laporan Khusus Perhatian &amp; Eskalasi Pimpinan DKM</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Daftar laporan kejadian yang memerlukan evaluasi khusus, koordinasi keamanan lingkungan, atau tindak lanjut pimpinan DKM
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 120px;">Tanggal &amp; Shift</th>
+                                        <th style="min-width: 150px;">Petugas Pelapor</th>
+                                        <th style="min-width: 160px;">Area Kejadian</th>
+                                        <th style="min-width: 140px;">Tingkat Kondisi</th>
+                                        <th style="min-width: 240px;">Kronologi &amp; Catatan Koordinasi</th>
+                                        <th style="min-width: 80px; text-align: center;">Bukti</th>
+                                        <th style="min-width: 140px;">Status Penanganan</th>
+                                        <th style="text-align: right; min-width: 90px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-security-insiden-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 3: JADWAL SHIFT & POS PATROLI 24 JAM -->
+                <div id="subview-keamanan-jadwal" class="keamanan-subview-pane" style="display: none;">
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-calendar-week" style="color: var(--color-gold-deep);"></i> Panduan Shift &amp; Titik Pos Patroli 24 Jam</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Prosedur Operasional Standar (SOP) ronda berkala dan rotasi shift keamanan Masjid Sophia
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+                            <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                    <span class="shift-badge-pagi"><i class="fa-solid fa-sun"></i> Shift Pagi</span>
+                                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">06:00 - 14:00 WIB</span>
+                                </div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 0.5rem;">
+                                    Pengawasan aktivitas shalat Dhuha &amp; Dzuhur, pembukaan gerbang utama, ketertiban parkiran motor/mobil jamaah &amp; musafir, serta persiapan program sedekah makan siang.
+                                </p>
+                                <div style="font-size: 0.72rem; font-weight: 700; color: var(--color-gold-deep);"><i class="fa-solid fa-check"></i> Patroli Rutin: Setiap 2 Jam Sekali</div>
+                            </div>
+
+                            <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                    <span class="shift-badge-siang"><i class="fa-solid fa-cloud-sun"></i> Shift Siang</span>
+                                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">14:00 - 22:00 WIB</span>
+                                </div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 0.5rem;">
+                                    Pengawasan waktu shalat Ashar, Maghrib, Isya, penerangan lampu teras/halaman, ketertiban santri tahfidz, dan pengawasan loker penitipan barang musafir.
+                                </p>
+                                <div style="font-size: 0.72rem; font-weight: 700; color: var(--color-gold-deep);"><i class="fa-solid fa-check"></i> Patroli Rutin: Setiap 1.5 Jam Sekali</div>
+                            </div>
+
+                            <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                    <span class="shift-badge-malam"><i class="fa-solid fa-moon"></i> Shift Malam</span>
+                                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">22:00 - 06:00 WIB</span>
+                                </div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 0.5rem;">
+                                    Pengawasan transit tamu menginap 24 jam, penguncian gerbang samping, ronda keliling area belakang &amp; dapur, persiapan shalat Tahajud &amp; Subuh berjamaah.
+                                </p>
+                                <div style="font-size: 0.72rem; font-weight: 700; color: var(--color-gold-deep);"><i class="fa-solid fa-check"></i> Ronda Siaga 24 Jam Non-Stop</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -8778,6 +9033,19 @@
                 ]
             },
             {
+                id: 'keamanan_ketertiban',
+                title: 'KEAMANAN & KETERTIBAN',
+                icon: 'fa-solid fa-shield-halved',
+                items: [
+                    {
+                        id: 'keamanan',
+                        label: 'Piket Ronda & Keamanan 24 Jam',
+                        icon: 'fa-solid fa-shield-halved',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEAMANAN']
+                    }
+                ]
+            },
+            {
                 id: 'logistik_sarpras',
                 title: 'LOGISTIK & SARPRAS',
                 icon: 'fa-solid fa-boxes-stacked',
@@ -9000,7 +9268,7 @@
 
             // Restore active tab from URL Hash or localStorage (Memory Browser)
             const rawHash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
-            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik', 'santri', 'musafir'];
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik', 'santri', 'musafir', 'keamanan'];
             const savedTab = (rawHash && validTabs.includes(rawHash))
                 ? rawHash 
                 : (localStorage.getItem('masjid_sophia_active_tab') || 'overview');
@@ -9030,6 +9298,11 @@
             // Strict Role Gates
             if (tabId === 'accounts' && !['SUPER_ADMIN', 'KETUA_DKM'].includes(role)) {
                 alert('Akses Ditolak: Modul Manajemen Pengguna DKM hanya dapat diakses oleh Super Administrator dan Ketua DKM.');
+                switchTab('overview');
+                return;
+            }
+            if (tabId === 'keamanan' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEAMANAN'].includes(role)) {
+                alert('Akses Ditolak: Modul Keamanan & Ketertiban hanya dapat diakses oleh PJ Keamanan dan Pimpinan DKM.');
                 switchTab('overview');
                 return;
             }
@@ -9116,7 +9389,8 @@
                 'ibadah': ['Modul Peribadatan & Penugasan Petugas', 'Kalibrasi hisab jadwal shalat presisi Kemenag Jatiwarna, penugasan imam & khatib, serta alur persetujuan jadwal DKM'],
                 'logistik': ['Logistik Dapur & Inventaris Sarpras', 'Pencatatan sedekah makan siang gratis (70+ porsi/hari) dan manajemen aset fisik masjid'],
                 'santri': ['Pembinaan Santri & Mutaba\'ah Tahfidz', 'Direktori profil santri penghafal Al-Qur\'an dan pencatatan mutaba\'ah setoran hafalan harian'],
-                'musafir': ['Pelayanan Musafir & Layanan 24 Jam', 'Pencatatan buku tamu digital, izin istirahat/menginap darurat 24 jam, dan loker penitipan barang']
+                'musafir': ['Pelayanan Musafir & Layanan 24 Jam', 'Pencatatan buku tamu digital, izin istirahat/menginap darurat 24 jam, dan loker penitipan barang'],
+                'keamanan': ['Keamanan & Ketertiban 24 Jam', 'Pencatatan log ronda piket 24 jam, patroli berkala, dan laporan kejadian lapangan']
             };
 
             if (titles[tabId]) {
@@ -9147,6 +9421,9 @@
                 fetchSystemHealth();
             } else if (tabId === 'donations') {
                 loadKeuanganData();
+            }
+            else if (tabId === 'keamanan') {
+                loadKeamananData();
             }
             else if (tabId === 'musafir') {
                 loadMusafirData();
@@ -19808,6 +20085,364 @@
             switchMusafirSubView(savedSubView);
         }
 
+        
+        // ==========================================================================
+        // MODUL 6a: PJ KEAMANAN & KETERTIBAN JAVASCRIPT ENGINE
+        // ==========================================================================
+        let securityReportsList = [];
+        let currentKeamananSubView = 'log';
+
+        function switchKeamananSubView(subView) {
+            currentKeamananSubView = subView;
+            try {
+                localStorage.setItem('masjid_sophia_keamanan_subview', subView);
+            } catch (e) {}
+
+            document.querySelectorAll('.btn-subview-keamanan').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.keamanan-subview-pane').forEach(p => p.style.display = 'none');
+
+            const btn = document.getElementById('btn-subview-keamanan-' + subView);
+            if (btn) btn.classList.add('active');
+
+            const pane = document.getElementById('subview-keamanan-' + subView);
+            if (pane) pane.style.display = 'block';
+
+            if (subView === 'log') {
+                renderSecurityTable();
+            } else if (subView === 'insiden') {
+                renderInsidenTable();
+            }
+        }
+
+        async function loadSecurityList() {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('security_reports')
+                        .select('*')
+                        .order('tanggal', { ascending: false });
+
+                    if (!error && Array.isArray(data)) {
+                        securityReportsList = data;
+                        localStorage.setItem('masjid_sophia_security_master', JSON.stringify(data));
+                        renderSecurityTable();
+                        renderInsidenTable();
+                        updateSecurityKpiStats();
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('[Security] Supabase fetch notice:', e);
+                }
+            }
+
+            try {
+                const saved = localStorage.getItem('masjid_sophia_security_master');
+                if (saved) {
+                    securityReportsList = JSON.parse(saved);
+                } else {
+                    securityReportsList = [];
+                }
+            } catch (e) {
+                securityReportsList = [];
+            }
+            renderSecurityTable();
+            renderInsidenTable();
+            updateSecurityKpiStats();
+        }
+
+        function renderSecurityTable(data = null) {
+            const tbody = document.getElementById('tbody-security-list');
+            if (!tbody) return;
+
+            const list = data || securityReportsList;
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--color-charcoal-muted); padding: 3rem 1.5rem;"><div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-shield-halved"></i></div><div style="font-weight: 700; font-size: 0.95rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Belum Ada Laporan Ronda Tercatat</div><p style="font-size: 0.8rem; margin: 0; color: var(--color-charcoal-muted);">Klik tombol <b>"+ Buat Laporan Ronda Baru"</b> untuk mulai mencatat hasil patroli keamanan 24 jam.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                let shiftBadge = '<span class="shift-badge-pagi"><i class="fa-solid fa-sun"></i> Pagi</span>';
+                if (item.shift_piket === 'SIANG') shiftBadge = '<span class="shift-badge-siang"><i class="fa-solid fa-cloud-sun"></i> Siang</span>';
+                else if (item.shift_piket === 'MALAM') shiftBadge = '<span class="shift-badge-malam"><i class="fa-solid fa-moon"></i> Malam</span>';
+
+                let kondisiBadge = '<span class="kondisi-aman"><i class="fa-solid fa-circle-check"></i> Kondusif</span>';
+                if (item.kondisi_keamanan === 'PERHATIAN_KHUSUS') kondisiBadge = '<span class="kondisi-perhatian"><i class="fa-solid fa-triangle-exclamation"></i> Perhatian Khusus</span>';
+                else if (item.kondisi_keamanan === 'INSIDEN_DARURAT') kondisiBadge = '<span class="kondisi-darurat"><i class="fa-solid fa-circle-exclamation"></i> Insiden Darurat</span>';
+
+                let statusBadgeClass = 'status-tindak-selesai';
+                let statusLabel = 'Selesai';
+                if (item.status_tindak_lanjut === 'DALAM_PENANGANAN') { statusBadgeClass = 'status-tindak-proses'; statusLabel = 'Dalam Penanganan'; }
+                else if (item.status_tindak_lanjut === 'ESKALASI_DKM') { statusBadgeClass = 'status-tindak-eskalasi'; statusLabel = 'Eskalasi DKM'; }
+
+                const photoUrl = item.bukti_media_url || '';
+                const photoThumb = photoUrl
+                    ? '<div style="width: 36px; height: 26px; border-radius: 4px; overflow: hidden; background: #F3F4F6; margin: 0 auto; cursor: pointer; border: 1px solid var(--color-border);" onclick="openCoverPreviewUrl(\'' + photoUrl + '\')"><img src="' + photoUrl + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'"></div>'
+                    : '<span style="font-size: 0.72rem; color: #9CA3AF;">-</span>';
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.825rem;">' + item.tanggal + '</div>' +
+                        '<div style="margin-top: 2px;">' + shiftBadge + '</div>' +
+                    '</td>' +
+                    '<td><div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;"><i class="fa-solid fa-user-shield" style="color: #9CA3AF; margin-right: 4px;"></i> ' + escapeHtml(item.petugas_jaga) + '</div></td>' +
+                    '<td><div style="font-size: 0.8rem; color: var(--color-charcoal); font-weight: 600;">' + escapeHtml(item.area_patroli) + '</div></td>' +
+                    '<td>' + kondisiBadge + '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.judul_laporan) + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted); line-height: 1.3; max-width: 260px;">' + escapeHtml(item.kronologi_kejadian) + '</div>' +
+                    '</td>' +
+                    '<td style="text-align: center;">' + photoThumb + '</td>' +
+                    '<td><span class="status-badge-dapur ' + statusBadgeClass + '">' + statusLabel + '</span></td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                            '<button type="button" class="btn-action edit" onclick="openEditSecurityModal(\'' + item.id + '\')" title="Edit Laporan"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                            '<button type="button" class="btn-action delete" onclick="deleteSecurityEntry(\'' + item.id + '\')" title="Hapus Laporan"><i class="fa-solid fa-trash"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function filterSecurityTable() {
+            const query = (document.getElementById('keamanan-search-input')?.value || '').toLowerCase().trim();
+            const shift = document.getElementById('keamanan-shift-filter')?.value || 'ALL';
+            const kondisi = document.getElementById('keamanan-kondisi-filter')?.value || 'ALL';
+
+            let list = [...securityReportsList];
+
+            if (query) {
+                list = list.filter(r => (r.judul_laporan || '').toLowerCase().includes(query) || (r.petugas_jaga || '').toLowerCase().includes(query) || (r.area_patroli || '').toLowerCase().includes(query) || (r.kronologi_kejadian || '').toLowerCase().includes(query));
+            }
+            if (shift !== 'ALL') {
+                list = list.filter(r => r.shift_piket === shift);
+            }
+            if (kondisi !== 'ALL') {
+                list = list.filter(r => r.kondisi_keamanan === kondisi);
+            }
+
+            renderSecurityTable(list);
+        }
+
+        function renderInsidenTable() {
+            const tbody = document.getElementById('tbody-security-insiden-list');
+            if (!tbody) return;
+
+            const list = securityReportsList.filter(r => r.kondisi_keamanan !== 'KONDUSIF' || r.status_tindak_lanjut === 'ESKALASI_DKM' || r.status_tindak_lanjut === 'DALAM_PENANGANAN');
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--color-charcoal-muted); padding: 2.5rem 1.5rem;"><div style="font-weight: 700; font-size: 0.9rem; color: #059669; margin-bottom: 0.25rem;"><i class="fa-solid fa-circle-check"></i> Lingkungan Masjid Aman &amp; Terkendali</div><p style="font-size: 0.775rem; margin: 0;">Tidak ada insiden darurat atau eskalasi masalah aktif saat ini.</p></td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => {
+                let kondisiBadge = '<span class="kondisi-perhatian"><i class="fa-solid fa-triangle-exclamation"></i> Perhatian Khusus</span>';
+                if (item.kondisi_keamanan === 'INSIDEN_DARURAT') kondisiBadge = '<span class="kondisi-darurat"><i class="fa-solid fa-circle-exclamation"></i> Insiden Darurat</span>';
+
+                let statusBadgeClass = 'status-tindak-selesai';
+                let statusLabel = 'Selesai';
+                if (item.status_tindak_lanjut === 'DALAM_PENANGANAN') { statusBadgeClass = 'status-tindak-proses'; statusLabel = 'Dalam Penanganan'; }
+                else if (item.status_tindak_lanjut === 'ESKALASI_DKM') { statusBadgeClass = 'status-tindak-eskalasi'; statusLabel = 'Eskalasi DKM'; }
+
+                const photoUrl = item.bukti_media_url || '';
+                const photoThumb = photoUrl
+                    ? '<div style="width: 36px; height: 26px; border-radius: 4px; overflow: hidden; background: #F3F4F6; margin: 0 auto; cursor: pointer; border: 1px solid var(--color-border);" onclick="openCoverPreviewUrl(\'' + photoUrl + '\')"><img src="' + photoUrl + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'"></div>'
+                    : '<span style="font-size: 0.72rem; color: #9CA3AF;">-</span>';
+
+                return '<tr>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.825rem;">' + item.tanggal + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted);">' + item.shift_piket + '</div>' +
+                    '</td>' +
+                    '<td><div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.petugas_jaga) + '</div></td>' +
+                    '<td><div style="font-size: 0.8rem; color: var(--color-charcoal); font-weight: 600;">' + escapeHtml(item.area_patroli) + '</div></td>' +
+                    '<td>' + kondisiBadge + '</td>' +
+                    '<td>' +
+                        '<div style="font-weight: 700; color: var(--color-charcoal); font-size: 0.85rem;">' + escapeHtml(item.judul_laporan) + '</div>' +
+                        '<div style="font-size: 0.72rem; color: var(--color-charcoal-muted); line-height: 1.3;">' + escapeHtml(item.kronologi_kejadian) + '</div>' +
+                        (item.catatan_koordinasi ? '<div style="font-size: 0.72rem; color: #B45309; margin-top: 3px; font-weight: 600;">Catatan DKM: ' + escapeHtml(item.catatan_koordinasi) + '</div>' : '') +
+                    '</td>' +
+                    '<td style="text-align: center;">' + photoThumb + '</td>' +
+                    '<td><span class="status-badge-dapur ' + statusBadgeClass + '">' + statusLabel + '</span></td>' +
+                    '<td style="text-align: right;">' +
+                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                            '<button type="button" class="btn-action edit" onclick="openEditSecurityModal(\'' + item.id + '\')" title="Edit Laporan"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function updateSecurityKpiStats() {
+            const total = securityReportsList.length;
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            let todayCount = 0;
+            let kondusifCount = 0;
+            let insidenCount = 0;
+
+            securityReportsList.forEach(r => {
+                if (r.tanggal === todayStr) todayCount++;
+                if (r.kondisi_keamanan === 'KONDUSIF') kondusifCount++;
+                else insidenCount++;
+            });
+
+            const statTotal = document.getElementById('stat-keamanan-total');
+            if (statTotal) statTotal.textContent = total + ' Laporan';
+
+            const statKondusif = document.getElementById('stat-keamanan-kondusif');
+            if (statKondusif) statKondusif.textContent = total > 0 ? Math.round((kondusifCount / total) * 100) + '%' : '100%';
+
+            const statToday = document.getElementById('stat-keamanan-today');
+            if (statToday) statToday.textContent = todayCount + ' Laporan';
+
+            const statInsiden = document.getElementById('stat-keamanan-insiden');
+            if (statInsiden) statInsiden.textContent = insidenCount + ' Kasus';
+        }
+
+        function openAddSecurityModal() {
+            document.getElementById('form-security-entry').reset();
+            document.getElementById('security-entry-id').value = '';
+            document.getElementById('modal-security-title').innerHTML = '<i class="fa-solid fa-shield-halved" style="color: var(--color-gold-deep);"></i> Buat Laporan Piket Ronda Keamanan';
+            
+            document.getElementById('security-form-tanggal').value = new Date().toISOString().split('T')[0];
+            document.getElementById('security-form-petugas').value = getUserDisplayName(currentUser);
+            document.getElementById('security-form-kondisi').value = 'KONDUSIF';
+            document.getElementById('security-form-status').value = 'SELESAI';
+            document.getElementById('security-form-preview-box').style.display = 'none';
+
+            openModal('modal-security-entry');
+        }
+
+        function openEditSecurityModal(id) {
+            const item = securityReportsList.find(r => r.id === id);
+            if (!item) return;
+
+            document.getElementById('security-entry-id').value = item.id;
+            document.getElementById('modal-security-title').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Edit Laporan Ronda Keamanan';
+            
+            document.getElementById('security-form-tanggal').value = item.tanggal;
+            document.getElementById('security-form-shift').value = item.shift_piket;
+            document.getElementById('security-form-petugas').value = item.petugas_jaga;
+            document.getElementById('security-form-area').value = item.area_patroli;
+            document.getElementById('security-form-kondisi').value = item.kondisi_keamanan;
+            document.getElementById('security-form-status').value = item.status_tindak_lanjut || 'SELESAI';
+            document.getElementById('security-form-judul').value = item.judul_laporan;
+            document.getElementById('security-form-kronologi').value = item.kronologi_kejadian;
+            document.getElementById('security-form-foto-url').value = item.bukti_media_url || '';
+            document.getElementById('security-form-catatan').value = item.catatan_koordinasi || '';
+
+            const previewBox = document.getElementById('security-form-preview-box');
+            const previewImg = document.getElementById('security-form-preview-img');
+            if (item.bukti_media_url) {
+                previewImg.src = item.bukti_media_url;
+                previewBox.style.display = 'block';
+            } else {
+                previewBox.style.display = 'none';
+            }
+
+            openModal('modal-security-entry');
+        }
+
+        async function handleSecurityPhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const compressed = await compressImageToWebP(file, 1000, 0.8);
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    document.getElementById('security-form-foto-url').value = dataUrl;
+                    const previewBox = document.getElementById('security-form-preview-box');
+                    const previewImg = document.getElementById('security-form-preview-img');
+                    previewImg.src = dataUrl;
+                    previewBox.style.display = 'block';
+                };
+                reader.readAsDataURL(compressed.blob);
+            } catch (err) {
+                alert('Gagal memproses foto dokumentasi: ' + err.message);
+            }
+        }
+
+        async function handleSecurityFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('security-entry-id').value || ('sec_' + Date.now());
+            const tanggal = document.getElementById('security-form-tanggal').value;
+            const shift = document.getElementById('security-form-shift').value;
+            const petugas = document.getElementById('security-form-petugas').value.trim();
+            const area = document.getElementById('security-form-area').value;
+            const kondisi = document.getElementById('security-form-kondisi').value;
+            const status = document.getElementById('security-form-status').value;
+            const judul = document.getElementById('security-form-judul').value.trim();
+            const kronologi = document.getElementById('security-form-kronologi').value.trim();
+            const fotoUrl = document.getElementById('security-form-foto-url').value.trim();
+            const catatan = document.getElementById('security-form-catatan').value.trim();
+
+            const record = {
+                id: id,
+                tanggal: tanggal,
+                shift_piket: shift,
+                petugas_jaga: petugas,
+                area_patroli: area,
+                kondisi_keamanan: kondisi,
+                status_tindak_lanjut: status,
+                judul_laporan: judul,
+                kronologi_kejadian: kronologi,
+                bukti_media_url: fotoUrl,
+                catatan_koordinasi: catatan,
+                updated_at: new Date().toISOString()
+            };
+
+            const existingIdx = securityReportsList.findIndex(r => r.id === id);
+            if (existingIdx !== -1) {
+                securityReportsList[existingIdx] = { ...securityReportsList[existingIdx], ...record };
+            } else {
+                record.created_at = new Date().toISOString();
+                securityReportsList.unshift(record);
+            }
+
+            localStorage.setItem('masjid_sophia_security_master', JSON.stringify(securityReportsList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('security_reports').upsert([record], { onConflict: 'id' });
+                } catch (err) {
+                    console.warn('[Security] Supabase upsert notice:', err);
+                }
+            }
+
+            closeModal('modal-security-entry');
+            renderSecurityTable();
+            renderInsidenTable();
+            updateSecurityKpiStats();
+            alert('Laporan piket ronda keamanan berhasil disimpan!');
+        }
+
+        async function deleteSecurityEntry(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus laporan keamanan ini?')) return;
+
+            securityReportsList = securityReportsList.filter(r => r.id !== id);
+            localStorage.setItem('masjid_sophia_security_master', JSON.stringify(securityReportsList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('security_reports').delete().eq('id', id);
+                } catch (e) {}
+            }
+
+            renderSecurityTable();
+            renderInsidenTable();
+            updateSecurityKpiStats();
+        }
+
+        // Master Loader for Modul 6a
+        async function loadKeamananData(forceRefresh = false) {
+            await loadSecurityList();
+            const savedSubView = localStorage.getItem('masjid_sophia_keamanan_subview') || 'log';
+            switchKeamananSubView(savedSubView);
+        }
+
         // 10. General Modal Helper & Dismissers
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
@@ -19849,6 +20484,7 @@
             else if (id === 'modal-review-leave' && typeof closeReviewLeaveModal === 'function') closeReviewLeaveModal();
             else if (id === 'modal-leave-lightbox' && typeof closeLeaveDocLightbox === 'function') closeLeaveDocLightbox();
             else if (id === 'modal-substitute-alert' && typeof closeSubstituteAlertModal === 'function') closeSubstituteAlertModal();
+            else if (id === 'modal-security-entry') closeModal('modal-security-entry');
             else if (id === 'modal-musafir-entry') closeModal('modal-musafir-entry');
             else if (id === 'modal-santri-entry') closeModal('modal-santri-entry');
             else if (id === 'modal-mutabaah-entry') closeModal('modal-mutabaah-entry');

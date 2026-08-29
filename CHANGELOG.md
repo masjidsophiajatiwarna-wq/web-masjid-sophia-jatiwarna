@@ -4,6 +4,24 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.10] - 2026-08-29
+
+### Pembangunan Modul 6a: PJ Keamanan & Ketertiban (Piket Ronda 24 Jam & Laporan Kejadian)
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[LOG_RONDA_KEAMANAN]` Membangun Sub-Modul Log Piket Ronda & Pengawasan Keamanan 24 Jam (`security_reports`):
+  - **Perekaman Shift & Area Patroli:** Pembagian 3 shift 24 jam (*Shift Pagi 06:00-14:00*, *Shift Siang 14:00-22:00*, *Shift Malam 22:00-06:00*) dan pemilihan area patroli (*Parkiran & Gerbang Utama*, *Ruang Utama Shalat & Selasar*, *Toilet & Sanitasi Wudhu*, *Dapur & Belakang*, *Seluruh Area Masjid*).
+  - **Skala Tingkat Kondisi Keamanan:** Klasifikasi kondisi situasional (*Kondusif & Aman*, *Perhatian Khusus*, dan *Insiden Darurat*).
+  - **Unggah Bukti Dokumentasi WebP:** Kompresi client-side otomatis foto bukti temuan lapangan/insiden dengan pratinjau zoom modal.
+  - **Papan Metrik KPI Keamanan:** Counter live total laporan ronda, persentase kondisi kondusif, volume patroli hari ini, dan insiden aktif.
+- `[ESKALASI_INSIDEN_DKM]` Membangun Sub-Modul Khusus Insiden & Eskalasi Pimpinan DKM:
+  - Filter otomatis laporan dengan status non-kondusif (*Perhatian Khusus / Insiden Darurat*) atau status tindak lanjut (*Dalam Penanganan / Eskalasi DKM*).
+  - Kolom catatan koordinasi khusus pimpinan DKM untuk instruksi tindak lanjut aparat lingkungan.
+- `[JADWAL_POS_PATROLI_24JAM]` Menghadirkan Sub-Modul Panduan SOP Shift & Pos Patroli 24 Jam.
+- `[SIDEBAR_ACCORDION_UPDATE]` Menambahkan menu *KEAMANAN & KETERTIBAN* (`#tab-keamanan`) pada bilah samping navigasi dengan proteksi hak akses RBAC khusus peran `SUPER_ADMIN`, `SUPER_USER`, `KETUA_DKM`, dan `PJ_KEAMANAN`.
+
+---
+
 ## [1.9.9] - 2026-08-29
 
 ### Pembangunan Modul 5: PJ Musafir & Pelayanan 24 Jam (Buku Tamu, Transit Menginap & Loker)
