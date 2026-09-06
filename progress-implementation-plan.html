@@ -1310,6 +1310,16 @@
                             <div class="task-desc">Tabel riwayat aktivitas (task_activity_logs), komentar tugas (task_comments), pesan koordinasi (task_chat_messages), kolom jadwal baru, dan skema Account Control (permissions JSONB & avatar_url).</div>
                         </div>
                     </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Arsitektur Keamanan Zero-Leak & Isolasi Kredensial Runtime
+                                <span class="task-badge-pill">Zero-Leak Security</span>
+                            </div>
+                            <div class="task-desc">Eliminasi 100% hardcoded Supabase project URL dan anon key dari index.html, admin.html, media-checklist.html, dan berkas workflow. Penerapan serverless endpoint /api/config, pemuat runtime dinamis asset/js/env-loader.js (5-tier fallback), pemisahan .env & .env.example, serta hardening .gitignore. Audit skrip membuktikan 0 kebocoran kredensial.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

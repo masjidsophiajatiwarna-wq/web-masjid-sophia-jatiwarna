@@ -12,10 +12,17 @@ AKUN_PENGURUS_DKM.txt
 *.csv
 *.xlsx
 .env
+.env*
+!.env.example
 .env*.local
 .env.development
 .env.production
 .env.staging
+.env.test
+*.env
+config.local.js
+config.*.local.js
+local.config.js
 *.pem
 *.key
 *.cert
@@ -59,6 +66,8 @@ supabase/.branches/
 # Berkas Log & Analisis Jaringan
 *.log
 logs/
+logerror/
+logerror/*
 *.har
 *.pid
 *.seed
@@ -104,3 +113,4 @@ desktop.ini
 scratch/
 tmp/
 temp/
+.agents/

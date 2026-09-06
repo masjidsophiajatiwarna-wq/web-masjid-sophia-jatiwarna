@@ -19,6 +19,9 @@
 
     <!-- Supabase JS Client v2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Environment Configuration Loader (Strict Zero-Leak Architecture) -->
+    <script src="config.local.js" onerror="this.remove()"></script>
+    <script src="asset/js/env-loader.js"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="asset/favicon/logo-black/favicon.ico">
@@ -5263,7 +5266,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="https://supabase.com/dashboard/project/fcwajbemkbhkogwtqcmx/settings/billing/subscription" target="_blank" rel="noopener noreferrer" class="pillar-footer-link">
+                            <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer" class="pillar-footer-link" id="supabase-billing-link">
                                 <span>Buka Supabase Billing</span>
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             </a>
@@ -8387,20 +8390,38 @@
     </div>
 
     <script>
-        // Supabase Client Config
-        const SUPABASE_PROJECT_URL = "https://fcwajbemkbhkogwtqcmx.supabase.co";
-        const SUPABASE_ANON_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjd2FqYmVta2Joa29nd3RxY214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzg2ODMsImV4cCI6MjEwMjcxNDY4M30.SdkWOVO8TyWzQn_96SCLUzryv-blvKKCi1poXlPk5Y4";
-        
+        // Supabase Client Config (Dynamic Runtime Config - Zero Hardcode)
         let sbClient = null;
         let currentUser = null;
 
-        try {
-            if (window.supabase && typeof window.supabase.createClient === 'function') {
-                sbClient = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_PUBLIC_KEY);
+        async function initAdminSupabase() {
+            if (sbClient) return sbClient;
+            try {
+                if (window.MasjidConfig && typeof window.MasjidConfig.initSupabaseClient === 'function') {
+                    sbClient = await window.MasjidConfig.initSupabaseClient();
+                    
+                    // Dynamically update Supabase Billing Link if config is available
+                    try {
+                        const conf = await window.MasjidConfig.loadConfig();
+                        if (conf && conf.supabaseUrl) {
+                            const urlObj = new URL(conf.supabaseUrl);
+                            const ref = urlObj.hostname.split('.')[0];
+                            const billEl = document.getElementById('supabase-billing-link');
+                            if (billEl && ref) {
+                                billEl.href = `https://supabase.com/dashboard/project/${ref}/settings/billing/subscription`;
+                            }
+                        }
+                    } catch (e) {}
+
+                    return sbClient;
+                }
+            } catch (e) {
+                console.warn("[Supabase Admin] Dynamic init notice:", e);
             }
-        } catch (e) {
-            console.warn("Supabase Admin init:", e);
+            return null;
         }
+
+        const adminSupabasePromise = initAdminSupabase();
 
         let realtimeHub = null;
 
@@ -8707,6 +8728,7 @@
 
         // Check Auth Session & Callback Hash on Load
         document.addEventListener('DOMContentLoaded', async () => {
+            await adminSupabasePromise;
             const rawHash = window.location.hash || '';
             const rawSearch = window.location.search || '';
 

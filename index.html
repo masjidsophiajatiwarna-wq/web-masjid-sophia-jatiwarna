@@ -1213,6 +1213,9 @@
     </style>
     <!-- Supabase JS Client v2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Environment Configuration Loader (Strict Zero-Leak Architecture) -->
+    <script src="config.local.js" onerror="this.remove()"></script>
+    <script src="asset/js/env-loader.js"></script>
 </head>
 <body>
 
@@ -1806,19 +1809,24 @@
         }
 
         // ==========================================================================
-        // SUPABASE CLIENT INITIALIZATION (FOR REALTIME SCHEDULES & WARTA)
+        // SUPABASE CLIENT INITIALIZATION (DYNAMIC RUNTIME CONFIG - ZERO HARDCODE)
         // ==========================================================================
-        const SUPABASE_PROJECT_URL = "https://fcwajbemkbhkogwtqcmx.supabase.co";
-        const SUPABASE_ANON_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjd2FqYmVta2Joa29nd3RxY214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzg2ODMsImV4cCI6MjEwMjcxNDY4M30.SdkWOVO8TyWzQn_96SCLUzryv-blvKKCi1poXlPk5Y4";
         let sbClientIndex = null;
 
-        try {
-            if (window.supabase && typeof window.supabase.createClient === 'function') {
-                sbClientIndex = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_PUBLIC_KEY);
+        async function initSupabaseClientIndex() {
+            if (sbClientIndex) return sbClientIndex;
+            try {
+                if (window.MasjidConfig && typeof window.MasjidConfig.initSupabaseClient === 'function') {
+                    sbClientIndex = await window.MasjidConfig.initSupabaseClient();
+                    return sbClientIndex;
+                }
+            } catch (e) {
+                console.warn('[Supabase Index] Dynamic init notice:', e);
             }
-        } catch (e) {
-            console.warn('Supabase Index init note:', e);
+            return null;
         }
+
+        const initSupabasePromise = initSupabaseClientIndex();
 
         // Astronomical Prayer Times Calculation Engine (Kemenag RI Standard for Jatiwarna Bekasi)
         let PRAYER_SCHEDULE = {
@@ -1867,6 +1875,7 @@
         }
 
         async function loadPrayerSchedule() {
+            if (!sbClientIndex) await initSupabasePromise;
             if (!sbClientIndex) return;
             try {
                 const todayISO = new Date().toISOString().split('T')[0];
@@ -1901,6 +1910,7 @@
         }
 
         async function loadOfficersAndKajian() {
+            if (!sbClientIndex) await initSupabasePromise;
             if (!sbClientIndex) return;
             try {
                 const todayISO = new Date().toISOString().split('T')[0];
@@ -2013,6 +2023,7 @@
         async function loadPublishedArticles() {
             const grid = document.querySelector('#berita-kajian .news-grid');
             if (!grid) return;
+            if (!sbClientIndex) await initSupabasePromise;
 
             try {
                 if (sbClientIndex) {
@@ -2068,7 +2079,8 @@
         }
 
         // Realtime Subscription for Live Updates on index.html
-        function initRealtimeArticles() {
+        async function initRealtimeArticles() {
+            if (!sbClientIndex) await initSupabasePromise;
             if (sbClientIndex && typeof sbClientIndex.channel === 'function') {
                 sbClientIndex
                     .channel('public:artikel_berita:index')
@@ -2080,7 +2092,8 @@
         }
 
         // Realtime Subscription for Prayer Schedules & Kajian on index.html
-        function initRealtimePrayer() {
+        async function initRealtimePrayer() {
+            if (!sbClientIndex) await initSupabasePromise;
             if (sbClientIndex && typeof sbClientIndex.channel === 'function') {
                 sbClientIndex
                     .channel('public:jadwal_shalat_petugas:index')
@@ -2096,7 +2109,8 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initSupabasePromise;
             loadPrayerSchedule();
             loadOfficersAndKajian();
             initRealtimePrayer();

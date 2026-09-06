@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v5.4 (Penyelarasan Sinkronisasi Realtime Web Publik, Standarisasi RFC 4122 UUID 11 Modul Operasional, dan Auto-Migration Engine)  
+**Versi Rencana Induk:** v5.5 (Arsitektur Keamanan Zero-Leak, Isolasi Kredensial Runtime .env, Serverless Config & Hardening .gitignore)  
 **Terakhir Diperbarui:** 2026-09-07  
 
 ---
@@ -106,8 +106,14 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
   - [x] **Migrasi Skema Modul Account & Access Control (`database/migration_account_control.sql`):**
     - `admin_users` (ALTER: `avatar_url`, `permissions JSONB`, `session_version`).
     - Fungsi `force_end_user_session()` dan Realtime CDC `admin_users`.
-  - [ ] **Migrasi Skema Lanjutan Suite Modul PJ Operasional (Menyesuaikan Implementasi Modul PJ):**
-    - `masjid_assets`, `santri_data`, `santri_mutabaah`, `musafir_logbook`, `financial_journals`, `security_reports`, `cleaning_reports`.
+  - [x] **Migrasi Skema Lanjutan Suite Modul PJ Operasional & Standarisasi RFC 4122 UUID (`database/migration_suite_all_modules_v2.sql`):**
+    - 11 tabel operasional diselaraskan dengan RFC 4122 UUID v4: `jadwal_shalat_petugas`, `dapur_makan_siang`, `masjid_assets`, `financial_journals`, `budget_requests`, `santri_data`, `santri_mutabaah`, `musafir_logbook`, `security_reports`, `cleaning_reports`, `artikel_berita`.
+  - [x] **Arsitektur Keamanan Zero-Leak & Isolasi Kredensial Runtime (Strict Zero-Hardcode):**
+    - Endpoint serverless Vercel `/api/config.js` (`/api/config`) untuk melayani `supabaseUrl` dan `supabaseAnonKey` secara dinamis saat runtime dari `process.env`.
+    - Pemuat runtime modular universal `asset/js/env-loader.js` (`window.MasjidConfig`) dengan mekanisme failover 5-tingkat (In-Memory -> SessionStorage -> `config.local.js` -> Serverless API `/api/config` -> LocalStorage) dan lazy initialization Supabase client.
+    - Pembersihan 100% seluruh hardcode string URL proyek dan anon public key JWT dari berkas publik dan admin: `index.html`, `admin.html`, `media-checklist.html`, `api/health.js`, `api/donasi.js`, `api/pengaduan.js`, `api/cloud-usage.js`, dan `.github/workflows/supabase-keepalive.yml`.
+    - Hardening `.gitignore` untuk memblokir seluruh berkas kredensial (`.env*`, `config.local.js`, `credentials.txt`, `AKUN_PENGURUS_DKM.txt`, `logerror/`, `.agents/`) serta penyediaan template dokumentasi aman `.env.example`.
+    - Audit pemindaian otomatis seluruh repositori dengan status kelulusan 100% (0 temuan celah kebocoran kunci).
 
 ---
 

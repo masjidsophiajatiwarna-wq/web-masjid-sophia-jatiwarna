@@ -15,6 +15,9 @@
     
     <!-- Supabase JS Client v2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Environment Configuration Loader (Strict Zero-Leak Architecture) -->
+    <script src="config.local.js" onerror="this.remove()"></script>
+    <script src="asset/js/env-loader.js"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="asset/favicon/logo-black/favicon.ico">
@@ -735,22 +738,25 @@
     const GDRIVE_IMAGE_URL = "https://drive.google.com/drive/folders/1ZrRTEAClir4myN7t0r3-eNj35rf_-uS4?usp=sharing";
     const GDRIVE_VIDEO_URL = "https://drive.google.com/drive/folders/13FUgFZV8w9tQT7loG9VrGIimFNo6_TJo?usp=sharing";
 
-    // Supabase Configuration
-    const SUPABASE_PROJECT_URL = "https://fcwajbemkbhkogwtqcmx.supabase.co";
-    const SUPABASE_ANON_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjd2FqYmVta2Joa29nd3RxY214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzg2ODMsImV4cCI6MjEwMjcxNDY4M30.SdkWOVO8TyWzQn_96SCLUzryv-blvKKCi1poXlPk5Y4";
-    
+    // Supabase Configuration (Dynamic Runtime Config - Zero Hardcode)
     let sbClient = null;
     let checkedState = {};
     let currentFilter = 'all';
 
-    // Initialize Supabase Client safely
-    try {
-        if (window.supabase && typeof window.supabase.createClient === 'function') {
-            sbClient = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_PUBLIC_KEY);
+    async function initMediaSupabase() {
+        if (sbClient) return sbClient;
+        try {
+            if (window.MasjidConfig && typeof window.MasjidConfig.initSupabaseClient === 'function') {
+                sbClient = await window.MasjidConfig.initSupabaseClient();
+                return sbClient;
+            }
+        } catch (e) {
+            console.warn("[Media Checklist] Dynamic init notice:", e);
         }
-    } catch (e) {
-        console.warn("Supabase init notice:", e);
+        return null;
     }
+
+    const mediaSupabasePromise = initMediaSupabase();
 
     // Render all items synchronously to guarantee UI is never blank
     function renderItems(filterCategory = 'all') {
@@ -805,6 +811,7 @@
 
     // Fetch initial state from Supabase Cloud
     async function loadCloudState() {
+        if (!sbClient) await mediaSupabasePromise;
         if (!sbClient) return;
         try {
             const { data, error } = await sbClient
@@ -925,7 +932,8 @@
     }
 
     // Subscribe to Realtime WebSocket changes
-    function initRealtime() {
+    async function initRealtime() {
+        if (!sbClient) await mediaSupabasePromise;
         if (!sbClient) return;
         try {
             sbClient
@@ -964,8 +972,9 @@
     }
 
     // Synchronous immediate render followed by async cloud sync
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
         renderItems('all');
+        await mediaSupabasePromise;
         loadCloudState();
         initRealtime();
     });

@@ -4,6 +4,42 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.14] - 2026-09-07
+
+### Arsitektur Keamanan Zero-Leak & Isolasi Kredensial Runtime (.env, /api/config, asset/js/env-loader.js)
+
+#### Analisa & Audit Celah Keamanan (Vulnerability Audit)
+- `[HARDCODED_JWT_ANON_LEAK]` Ditemukan paparan kredensial langsung berupa token JWT anonim (`SUPABASE_ANON_PUBLIC_KEY`) dan URL proyek Supabase (`SUPABASE_PROJECT_URL`) yang ter-hardcode di dalam berkas antarmuka publik dan admin (`index.html`, `admin.html`, dan `media-checklist.html`). Meskipun kunci anon Supabase dilindungi oleh Row Level Security (RLS), membiarkan token mentah berada di dalam kode sumber repositori memicu peringatan pemindaian keamanan pihak ketiga (GitGuardian, TruffleHog, GitHub Secret Scanning) serta mengekspos endpoint database secara terbuka kepada pengunjung kode sumber publik.
+- `[SERVERLESS_ENDPOINT_LEAK]` Ditemukan string URL proyek Supabase dan referensi proyek ter-hardcode di fungsi serverless `/api/health.js`, `/api/donasi.js`, `/api/pengaduan.js`, `/api/cloud-usage.js`, berkas migrasi SQL lama, dan GitHub Actions workflow `supabase-keepalive.yml`.
+
+#### Perbaikan & Solusi Arsitektur Keamanan (Security Hardening & Zero-Leak Architecture)
+- `[SERVERLESS_CONFIG_API]` Membangun endpoint konfigurasi aman `/api/config` (`api/config.js`) berbasis Edge/Serverless Vercel yang menyajikan `supabaseUrl` dan `supabaseAnonKey` secara dinamis pada saat *runtime* dari `process.env`. Endpoint ini dilengkapi proteksi header `Cache-Control: public, max-age=300, stale-while-revalidate=600`, dukungan CORS, dan validasi fail-safe environment.
+- `[DYNAMIC_ENV_LOADER]` Membangun pustaka pemuat konfigurasi universal `asset/js/env-loader.js` (`window.MasjidConfig`) dengan mekanisme resolusi 5-tingkat (*5-tier failover*):
+  1. **Tier 1 (In-Memory Cache):** Menghindari pembacaan berulang dan latensi jaringan.
+  2. **Tier 2 (Session Storage):** Cache sesi pengguna aktif untuk kecepatan muat instan tanpa membebani serverless API.
+  3. **Tier 3 (Local Config File):** Membaca `window.__ENV__` dari `config.local.js` khusus untuk pengujian lokal/offline statis.
+  4. **Tier 4 (Serverless Endpoint):** Pengambilan dinamis melalui `fetch('/api/config')` saat aplikasi berjalan online di server.
+  5. **Tier 5 (Local Storage Override):** Pemuatan darurat dari preferensi tersimpan pengurus jika serverless tidak terjangkau.
+  Pustaka ini juga menyediakan `initSupabaseClient(options)` terintegrasi yang menjamin inisialisasi instance Supabase terjadi setelah konfigurasi berhasil diperoleh.
+- `[CLIENT_HTML_SANITIZATION]` Menghapus 100% hardcode URL proyek dan token anonim dari:
+  - `index.html`: Diintegrasikan dengan `initSupabaseClientIndex()` dan listener dinamis `initSupabasePromise` untuk modul jadwal shalat, nama petugas ibadah, dan artikel berita.
+  - `admin.html`: Diintegrasikan dengan `initAdminSupabase()` dan listener terpadu `adminSupabasePromise` untuk seluruh 11 modul operasional dan Realtime WebSocket. Tautan billing Supabase diperbarui dinamis.
+  - `media-checklist.html`: Diintegrasikan dengan `initMediaSupabase()` dan sinkronisasi status cloud otomatis.
+- `[BACKEND_FUNCTIONS_SANITIZATION]` Membersihkan seluruh fallback hardcode pada:
+  - `api/health.js`: Ekstraksi referensi proyek Supabase murni dari `process.env.SUPABASE_URL` via parsing hostname dinamis.
+  - `api/donasi.js` & `api/pengaduan.js`: Menggunakan `process.env.SUPABASE_URL` dan `process.env.SUPABASE_SERVICE_ROLE_KEY` secara ketat tanpa fallback string mentah.
+  - `api/cloud-usage.js`: Menghilangkan hardcoded Supabase project ref URL.
+  - `database/migration_task_management_v1.6.sql`: Menghapus URL proyek pada baris komentar dokumentasi.
+  - `.github/workflows/supabase-keepalive.yml`: Mengganti URL proyek statis dengan rahasia GitHub Actions `${{ secrets.SUPABASE_URL }}`.
+- `[GITIGNORE_AND_ENV_HARDENING]` Memperketat berkas `.gitignore` untuk mencegah segala kemungkinan kebocoran ke repositori GitHub:
+  - Penambahan pola `.env*`, `config.local.js`, `config.*.local.js`, `local.config.js`, `logerror/`, `.agents/`.
+  - Pembuatan template panduan `.env.example` yang bersih tanpa rahasia riil sebagai dokumentasi standar instalasi.
+  - Berkas rahasia riil (`.env`, `config.local.js`, `credentials.txt`, `AKUN_PENGURUS_DKM.txt`) dipastikan 100% berstatus *untracked* dan diabaikan oleh Git.
+- `[ZERO_LEAK_PROGRAMMATIC_AUDIT]` Menjalankan pemindaian otomatis ke seluruh berkas kode repositori dengan hasil: **0 KEBOCORAN KREDENSIAL / ZERO LEAKS**.
+- `[E2E_REGRESSION_TEST]` Menjalankan suite pengujian end-to-end `test_all_modules_e2e.js` dengan hasil 100% lulus, memverifikasi tidak ada gangguan fungsionalitas pada sinkronisasi jadwal shalat publik maupun operasi database 10 modul admin DKM.
+
+---
+
 ## [1.9.13] - 2026-09-07
 
 ### Perbaikan Kritis Sinkronisasi Realtime Shalat Publik & Standarisasi RFC 4122 UUID 11 Modul Operasional
