@@ -4,6 +4,48 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.13] - 2026-09-07
+
+### Perbaikan Kritis Sinkronisasi Realtime Shalat Publik & Standarisasi RFC 4122 UUID 11 Modul Operasional
+
+#### Analisa & Akar Masalah (Root Cause Identification)
+- `[UUID_SYNTAX_ERROR]` Identifikasi akar masalah kegagalan penyimpanan data ke Supabase Postgres: Tipe data kolom `id` pada seluruh 23 tabel adalah `UUID` (PostgreSQL), sedangkan antarmuka admin sebelumnya menghasilkan string acak berbasis timestamp (contoh: `'dpr_' + Date.now()`, `'ast_' + Date.now()`, `'trx_' + Date.now()`, dll.). Postgres menolak setiap transaksi dengan kode error `22P02: invalid input syntax for type uuid`.
+- `[SILENT_FAIL_LOCAL_STORAGE]` Identifikasi akar masalah record hanya tersimpan di browser lokal pengurus namun kosong di perangkat lain atau Supabase: Supabase JavaScript SDK mengembalikan objek `{ data, error }` tanpa melempar eksepsi (*no throw*). Blok `try-catch` lama tidak memeriksa properti `error`, sehingga kegagalan database tidak disadari dan aplikasi secara senyap hanya menyimpan data ke `localStorage`. Akibatnya, data hanya tampil di laptop pengurus yang bersangkutan dan tidak pernah masuk ke Supabase.
+- `[SCHEMA_COLUMNS_MISMATCH]` Identifikasi kegagalan sinkronisasi modul ibadah: Tabel `jadwal_shalat_petugas` kekurangan 14 kolom kritis (`ikhtiyat_minutes`, `imsak`, `terbit`, `dhuha`, `imam_subuh`, `imam_dzuhur`, `imam_ashar`, `imam_maghrib`, `imam_isya`, `muadzin_rawatib`, `muadzin_jumat`, `bilal_jumat`, `review_notes`, `submitted_at`), serta constraint `NOT NULL` berlebih pada `santri_data`, `musafir_logbook`, `security_reports`, dan `budget_requests`.
+- `[STATIC_PRAYER_INDEX]` Identifikasi ketidakterhubungan jadwal shalat di `index.html`: Web publik beranda menggunakan hisab statis lokal tanpa listener Supabase Realtime CDC maupun query awal ke tabel `jadwal_shalat_petugas`.
+
+#### Perbaikan & Peningkatan Sistem (Fixes & Architectural Enhancements)
+- `[RFC_UUID_STANDARDIZATION]` Menerapkan generator RFC 4122 UUID v4 (`generateUUID()`) pada 11 modul operasional di `admin.html`:
+  - Modul Logistik & Dapur (`dapur_makan_siang`)
+  - Modul Inventaris Aset (`masjid_assets`)
+  - Modul Buku Kas Keuangan (`financial_journals`)
+  - Modul Pengajuan Anggaran & Bon (`budget_requests` & auto disbursement journal)
+  - Modul Direktori Santri Tahfidz (`santri_data`)
+  - Modul Mutaba'ah Setoran Quran (`santri_mutabaah` - relasi FK UUID valid)
+  - Modul Buku Tamu Musafir 24 Jam (`musafir_logbook`)
+  - Modul Laporan Ronda Keamanan (`security_reports`)
+  - Modul Checklist Sanitasi Kebersihan (`cleaning_reports`)
+  - Modul Media Visual Beranda (`homepage_media`)
+  - Modul Publikasi Artikel & Berita (`artikel_berita`)
+- `[AUTO_MIGRATION_ENGINE]` Menambahkan fungsi `autoMigrateLegacyLocalStorage()` pada inisialisasi `admin.html` yang secara otomatis mendeteksi record lama ber-ID non-UUID di cache browser pengguna, mengonversinya ke RFC UUID valid, dan menyinkronkannya kembali ke Supabase DB.
+- `[STRICT_ERROR_HANDLING]` Menambahkan pengecekan eksplisit terhadap objek `{ error }` hasil pemanggilan Supabase API di seluruh modul dengan notifikasi peringatan (*alert*) informatif apabila terjadi kegagalan transaksi, mengeliminasi risiko data terjebak di penyimpanan lokal secara diam-diam.
+- `[REALTIME_CDC_BROADCAST_HUB]` Memperluas kanal listener Realtime CDC WebSocket dan Broadcast event pada `realtimeHub` untuk seluruh 11 tabel operasional di `admin.html`.
+- `[DIRECT_PUBLISH_DKM_BUTTON]` Menambahkan tombol *Simpan & Terbitkan Langsung ke Web* (`status_approval = 'Approved'`) untuk Pimpinan DKM dan Super Admin pada formulir jadwal shalat & petugas ibadah, memungkinkan publikasi instan tanpa proses perantara.
+- `[REALTIME_PRAYER_ENGINE_INDEX]` Mengintegrasikan `index.html` dengan database Supabase secara dinamis:
+  - Query awal otomatis mengambil jadwal shalat harian ter-approve (`status_approval = 'Approved'`) untuk hari ini atau jadwal approved terbaru.
+  - Fallback otomatis ke hisab astronomis lokal presisi Jatiwarna jika belum ada jadwal resmi yang disetujui.
+  - Pembaruan DOM dinamis untuk waktu shalat (Imsak, Subuh, Terbit, Dhuha, Dzuhur, Ashar, Maghrib, Isya) dan nama petugas ibadah (Imam Rawatib, Muadzin, Khatib Shalat Jumat, Pengisi Kajian).
+  - Countdown timer dinamis yang mengakses jadwal terkini setiap detik.
+  - Langganan Supabase Realtime channel WebSocket (`public:jadwal_shalat_petugas:index` dan `public:kajian_acara_ibadah:index`) untuk memperbarui jadwal seketika saat disetujui di panel admin tanpa reload browser.
+- `[DATABASE_SCHEMA_MIGRATION]` Menjalankan migrasi PostgreSQL Supabase melalui Port 6543 pooler:
+  - Menambahkan 14 kolom lengkap pada tabel `jadwal_shalat_petugas`.
+  - Merelaksasi constraint `NOT NULL` berlebih pada `santri_data`, `musafir_logbook`, `security_reports`, dan `budget_requests`.
+  - Memverifikasi publikasi `supabase_realtime` aktif untuk seluruh 23 tabel sistem.
+  - Memperbarui skema acuan pada `database/migration_suite_all_modules_v2.sql`.
+- `[E2E_AUTOMATED_VERIFICATION]` Menjalankan skrip uji otomatis end-to-end (`test_all_modules_e2e.js`) dengan hasil lulus 100% pada seluruh 10 modul operasional dan sinkronisasi publik `index.html`.
+
+---
+
 ## [1.9.12] - 2026-08-29
 
 ### Peluncuran Halaman Matriks QA & Testing Suite Interaktif (`testing-suite.html`)

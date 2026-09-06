@@ -7,8 +7,8 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v5.3 (Integrasi Master Plan & Panduan 1-by-1 Coaching Migrasi Domain Arsitektur 7 Pilar masjidsophia.com, Suite Akun DKM, Dynamic RBAC 17 Modul, dan Presensi 3-Tier)  
-**Terakhir Diperbarui:** 2026-08-28  
+**Versi Rencana Induk:** v5.4 (Penyelarasan Sinkronisasi Realtime Web Publik, Standarisasi RFC 4122 UUID 11 Modul Operasional, dan Auto-Migration Engine)  
+**Terakhir Diperbarui:** 2026-09-07  
 
 ---
 
@@ -113,9 +113,10 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 
 ### Fase 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat
 - **Benchmark Rujukan:** Masjid Istiqlal Jakarta (`https://www.istiqlal.or.id/`) & UMAR Travel (`artikel.html`, `artikel-detail.html`)
-- **Status:** 60% Selesai
+- **Status:** 70% Selesai
 - **Daftar Tugas:**
   - [x] **Design System & Komponen Beranda Inti (`index.html`):** Tema Terang Resmi, Hisab Jadwal Shalat Jatiwarna (Kemenag) + Live Countdown, Kartu Petugas Ibadah, Box Donasi BSI 1-Click Copy `7235464297` & QRIS SEDEKAH MAKAN, Dynamic Incognito Form, Informasi Fasilitas Musafir 24 Jam.
+  - [x] **Integrasi Realtime Shalat & Petugas Ibadah (`index.html` <-> `admin.html`):** Query dinamis ke tabel Supabase `jadwal_shalat_petugas` status `Approved`, fallback hisab astronomis otomatis bila belum ada jadwal terbit, sinkronisasi live nama Imam 5 waktu, Muadzin, Khatib Jumat, dan update countdown timer tanpa reload via WebSocket Supabase Realtime channel `public:jadwal_shalat_petugas:index` dan `public:kajian_acara_ibadah:index`.
   - [ ] **Redesign Besar Beranda Publik (Benchmark Istiqlal):** Hero Slider, Kartu Layanan Cepat, Kalender Ganda Hijriah/Masehi, Agenda Kajian Pekanan, Galeri Sorotan Carousel, Sticky Header, Mobile Bottom Nav Bar, Footer 4 Kolom.
   - [ ] **Kolom Pengaduan, Saran & Aspirasi Jamaah di Web Publik:** Modal interaktif terhubung ke `/api/pengaduan` dan tabel `feedback_complaints`.
   - [ ] **Halaman Direktori Berita & Artikel Dakwah (`artikel.html` - Benchmark UMAR):** Hero Search, Filter Kategori, Featured Article & Grid Artikel WebP, Pagination.
@@ -127,7 +128,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 
 ### Fase 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ
 - **Benchmark Rujukan:** SIABE-PORTO (Task Engine & Cloud Monitor), WEB-UMAR Admin (Article Studio), dan Standard Modul Odoo/Masjid (`.unused-modul-web-sophia`)
-- **Status:** 50% Selesai (Admin Core, Task Management 5 View, Obrolan Koordinasi Multi-Arah, Account Control & Dynamic RBAC, Profil Mandiri & Mobile Grabber Selesai)
+- **Status:** 75% Selesai (Admin Core, Task Engine 5 View, Chat Realtime, Account & Dynamic RBAC, Profil Mandiri, 11 Modul Operasional PJ Terhubung Supabase Realtime CDC & RFC 4122 UUID Selesai)
 - **Daftar Tugas:**
   - [x] **Pondasi Admin Core & Auth Gate (`admin.html`):** Gerbang login Supabase Auth JWT, sidebar adaptif RBAC 10 peran, panel KPI Real-Time, inbox kotak saran, dan rekonsiliasi kas harian.
   - [x] **Optimasi Antarmuka Fluid Desktop & Mobile-First Touch UI (`admin.html`):**
@@ -152,25 +153,26 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - [x] **Tab 1 - Profil Umum:** Ubah Nama Lengkap dan **Upload Foto Profil (Avatar)** dari perangkat lokal langsung teroptimasi (auto WebP 400x400) ke **ImageKit.io CDN**.
     - [x] **Tab 2 - Keamanan & Sandi:** Ganti kata sandi dan ganti email dengan **Strict Security Rule: Otomatis Logout & Wajib Login Ulang**.
     - [x] **Penyelarasan Visual Brand Sophia:** Latar belakang putih bersih `.modal-box`, indikator tab aktif garis bawah emas Sophia Gold tebal, tombol aksi bergradasi *Charcoal Gold Glow*, dan 100% bahasa Indonesia santun & formal.
-  - [ ] **Suite Modul Khusus per Divisi PJ (Pembangunan Bertahap 1-by-1):**
-    - [x] **PJ Ibadah & Acara (SELESAI):** Kalibrasi Menit Ikhtiyat Shalat, Rotasi Petugas Harian (Imam, Muadzin, Khatib, Bilal), Approval Batch DKM, Kalender Acara/Kajian Tematik & Arsip Khutbah (`#tab-ibadah`).
-    - [x] **Modul 1 — PJ Media & Dakwah (SELESAI):** Article Studio 100% Standar UMAR Travel (Quill.js Rich Text, auto-slug generator, kompresi WebP client-side, layout adjustment toolbar, modal media picker & storage usage bar, SEO panel Google search mockup preview live, status draft/publish toggle) & Visual Web Builder Beranda (kustomisasi hero banner, susunan section, live preview responsive index.html, sinkronisasi Supabase `artikel_berita` & `homepage_media`) (`#tab-articles`, `#tab-media` & `#tab-gallery`).
-    - [x] **Modul 2 — PJ Logistik & Sarpras (SELESAI):** Dapur Sedekah Makan Ba'da Dzuhur (target 70+ porsi/hari, indikator siklus persiapan/memasak/siap bagi/selesai, logistik belanja bahan, upload foto dokumentasi WebP) & Manajemen Inventaris Aset Fisik Masjid (auto-kode `AST-ELK/KBR/IBD/DPR/KND/FRN-...`, lokasi ruangan, kondisi kelayakan, nilai estimasi Rupiah, riwayat pemeliharaan/servis berkala) (`#tab-logistik`).
-    - [x] **Modul 3 — PJ Keuangan (Bendahara - SELESAI):** Jurnal Buku Kas Masuk & Kas Keluar (`financial_journals`: Infaq BSI, QRIS Sedekah Makan, Kotak Tunai, Operasional Dapur, Kafalah, Sarpras, auto-kode `TRX-IN/OUT-...`, saldo bersih live, ekspor CSV) & Alur Pengajuan Anggaran (*Budget Request*) & Klaim Nota Bon (*Reimbursement*) (`budget_requests`: auto-kode `REQ/RMB-...`, review DKM, persetujuan & pencairan dana otomatis ke jurnal kas keluar) (`#tab-donations`).
-    - [x] **Modul 4 — PJ Santri & Pendidikan (SELESAI):** Direktori Santri Tahfidz (`santri_data`: auto-NIS `STR-2026-xxx`, data wali & kontak darurat, target & capaian hafalan juz, upload foto WebP) & Log Mutaba'ah Setoran Hafalan Qur'an Harian (`santri_mutabaah`: sesi Subuh & Maghrib, juz, surat, ayat, predikat tajwid Mumtaz/Jayyid/Maqbul, ustadz pengampu, dan papan milestone visual 30 Juz) (`#tab-santri`).
-    - [x] **Modul 5 — PJ Musafir & Pelayanan (SELESAI):** Buku Tamu Musafir Digital (`musafir_logbook`: pencatatan singgah shalat & istirahat sejenak, auto-time check-in, asal kota & tujuan), Manajemen Tamu Menginap / Istirahat Darurat 24 Jam (lampiran identitas KTP WebP client-side, durasi jam rehat, petugas piket layanan), dan Log Penitipan Kendaraan & Loker Barang Bawaan 24 Jam (nomor plat kendaraan, nomor loker, status titip/diambil) (`#tab-musafir`).
-    - [x] **Modul 6a — PJ Keamanan & Ketertiban (SELESAI):** Log Piket Ronda Keamanan 24 Jam & Laporan Kejadian Lapangan (`security_reports`: rotasi shift Pagi/Siang/Malam, area patroli, tingkat kondisi Kondusif/Perhatian/Darurat, bukti foto/media WebP, penanganan insiden, dan eskalasi DKM) (`#tab-keamanan`).
-    - [x] **Modul 6b — PJ Kebersihan & Sanitasi (SELESAI):** Checklist Sanitasi Harian Seluruh Zona Lingkungan Masjid (`cleaning_reports`: 4 siklus shift Pagi/Siang/Sore/Malam, area wudhu & toilet ikhwan/akhwat, ruang utama shalat, halaman, status Bersih & Harum Standar Istiqlal, kondisi sarana kran air wudhu, upload foto before & after WebP, dan log kebutuhan stok sabun/alat) (`#tab-kebersihan`).
-    - [x] **Halaman Matriks QA & Testing Suite (`testing-suite.html` - SELESAI):** Portal pengujian terpadu seluruh modul operasional (Modul 1 s/d 6b, Ibadah, Izin/Cuti, Akun), verifikasi ketat hak akses RBAC seluruh PJ divisi, pencatatan evaluasi/notes per skenario, counter KPI live, auto-save state lokal, dan fitur ekspor laporan (.MD, .JSON, Cetak/PDF).
+  - [x] **Suite Modul Khusus per Divisi PJ (Terkoneksi Realtime Database PostgreSQL & Sinkronisasi Lintas Perangkat):**
+    - [x] **Standarisasi RFC 4122 UUID v4 Multi-Modul:** Mengganti format ID string berbasis timestamp dengan UUID v4 standar industri di 11 modul operasional (`generateUUID()`), mengeliminasi penolakan tipe data Postgres `22P02`.
+    - [x] **Engine Migrasi Otomatis Local Storage (`autoMigrateLegacyLocalStorage`):** Inisialisasi otomatis yang mendeteksi ID lama non-UUID pada cache browser, memperbarui ke RFC UUID, dan menyinkronkan data kembali ke Supabase DB.
+    - [x] **Realtime CDC & Broadcast Hub (11 Tabel Operasional):** Pelacak perubahan live WebSocket untuk `jadwal_shalat_petugas`, `dapur_makan_siang`, `masjid_assets`, `financial_journals`, `budget_requests`, `santri_data`, `santri_mutabaah`, `musafir_logbook`, `security_reports`, `cleaning_reports`, dan `homepage_media`.
+    - [x] **PJ Ibadah & Acara (SELESAI):** Kalibrasi Menit Ikhtiyat Shalat, Rotasi Petugas Harian (Imam 5 Waktu, Muadzin, Khatib, Bilal), Approval Batch DKM, tombol Simpan & Terbitkan Langsung ke Web, Kalender Acara/Kajian Tematik & Arsip Khutbah (`#tab-ibadah`).
+    - [x] **Modul 1 — PJ Media & Dakwah (SELESAI):** Article Studio Standar UMAR Travel & Visual Web Builder Beranda terhubung ke Supabase `artikel_berita` & `homepage_media` (`#tab-articles`, `#tab-media` & `#tab-gallery`).
+    - [x] **Modul 2 — PJ Logistik & Sarpras (SELESAI):** Dapur Sedekah Makan Ba'da Dzuhur (`dapur_makan_siang`) & Manajemen Inventaris Aset Fisik Masjid (`masjid_assets`) dengan RFC UUID (`#tab-logistik`).
+    - [x] **Modul 3 — PJ Keuangan (Bendahara - SELESAI):** Jurnal Buku Kas Masuk & Kas Keluar (`financial_journals`) & Alur Pengajuan Anggaran (*Budget Request*) & Klaim Nota Bon (*Reimbursement*) (`budget_requests`) dengan RFC UUID & auto-disbursement kas (`#tab-donations`).
+    - [x] **Modul 4 — PJ Santri & Pendidikan (SELESAI):** Direktori Santri Tahfidz (`santri_data`) & Log Mutaba'ah Setoran Hafalan Qur'an Harian (`santri_mutabaah`) dengan foreign key relasi RFC UUID valid (`#tab-santri`).
+    - [x] **Modul 5 — PJ Musafir & Pelayanan (SELESAI):** Buku Tamu Musafir Digital, Tamu Menginap / Istirahat Darurat 24 Jam, dan Log Penitipan Kendaraan/Loker (`musafir_logbook`) dengan RFC UUID (`#tab-musafir`).
+    - [x] **Modul 6a — PJ Keamanan & Ketertiban (SELESAI):** Log Piket Ronda Keamanan 24 Jam & Laporan Kejadian Lapangan (`security_reports`) dengan RFC UUID & penanganan constraint aman (`#tab-keamanan`).
+    - [x] **Modul 6b — PJ Kebersihan & Sanitasi (SELESAI):** Checklist Sanitasi Harian Seluruh Zona Lingkungan Masjid (`cleaning_reports`) dengan RFC UUID (`#tab-kebersihan`).
+    - [x] **Halaman Matriks QA & Testing Suite (`testing-suite.html` - SELESAI):** Portal pengujian terpadu seluruh modul operasional, verifikasi ketat hak akses RBAC seluruh PJ divisi, counter KPI live, dan fitur ekspor laporan.
   - [x] **Modul Pengajuan Izin & Cuti Pengurus DKM (Leave & Absence Management Suite - SELESAI):**
-    - **Formulir Pengajuan Izin Mandiri (Seluruh Pengurus):** Formulir bagi seluruh PJ divisi untuk mengajukan izin (Izin Sakit + bukti surat dokter auto-WebP, Keperluan Pribadi, Tugas Luar, Cuti Operasional) dengan tanggal mulai, tanggal selesai, alasan, dan status transparan.
-    - **Alur Persetujuan Terpusat (Approval Flow):** Panel khusus bagi **Ketua DKM & Super Admin** untuk menyetujui (*Approve*) atau menolak (*Reject*) permohonan izin dengan catatan evaluasi dan penunjukan petugas pengganti piket.
-    - **Papan Ketersediaan Tim & Popup Pengganti Piket:** Widget status pengurus izin hari ini untuk koordinasi tim (privasi terlindungi) serta notifikasi popup penugasan pengganti piket saat akun terkait login (1x per hari).
-    - **Database Postgres `dkm_leave_requests`:** Skema tabel lengkap, RLS Zero-Trust Policies, dan publikasi Supabase Realtime CDC (`database/migration_leave_requests.sql`).
+    - **Formulir Pengajuan Izin Mandiri (Seluruh Pengurus):** Formulir izin sakit, keperluan pribadi, tugas luar, cuti operasional terhubung ke `dkm_leave_requests`.
+    - **Alur Persetujuan Terpusat (Approval Flow):** Panel khusus bagi **Ketua DKM & Super Admin** untuk approval permohonan izin dengan penunjukan petugas pengganti piket.
+    - **Papan Ketersediaan Tim & Popup Pengganti Piket:** Widget status pengurus izin hari ini serta popup penugasan saat login.
   - [x] **Pemantau Kesehatan Arsitektur 7 Pilar Cloud (Khusus Super Admin - Benchmark SIABE-PORTO):**
-    - Multi-Cloud Free-Tier Monitor: Dashboard pemantauan kuota 7 pilar (Supabase DB & Storage, Resend Email API, Vercel Edge & Hosting, ImageKit CDN 20GB, GitHub Actions CI/CD, Cloudflare DNS/Turnstile, Google Drive Workspace).
+    - Multi-Cloud Free-Tier Monitor: Dashboard pemantauan kuota 7 pilar (Supabase, Resend, Vercel, ImageKit, GitHub Actions, Cloudflare, Google Drive).
     - Kalkulasi dinamis total records database `{ count: 'exact', head: true }` dan estimasi ukuran DB Postgres MB.
-    - KPI Row biaya bulanan IDR 0 (Zero Infrastructure Cost), badge `100% FREE-TIER COMPLIANT`, tombol interaktif `REFRESH METRICS`, dan Panduan Preventif Ambang Batas Kuota (*Threshold Guide*).
   - [ ] **Ekspor Laporan Kinerja PDF Mandiri per Anggota Tim DKM:**
     - Format PDF standar Web Landscape (`jsPDF v2.5.1`).
 

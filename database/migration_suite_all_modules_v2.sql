@@ -25,19 +25,33 @@ CREATE TABLE IF NOT EXISTS public.jadwal_shalat_petugas (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     tanggal DATE NOT NULL,
     hari VARCHAR(20) NOT NULL,
+    ikhtiyat_minutes INT DEFAULT 2,
+    imsak VARCHAR(10) DEFAULT '04:36',
     subuh VARCHAR(10) NOT NULL DEFAULT '04:41',
+    terbit VARCHAR(10) DEFAULT '05:59',
+    dhuha VARCHAR(10) DEFAULT '06:20',
     dzuhur VARCHAR(10) NOT NULL DEFAULT '11:59',
     ashar VARCHAR(10) NOT NULL DEFAULT '15:19',
     maghrib VARCHAR(10) NOT NULL DEFAULT '17:58',
     isya VARCHAR(10) NOT NULL DEFAULT '19:08',
     imam_rawatib VARCHAR(150),
+    imam_subuh VARCHAR(150),
+    imam_dzuhur VARCHAR(150),
+    imam_ashar VARCHAR(150),
+    imam_maghrib VARCHAR(150),
+    imam_isya VARCHAR(150),
     muadzin VARCHAR(150),
+    muadzin_rawatib VARCHAR(150),
     khatib_jumat VARCHAR(150),
+    muadzin_jumat VARCHAR(150),
     bilal VARCHAR(150),
+    bilal_jumat VARCHAR(150),
     submitted_by VARCHAR(150) DEFAULT 'PJ Ibadah',
     submitted_by_email VARCHAR(150),
+    submitted_at TIMESTAMP WITH TIME ZONE,
     status_approval VARCHAR(30) NOT NULL DEFAULT 'Pending', -- 'Pending', 'Approved', 'Rejected'
     catatan_review TEXT,
+    review_notes TEXT,
     reviewed_by VARCHAR(150),
     reviewed_by_email VARCHAR(150),
     reviewed_at TIMESTAMP WITH TIME ZONE,
@@ -136,7 +150,7 @@ CREATE TABLE IF NOT EXISTS public.budget_requests (
     tanggal_pengajuan DATE NOT NULL DEFAULT CURRENT_DATE,
     divisi_pengaju VARCHAR(100) NOT NULL,
     nama_pengaju VARCHAR(150) NOT NULL,
-    email_pengaju VARCHAR(150) NOT NULL,
+    email_pengaju VARCHAR(150),
     tipe_pengajuan VARCHAR(30) NOT NULL DEFAULT 'BUDGET_REQUEST', -- 'BUDGET_REQUEST', 'REIMBURSEMENT_NOTA'
     judul_keperluan VARCHAR(255) NOT NULL,
     rincian_keperluan TEXT NOT NULL,
@@ -231,8 +245,8 @@ CREATE TABLE IF NOT EXISTS public.security_reports (
     petugas_jaga VARCHAR(150) NOT NULL,
     area_patroli VARCHAR(100) NOT NULL DEFAULT 'Parkiran & Ruang Utama', -- 'Parkiran & Gerbang', 'Ruang Utama & Selasar', 'Toilet & Sanitasi', 'Dapur & Belakang'
     kondisi_keamanan VARCHAR(30) NOT NULL DEFAULT 'KONDUSIF', -- 'KONDUSIF', 'PERHATIAN_KHUSUS', 'INSIDEN_DARURAT'
-    judul_laporan VARCHAR(255) NOT NULL,
-    kronologi_kejadian TEXT NOT NULL,
+    judul_laporan VARCHAR(255),
+    kronologi_kejadian TEXT,
     bukti_media_url TEXT, -- Foto/video ImageKit
     status_tindak_lanjut VARCHAR(30) DEFAULT 'SELESAI', -- 'SELESAI', 'DALAM_PENANGANAN', 'ESKALASI_DKM'
     catatan_koordinasi TEXT,
@@ -249,8 +263,8 @@ CREATE TABLE IF NOT EXISTS public.cleaning_reports (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     tanggal DATE NOT NULL DEFAULT CURRENT_DATE,
     shift_kebersihan VARCHAR(30) NOT NULL DEFAULT 'PAGI', -- 'PAGI', 'SIANG', 'SORE', 'MALAM'
-    zona_lokasi VARCHAR(100) NOT NULL, -- 'Toilet Ikhwan', 'Toilet Akhwat', 'Tempat Wudhu Ikhwan', 'Tempat Wudhu Akhwat', 'Ruang Shalat Utama', 'Halaman & Selasar'
-    petugas_kebersihan VARCHAR(150) NOT NULL,
+    zona_lokasi VARCHAR(100), -- 'Toilet Ikhwan', 'Toilet Akhwat', 'Tempat Wudhu Ikhwan', 'Tempat Wudhu Akhwat', 'Ruang Shalat Utama', 'Halaman & Selasar'
+    petugas_kebersihan VARCHAR(150),
     status_sanitasi VARCHAR(30) NOT NULL DEFAULT 'BERSIH_HARUM', -- 'BERSIH_HARUM', 'CUKUP_BERSIH', 'PERLU_PEMBERSIHAN_ULANG'
     kondisi_sarana_wudhu TEXT DEFAULT 'Kran air lancar, sabun terisi penuh.',
     foto_sebelum_url TEXT,

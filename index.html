@@ -1460,30 +1460,30 @@
             <div class="officers-grid">
                 <div class="officer-card">
                     <span class="officer-badge"><i class="fa-solid fa-user-tie"></i> Imam Rawatib Harian</span>
-                    <div class="officer-name">Ustadz Farhan Al-Hafidz</div>
-                    <div class="officer-schedule">Bertugas: Subuh, Maghrib, Isya</div>
-                    <div class="officer-theme">Tahfidz 30 Juz & Sanad Qira'ah Hafsh</div>
+                    <div class="officer-name" id="officer-imam-name">Ustadz Farhan Al-Hafidz</div>
+                    <div class="officer-schedule" id="officer-imam-schedule">Bertugas: Subuh, Maghrib, Isya</div>
+                    <div class="officer-theme" id="officer-imam-theme">Tahfidz 30 Juz &amp; Sanad Qira'ah Hafsh</div>
                 </div>
 
                 <div class="officer-card">
-                    <span class="officer-badge"><i class="fa-solid fa-microphone"></i> Muadzin & Bilal</span>
-                    <div class="officer-name">Akhi Salman & Akhi Zaid</div>
-                    <div class="officer-schedule">Panggilan Adzan 5 Waktu & Iqamah</div>
-                    <div class="officer-theme">Pelayanan Ibadah Ramah Jamaah</div>
+                    <span class="officer-badge"><i class="fa-solid fa-microphone"></i> Muadzin &amp; Bilal</span>
+                    <div class="officer-name" id="officer-muadzin-name">Akhi Salman &amp; Akhi Zaid</div>
+                    <div class="officer-schedule" id="officer-muadzin-schedule">Panggilan Adzan 5 Waktu &amp; Iqamah</div>
+                    <div class="officer-theme" id="officer-muadzin-theme">Pelayanan Ibadah Ramah Jamaah</div>
                 </div>
 
                 <div class="officer-card">
                     <span class="officer-badge"><i class="fa-solid fa-kaaba"></i> Khatib Shalat Jumat</span>
-                    <div class="officer-name">Ustadz Dr. H. Rahmatullah, M.Ag</div>
-                    <div class="officer-schedule">Jumat Ini, Waktu Dzuhur 12:04 WIB</div>
-                    <div class="officer-theme">Tema: "Memakmurkan Masjid & Hak Musafir"</div>
+                    <div class="officer-name" id="officer-khatib-name">Ustadz Dr. H. Rahmatullah, M.Ag</div>
+                    <div class="officer-schedule" id="officer-khatib-schedule">Jumat Ini, Waktu Dzuhur 12:04 WIB</div>
+                    <div class="officer-theme" id="officer-khatib-theme">Tema: &quot;Memakmurkan Masjid &amp; Hak Musafir&quot;</div>
                 </div>
 
                 <div class="officer-card">
                     <span class="officer-badge"><i class="fa-solid fa-book-open-reader"></i> Kajian Tematik Rutin</span>
-                    <div class="officer-name">Ustadz Ahmad Fauzi, Lc.</div>
-                    <div class="officer-schedule">Setiap Ahad Pagi (Ba'da Subuh - Syuruq)</div>
-                    <div class="officer-theme">Kitab: Riyadhus Shalihin & Fiqih Muamalah</div>
+                    <div class="officer-name" id="officer-kajian-name">Ustadz Ahmad Fauzi, Lc.</div>
+                    <div class="officer-schedule" id="officer-kajian-schedule">Setiap Ahad Pagi (Ba'da Subuh - Syuruq)</div>
+                    <div class="officer-theme" id="officer-kajian-theme">Kitab: Riyadhus Shalihin &amp; Fiqih Muamalah</div>
                 </div>
             </div>
         </div>
@@ -1805,8 +1805,23 @@
             e.target.reset();
         }
 
+        // ==========================================================================
+        // SUPABASE CLIENT INITIALIZATION (FOR REALTIME SCHEDULES & WARTA)
+        // ==========================================================================
+        const SUPABASE_PROJECT_URL = "https://fcwajbemkbhkogwtqcmx.supabase.co";
+        const SUPABASE_ANON_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjd2FqYmVta2Joa29nd3RxY214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzg2ODMsImV4cCI6MjEwMjcxNDY4M30.SdkWOVO8TyWzQn_96SCLUzryv-blvKKCi1poXlPk5Y4";
+        let sbClientIndex = null;
+
+        try {
+            if (window.supabase && typeof window.supabase.createClient === 'function') {
+                sbClientIndex = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_PUBLIC_KEY);
+            }
+        } catch (e) {
+            console.warn('Supabase Index init note:', e);
+        }
+
         // Astronomical Prayer Times Calculation Engine (Kemenag RI Standard for Jatiwarna Bekasi)
-        const PRAYER_SCHEDULE = {
+        let PRAYER_SCHEDULE = {
             imsak: '04:36',
             subuh: '04:46',
             terbit: '05:59',
@@ -1816,18 +1831,114 @@
             isya: '19:12'
         };
 
-        function initPrayerCountdown() {
-            const prayerList = [
-                { name: 'Imsak', time: PRAYER_SCHEDULE.imsak, id: 'card-imsak' },
-                { name: 'Subuh', time: PRAYER_SCHEDULE.subuh, id: 'card-subuh' },
-                { name: 'Terbit', time: PRAYER_SCHEDULE.terbit, id: 'card-terbit' },
-                { name: 'Dzuhur', time: PRAYER_SCHEDULE.dzuhur, id: 'card-dzuhur' },
-                { name: 'Ashar', time: PRAYER_SCHEDULE.ashar, id: 'card-ashar' },
-                { name: 'Maghrib', time: PRAYER_SCHEDULE.maghrib, id: 'card-maghrib' },
-                { name: 'Isya', time: PRAYER_SCHEDULE.isya, id: 'card-isya' }
-            ];
+        function updatePrayerDOM() {
+            const imsakEl = document.getElementById('time-imsak');
+            const subuhEl = document.getElementById('time-subuh');
+            const terbitEl = document.getElementById('time-terbit');
+            const dzuhurEl = document.getElementById('time-dzuhur');
+            const asharEl = document.getElementById('time-ashar');
+            const maghribEl = document.getElementById('time-maghrib');
+            const isyaEl = document.getElementById('time-isya');
 
+            if (imsakEl) imsakEl.textContent = PRAYER_SCHEDULE.imsak;
+            if (subuhEl) subuhEl.textContent = PRAYER_SCHEDULE.subuh;
+            if (terbitEl) terbitEl.textContent = PRAYER_SCHEDULE.terbit;
+            if (dzuhurEl) dzuhurEl.textContent = PRAYER_SCHEDULE.dzuhur;
+            if (asharEl) asharEl.textContent = PRAYER_SCHEDULE.ashar;
+            if (maghribEl) maghribEl.textContent = PRAYER_SCHEDULE.maghrib;
+            if (isyaEl) isyaEl.textContent = PRAYER_SCHEDULE.isya;
+        }
+
+        function updateOfficerBriefFromSchedule(rec) {
+            if (!rec) return;
+            const imamNameEl = document.getElementById('officer-imam-name');
+            const muadzinNameEl = document.getElementById('officer-muadzin-name');
+            const khatibNameEl = document.getElementById('officer-khatib-name');
+
+            if (imamNameEl && rec.imam_subuh) {
+                imamNameEl.textContent = rec.imam_subuh;
+            }
+            if (muadzinNameEl && rec.muadzin_rawatib) {
+                muadzinNameEl.textContent = rec.muadzin_rawatib;
+            }
+            if (khatibNameEl && rec.khatib_jumat) {
+                khatibNameEl.textContent = rec.khatib_jumat;
+            }
+        }
+
+        async function loadPrayerSchedule() {
+            if (!sbClientIndex) return;
+            try {
+                const todayISO = new Date().toISOString().split('T')[0];
+
+                const { data, error } = await sbClientIndex
+                    .from('jadwal_shalat_petugas')
+                    .select('*')
+                    .eq('status_approval', 'Approved')
+                    .order('tanggal', { ascending: false })
+                    .limit(7);
+
+                if (!error && Array.isArray(data) && data.length > 0) {
+                    const matchedRecord = data.find(d => d.tanggal === todayISO) || data[0];
+                    if (matchedRecord) {
+                        PRAYER_SCHEDULE = {
+                            imsak: matchedRecord.imsak || '04:36',
+                            subuh: matchedRecord.subuh || '04:46',
+                            terbit: matchedRecord.terbit || '05:59',
+                            dzuhur: matchedRecord.dzuhur || '12:04',
+                            ashar: matchedRecord.ashar || '15:24',
+                            maghrib: matchedRecord.maghrib || '18:02',
+                            isya: matchedRecord.isya || '19:12'
+                        };
+                        updatePrayerDOM();
+                        updateOfficerBriefFromSchedule(matchedRecord);
+                        console.log('[Prayer Schedule] Synced live schedule from Supabase for date:', matchedRecord.tanggal);
+                    }
+                }
+            } catch (err) {
+                console.warn('[Prayer Schedule] Supabase fetch notice:', err);
+            }
+        }
+
+        async function loadOfficersAndKajian() {
+            if (!sbClientIndex) return;
+            try {
+                const todayISO = new Date().toISOString().split('T')[0];
+                const { data, error } = await sbClientIndex
+                    .from('kajian_acara_ibadah')
+                    .select('*')
+                    .eq('status_approval', 'Approved')
+                    .gte('tanggal', todayISO)
+                    .order('tanggal', { ascending: true })
+                    .limit(1);
+
+                if (!error && data && data.length > 0) {
+                    const nextKajian = data[0];
+                    const kajianNameEl = document.getElementById('officer-kajian-name');
+                    const kajianScheduleEl = document.getElementById('officer-kajian-schedule');
+                    const kajianThemeEl = document.getElementById('officer-kajian-theme');
+
+                    if (kajianNameEl && nextKajian.penceramah) kajianNameEl.textContent = nextKajian.penceramah;
+                    if (kajianScheduleEl && nextKajian.tanggal) kajianScheduleEl.textContent = `${nextKajian.tanggal} • Pukul ${nextKajian.waktu_mulai || '18:30'} WIB`;
+                    if (kajianThemeEl && nextKajian.judul_kajian) kajianThemeEl.textContent = nextKajian.judul_kajian;
+                }
+            } catch (e) {
+                console.warn('[Kajian Schedule] Supabase fetch notice:', e);
+            }
+        }
+
+        function initPrayerCountdown() {
             function tick() {
+                const prayerList = [
+                    { name: 'Imsak', time: PRAYER_SCHEDULE.imsak, id: 'card-imsak' },
+                    { name: 'Subuh', time: PRAYER_SCHEDULE.subuh, id: 'card-subuh' },
+                    { name: 'Terbit', time: PRAYER_SCHEDULE.terbit, id: 'card-terbit' },
+                    { name: 'Dzuhur', time: PRAYER_SCHEDULE.dzuhur, id: 'card-dzuhur' },
+                    { name: 'Ashar', time: PRAYER_SCHEDULE.ashar, id: 'card-ashar' },
+                    { name: 'Maghrib', time: PRAYER_SCHEDULE.maghrib, id: 'card-maghrib' },
+                    { name: 'Isya', time: PRAYER_SCHEDULE.isya, id: 'card-isya' }
+                ];
+
                 const now = new Date();
                 const curSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
 
@@ -1899,18 +2010,6 @@
         // ==========================================================================
         // DYNAMIC ARTICLES & NEWS FETCHER FROM SUPABASE (artikel_berita)
         // ==========================================================================
-        const SUPABASE_PROJECT_URL = "https://fcwajbemkbhkogwtqcmx.supabase.co";
-        const SUPABASE_ANON_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjd2FqYmVta2Joa29nd3RxY214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzg2ODMsImV4cCI6MjEwMjcxNDY4M30.SdkWOVO8TyWzQn_96SCLUzryv-blvKKCi1poXlPk5Y4";
-        let sbClientIndex = null;
-
-        try {
-            if (window.supabase && typeof window.supabase.createClient === 'function') {
-                sbClientIndex = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_PUBLIC_KEY);
-            }
-        } catch (e) {
-            console.warn('Supabase Index init note:', e);
-        }
-
         async function loadPublishedArticles() {
             const grid = document.querySelector('#berita-kajian .news-grid');
             if (!grid) return;
@@ -1980,8 +2079,27 @@
             }
         }
 
+        // Realtime Subscription for Prayer Schedules & Kajian on index.html
+        function initRealtimePrayer() {
+            if (sbClientIndex && typeof sbClientIndex.channel === 'function') {
+                sbClientIndex
+                    .channel('public:jadwal_shalat_petugas:index')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'jadwal_shalat_petugas' }, payload => {
+                        console.log('[Realtime] Jadwal shalat change received on index:', payload);
+                        loadPrayerSchedule();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'kajian_acara_ibadah' }, payload => {
+                        console.log('[Realtime] Kajian acara change received on index:', payload);
+                        loadOfficersAndKajian();
+                    })
+                    .subscribe();
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
+            loadPrayerSchedule();
+            loadOfficersAndKajian();
+            initRealtimePrayer();
             loadPublishedArticles();
             initRealtimeArticles();
             setHeaderDate();
