@@ -1934,7 +1934,6 @@
     <!-- Supabase JS Client v2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Environment Configuration Loader (Strict Zero-Leak Architecture) -->
-    <script src="config.local.js" onerror="this.remove()"></script>
     <script src="asset/js/env-loader.js"></script>
 </head>
 <body>
@@ -3489,14 +3488,23 @@
                         .limit(6);
 
                     if (!error && Array.isArray(data) && data.length > 0) {
+                        const getArticleUrl = (slug) => {
+                            if (!slug) return '/artikel';
+                            if (window.location.protocol === 'file:' || window.location.pathname.endsWith('.html')) {
+                                return `/artikel-detail.html?slug=${encodeURIComponent(slug)}`;
+                            }
+                            return `/artikel/${encodeURIComponent(slug)}`;
+                        };
+
                         container.innerHTML = data.map(item => {
                             const coverImg = item.thumbnail_url || 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp';
                             const category = item.category || 'Warta Dakwah';
                             const readTime = item.read_time || '3 Menit';
                             const excerpt = item.excerpt || 'Klik untuk membaca selengkapnya kabar Masjid Sophia Jatiwarna.';
+                            const articleUrl = getArticleUrl(item.slug);
                             
                             return `
-                                <a href="/artikel/${item.slug || ''}" class="news-card" style="text-decoration: none; color: inherit; display: flex; flex-direction: column;">
+                                <a href="${articleUrl}" class="news-card" style="text-decoration: none; color: inherit; display: flex; flex-direction: column;">
                                     <div class="news-placeholder" style="background-image: url('${coverImg}');">
                                     </div>
                                     <div class="news-body">

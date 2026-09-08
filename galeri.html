@@ -66,13 +66,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Favicon Packages -->
-    <link rel="icon" type="image/x-icon" href="asset/favicon/logo-black/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="asset/favicon/logo-black/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="asset/favicon/logo-black/favicon-32x32.png">
+    <link rel="icon" type="image/x-icon" href="/asset/favicon/logo-black/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/asset/favicon/logo-black/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/asset/favicon/logo-black/favicon-32x32.png">
 
     <!-- Supabase JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/config.local.js" onerror="this.remove()"></script>
     <script src="/asset/js/env-loader.js"></script>
 
     <style>
@@ -716,7 +715,7 @@
         <div class="container">
             <div class="header-inner">
                 <a href="/" class="brand-logo">
-                    <img src="asset/logo/svg/logo_masjid_black.svg" alt="Logo Masjid Sophia" class="brand-logo-img">
+                    <img src="/asset/logo/svg/logo_masjid_black.svg" alt="Logo Masjid Sophia" class="brand-logo-img">
                     <div class="brand-logo-text">
                         <h1>Masjid Sophia</h1>
                         <p>Masjid Musafir Sophia Jatiwarna</p>
@@ -892,7 +891,7 @@
                     return sbClient;
                 }
             } catch (e) {
-                console.warn('[Gallery] Dynamic init notice:', e);
+                // Fallback gracefully without console warning
             }
             return null;
         }
@@ -975,7 +974,7 @@
                     }
                 }
             } catch (e) {
-                console.warn('[Gallery] Supabase sync:', e);
+                // Fallback gracefully without console warning
             }
 
             renderGalleryGrid();

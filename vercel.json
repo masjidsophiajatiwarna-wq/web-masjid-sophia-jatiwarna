@@ -86,11 +86,5 @@
       "source": "/media",
       "destination": "/media-checklist.html"
     }
-  ],
-  "errors": [
-    {
-      "statusCode": 404,
-      "redirect": "/404.html"
-    }
   ]
 }

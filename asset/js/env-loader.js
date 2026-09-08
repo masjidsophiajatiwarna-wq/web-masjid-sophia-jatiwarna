@@ -42,21 +42,23 @@
             return envConf;
         }
 
-        // Tier 4: Fetch from Serverless Endpoint /api/config
-        try {
-            const res = await fetch('/api/config');
-            if (res.ok) {
-                const data = await res.json();
-                if (data && data.supabaseUrl && data.supabaseAnonKey) {
-                    window.__MASJID_CONFIG__ = data;
-                    try {
-                        sessionStorage.setItem(CACHE_KEY, JSON.stringify(data));
-                    } catch (e) {}
-                    return data;
+        // Tier 4: Fetch from Serverless Endpoint /api/config (only on http/https)
+        if (window.location && window.location.protocol && window.location.protocol.startsWith('http')) {
+            try {
+                const res = await fetch('/api/config');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.supabaseUrl && data.supabaseAnonKey) {
+                        window.__MASJID_CONFIG__ = data;
+                        try {
+                            sessionStorage.setItem(CACHE_KEY, JSON.stringify(data));
+                        } catch (e) {}
+                        return data;
+                    }
                 }
+            } catch (err) {
+                // Silently fallback without polluting console
             }
-        } catch (err) {
-            console.warn('[EnvLoader] /api/config notice:', err);
         }
 
         // Tier 5: LocalStorage manual override (masjid_sophia_custom_env)
@@ -78,14 +80,12 @@
     async function initSupabaseClient() {
         const config = await loadConfig();
         if (!config || !config.supabaseUrl || !config.supabaseAnonKey) {
-            console.warn('[EnvLoader] Supabase runtime configuration not available.');
             return null;
         }
 
         if (window.supabase && typeof window.supabase.createClient === 'function') {
             return window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
         } else {
-            console.warn('[EnvLoader] @supabase/supabase-js library not loaded on page.');
             return null;
         }
     }

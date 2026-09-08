@@ -69,7 +69,6 @@
 
     <!-- Supabase JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/config.local.js" onerror="this.remove()"></script>
     <script src="/asset/js/env-loader.js"></script>
 
     <style>
@@ -1218,7 +1217,7 @@
                     return sbClient;
                 }
             } catch (e) {
-                console.warn('[Article Detail] Dynamic init notice:', e);
+                // Fallback gracefully without console warning
             }
             return null;
         }
@@ -1351,7 +1350,7 @@
                     }
                 }
             } catch (e) {
-                console.warn('[Article Detail] Supabase fetch error:', e);
+                // Fallback gracefully without console warning
             }
 
             // Fallback to local array
@@ -1543,18 +1542,27 @@
                     }
                 }
             } catch (e) {
-                console.warn('[Related] Load error:', e);
+                // Fallback gracefully without console warning
             }
 
             if (related.length === 0) {
                 related = FALLBACK_ARTICLES.filter(a => a.slug !== currentSlug).slice(0, 3);
             }
 
+            const getArticleUrl = (slug) => {
+                if (!slug) return '/artikel';
+                if (window.location.protocol === 'file:' || window.location.pathname.endsWith('.html')) {
+                    return `/artikel-detail.html?slug=${encodeURIComponent(slug)}`;
+                }
+                return `/artikel/${encodeURIComponent(slug)}`;
+            };
+
             grid.innerHTML = related.map(item => {
                 const dateStr = formatDateIndo(item.published_at);
                 const cover = item.thumbnail_url || 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp';
+                const relatedUrl = getArticleUrl(item.slug);
                 return `
-                    <a href="/artikel/${item.slug}" class="related-card">
+                    <a href="${relatedUrl}" class="related-card">
                         <div class="related-cover" style="background-image: url('${cover}');">
                             <span class="related-card-badge">${item.category || 'Warta'}</span>
                         </div>
