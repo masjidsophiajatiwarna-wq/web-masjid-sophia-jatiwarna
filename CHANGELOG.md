@@ -32,6 +32,10 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
   - Mengganti operasi `upsert` parsial dengan pembaruan atomik paralel berbasis kolom `id`.
 
 #### Keamanan Sesi, RBAC & Arsitektur Data (Session Security, RBAC & Architecture)
+- `[ARTICLES_SUPABASE_SOURCE_OF_TRUTH]` Penyelarasan mutlak tabel `artikel_berita` ke Supabase Single Source of Truth:
+  - Memperbaiki fungsi `getArticles()` di `admin.html` agar tidak lagi jatuh (*fallback*) ke `localStorage` lama saat query Supabase mengembalikan tabel kosong (`data.length === 0`).
+  - Mengeliminasi secara permanen kemunculan data zombie/persisten artikel lama (*Dokumentasi Penyaluran Sedekah Makan Dzuhur*) pada akun Super Admin saat data di Supabase telah kosong atau dihapus oleh PJ Media.
+  - Menghubungkan listener CDC Supabase Realtime (`postgres_changes` pada `artikel_berita`) dan event siaran multi-klien (`ARTICLE_SYNC`) langsung ke `loadArticlesTable()` untuk memastikan pembaruan dua arah instan tanpa *refresh*.
 - `[LOGOUT_HASH_CLEANUP]` Pembersihan total status URL dan session storage saat logout:
   - Menghapus kunci `masjid_sophia_active_tab` di localStorage.
   - Membersihkan fragmen URL hash (`window.location.hash = ''` & `history.replaceState`) guna mencegah login berikutnya mendarat di modul sesi sebelumnya (seperti `#logistik`).

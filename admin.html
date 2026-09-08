@@ -10801,7 +10801,7 @@
                     })
                     .on('postgres_changes', { event: '*', schema: 'public', table: 'artikel_berita' }, () => {
                         console.log('[Realtime CDC] artikel_berita updated');
-                        if (typeof getArticles === 'function') getArticles();
+                        if (typeof loadArticlesTable === 'function') loadArticlesTable();
                     })
                     .on('postgres_changes', { event: '*', schema: 'public', table: 'homepage_media' }, payload => {
                         console.log('[Realtime CDC] homepage_media updated:', payload);
@@ -10809,6 +10809,10 @@
                         if (typeof getMediaItems === 'function') getMediaItems();
                     })
                     // 2. Broadcast Channel (Ultra Fast Multi-Tab / Multi-Client Realtime Sync)
+                    .on('broadcast', { event: 'ARTICLE_SYNC' }, () => {
+                        console.log('[Realtime Broadcast] ARTICLE_SYNC received');
+                        if (typeof loadArticlesTable === 'function') loadArticlesTable();
+                    })
                     .on('broadcast', { event: 'HERO_SLIDE_SYNC' }, ({ payload }) => {
                         console.log('[Realtime Broadcast] HERO_SLIDE_SYNC received:', payload);
                         if (typeof loadAdminHeroSlides === 'function') loadAdminHeroSlides();
@@ -17694,47 +17698,51 @@
                         .select('*')
                         .order('created_at', { ascending: false });
 
-                    if (!error && data && data.length > 0) {
+                    if (!error && Array.isArray(data)) {
                         // Filter out any legacy dummy articles from DB if present
                         const cleanData = data.filter(d => {
                             const title = (d.title || '').toLowerCase();
                             const id = String(d.id || '');
                             if (id.startsWith('art-') || id.startsWith('art0')) return false;
-                            if (title.includes('penyaluran 85 porsi') || title.includes('ujian tasmi') || title.includes('keutamaan memberi makan')) return false;
+                            if (title.includes('penyaluran 85 porsi') || title.includes('ujian tasmi') || title.includes('keutamaan memberi makan') || title.includes('sedekah makan dzuhur')) return false;
                             return true;
                         });
 
-                        if (cleanData.length > 0) {
-                            const mapped = cleanData.map(d => {
-                                const rawThumb = d.thumbnail_url || '';
-                                const cleanImg = (rawThumb && !rawThumb.includes('images/pictures/')) ? rawThumb : 'asset/favicon/logo-black/android-chrome-192x192.png';
-                                return {
-                                    id: d.id,
-                                    slug: d.slug,
-                                    title: d.title,
-                                    category: d.category || 'Dakwah & Tausiyah',
-                                    author_name: d.author_name || 'Tim Media DKM Sophia',
-                                    featured_image: cleanImg,
-                                    excerpt: d.excerpt || '',
-                                    content: d.content_html || '',
-                                    reading_time: d.read_time || '3 Menit',
-                                    view_count: d.view_count || 0,
-                                    is_published: d.is_published !== false,
-                                    status: (d.is_published !== false) ? 'Published' : 'Draft',
-                                    published_at: d.published_at || d.created_at,
-                                    created_at: d.created_at
-                                };
-                            });
+                        const mapped = cleanData.map(d => {
+                            const rawThumb = d.thumbnail_url || '';
+                            const cleanImg = (rawThumb && !rawThumb.includes('images/pictures/')) ? rawThumb : 'asset/favicon/logo-black/android-chrome-192x192.png';
+                            return {
+                                id: d.id,
+                                slug: d.slug,
+                                title: d.title,
+                                category: d.category || 'Dakwah & Tausiyah',
+                                author_name: d.author_name || 'Tim Media DKM Sophia',
+                                featured_image: cleanImg,
+                                excerpt: d.excerpt || '',
+                                content: d.content_html || '',
+                                reading_time: d.read_time || '3 Menit',
+                                view_count: d.view_count || 0,
+                                is_published: d.is_published !== false,
+                                status: (d.is_published !== false) ? 'Published' : 'Draft',
+                                published_at: d.published_at || d.created_at,
+                                created_at: d.created_at
+                            };
+                        });
+
+                        if (mapped.length > 0) {
                             localStorage.setItem('masjid_sophia_cms_articles', JSON.stringify(mapped));
-                            cmsArticlesList = mapped;
-                            return mapped;
+                        } else {
+                            localStorage.removeItem('masjid_sophia_cms_articles');
                         }
+                        cmsArticlesList = mapped;
+                        return mapped;
                     }
                 } catch (e) {
                     console.warn('Supabase articles fetch note:', e);
                 }
             }
 
+            // Fallback HANYA JIKA Supabase gagal diakses / jaringan offline
             const saved = localStorage.getItem('masjid_sophia_cms_articles');
             if (saved) {
                 try {
@@ -17745,7 +17753,7 @@
                             const title = (p.title || '').toLowerCase();
                             const id = String(p.id || '');
                             if (id.startsWith('art-') || id.startsWith('art0')) return false;
-                            if (title.includes('penyaluran 85 porsi') || title.includes('ujian tasmi') || title.includes('keutamaan memberi makan')) return false;
+                            if (title.includes('penyaluran 85 porsi') || title.includes('ujian tasmi') || title.includes('keutamaan memberi makan') || title.includes('sedekah makan dzuhur')) return false;
                             return true;
                         });
                         if (filtered.length > 0) {
@@ -18304,6 +18312,9 @@
 
                 renderArticlesTable();
                 closeModal('modal-add-article');
+                if (realtimeHub) {
+                    try { realtimeHub.send({ type: 'broadcast', event: 'ARTICLE_SYNC', payload: { action: 'UPDATE', id: editId } }); } catch (e) {}
+                }
                 alert('Perubahan artikel "' + title + '" berhasil disimpan sebagai [' + status + '].');
             } else {
                 const cleanTitle = title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
@@ -18356,6 +18367,9 @@
 
                 renderArticlesTable();
                 closeModal('modal-add-article');
+                if (realtimeHub) {
+                    try { realtimeHub.send({ type: 'broadcast', event: 'ARTICLE_SYNC', payload: { action: 'INSERT', id: newId } }); } catch (e) {}
+                }
                 alert('Warta/artikel baru "' + title + '" berhasil diterbitkan sebagai [' + status + '].');
             }
         }
@@ -18373,8 +18387,22 @@
 
             let articles = await getArticles();
             articles = articles.filter(a => a.id !== id);
-            localStorage.setItem('masjid_sophia_cms_articles', JSON.stringify(articles));
+            if (articles.length > 0) {
+                localStorage.setItem('masjid_sophia_cms_articles', JSON.stringify(articles));
+            } else {
+                localStorage.removeItem('masjid_sophia_cms_articles');
+            }
             renderArticlesTable();
+
+            if (realtimeHub) {
+                try {
+                    realtimeHub.send({
+                        type: 'broadcast',
+                        event: 'ARTICLE_SYNC',
+                        payload: { action: 'DELETE', id: id }
+                    });
+                } catch (e) {}
+            }
         }
 
         // 8. Media Gallery & Media Picker Functions
@@ -18386,7 +18414,7 @@
                         .select('*')
                         .order('created_at', { ascending: false });
 
-                    if (!error && data && data.length > 0) {
+                    if (!error && Array.isArray(data)) {
                         const mapped = data.map(d => ({
                             id: d.id,
                             file_name: d.judul || 'media.webp',
