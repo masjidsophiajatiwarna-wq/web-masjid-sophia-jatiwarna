@@ -935,11 +935,8 @@
         }
 
         function getArticleUrl(slug) {
-            if (!slug) return '/artikel';
-            if (window.location.protocol === 'file:' || window.location.pathname.endsWith('.html')) {
-                return `/artikel-detail.html?slug=${encodeURIComponent(slug)}`;
-            }
-            return `/artikel/${encodeURIComponent(slug)}`;
+            if (!slug) return '/artikel.html';
+            return `/artikel-detail.html?slug=${encodeURIComponent(slug)}`;
         }
 
         function renderArticles() {

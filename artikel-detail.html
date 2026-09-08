@@ -1314,7 +1314,7 @@
             if (pathParts.length >= 2 && (pathParts[0] === 'artikel' || pathParts[0] === 'artikel-detail')) {
                 return decodeURIComponent(pathParts[1].replace(/\.html$/, ''));
             }
-            if (pathParts.length >= 1 && pathParts[0] !== 'artikel.html' && pathParts[0] !== 'artikel-detail.html') {
+            if (pathParts.length >= 1 && pathParts[0] !== 'artikel.html' && pathParts[0] !== 'artikel-detail.html' && pathParts[0] !== 'artikel' && pathParts[0] !== 'artikel-detail') {
                 return decodeURIComponent(pathParts[pathParts.length - 1].replace(/\.html$/, ''));
             }
 
@@ -1556,11 +1556,8 @@
             }
 
             const getArticleUrl = (slug) => {
-                if (!slug) return '/artikel';
-                if (window.location.protocol === 'file:' || window.location.pathname.endsWith('.html')) {
-                    return `/artikel-detail.html?slug=${encodeURIComponent(slug)}`;
-                }
-                return `/artikel/${encodeURIComponent(slug)}`;
+                if (!slug) return '/artikel.html';
+                return `/artikel-detail.html?slug=${encodeURIComponent(slug)}`;
             };
 
             grid.innerHTML = related.map(item => {

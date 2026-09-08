@@ -4,6 +4,20 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.23] - 2026-09-09
+
+### Resolusi Tuntas Routing 404 Detail Warta & Kepatuhan Penuh Benchmark UMAR Travel
+
+#### Perbaikan Routing & Fail-Safe Redirection
+- `[FAIL_SAFE_ARTICLE_REDIRECT]` Menerapkan aturan HTTP 307 Redirect pada `vercel.json`:
+  - Mengalihkan perutean `/artikel/:slug` dan `/artikel-detail/:slug` langsung ke `/artikel-detail.html?slug=:slug`.
+  - Mengatasi limitasi perutean Vercel static cleanUrls di mana berkas statis `artikel.html` memicu respon 404 pada rute anak `/artikel/*`.
+- `[BENCHMARK_UMAR_URL_STANDARDIZATION]` Menyelaraskan 100% generator tautan artikel di seluruh portal publik:
+  - Mengubah fungsi `getArticleUrl(slug)` pada `index.html`, `artikel.html`, dan `artikel-detail.html` agar selalu merujuk ke berkas statis resmi `/artikel-detail.html?slug=:slug`.
+  - Format perutean kini 100% identik dengan arsitektur benchmark UMAR Travel (`umrahmarifatullah.com/artikel-detail.html?slug=...`) yang terbukti stabil, tahan banting (*bulletproof*), dan bebas 404.
+- `[SLUG_EXTRACTOR_ROBUSTNESS]` Memperkuat parser slug di `artikel-detail.html`:
+  - Menjaga agar nama path `/artikel-detail` tidak secara keliru terdeteksi sebagai parameter slug warta saat URL bersih aktif.
+
 ## [1.9.22] - 2026-09-09
 
 ### Penyelesaian Komprehensif 21 Poin Perbaikan: Tata Kelola Modal Dialog, RBAC, Realtime CDC Supabase, Serverless CDN ImageKit, Standardisasi Nomenklatur, dan Fluid Mobile

@@ -23,6 +23,16 @@
       ],
       "destination": "/admin.html",
       "permanent": false
+    },
+    {
+      "source": "/artikel/:slug",
+      "destination": "/artikel-detail.html?slug=:slug",
+      "permanent": false
+    },
+    {
+      "source": "/artikel-detail/:slug",
+      "destination": "/artikel-detail.html?slug=:slug",
+      "permanent": false
     }
   ],
   "rewrites": [
