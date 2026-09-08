@@ -4,7 +4,45 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.20] - 2026-09-09
+
+### Ekspor Laporan Kinerja PDF, Halaman 404 Kustom Sophia, dan SEO Lanjutan (Twitter Card + Schema.org JSON-LD)
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[PDF_EXPORT_DKM]` Penambahan fitur **Ekspor Laporan Kinerja PDF Mandiri** di tab Task Management Admin DKM (`admin.html#tab-tasks`):
+  - Tombol "Cetak Laporan PDF" sejajar tombol "Unduh CSV" di toolbar tugas.
+  - Fungsi `exportKinerjaPDF()` menggunakan **jsPDF v2.5.1** lazy-load CDN (dimuat hanya saat tombol diklik, tanpa overhead halaman).
+  - Format landscape A4 multi-halaman dengan brand Charcoal+Gold resmi.
+  - Konten: Header + tanggal cetak, 4 KPI Cards global (Total Tugas, Selesai, Dikerjakan, Rata Progres), Tabel ringkasan kinerja per PIC diurutkan berdasarkan tugas selesai, Daftar tugas aktif per divisi (maks 20 item per divisi), Footer "Dokumen Internal / Rahasia".
+  - Data bersumber langsung dari `getFilteredTasks(false)` — terhubung Supabase live, nol hardcode.
+  - Filter divisi aktif ditampilkan di header PDF.
+- `[ERROR_404_CUSTOM]` Pembangunan halaman error 404 kustom (`404.html`) bertema terang resmi Sophia:
+  - Desain konsisten dengan `index.html`: tipografi Plus Jakarta Sans, warna Charcoal + Sophia Gold.
+  - Konten: ikon Font Awesome masjid, kode "404" gradient bold, pesan ramah bahasa Indonesia, ayat Al-Baqarah: 186 berharakat font Amiri, tombol "Kembali ke Beranda" dan "Lihat Jadwal Shalat", quick links galeri/artikel/donasi.
+  - Terdaftar di `vercel.json` blok `"errors"` sebagai `{ "statusCode": 404, "redirect": "/404.html" }`.
+  - Zero emoji, zero hardcode, zero admin links.
+- `[SEO_LANJUTAN]` Pelengkapan SEO meta tags di seluruh 4 halaman publik:
+  - **Twitter Card `summary_large_image`:** `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image` ditambahkan ke `index.html`, `galeri.html`, `artikel.html`, dan `artikel-detail.html`.
+  - **OG Locale & Site Name:** `og:locale: id_ID` dan `og:site_name` dilengkapi di semua halaman.
+  - **Schema.org JSON-LD:** `Mosque` (koordinat GPS & jam operasional) di `index.html`, `CollectionPage` di `galeri.html`, `Blog` di `artikel.html`, `NewsArticle` dinamis (diperbarui JS setiap kali artikel dimuat via `renderArticleData()`) di `artikel-detail.html`.
+  - `artikel-detail.html`: Canonical URL, Twitter Card, og:url, dan JSON-LD diperbarui secara dinamis dengan data artikel sebenarnya saat render.
+
+#### Penyempurnaan (Improvements)
+- `[HERO_SLIDER_ADMIN]` Penyempurnaan UI kartu slide di Hero Carousel Slider Manager: XSS-safe `escapeHtml()` pada semua output dinamis, thumbnail lebih besar (85x58px), badge urutan berlatar gold, label CTA + link di kartu, padding lebih lega.
+- `[DONATIONS_LIVE]` Fungsi `loadDonationsProgress()` di `index.html`: progress bar dan counter porsi makan siang bergerak dinamis dari data `donations` Supabase live (Rp 25.000 per porsi).
+- `[ASSET_URL]` Koreksi 8 URL gambar fallback statis di `galeri.html` ke nama berkas aktual di ImageKit CDN.
+- `[LOGO_SVG]` Logo navbar `artikel-detail.html` diganti dari PNG ke SVG vektor resmi `/asset/logo/svg/logo_masjid_black.svg`.
+
+#### Infrastruktur & Tata Kelola
+- Branch: `dev` — commit `ea23105` (penyempurnaan UI) + `30d44af` (Fase 4+6 fitur utama)
+- Fase 4 Admin DKM: **100% Selesai** (semua modul termasuk PDF Export)
+- Fase 6 SEO & Go-Live: **55% Selesai** (Email, SEO Dasar, 404, Twitter Card, JSON-LD — tersisa: migrasi domain + Search Console)
+- Compliance Test Suite `scripts/verify_index_compliance.py`: **100% PASS** (8/8 sub-tes)
+
+---
+
 ## [1.9.18] - 2026-09-08
+
 
 ### Hero Carousel Slider Manager Tak Terbatas, Pemisahan Galeri Mandiri Istiqlal, Portal Warta Dakwah UMAR, dan Routing Clean URLs
 

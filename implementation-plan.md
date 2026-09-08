@@ -58,11 +58,11 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
        |
 [FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: SELESAI 100%)
        |
-[FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: 52% SELESAI)
+[FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: SELESAI 100%)
        |
-[FASE 5: Pengujian Terpadu, Audit Keamanan & User Acceptance Testing] (STATUS: MENUNGGU FASE 3 & 4)
+[FASE 5: Pengujian Terpadu, Audit Keamanan & User Acceptance Testing] (STATUS: MENUNGGU FASE 4)
        |
-[FASE 6: Finalisasi Produksi, SEO, Email Routing, DNS Cutover & Go-Live] (STATUS: 40% SELESAI)
+[FASE 6: Finalisasi Produksi, SEO, Email Routing, DNS Cutover & Go-Live] (STATUS: 55% SELESAI)
        |
 [FASE 7: Pipeline Aplikasi Mobile Android (.apk) & PWA Khusus Pengurus DKM] (STATUS: RENCANA LANJUTAN)
 ```
@@ -144,7 +144,8 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 
 ### Fase 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ
 - **Benchmark Rujukan:** SIABE-PORTO (Task Engine & Cloud Monitor), WEB-UMAR Admin (Article Studio), dan Standard Modul Odoo/Masjid (`.unused-modul-web-sophia`)
-- **Status:** 75% Selesai (Admin Core, Task Engine 5 View, Chat Realtime, Account & Dynamic RBAC, Profil Mandiri, 11 Modul Operasional PJ Terhubung Supabase Realtime CDC & RFC 4122 UUID Selesai)
+- **Status:** Selesai (100%)
+- **Catatan:** Admin Core, Task Engine 5 View, Chat Realtime, Account & Dynamic RBAC, Profil Mandiri, 11 Modul Operasional PJ, PDF Export Kinerja DKM — semua selesai.
 - **Daftar Tugas:**
   - [x] **Pondasi Admin Core & Auth Gate (`admin.html`):** Gerbang login Supabase Auth JWT, sidebar adaptif RBAC 10 peran, panel KPI Real-Time, inbox kotak saran, dan rekonsiliasi kas harian.
   - [x] **Restrukturisasi Bilah Samping Navigasi (Sidebar 4 Pilar Fungsional):** Penataan 9 kelompok menu terfragmentasi menjadi 4 pilar fungsional operasional masjid (Ruang Kerja & Tugas, Pelayanan & Pendidikan, Operasional & Fasilitas, Media & Keuangan) plus Pengaturan & Sistem, menghemat 40% ruang vertikal dan mengeliminasi anti-pola menu tunggal.
@@ -194,8 +195,10 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
   - [x] **Pemantau Kesehatan Arsitektur 7 Pilar Cloud (Khusus Super Admin - Benchmark SIABE-PORTO):**
     - Multi-Cloud Free-Tier Monitor: Dashboard pemantauan kuota 7 pilar (Supabase, Resend, Vercel, ImageKit, GitHub Actions, Cloudflare, Google Drive).
     - Kalkulasi dinamis total records database `{ count: 'exact', head: true }` dan estimasi ukuran DB Postgres MB.
-  - [ ] **Ekspor Laporan Kinerja PDF Mandiri per Anggota Tim DKM:**
-    - Format PDF standar Web Landscape (`jsPDF v2.5.1`).
+  - [x] **Ekspor Laporan Kinerja PDF Mandiri per Anggota Tim DKM:**
+    - Format PDF standar Web Landscape (`jsPDF v2.5.1`), lazy-load CDN.
+    - Laporan multi-halaman: header brand Charcoal+Gold, 4 KPI cards global, tabel ringkasan kinerja per PIC, daftar tugas aktif per divisi, footer confidential.
+    - Data bersumber langsung dari `getFilteredTasks(false)` — zero hardcode, terhubung Supabase live.
 
 ---
 
@@ -210,13 +213,14 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ---
 
 ### Fase 6: Finalisasi Produksi, SEO, Migrasi Domain ke masjidsophia.com & Go-Live
-- **Status:** 40% Selesai
+- **Status:** 55% Selesai
 - **Prasyarat & Jadwal Eksekusi:** Migrasi domain dieksekusi **SETELAH** seluruh setup portal admin (`admin.html`) dan portal publik (`index.html`, `artikel.html`, `galeri.html`) selesai dibangun, diuji, dan dipublikasikan ke branch `main` produksi melalui domain awal (`masjidsophiajatiwarna.com`) untuk memastikan kestabilan sistem terlebih dahulu.
 - **Daftar Tugas:**
   - [x] **Email Routing & SMTP Gateway Awal:** Cloudflare Email Routing & Resend SMTP aktif untuk domain awal.
   - [x] **SEO Dasar:** Berkas `robots.txt` dan `sitemap.xml` terpasang.
-  - [ ] **SEO Lanjutan & Schema.org JSON-LD:** Metadata OpenGraph, Twitter Card, Rich Snippets Mosque/Organization/Article disesuaikan ke `https://masjidsophia.com/`.
-  - [ ] **Halaman Error Kustom:** `404.html` bertema terang resmi Masjid Sophia.
+  - [x] **Halaman Error Kustom `404.html`:** Halaman 404 bertema terang resmi Sophia — ikon Font Awesome masjid, ayat Al-Qur'an (Al-Baqarah: 186), tombol kembali beranda & jadwal shalat, quick links galeri/artikel/donasi. Terdaftar di `vercel.json` blok `errors`.
+  - [x] **SEO Lanjutan — Twitter Card seluruh halaman publik:** `twitter:card summary_large_image`, `twitter:title`, `twitter:description`, `twitter:image` ditambahkan di `index.html`, `galeri.html`, `artikel.html`, `artikel-detail.html`. OG locale & site_name dilengkapi.
+  - [x] **SEO Lanjutan — Schema.org JSON-LD:** `Mosque` JSON-LD di `index.html`, `CollectionPage` di `galeri.html`, `Blog` di `artikel.html`, `NewsArticle` dinamis di `artikel-detail.html` (diperbarui JS setiap kali artikel dimuat).
   - [ ] **Pendaftaran Mesin Pencari:** Google Search Console & Bing Webmaster Tools untuk domain baru `masjidsophia.com`.
   - [ ] **Eksekusi Migrasi Domain Utama ke masjidsophia.com (Arsitektur 7 Pilar):**
     - [ ] **Pilar 1 - GitHub:** Repositori tetap di `web-masjid-sophia-jatiwarna`, pembaruan secret tokens dan URL dokumentasi.
