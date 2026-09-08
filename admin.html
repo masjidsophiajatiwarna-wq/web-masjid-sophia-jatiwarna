@@ -3980,14 +3980,6 @@
                     <h1 id="panel-heading-title">Ringkasan Operasional Masjid</h1>
                     <p id="panel-heading-desc">Pemantauan real-time arus infaq, tugas tim, dan layanan musafir 24 jam</p>
                 </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <a href="/media-checklist" target="_blank" class="btn-action-gold" style="text-decoration: none;">
-                        <i class="fa-solid fa-photo-film"></i> Hub Checklist Media
-                    </a>
-                    <button class="btn-action-gold" onclick="refreshAdminData()">
-                        <i class="fa-solid fa-arrows-rotate"></i> Refresh Data
-                    </button>
-                </div>
             </header>
 
             <!-- Tab 1: Overview Panel -->
@@ -4757,15 +4749,15 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
                         <div>
                             <div style="font-size: 0.95rem; font-weight: 700; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.4rem;">
-                                <i class="fa-solid fa-hard-drive" style="color: var(--color-gold-deep);"></i> Kuota Penyimpanan Supabase (Free Tier: 1.0 GB)
+                                <i class="fa-solid fa-cloud" style="color: var(--color-gold-deep);"></i> Penyimpanan Media CDN (ImageKit.io)
                             </div>
                             <div style="font-size: 0.78rem; color: var(--color-charcoal-muted); margin-top: 0.2rem;">
-                                Engine WebP Pintar: Setiap foto yang diunggah otomatis dikompresi ke format <b>WebP (~50-120 KB)</b> sehingga hemat penyimpanan hingga 98%.
+                                Infrastruktur distribusi konten visual dan berkas media untuk artikel warta dan dokumentasi kegiatan masjid.
                             </div>
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.75rem;">
                             <span id="storage-used-badge" class="status-badge" style="background: var(--color-gold-light); color: var(--color-gold-deep); font-weight: 700;">
-                                0.3 MB / 1,024 MB (3 File)
+                                0.0 MB / 20.480 MB (0 Berkas)
                             </span>
                             <button type="button" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;" onclick="switchTab('gallery')">
                                 <i class="fa-solid fa-photo-film"></i> Buka Galeri
@@ -4773,7 +4765,7 @@
                         </div>
                     </div>
                     <div class="storage-progress-bg">
-                        <div id="storage-progress-bar" class="storage-progress-fill" style="width: 0.2%;"></div>
+                        <div id="storage-progress-bar" class="storage-progress-fill" style="width: 0.5%;"></div>
                     </div>
                 </div>
 
@@ -5116,19 +5108,19 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
                         <div>
                             <div style="font-size: 1rem; font-weight: 700; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;">
-                                <i class="fa-solid fa-hard-drive" style="color: var(--color-gold-deep);"></i> Kuota Storage Supabase (Free Tier: 1.0 GB)
+                                <i class="fa-solid fa-cloud" style="color: var(--color-gold-deep);"></i> Penyimpanan Media CDN (ImageKit.io)
                             </div>
                             <div style="font-size: 0.78rem; color: var(--color-charcoal-muted); margin-top: 0.2rem;">
-                                Engine pintar: Setiap foto yang diunggah otomatis dikompresi ke format <b>WebP (~50-120 KB)</b> sehingga hemat penyimpanan hingga 98%.
+                                Infrastruktur distribusi konten visual dan berkas media berkecepatan tinggi untuk kebutuhan publikasi dan dokumentasi DKM.
                             </div>
                         </div>
                         <span id="gallery-storage-used-badge" class="status-badge" style="background: var(--color-gold-light); color: var(--color-gold-deep); font-weight: 700;">
-                            0.3 MB / 1,024 MB (3 File)
+                            0.0 MB / 20.480 MB (0 Berkas)
                         </span>
                     </div>
                     
-                    <div class="storage-progress-bg">
-                        <div id="gallery-storage-progress-bar" class="storage-progress-fill" style="width: 0.2%;"></div>
+                    <div class="storage-progress-bg" style="margin-top: 0.75rem;">
+                        <div id="gallery-storage-progress-bar" class="storage-progress-fill" style="width: 0.5%;"></div>
                     </div>
                 </div>
 
@@ -5137,25 +5129,28 @@
                     <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                         <div>
                             <div class="panel-title">
-                                <i class="fa-solid fa-photo-film" style="color: var(--color-gold-deep);"></i> Galeri Media &amp; Manajemen Aset Gambar WebP
+                                <i class="fa-solid fa-photo-film" style="color: var(--color-gold-deep);"></i> Pustaka Berkas Media
                             </div>
                             <p style="font-size: 0.8rem; color: var(--color-charcoal-muted); margin: 0.2rem 0 0 0;">
-                                Daftar seluruh file gambar yang siap digunakan sebagai foto sampul atau disisipkan ke artikel warta
+                                Daftar seluruh berkas foto dan media yang siap digunakan untuk artikel warta atau galeri publik
                             </p>
                         </div>
 
                         <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-                            <input type="text" id="search-gallery-input" class="form-input" placeholder="Cari nama file..." style="max-width: 240px; font-size: 0.82rem;" oninput="handleGallerySearch()">
+                            <div style="position: relative; min-width: 220px;">
+                                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--color-charcoal-muted); font-size: 0.8rem; pointer-events: none;"></i>
+                                <input type="text" id="search-gallery-input" class="form-input" placeholder="Cari berkas media..." style="padding-left: 2.2rem; height: 38px; font-size: 0.82rem; width: 100%; border-radius: var(--radius-sm); margin: 0;" oninput="handleGallerySearch()">
+                            </div>
                             
-                            <label class="btn btn-primary" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;">
-                                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Gambar (Auto WebP)
-                                <input type="file" accept="image/png, image/jpeg, image/webp, image/svg+xml" multiple onchange="handleGalleryDirectUpload(this)" style="display: none;">
+                            <label class="btn btn-primary" style="cursor: pointer; height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.82rem; padding: 0 1rem; border-radius: var(--radius-sm); white-space: nowrap; margin: 0;">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> <span>Unggah Media</span>
+                                <input type="file" accept="image/*, video/*" multiple onchange="handleGalleryDirectUpload(this)" style="display: none;">
                             </label>
                         </div>
                     </div>
 
                     <div id="gallery-upload-banner" style="display: none; background: var(--color-gold-light); border: 1px dashed var(--color-gold-primary); border-radius: var(--radius-sm); padding: 0.75rem 1rem; margin: 1rem; font-size: 0.85rem; color: var(--color-gold-deep);">
-                        <i class="fa-solid fa-spinner fa-spin"></i> <span id="gallery-upload-text">Sedang mengompresi gambar ke WebP dan mengunggah ke Supabase...</span>
+                        <i class="fa-solid fa-spinner fa-spin"></i> <span id="gallery-upload-text">Sedang memproses dan mengunggah berkas ke ImageKit CDN...</span>
                     </div>
 
                     <!-- Gallery Grid Container -->
@@ -7347,7 +7342,7 @@
                             <label class="form-label" style="font-weight: 700; margin-bottom: 0;">Foto Sampul Utama (Featured Image)</label>
                             <div style="display: flex; gap: 0.4rem;">
                                 <label class="btn btn-outline btn-sm" style="cursor: pointer; font-size: 0.75rem; padding: 0.25rem 0.6rem; display: inline-flex; align-items: center; gap: 0.35rem;">
-                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Foto (Auto WebP)
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Unggah Foto
                                     <input type="file" id="cover-file-input" accept="image/png, image/jpeg, image/webp, image/svg+xml" onchange="handleCoverUpload(this)" style="display: none;">
                                 </label>
                                 <button type="button" class="btn btn-outline btn-sm" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; display: inline-flex; align-items: center; gap: 0.35rem;" onclick="openMediaPicker('new-art-image')">
@@ -7359,7 +7354,7 @@
                         <input type="text" id="new-art-image" class="form-input" value="asset/favicon/logo-black/android-chrome-192x192.png" placeholder="https://... atau path URL gambar" oninput="previewFeaturedImage(this.value)">
                         
                         <div id="cover-upload-status" style="display: none; font-size: 0.75rem; color: var(--color-gold-deep); margin-top: 0.3rem; font-weight: 600;">
-                            <i class="fa-solid fa-spinner fa-spin"></i> Mengompresi ke WebP &amp; Mengunggah...
+                            <i class="fa-solid fa-spinner fa-spin"></i> Memproses &amp; Mengunggah ke CDN...
                         </div>
 
                         <div style="margin-top: 0.4rem;">
@@ -7531,13 +7526,13 @@
                     <input type="text" id="picker-search-input" class="form-input" placeholder="Cari file gambar..." style="max-width: 320px; font-size: 0.85rem;" oninput="filterMediaPicker()">
                     
                     <label class="btn btn-primary btn-sm" style="cursor: pointer; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.4rem;">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Baru (Auto WebP)
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Unggah Baru
                         <input type="file" accept="image/png, image/jpeg, image/webp, image/svg+xml" onchange="handlePickerUpload(this)" style="display: none;">
                     </label>
                 </div>
 
                 <div id="picker-upload-status" style="display: none; background: var(--color-gold-light); border: 1px dashed var(--color-gold-primary); border-radius: var(--radius-sm); padding: 0.5rem 0.75rem; margin-bottom: 1rem; font-size: 0.8rem; color: var(--color-gold-deep);">
-                    <i class="fa-solid fa-spinner fa-spin"></i> Mengompresi ke WebP dan mengunggah ke Supabase...
+                    <i class="fa-solid fa-spinner fa-spin"></i> Memproses dan mengunggah ke CDN...
                 </div>
 
                 <div id="media-picker-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; max-height: 50vh; overflow-y: auto;">
@@ -9509,7 +9504,7 @@
 
         // Switch Navigation Tabs with Browser Memory & URL Hash Persistence
         function switchTab(tabId, btn = null) {
-            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik'];
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik', 'santri', 'musafir', 'keamanan', 'kebersihan'];
             if (!tabId || !validTabs.includes(tabId)) tabId = 'overview';
 
             const role = getUserRole();
@@ -9607,7 +9602,7 @@
                 'leave_requests': ['Manajemen Pengajuan Izin & Cuti Pengurus', 'Pusat permohonan izin sakit, cuti operasional, dan persetujuan terpusat pimpinan DKM'],
                 'articles': ['Content Studio Warta & Dakwah', 'Penerbitan artikel, jadwal kajian, dan dokumentasi kegiatan'],
                 'media': ['Visual Web Builder Beranda', 'Kustomisasi banner hero, susunan section, dan live preview halaman index.html'],
-                'gallery': ['Galeri Media & Kompresi WebP', 'Manajemen aset foto dan engine kompresi otomatis WebP Supabase Storage'],
+                'gallery': ['Galeri Media', 'Pustaka aset dokumentasi visual, foto kegiatan, dan media dakwah masjid'],
                 'health': ['Multi-Cloud Free-Tier Monitor', 'Sistem pemantauan 7 pilar infrastruktur cloud gratis (Zero-Cost Production Stack)'],
                 'accounts': ['Direktori & Manajemen Pengguna DKM', 'Kontrol hak akses multi-divisi, riwayat login live, reset kredensial baku, dan manajemen sesi pengurus'],
                 'ibadah': ['Modul Peribadatan & Penugasan Petugas', 'Kalibrasi hisab jadwal shalat presisi Kemenag Jatiwarna, penugasan imam & khatib, serta alur persetujuan jadwal DKM'],
@@ -16859,15 +16854,16 @@
             let totalKb = 0;
             items.forEach(i => { totalKb += parseFloat(i.file_size_kb || 0); });
             const totalMb = (totalKb / 1024).toFixed(2);
-            const pct = Math.min(100, ((totalMb / 1024) * 100).toFixed(2));
+            const maxMb = 20480; // 20 GB ImageKit CDN
+            const pct = Math.min(100, ((totalMb / maxMb) * 100).toFixed(2));
 
             const badge1 = document.getElementById('storage-used-badge');
             const bar1 = document.getElementById('storage-progress-bar');
             const badge2 = document.getElementById('gallery-storage-used-badge');
             const bar2 = document.getElementById('gallery-storage-progress-bar');
 
-            const text = totalMb + ' MB / 1,024 MB (' + items.length + ' File)';
-            const width = Math.max(0.5, pct) + '%';
+            const text = totalMb + ' MB / 20.480 MB (' + items.length + ' Berkas)';
+            const width = Math.max(0.3, pct) + '%';
 
             if (badge1) badge1.innerText = text;
             if (bar1) bar1.style.width = width;
@@ -17419,7 +17415,7 @@
             updateStorageBarStats();
 
             if (items.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--color-charcoal-muted);"><i class="fa-solid fa-images" style="font-size: 2.5rem; margin-bottom: 0.75rem; color: #D1D5DB;"></i><p style="font-weight: 600;">Belum ada gambar yang sesuai</p><p style="font-size: 0.8rem;">Gunakan tombol upload di atas untuk menambahkan gambar WebP baru.</p></div>';
+                grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--color-charcoal-muted);"><i class="fa-solid fa-images" style="font-size: 2.5rem; margin-bottom: 0.75rem; color: #D1D5DB;"></i><p style="font-weight: 600;">Belum ada berkas media yang sesuai</p><p style="font-size: 0.8rem;">Gunakan tombol Unggah Media di atas untuk menambahkan berkas baru.</p></div>';
                 return;
             }
 
@@ -17430,7 +17426,7 @@
                     '<div class="gallery-card-body">' +
                         '<div class="gallery-card-title" title="' + item.file_name + '">' + item.file_name + '</div>' +
                         '<div class="gallery-card-meta">' +
-                            '<span style="font-weight: 700; color: var(--color-success); background: var(--color-success-bg); padding: 1px 6px; border-radius: 4px;">' + (item.file_size_kb || 80) + ' KB &bull; WebP</span>' +
+                            '<span style="font-weight: 700; color: var(--color-gold-deep); background: var(--color-gold-light); padding: 1px 6px; border-radius: 4px;">' + (item.file_size_kb || 80) + ' KB &bull; CDN</span>' +
                             '<span>' + (item.dimensions || '1200x800') + '</span>' +
                         '</div>' +
                         '<div style="font-size: 0.7rem; color: var(--color-charcoal-muted); margin-top: 2px;">' + uploadDate + '</div>' +

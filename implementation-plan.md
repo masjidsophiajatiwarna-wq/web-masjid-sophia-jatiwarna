@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v5.5 (Restrukturisasi Navigasi Sidebar 4 Pilar Fungsional DKM, Migrasi Media Terpusat ImageKit.io CDN via Supabase RPC & Serverless Relay)  
+**Versi Rencana Induk:** v5.6 (Perbaikan Rute Navigasi 4 Modul Operasional, Pembersihan Top App Bar Header, dan Penyelarasan Galeri Media ImageKit CDN 20 GB)  
 **Terakhir Diperbarui:** 2026-09-08  
 
 ---
@@ -58,7 +58,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
        |
 [FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: 60% SELESAI)
        |
-[FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: 50% SELESAI)
+[FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: 52% SELESAI)
        |
 [FASE 5: Pengujian Terpadu, Audit Keamanan & User Acceptance Testing] (STATUS: MENUNGGU FASE 3 & 4)
        |
@@ -74,11 +74,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ### Fase 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid
 - **Status:** 70% Selesai
 - **Penanganan:** Murni oleh Tim Media Masjid melalui portal checklist `media-checklist.html`.
-- **Daftar Tugas:**
-  - [x] Audit aset logo resmi format vektor SVG (`logo_masjid_black.svg`, `logo_masjid_white.svg`) dan PNG transparan.
-  - [x] Verifikasi paket Favicon multi-ukuran (16x16, 32x32, Apple Touch Icon, Android Chrome, site.webmanifest).
-  - [ ] Kurasi galeri foto riil (Makan Siang Gratis, fasilitas 24 jam, santri tahfidz, ruang utama).
-  - [ ] Konversi dan kompresi seluruh aset foto ke format WebP teroptimasi untuk performa web.
+- **Target Utama:** Mengumpulkan 40+ foto asli fasilitas masjid, aset identitas visual, kuitansi donasi, dan dokumentasi makan siang gratis.
 
 ---
 
@@ -137,6 +133,10 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 - **Daftar Tugas:**
   - [x] **Pondasi Admin Core & Auth Gate (`admin.html`):** Gerbang login Supabase Auth JWT, sidebar adaptif RBAC 10 peran, panel KPI Real-Time, inbox kotak saran, dan rekonsiliasi kas harian.
   - [x] **Restrukturisasi Bilah Samping Navigasi (Sidebar 4 Pilar Fungsional):** Penataan 9 kelompok menu terfragmentasi menjadi 4 pilar fungsional operasional masjid (Ruang Kerja & Tugas, Pelayanan & Pendidikan, Operasional & Fasilitas, Media & Keuangan) plus Pengaturan & Sistem, menghemat 40% ruang vertikal dan mengeliminasi anti-pola menu tunggal.
+  - [x] **Perbaikan Rute Navigasi 4 Modul Operasional & Penyelarasan Galeri Media ImageKit CDN 20 GB (`admin.html`):**
+    - Whitelist array `validTabs` pada fungsi `switchTab(tabId)` ditambahkan 4 modul operasional (`santri`, `musafir`, `keamanan`, `kebersihan`), mengeliminasi bug reset tampilan ke Ringkasan Operasional.
+    - Pembersihan header `top-app-bar`: menghapus tombol *Hub Checklist Media* dan tombol *Refresh Data* yang rawan memicu kekeliruan pengurus.
+    - Penyelarasan modul Galeri Media dan Tab Artikel ke infrastruktur **ImageKit.io CDN 20 GB (20.480 MB)**, menghapus teks AI flexing (*Engine pintar...*), merapikan simetri bilah pencarian dan tombol *"Unggah Media"*, serta menyempurnakan status unggah berkas CDN.
   - [x] **Optimasi Antarmuka Fluid Desktop & Mobile-First Touch UI (`admin.html`):**
     - **Tampilan Desktop / Laptop:** Multi-kolom lebar, split-pane layout gantt (fixed sidebar 250px + timeline), tabel data komprehensif, sidebar collapse to icon mode (72px).
     - **Tampilan Smartphone (Android & iPhone):** Table Drag Grabber Engine (`.table-responsive`), drag-to-scroll kursor grab/grabbing, target sentuh min 48px, gestur swipe touch pan, auto-center Today view, modal backdrop scroll lock (`overflow: hidden`).
