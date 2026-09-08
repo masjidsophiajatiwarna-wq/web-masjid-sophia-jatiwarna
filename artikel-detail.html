@@ -1263,69 +1263,6 @@
             return null;
         }
 
-        // Fallback default article database for offline or direct inspection
-        const FALLBACK_ARTICLES = [
-            {
-                slug: 'panduan-singgah-24-jam-musafir-jatiwarna',
-                title: 'Panduan Singgah 24 Jam & Kenyamanan Ibadah Musafir di Jatiwarna',
-                category: 'Layanan Musafir',
-                thumbnail_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp',
-                author_name: 'PJ Pelayanan Musafir',
-                read_time: '2 Menit',
-                view_count: 142,
-                excerpt: 'Informasi lengkap fasilitas kamar mandi bersih, pendingin ruangan shalat, air minum gratis, dan titik lokasi strategis di jalur tol Jatiwarna.',
-                content_html: `
-                    <p>Masjid Musafir Sophia Jatiwarna didirikan dengan semangat memberikan kenyamanan dan perlindungan optimal bagi para musafir yang melintasi jalur sibuk Kota Bekasi dan Jakarta Timur. Terletak strategis di samping gerbang tol Jatiwarna, masjid ini beroperasi penuh selama 24 jam tanpa pernah dikunci.</p>
-                    <h2>Fasilitas Utama Bagi Jamaah dan Musafir</h2>
-                    <p>Berbagai sarana telah disiapkan oleh pengurus DKM demi menunjang kekhusyukan dan kemudahan para musafir:</p>
-                    <ul>
-                        <li><strong>Ruang Shalat Sejuk &amp; Karpet Wangi:</strong> Dilengkapi penyejuk udara sentral untuk melepas lelah di perjalanan.</li>
-                        <li><strong>Area Sanitasi &amp; Wudhu Terjaga:</strong> Kamar mandi dan tempat wudhu pria serta wanita dipisah dengan standar kebersihan tinggi.</li>
-                        <li><strong>Air Minum Higienis Gratis 24 Jam:</strong> Tersedia dispenser air panas dan dingin untuk menyegarkan stamina musafir.</li>
-                        <li><strong>Area Parkir Luas &amp; Aman:</strong> Didukung pantauan kamera CCTV 24 jam penuh untuk keamanan kendaraan jamaah.</li>
-                    </ul>
-                    <p>Semoga setiap langkah singgah para musafir di rumah Allah ini menjadi washilah keselamatan, kebarokahan rezeki, dan pahala yang berlipat ganda.</p>
-                `,
-                published_at: '2026-09-01T08:00:00Z'
-            },
-            {
-                slug: 'mutabaah-hafalan-santri-tahfidz-masjid-sophia',
-                title: 'Mutabaah & Ujian Setoran Hafalan Santri Tahfidz Masjid Sophia',
-                category: 'Santri Tahfidz',
-                thumbnail_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al-Quran_Bersama_Ustadz_01.webp',
-                author_name: 'PJ Pendidikan Qur\'an',
-                read_time: '4 Menit',
-                view_count: 188,
-                excerpt: 'Proses pembinaan santri mukim penghafal 30 Juz Al-Qur\'an, metode tasmi\' bersanad, dan laporan perkembangan santri binaan DKM.',
-                content_html: `
-                    <p>Alhamdulillah, program beasiswa pembinaan santri penghafal 30 Juz Al-Qur'an di Masjid Sophia Jatiwarna terus menunjukkan kemajuan yang membanggakan. Melalui bimbingan asatidz bersanad, para santri mukim menjalani rutinitas halaqah yang disiplin dan penuh semangat.</p>
-                    <h2>Metode Tasmi' dan Talaqqi Bersanad</h2>
-                    <p>Setiap santri dididik memperdengarkan hafalan (tasmi') secara berkala dengan kaidah makharijul huruf dan tajwid yang presisi. Tidak sekadar menghafal bait ayat, para santri juga dibekali pemahaman tadabbur makna dan pembinaan adab keseharian.</p>
-                    <blockquote>
-                        "Sebaik-baik kalian adalah orang yang mempelajari Al-Qur'an dan mengajarkannya." (HR. Bukhari no. 5027)
-                    </blockquote>
-                    <p>Kami menyampaikan terima kasih yang tulus kepada seluruh muhsinin yang telah menjadi orang tua asuh dan menyalurkan beasiswa pendidikan para santri. Semoga pahala ayat-ayat suci yang mereka lantunkan senantiasa mengalir kepada Anda dan keluarga.</p>
-                `,
-                published_at: '2026-09-03T10:30:00Z'
-            },
-            {
-                slug: 'dokumentasi-penyaluran-sedekah-makan-dzuhur',
-                title: 'Dokumentasi Penyaluran Makan Berjamaah Gratis Jamaah & Musafir',
-                category: 'Sedekah Makan',
-                thumbnail_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp',
-                author_name: 'Tim DKM Sophia',
-                read_time: '3 Menit',
-                view_count: 215,
-                excerpt: 'Laporan harian pembagian 70+ porsi makan siang bergizi ba\'da Dzuhur bagi para musafir, kurir, ojek online, dan pejuang nafkah keluarga.',
-                content_html: `
-                    <p>Setiap hari seusai pelaksanaan Shalat Dzuhur berjamaah, aroma sedap santapan hangat menyapa setiap jamaah yang hadir di selasar Masjid Musafir Sophia Jatiwarna. Sebanyak lebih dari 70 porsi makanan siap saji bergizi disajikan secara cuma-cuma.</p>
-                    <h2>Menyasar Para Pejuang Nafkah dan Musafir</h2>
-                    <p>Program sedekah makan siang ini difokuskan untuk meringankan beban para pejuang nafkah di jalanan, pengemudi ojek online, kurir ekspedisi, pekerja serabutan, dan musafir yang sedang melintas. Tidak ada syarat administratif apa pun; setiap insan yang lapar dipersilakan menikmati hidangan dengan tertib dan santun.</p>
-                    <p>Alhamdulillah, berkat keistiqomahan para donatur dan dedikasi relawan dapur, hidangan yang disajikan senantiasa higienis, halal, dan bergizi seimbang. Mari terus rawat kepedulian ini agar semakin banyak saudara kita yang tercurahi berkahnya.</p>
-                `,
-                published_at: '2026-09-05T13:15:00Z'
-            }
-        ];
 
         // 1. Reading Progress Bar Listener
         window.addEventListener('scroll', () => {
@@ -1360,16 +1297,10 @@
         }
 
         // 3. Main Init Function
+        // 3. Main Init Function
         async function initArticleDetail() {
             updateHijriDate();
             const slug = getArticleSlug();
-
-            if (!slug) {
-                // If no slug, load the first featured article as showcase
-                renderArticleData(FALLBACK_ARTICLES[0]);
-                loadRelatedArticles(FALLBACK_ARTICLES[0].slug);
-                return;
-            }
 
             let article = null;
 
@@ -1377,12 +1308,16 @@
             try {
                 const client = await getSupabaseClient();
                 if (client) {
-                    let query = client.from('artikel_berita').select('*');
-                    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug);
-                    if (isUUID) {
-                        query = query.eq('id', slug);
+                    let query = client.from('artikel_berita').select('*').eq('is_published', true);
+                    if (!slug) {
+                        query = query.order('published_at', { ascending: false }).limit(1);
                     } else {
-                        query = query.eq('slug', slug);
+                        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug);
+                        if (isUUID) {
+                            query = query.eq('id', slug);
+                        } else {
+                            query = query.eq('slug', slug);
+                        }
                     }
 
                     const { data, error } = await query.maybeSingle();
@@ -1394,12 +1329,7 @@
                     }
                 }
             } catch (e) {
-                // Fallback gracefully without console warning
-            }
-
-            // Fallback to local array
-            if (!article) {
-                article = FALLBACK_ARTICLES.find(a => a.slug === slug);
+                // Handle fetch error gracefully
             }
 
             if (article) {
@@ -1566,6 +1496,7 @@
         // 9. Load Related Articles
         async function loadRelatedArticles(currentSlug) {
             const grid = document.getElementById('related-articles-grid');
+            const section = document.getElementById('related-section');
             if (!grid) return;
 
             let related = [];
@@ -1590,8 +1521,11 @@
             }
 
             if (related.length === 0) {
-                related = FALLBACK_ARTICLES.filter(a => a.slug !== currentSlug).slice(0, 3);
+                if (section) section.style.display = 'none';
+                return;
             }
+
+            if (section) section.style.display = 'block';
 
             const getArticleUrl = (slug) => {
                 if (!slug) return '/artikel.html';

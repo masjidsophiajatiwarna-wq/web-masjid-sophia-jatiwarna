@@ -875,50 +875,17 @@
                         .eq('is_published', true)
                         .order('published_at', { ascending: false });
 
-                    if (!error && Array.isArray(data) && data.length > 0) {
+                    if (!error && Array.isArray(data)) {
                         allArticles = data;
                         renderArticles();
                         return;
                     }
                 }
             } catch (e) {
-                // Fallback gracefully without console warning
+                // Supabase error handling
             }
 
-            // Fallback default articles
-            allArticles = [
-                {
-                    slug: 'panduan-singgah-24-jam-musafir-jatiwarna',
-                    title: 'Panduan Singgah 24 Jam & Kenyamanan Ibadah Musafir di Jatiwarna',
-                    category: 'Layanan Musafir',
-                    thumbnail_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp',
-                    author_name: 'PJ Pelayanan Musafir',
-                    read_time: '4 Menit',
-                    excerpt: 'Informasi lengkap fasilitas kamar mandi bersih, pendingin ruangan shalat, air minum gratis, dan titik lokasi strategis di jalur tol Jatiwarna.',
-                    published_at: new Date().toISOString()
-                },
-                {
-                    slug: 'mutabaah-hafalan-santri-tahfidz-masjid-sophia',
-                    title: 'Mutabaah & Ujian Setoran Hafalan Santri Tahfidz Masjid Sophia',
-                    category: 'Santri Tahfidz',
-                    thumbnail_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al-Quran_Bersama_Ustadz_01.webp',
-                    author_name: 'PJ Pendidikan Qur\'an',
-                    read_time: '3 Menit',
-                    excerpt: 'Proses pembinaan santri mukim penghafal 30 Juz Al-Qur\'an, metode tasmi\' bersanad, dan laporan perkembangan santri binaan DKM.',
-                    published_at: new Date().toISOString()
-                },
-                {
-                    slug: 'dokumentasi-penyaluran-sedekah-makan-dzuhur',
-                    title: 'Dokumentasi Penyaluran Makan Berjamaah Gratis Jamaah & Musafir',
-                    category: 'Sedekah Makan',
-                    thumbnail_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp',
-                    author_name: 'Tim Relawan Dapur',
-                    read_time: '3 Menit',
-                    excerpt: 'Laporan harian pembagian 70+ porsi makan siang bergizi ba\'da Dzuhur bagi para musafir, kurir, ojek online, dan pejuang nafkah keluarga.',
-                    published_at: new Date().toISOString()
-                }
-            ];
-
+            allArticles = [];
             renderArticles();
         }
 
