@@ -15,10 +15,11 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
   - **Fungsi RPC Penghapus Berkas Fisik (`delete_imagekit_file`):** Menjalankan HTTP DELETE langsung ke endpoint API ImageKit (`https://api.imagekit.io/v1/files/{fileId}`) menggunakan ekstensi `pg_net` secara asinkron dan otomatis membersihkan log di tabel `public.media_library`.
   - **Serverless Relay Bridge (`/api/imagekit-upload.js`):** Endpoint relay serverless Vercel menggunakan Basic Auth aman berbasis environment variable `IMAGEKIT_PRIVATE_KEY` sebagai saluran unggah berkinerja tinggi dan stabil.
   - **Injeksi Menyeluruh 14 Titik Unggah Media di Portal Admin (`admin.html`):**
-    1. Modul Media CMS: Cover artikel dakwah & berita (`uploadImageToSupabase`).
-    2. Modul Media CMS: Unggah langsung galeri foto (`uploadImageToSupabase`).
-    3. Modul Media CMS: Unggah berkas via Image Picker Modal (`uploadImageToSupabase`).
+    1. Modul Media CMS: Cover artikel dakwah & berita (`uploadImageToImageKit`).
+    2. Modul Media CMS: Unggah langsung galeri foto (`uploadImageToImageKit`).
+    3. Modul Media CMS: Unggah berkas via Image Picker Modal (`uploadImageToImageKit`).
     4. Modul Media CMS: Penghapusan berkas fisik terintegrasi di ImageKit saat menghapus aset di Pustaka Media (`deleteMediaItem`).
+    5. Penyediaan alias `uploadImageToSupabase = uploadImageToImageKit` untuk kompatibilitas penuh skrip terdahulu.
     5. Modul Akun Pengurus: Unggah foto profil avatar pengurus DKM (`handleSelfAvatarUpload`).
     6. Modul Izin & Cuti: Unggah dokumen pendukung surat cuti/sakit (`handleLeaveDocUpload`).
     7. Modul Chat Koordinasi: Unggah lampiran foto/media ruang obrolan internal DKM (`handleChatMediaUpload`).
