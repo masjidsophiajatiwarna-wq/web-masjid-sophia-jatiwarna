@@ -12117,13 +12117,26 @@
                         canvas.width = w;
                         canvas.height = h;
                         ctx.drawImage(img, 0, 0, w, h);
-                        mediaUrl = canvas.toDataURL('image/webp', 0.82);
                         
-                        sendChatMessageWithAttachment(mediaUrl, 'IMAGE');
+                        canvas.toBlob(async (blob) => {
+                            let finalChatUrl = canvas.toDataURL('image/webp', 0.82);
+                            try {
+                                const ikRes = await uploadToImageKit(blob || file, {
+                                    fileName: 'chat_' + Date.now() + '.webp',
+                                    folder: '/chat-dkm'
+                                });
+                                if (ikRes && ikRes.url) finalChatUrl = ikRes.url;
+                            } catch (e) {}
+                            sendChatMessageWithAttachment(finalChatUrl, 'IMAGE');
+                        }, 'image/webp', 0.82);
                     };
                     img.src = mediaUrl;
                 } else {
-                    sendChatMessageWithAttachment(mediaUrl, 'VIDEO');
+                    uploadToImageKit(file, { folder: '/chat-dkm' }).then(ikRes => {
+                        sendChatMessageWithAttachment(ikRes.url || mediaUrl, 'VIDEO');
+                    }).catch(() => {
+                        sendChatMessageWithAttachment(mediaUrl, 'VIDEO');
+                    });
                 }
             };
             reader.readAsDataURL(file);
@@ -16401,6 +16414,200 @@
 
         const DEFAULT_MEDIA_ITEMS = [];
 
+        
+        // ==========================================================================
+        // IMAGEKIT.IO CORE CDN & SUPABASE RPC UPLOAD/DELETE ENGINE
+        // ==========================================================================
+        const IMAGEKIT_CONFIG = {
+            urlEndpoint: 'https://ik.imagekit.io/masjidsophia',
+            uploadEndpoint: 'https://upload.imagekit.io/api/v1/files/upload',
+            publicKey: 'public_masjidsophia',
+            defaultFolder: '/masjid-sophia'
+        };
+
+        async function getImageKitAuthParams() {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient.rpc('get_imagekit_auth');
+                    if (!error && data && data.success) {
+                        return data;
+                    }
+                } catch (e) {
+                    console.warn('[ImageKit] Auth RPC notice:', e);
+                }
+            }
+            return null;
+        }
+
+        async function uploadToImageKit(fileOrBlob, options = {}) {
+            const folder = options.folder || IMAGEKIT_CONFIG.defaultFolder;
+            const isVideo = fileOrBlob.type && fileOrBlob.type.startsWith('video/');
+            const isPdf = fileOrBlob.type && fileOrBlob.type === 'application/pdf';
+
+            let fileToUpload = fileOrBlob;
+            let fileName = options.fileName || fileOrBlob.name || ('media_' + Date.now() + (isVideo ? '.mp4' : '.webp'));
+            let compressedDataUrl = null;
+            let dimensions = 'Auto';
+            let sizeKb = ((fileOrBlob.size || 0) / 1024).toFixed(1);
+
+            // Jika gambar, kompresi otomatis ke WebP client-side terlebih dahulu
+            if (!isVideo && !isPdf && fileOrBlob.type && fileOrBlob.type.startsWith('image/')) {
+                try {
+                    const compressed = await compressImageToWebP(fileOrBlob, options.maxWidth || 1200, options.quality || 0.82);
+                    fileToUpload = compressed.blob;
+                    fileName = compressed.fileName;
+                    compressedDataUrl = compressed.dataUrl;
+                    dimensions = compressed.dimensions;
+                    sizeKb = compressed.sizeKb;
+                } catch (cErr) {
+                    console.warn('[ImageKit] Compression fallback notice:', cErr);
+                }
+            }
+
+            let resultUrl = null;
+            let resultFileId = null;
+            let uploadSuccess = false;
+
+            // 1. Coba upload via Supabase RPC Auth (Client-side Direct ke upload.imagekit.io)
+            const auth = await getImageKitAuthParams();
+            if (auth && auth.publicKey && !auth.publicKey.includes('placeholder') && auth.publicKey !== 'public_masjidsophia') {
+                try {
+                    const formData = new FormData();
+                    formData.append('file', fileToUpload, fileName);
+                    formData.append('fileName', fileName);
+                    formData.append('publicKey', auth.publicKey);
+                    formData.append('signature', auth.signature);
+                    formData.append('expire', auth.expire);
+                    formData.append('token', auth.token);
+                    formData.append('folder', folder);
+                    formData.append('useUniqueFileName', 'true');
+
+                    const directRes = await fetch(IMAGEKIT_CONFIG.uploadEndpoint, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (directRes.ok) {
+                        const directData = await directRes.json();
+                        if (directData && directData.fileId) {
+                            resultUrl = directData.url;
+                            resultFileId = directData.fileId;
+                            uploadSuccess = true;
+                        }
+                    }
+                } catch (directErr) {
+                    console.warn('[ImageKit] Direct upload notice:', directErr);
+                }
+            }
+
+            // 2. Coba upload via Serverless Bridge (/api/imagekit-upload) yang aman menggunakan IMAGEKIT_PRIVATE_KEY
+            if (!uploadSuccess) {
+                try {
+                    let base64Payload = compressedDataUrl;
+                    if (!base64Payload) {
+                        base64Payload = await new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.onloadend = () => resolve(reader.result);
+                            reader.readAsDataURL(fileToUpload);
+                        });
+                    }
+
+                    const bridgeRes = await fetch('/api/imagekit-upload', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            file: base64Payload,
+                            fileName: fileName,
+                            folder: folder
+                        })
+                    });
+
+                    if (bridgeRes.ok) {
+                        const bridgeData = await bridgeRes.json();
+                        if (bridgeData && bridgeData.success && bridgeData.fileId) {
+                            resultUrl = bridgeData.url;
+                            resultFileId = bridgeData.fileId;
+                            uploadSuccess = true;
+                        }
+                    }
+                } catch (bridgeErr) {
+                    console.warn('[ImageKit] Bridge upload notice:', bridgeErr);
+                }
+            }
+
+            // 3. Fallback jika offline / mode lokal murni
+            if (!uploadSuccess) {
+                console.warn('[ImageKit] Menggunakan fallback dataUrl lokal.');
+                resultUrl = compressedDataUrl || (await new Promise(r => {
+                    const fr = new FileReader();
+                    fr.onloadend = () => r(fr.result);
+                    fr.readAsDataURL(fileToUpload);
+                }));
+            }
+
+            // 4. Catat ke tabel media_library Supabase dan localStorage
+            const mediaRecord = {
+                id: 'med-' + Date.now(),
+                file_name: fileName,
+                public_url: resultUrl,
+                file_size_kb: parseFloat(sizeKb) || 0,
+                file_type: isVideo ? 'video/mp4' : 'image/webp',
+                dimensions: dimensions,
+                folder: folder,
+                uploaded_at: new Date().toISOString(),
+                imagekit_file_id: resultFileId,
+                uploaded_by: (typeof currentUser !== 'undefined' && currentUser) ? getUserDisplayName(currentUser) : 'Pengurus DKM'
+            };
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('media_library').insert([mediaRecord]);
+                } catch (dbErr) {
+                    console.warn('[ImageKit] DB media_library insert notice:', dbErr);
+                }
+
+                try {
+                    await sbClient.from('homepage_media').insert([{
+                        judul: fileName,
+                        subjudul: 'Ukuran: ' + sizeKb + ' KB WebP (' + dimensions + ')',
+                        kategori: folder.replace(/^\//, '').toUpperCase(),
+                        media_url: resultUrl,
+                        media_type: isVideo ? 'VIDEO' : 'IMAGE',
+                        is_active: true,
+                        imagekit_file_id: resultFileId
+                    }]);
+                } catch (hpErr) {}
+            }
+
+            try {
+                let localMedia = JSON.parse(localStorage.getItem('masjid_sophia_media_library') || '[]');
+                localMedia.unshift(mediaRecord);
+                localStorage.setItem('masjid_sophia_media_library', JSON.stringify(localMedia));
+            } catch (e) {}
+
+            return {
+                url: resultUrl,
+                fileId: resultFileId,
+                name: fileName,
+                sizeKb: sizeKb,
+                dimensions: dimensions,
+                folder: folder,
+                dataUrl: compressedDataUrl || resultUrl
+            };
+        }
+
+        async function deleteImageKitFile(fileId) {
+            if (!fileId) return;
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient.rpc('delete_imagekit_file', { p_file_id: fileId });
+                    console.log('[ImageKit] RPC delete result:', data);
+                } catch (err) {
+                    console.warn('[ImageKit] Delete RPC notice:', err);
+                }
+            }
+        }
+
         // 1. Client-Side WebP Compression Engine
         function compressImageToWebP(file, maxWidth = 1200, quality = 0.82) {
             return new Promise((resolve, reject) => {
@@ -16474,62 +16681,21 @@
 
         // 2. Supabase Storage & Database Upload Function
         async function uploadImageToSupabase(file, folder = 'covers') {
-            const compressed = await compressImageToWebP(file, folder === 'covers' ? 1200 : 900, 0.82);
-            let publicUrl = compressed.dataUrl;
-            const storagePath = folder + '/' + compressed.fileName;
-
-            if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    const { data, error } = await sbClient
-                        .storage
-                        .from('article-media')
-                        .upload(storagePath, compressed.blob, {
-                            contentType: 'image/webp',
-                            upsert: true
-                        });
-
-                    if (!error && data) {
-                        const { data: urlData } = sbClient.storage.from('article-media').getPublicUrl(storagePath);
-                        if (urlData && urlData.publicUrl) {
-                            publicUrl = urlData.publicUrl;
-                        }
-                    }
-                } catch (err) {
-                    console.warn('Storage upload note:', err);
-                }
-            }
-
-            const mediaObj = {
-                id: 'med-' + Date.now(),
-                file_name: compressed.fileName,
-                public_url: publicUrl,
-                file_size_kb: parseFloat(compressed.sizeKb),
-                file_type: 'image/webp',
-                dimensions: compressed.dimensions,
-                folder,
-                uploaded_at: new Date().toISOString()
-            };
-
-            if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('homepage_media').insert([{
-                        judul: compressed.fileName,
-                        subjudul: 'Ukuran: ' + compressed.sizeKb + ' KB WebP (' + compressed.dimensions + ')',
-                        kategori: folder === 'covers' ? 'BANNER_HERO' : 'GALERI_KEGIATAN',
-                        media_url: publicUrl,
-                        media_type: 'IMAGE',
-                        is_active: true
-                    }]);
-                } catch (e) {}
-            }
-
-            let mediaList = await getMediaItems();
-            mediaList.unshift(mediaObj);
-            localStorage.setItem('masjid_sophia_media_library', JSON.stringify(mediaList));
+            const ikResult = await uploadToImageKit(file, {
+                folder: '/' + folder,
+                maxWidth: folder === 'covers' ? 1200 : 900,
+                quality: 0.82
+            });
 
             return {
-                publicUrl,
-                compressed
+                publicUrl: ikResult.url,
+                fileId: ikResult.fileId,
+                compressed: {
+                    fileName: ikResult.name,
+                    sizeKb: ikResult.sizeKb,
+                    dimensions: ikResult.dimensions,
+                    dataUrl: ikResult.dataUrl
+                }
             };
         }
 
@@ -17404,15 +17570,22 @@
         }
 
         async function deleteMediaItem(id) {
-            if (!confirm('Apakah Anda yakin ingin menghapus gambar ini dari galeri?')) return;
+            if (!confirm('Apakah Anda yakin ingin menghapus gambar ini dari galeri dan ImageKit CDN?')) return;
+
+            let items = await getMediaItems();
+            const targetItem = items.find(i => i.id === id);
+
+            if (targetItem && targetItem.imagekit_file_id) {
+                await deleteImageKitFile(targetItem.imagekit_file_id);
+            }
 
             if (typeof sbClient !== 'undefined' && sbClient) {
                 try {
                     await sbClient.from('homepage_media').delete().eq('id', id);
+                    await sbClient.from('media_library').delete().eq('id', id);
                 } catch (e) {}
             }
 
-            let items = await getMediaItems();
             items = items.filter(i => i.id !== id);
             localStorage.setItem('masjid_sophia_media_library', JSON.stringify(items));
             renderMediaGallery();
@@ -17874,17 +18047,13 @@
             if (!file) return;
 
             try {
-                const compressed = await compressImageToWebP(file, 1000, 0.8);
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    const dataUrl = ev.target.result;
-                    document.getElementById('dapur-form-foto-url').value = dataUrl;
-                    const previewBox = document.getElementById('dapur-form-preview-box');
-                    const previewImg = document.getElementById('dapur-form-preview-img');
-                    previewImg.src = dataUrl;
-                    previewBox.style.display = 'block';
-                };
-                reader.readAsDataURL(compressed.blob);
+                const ikRes = await uploadToImageKit(file, { folder: '/dapur', maxWidth: 1000, quality: 0.8 });
+                const finalUrl = ikRes.url || ikRes.dataUrl;
+                document.getElementById('dapur-form-foto-url').value = finalUrl;
+                const previewBox = document.getElementById('dapur-form-preview-box');
+                const previewImg = document.getElementById('dapur-form-preview-img');
+                previewImg.src = finalUrl;
+                previewBox.style.display = 'block';
             } catch (err) {
                 alert('Gagal memproses foto: ' + err.message);
             }
@@ -20995,17 +21164,13 @@
             if (!file) return;
 
             try {
-                const compressed = await compressImageToWebP(file, 800, 0.8);
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    const dataUrl = ev.target.result;
-                    document.getElementById('cleaning-form-before-url').value = dataUrl;
-                    const previewBox = document.getElementById('cleaning-before-preview');
-                    const previewImg = document.getElementById('cleaning-before-img');
-                    previewImg.src = dataUrl;
-                    previewBox.style.display = 'block';
-                };
-                reader.readAsDataURL(compressed.blob);
+                const ikRes = await uploadToImageKit(file, { folder: '/kebersihan', maxWidth: 800, quality: 0.8 });
+                const finalUrl = ikRes.url || ikRes.dataUrl;
+                document.getElementById('cleaning-form-before-url').value = finalUrl;
+                const previewBox = document.getElementById('cleaning-before-preview');
+                const previewImg = document.getElementById('cleaning-before-img');
+                previewImg.src = finalUrl;
+                previewBox.style.display = 'block';
             } catch (err) {
                 alert('Gagal memproses foto: ' + err.message);
             }
@@ -21016,17 +21181,13 @@
             if (!file) return;
 
             try {
-                const compressed = await compressImageToWebP(file, 800, 0.8);
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    const dataUrl = ev.target.result;
-                    document.getElementById('cleaning-form-after-url').value = dataUrl;
-                    const previewBox = document.getElementById('cleaning-after-preview');
-                    const previewImg = document.getElementById('cleaning-after-img');
-                    previewImg.src = dataUrl;
-                    previewBox.style.display = 'block';
-                };
-                reader.readAsDataURL(compressed.blob);
+                const ikRes = await uploadToImageKit(file, { folder: '/kebersihan', maxWidth: 800, quality: 0.8 });
+                const finalUrl = ikRes.url || ikRes.dataUrl;
+                document.getElementById('cleaning-form-after-url').value = finalUrl;
+                const previewBox = document.getElementById('cleaning-after-preview');
+                const previewImg = document.getElementById('cleaning-after-img');
+                previewImg.src = finalUrl;
+                previewBox.style.display = 'block';
             } catch (err) {
                 alert('Gagal memproses foto: ' + err.message);
             }

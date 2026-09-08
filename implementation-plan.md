@@ -7,8 +7,8 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v5.3 (Integrasi Master Plan & Panduan 1-by-1 Coaching Migrasi Domain Arsitektur 7 Pilar masjidsophia.com, Suite Akun DKM, Dynamic RBAC 17 Modul, dan Presensi 3-Tier)  
-**Terakhir Diperbarui:** 2026-08-28  
+**Versi Rencana Induk:** v5.4 (Migrasi Sistem Media Unggah & Hapus Fisik Terpusat ImageKit.io CDN via Supabase RPC & Serverless Relay)  
+**Terakhir Diperbarui:** 2026-09-08  
 
 ---
 
@@ -106,6 +106,12 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
   - [x] **Migrasi Skema Modul Account & Access Control (`database/migration_account_control.sql`):**
     - `admin_users` (ALTER: `avatar_url`, `permissions JSONB`, `session_version`).
     - Fungsi `force_end_user_session()` dan Realtime CDC `admin_users`.
+  - [x] **Migrasi Sistem Media Unggah & Hapus Fisik Terpusat ImageKit.io CDN via Supabase RPC (`database/migration_imagekit_rpc_setup.sql`):**
+    - Tabel terproteksi `public.app_secrets` (eksklusif `postgres` & `service_role`).
+    - Fungsi RPC `public.get_imagekit_auth()` (HMAC-SHA1 signature generator aman).
+    - Fungsi RPC `public.delete_imagekit_file(p_file_id)` (HTTP DELETE via `pg_net` API ImageKit).
+    - Endpoint serverless relay `/api/imagekit-upload.js` dengan Basic Auth aman.
+    - Injeksi 14 titik unggah berkas di `admin.html` ke ImageKit CDN.
   - [ ] **Migrasi Skema Lanjutan Suite Modul PJ Operasional (Menyesuaikan Implementasi Modul PJ):**
     - `masjid_assets`, `santri_data`, `santri_mutabaah`, `musafir_logbook`, `financial_journals`, `security_reports`, `cleaning_reports`.
 

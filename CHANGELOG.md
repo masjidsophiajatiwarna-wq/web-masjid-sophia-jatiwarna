@@ -4,6 +4,37 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.13] - 2026-09-08
+
+### Migrasi Menyeluruh Unggah & Hapus Berkas Media ke ImageKit.io CDN via Supabase RPC
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[IMAGEKIT_RPC_ENGINE]` Implementasi arsitektur unggah dan hapus media terpusat ke ImageKit.io CDN dari frontend statis (`admin.html`) sesuai skema `skema_imagekit_supabase_rpc.md`:
+  - **Tabel Rahasia Terisolasi (`public.app_secrets`):** Penyimpanan aman kredensial API ImageKit di PostgreSQL Supabase dengan hak akses eksklusif untuk role `postgres` dan `service_role` (RLS dimatikan, hak akses dicabut dari `anon`, `authenticated`, dan `public`).
+  - **Fungsi RPC Generator Otentikasi (`get_imagekit_auth`):** Berjalan dengan hak `SECURITY DEFINER` menghasilkan `token` (UUID v4), waktu kedaluwarsa 30 menit, dan `signature` HMAC-SHA1 otomatis menggunakan `extensions.pgcrypto` tanpa pernah mengekspos private key ke client bundle.
+  - **Fungsi RPC Penghapus Berkas Fisik (`delete_imagekit_file`):** Menjalankan HTTP DELETE langsung ke endpoint API ImageKit (`https://api.imagekit.io/v1/files/{fileId}`) menggunakan ekstensi `pg_net` secara asinkron dan otomatis membersihkan log di tabel `public.media_library`.
+  - **Serverless Relay Bridge (`/api/imagekit-upload.js`):** Endpoint relay serverless Vercel menggunakan Basic Auth aman berbasis environment variable `IMAGEKIT_PRIVATE_KEY` sebagai saluran unggah berkinerja tinggi dan stabil.
+  - **Injeksi Menyeluruh 14 Titik Unggah Media di Portal Admin (`admin.html`):**
+    1. Modul Media CMS: Cover artikel dakwah & berita (`uploadImageToSupabase`).
+    2. Modul Media CMS: Unggah langsung galeri foto (`uploadImageToSupabase`).
+    3. Modul Media CMS: Unggah berkas via Image Picker Modal (`uploadImageToSupabase`).
+    4. Modul Media CMS: Penghapusan berkas fisik terintegrasi di ImageKit saat menghapus aset di Pustaka Media (`deleteMediaItem`).
+    5. Modul Akun Pengurus: Unggah foto profil avatar pengurus DKM (`handleSelfAvatarUpload`).
+    6. Modul Izin & Cuti: Unggah dokumen pendukung surat cuti/sakit (`handleLeaveDocUpload`).
+    7. Modul Chat Koordinasi: Unggah lampiran foto/media ruang obrolan internal DKM (`handleChatMediaUpload`).
+    8. Modul Dapur & Logistik: Unggah foto dokumentasi belanja logistik & masak (`handleDapurPhotoUpload`).
+    9. Modul Aset & Inventaris: Unggah foto fisik aset inventaris masjid (`handleAssetPhotoUpload`).
+    10. Modul Keuangan (Jurnal Kas): Unggah bukti kuitansi/nota transaksi kas (`handleJournalPhotoUpload`).
+    11. Modul Keuangan (Reimbursement Bon): Unggah nota bon operasional pengurus (`handleBudgetPhotoUpload`).
+    12. Modul Santri & Tahfidz: Unggah foto identitas santri binaan (`handleSantriPhotoUpload`).
+    13. Modul Musafir & Pelayanan: Unggah foto KTP/identitas musafir transit (`handleMusafirPhotoUpload`).
+    14. Modul Keamanan & Ronda: Unggah bukti foto temuan patroli / insiden keamanan (`handleSecurityPhotoUpload`).
+    15. Modul Kebersihan & Sanitasi: Unggah foto bukti kebersihan Sebelum & Sesudah (*Before & After*) (`handleCleaningPhotoBefore` & `handleCleaningPhotoAfter`).
+  - **Dual-Mode Fallback & Auto-Compression:** Kompresi otomatis WebP berkualitas tinggi di sisi client sebelum diunggah, dengan mekanisme fallback tangguh jika terjadi kendala jaringan.
+  - **Pembaruan Skema Database (`database/migration_imagekit_rpc_setup.sql`):** Tabel `public.media_library` dan penambahan kolom `imagekit_file_id` pada `public.homepage_media`.
+
+---
+
 ## [1.9.12] - 2026-08-29
 
 ### Peluncuran Halaman Matriks QA & Testing Suite Interaktif (`testing-suite.html`)
