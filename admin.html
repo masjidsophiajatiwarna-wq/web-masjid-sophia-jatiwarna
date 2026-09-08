@@ -9176,8 +9176,8 @@
         // ==========================================================================
         const SIDEBAR_MENU_GROUPS = [
             {
-                id: 'dashboard_tugas',
-                title: 'DASHBOARD & TUGAS',
+                id: 'ruang_kerja_tugas',
+                title: 'RUANG KERJA & TUGAS',
                 icon: 'fa-solid fa-layer-group',
                 items: [
                     {
@@ -9200,6 +9200,13 @@
                         roles: ['*']
                     },
                     {
+                        id: 'leave_requests',
+                        label: 'Izin & Cuti Pengurus',
+                        icon: 'fa-solid fa-calendar-day',
+                        badgeId: 'badge-sidebar-leave-pending',
+                        roles: ['*']
+                    },
+                    {
                         id: 'feedback',
                         label: 'Kotak Saran Jamaah',
                         icon: 'fa-solid fa-envelope-open-text',
@@ -9210,20 +9217,13 @@
                         label: 'Riwayat Portal',
                         icon: 'fa-solid fa-clock-rotate-left',
                         roles: ['*']
-                    },
-                    {
-                        id: 'leave_requests',
-                        label: 'Izin & Cuti Pengurus',
-                        icon: 'fa-solid fa-calendar-day',
-                        badgeId: 'badge-sidebar-leave-pending',
-                        roles: ['*']
                     }
                 ]
             },
             {
-                id: 'layanan_ibadah',
-                title: 'LAYANAN & IBADAH',
-                icon: 'fa-solid fa-kaaba',
+                id: 'pelayanan_pendidikan',
+                title: 'PELAYANAN & PENDIDIKAN',
+                icon: 'fa-solid fa-hand-holding-heart',
                 items: [
                     {
                         id: 'ibadah',
@@ -9233,57 +9233,36 @@
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_IBADAH']
                     },
                     {
-                        id: 'donations',
-                        label: 'Donasi & Infaq',
-                        icon: 'fa-solid fa-hand-holding-dollar',
-                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEUANGAN']
-                    }
-                ]
-            },
-            {
-                id: 'santri_pendidikan',
-                title: 'SANTRI & PENDIDIKAN',
-                icon: 'fa-solid fa-graduation-cap',
-                items: [
+                        id: 'musafir',
+                        label: 'Buku Tamu & Musafir 24 Jam',
+                        icon: 'fa-solid fa-person-walking-luggage',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MUSAFIR']
+                    },
                     {
                         id: 'santri',
-                        label: 'Direktori & Mutaba\'ah Santri',
+                        label: 'Santri & Mutaba\'ah Tahfidz',
                         icon: 'fa-solid fa-graduation-cap',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_SANTRI']
                     }
                 ]
             },
             {
-                id: 'layanan_musafir',
-                title: 'PELAYANAN MUSAFIR',
-                icon: 'fa-solid fa-person-walking-luggage',
+                id: 'operasional_fasilitas',
+                title: 'OPERASIONAL & FASILITAS',
+                icon: 'fa-solid fa-building-circle-check',
                 items: [
                     {
-                        id: 'musafir',
-                        label: 'Buku Tamu & Fasilitas 24 Jam',
-                        icon: 'fa-solid fa-person-walking-luggage',
-                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MUSAFIR']
-                    }
-                ]
-            },
-            {
-                id: 'keamanan_ketertiban',
-                title: 'KEAMANAN & KETERTIBAN',
-                icon: 'fa-solid fa-shield-halved',
-                items: [
+                        id: 'logistik',
+                        label: 'Dapur & Inventaris Aset',
+                        icon: 'fa-solid fa-boxes-stacked',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_LOGISTIK']
+                    },
                     {
                         id: 'keamanan',
                         label: 'Piket Ronda & Keamanan 24 Jam',
                         icon: 'fa-solid fa-shield-halved',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEAMANAN']
-                    }
-                ]
-            },
-            {
-                id: 'kebersihan_sanitasi',
-                title: 'KEBERSIHAN & SANITASI',
-                icon: 'fa-solid fa-broom',
-                items: [
+                    },
                     {
                         id: 'kebersihan',
                         label: 'Checklist Sanitasi & Wudhu',
@@ -9293,21 +9272,8 @@
                 ]
             },
             {
-                id: 'logistik_sarpras',
-                title: 'LOGISTIK & SARPRAS',
-                icon: 'fa-solid fa-boxes-stacked',
-                items: [
-                    {
-                        id: 'logistik',
-                        label: 'Dapur & Inventaris Aset',
-                        icon: 'fa-solid fa-boxes-stacked',
-                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_LOGISTIK']
-                    }
-                ]
-            },
-            {
-                id: 'publikasi_media',
-                title: 'PUBLIKASI & MEDIA',
+                id: 'media_keuangan',
+                title: 'MEDIA & KEUANGAN',
                 icon: 'fa-solid fa-bullhorn',
                 items: [
                     {
@@ -9327,25 +9293,31 @@
                         label: 'Galeri Media & WebP',
                         icon: 'fa-solid fa-images',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA']
+                    },
+                    {
+                        id: 'donations',
+                        label: 'Kas Masjid & Infaq',
+                        icon: 'fa-solid fa-hand-holding-dollar',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEUANGAN']
                     }
                 ]
             },
             {
-                id: 'akses_keuangan',
-                title: 'AKSES & SISTEM',
-                icon: 'fa-solid fa-shield-halved',
+                id: 'pengaturan_sistem',
+                title: 'PENGATURAN & SISTEM',
+                icon: 'fa-solid fa-sliders',
                 items: [
                     {
-                        id: 'health',
-                        label: 'Cloud Monitor',
-                        icon: 'fa-solid fa-server',
-                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM']
-                    },
-                    {
                         id: 'accounts',
-                        label: 'Manajemen Pengguna',
+                        label: 'Manajemen Pengguna DKM',
                         icon: 'fa-solid fa-users-gear',
                         roles: ['SUPER_ADMIN', 'KETUA_DKM']
+                    },
+                    {
+                        id: 'health',
+                        label: 'Cloud Monitor (7 Pilar)',
+                        icon: 'fa-solid fa-server',
+                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM']
                     }
                 ]
             }

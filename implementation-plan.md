@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v5.4 (Migrasi Sistem Media Unggah & Hapus Fisik Terpusat ImageKit.io CDN via Supabase RPC & Serverless Relay)  
+**Versi Rencana Induk:** v5.5 (Restrukturisasi Navigasi Sidebar 4 Pilar Fungsional DKM, Migrasi Media Terpusat ImageKit.io CDN via Supabase RPC & Serverless Relay)  
 **Terakhir Diperbarui:** 2026-09-08  
 
 ---
@@ -136,6 +136,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 - **Status:** 50% Selesai (Admin Core, Task Management 5 View, Obrolan Koordinasi Multi-Arah, Account Control & Dynamic RBAC, Profil Mandiri & Mobile Grabber Selesai)
 - **Daftar Tugas:**
   - [x] **Pondasi Admin Core & Auth Gate (`admin.html`):** Gerbang login Supabase Auth JWT, sidebar adaptif RBAC 10 peran, panel KPI Real-Time, inbox kotak saran, dan rekonsiliasi kas harian.
+  - [x] **Restrukturisasi Bilah Samping Navigasi (Sidebar 4 Pilar Fungsional):** Penataan 9 kelompok menu terfragmentasi menjadi 4 pilar fungsional operasional masjid (Ruang Kerja & Tugas, Pelayanan & Pendidikan, Operasional & Fasilitas, Media & Keuangan) plus Pengaturan & Sistem, menghemat 40% ruang vertikal dan mengeliminasi anti-pola menu tunggal.
   - [x] **Optimasi Antarmuka Fluid Desktop & Mobile-First Touch UI (`admin.html`):**
     - **Tampilan Desktop / Laptop:** Multi-kolom lebar, split-pane layout gantt (fixed sidebar 250px + timeline), tabel data komprehensif, sidebar collapse to icon mode (72px).
     - **Tampilan Smartphone (Android & iPhone):** Table Drag Grabber Engine (`.table-responsive`), drag-to-scroll kursor grab/grabbing, target sentuh min 48px, gestur swipe touch pan, auto-center Today view, modal backdrop scroll lock (`overflow: hidden`).

@@ -4,6 +4,24 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.14] - 2026-09-08
+
+### Restrukturisasi Bilah Samping Navigasi (Sidebar) ke 4 Pilar Fungsional Masjid
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[SIDEBAR_REFACTOR_4_PILARES]` Menata ulang pengelompokan menu bilah samping navigasi (`admin.html`) dari 9 kelompok terdahulu menjadi 4 Pilar Fungsional Masjid plus Pengaturan Sistem:
+  - **Mengeliminasi Anti-Pola Menu Tunggal (*Single-Child Category Anti-Pattern*):** Menghilangkan kategori terfragmentasi yang hanya membungkus satu item sub-menu mandiri.
+  - **5 Kelompok Fungsional Kompak:**
+    1. *RUANG KERJA & TUGAS:* Ringkasan Utama, Tugas & Task Health, Chat Koordinasi DKM, Izin & Cuti Pengurus, Kotak Saran Jamaah, Riwayat Portal.
+    2. *PELAYANAN & PENDIDIKAN:* Layanan & Petugas Ibadah, Pelayanan Musafir 24 Jam, Santri & Mutaba'ah Tahfidz.
+    3. *OPERASIONAL & FASILITAS:* Dapur & Inventaris Aset, Piket Ronda & Keamanan 24 Jam, Checklist Sanitasi & Wudhu.
+    4. *MEDIA & KEUANGAN:* Warta & Artikel (CMS), Visual Builder & Beranda, Galeri Media & WebP, Donasi & Pembukuan Kas.
+    5. *PENGATURAN & SISTEM:* Manajemen Pengguna DKM, Cloud Monitor (7 Pilar).
+  - **Penghematan Ruang Vertikal:** Memangkas tinggi sidebar hingga 40%, menghilangkan keharusan menggulir layar (*scrolling*) berlebihan bagi Super Admin dan Ketua DKM.
+  - **Optimalisasi Akses Peran RBAC:** Setiap Penanggung Jawab (PJ) kini hanya melihat ruang kerja kolaborasi umum dan pilar fungsional yang relevan dengan amanahnya, menjaga fokus kerja tanpa distraksi menu kosong.
+
+---
+
 ## [1.9.13] - 2026-09-08
 
 ### Migrasi Menyeluruh Unggah & Hapus Berkas Media ke ImageKit.io CDN via Supabase RPC
