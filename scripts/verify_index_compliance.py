@@ -97,6 +97,38 @@ def test_index_structure():
             all_ok = False
     return all_ok
 
+def test_admin_index_sync():
+    index_text = Path('index.html').read_text(encoding='utf-8')
+    admin_text = Path('admin.html').read_text(encoding='utf-8')
+    table_pattern = re.compile(r"""\.from\(["']([a-zA-Z0-9_]+)["']\)""")
+    channel_pattern = re.compile(r"""\.channel\(["']([^"']+)["']\)""")
+
+    index_tables = set(table_pattern.findall(index_text))
+    admin_tables = set(table_pattern.findall(admin_text))
+    shared_tables = [
+        'jadwal_shalat_petugas',
+        'homepage_media',
+        'kajian_acara_ibadah',
+        'artikel_berita',
+        'donations',
+        'feedback_complaints'
+    ]
+    all_ok = True
+    for tbl in shared_tables:
+        if tbl in index_tables and tbl in admin_tables:
+            print(f"[PASS] Bidirectional Table Sync: {tbl}")
+        else:
+            print(f"[FAIL] Missing sync for table: {tbl}")
+            all_ok = False
+
+    index_channels = set(channel_pattern.findall(index_text))
+    if len(index_channels) >= 6:
+        print(f"[PASS] Supabase Realtime CDC Channels: {len(index_channels)} active channels subscribed")
+    else:
+        print(f"[FAIL] Incomplete CDC Channels: found only {len(index_channels)}")
+        all_ok = False
+    return all_ok
+
 if __name__ == '__main__':
     print("=== MASJID SOPHIA JATIWARNA COMPLIANCE & INTEGRITY TEST ===")
     target_docs = [
@@ -109,8 +141,9 @@ if __name__ == '__main__':
     r2 = test_no_admin_links_in_index()
     r3 = test_no_hardcoded_secrets(target_docs + ['scripts/batch_image_optimizer_imagekit.py', 'scripts/sync_manifest_to_supabase.py'])
     r4 = test_index_structure()
+    r5 = test_admin_index_sync()
     
-    if r1 and r2 and r3 and r4:
+    if r1 and r2 and r3 and r4 and r5:
         print("\n=== ALL COMPLIANCE & INTEGRITY TESTS PASSED ===")
         sys.exit(0)
     else:
