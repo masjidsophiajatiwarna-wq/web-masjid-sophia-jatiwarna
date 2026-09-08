@@ -6913,10 +6913,10 @@
                 <!-- Sub-View Switcher Tabs -->
                 <div class="ibadah-subview-nav" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.75rem;">
                     <button type="button" class="btn-subview-ibadah active" id="btn-subview-ibadah-input" onclick="switchIbadahSubView('input')">
-                        <i class="fa-solid fa-pen-to-square"></i> Input &amp; Penugasan Jadwal (Sisi PJ)
+                        <i class="fa-solid fa-pen-to-square"></i> Input &amp; Penugasan Jadwal
                     </button>
                     <button type="button" class="btn-subview-ibadah" id="btn-subview-ibadah-approval" onclick="switchIbadahSubView('approval')">
-                        <i class="fa-solid fa-clipboard-check"></i> Tabel Approval Batch (Sisi DKM)
+                        <i class="fa-solid fa-clipboard-check"></i> Persetujuan Jadwal &amp; Khutbah
                         <span id="badge-ibadah-pending-tab" class="mention-count-badge" style="display: none; margin-left: 0.4rem;">0</span>
                     </button>
                     <button type="button" class="btn-subview-ibadah" id="btn-subview-ibadah-kajian" onclick="switchIbadahSubView('kajian')">
@@ -7012,27 +7012,27 @@
                                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;">
                                     <div class="form-group" style="margin-bottom: 0;">
                                         <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Imam Subuh</label>
-                                        <input type="text" id="ibadah-imam-subuh" class="form-input" value="Ust. Ahmad Fauzi (Rawatib)" placeholder="Nama Imam Subuh">
+                                        <input type="text" id="ibadah-imam-subuh" class="form-input" placeholder="Nama Imam Subuh">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 0;">
                                         <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Imam Dzuhur</label>
-                                        <input type="text" id="ibadah-imam-dzuhur" class="form-input" value="Ust. Muhammad Rizki" placeholder="Nama Imam Dzuhur">
+                                        <input type="text" id="ibadah-imam-dzuhur" class="form-input" placeholder="Nama Imam Dzuhur">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 0;">
                                         <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Imam Ashar</label>
-                                        <input type="text" id="ibadah-imam-ashar" class="form-input" value="Ust. Muhammad Rizki" placeholder="Nama Imam Ashar">
+                                        <input type="text" id="ibadah-imam-ashar" class="form-input" placeholder="Nama Imam Ashar">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 0;">
                                         <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Imam Maghrib</label>
-                                        <input type="text" id="ibadah-imam-maghrib" class="form-input" value="Ust. Syamsul Huda" placeholder="Nama Imam Maghrib">
+                                        <input type="text" id="ibadah-imam-maghrib" class="form-input" placeholder="Nama Imam Maghrib">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 0;">
                                         <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Imam Isya</label>
-                                        <input type="text" id="ibadah-imam-isya" class="form-input" value="Ust. Syamsul Huda" placeholder="Nama Imam Isya">
+                                        <input type="text" id="ibadah-imam-isya" class="form-input" placeholder="Nama Imam Isya">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 0;">
                                         <label class="form-label" style="font-size: 0.72rem; color: var(--color-charcoal-muted);">Muadzin Rawatib</label>
-                                        <input type="text" id="ibadah-muadzin-rawatib" class="form-input" value="Kang Ridwan (Marbot/Piket)" placeholder="Nama Muadzin">
+                                        <input type="text" id="ibadah-muadzin-rawatib" class="form-input" placeholder="Nama Muadzin">
                                     </div>
                                 </div>
                             </div>
@@ -8866,6 +8866,540 @@
                         <button type="button" class="btn btn-outline" onclick="closeModal('modal-mutabaah-entry')">Batal</button>
                         <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
                             <i class="fa-solid fa-floppy-disk"></i> Simpan Setoran
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================================================================
+         MODAL: PELAYANAN MUSAFIR & LAYANAN 24 JAM
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-musafir-entry" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;" id="modal-musafir-title">
+                    <i class="fa-solid fa-route" style="color: var(--color-gold-deep);"></i> Catat Tamu Musafir Baru
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-musafir-entry')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-musafir-entry" onsubmit="handleMusafirFormSubmit(event)">
+                    <input type="hidden" id="musafir-entry-id" value="">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal</label>
+                            <input type="date" id="musafir-form-tanggal" class="form-input" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Waktu Masuk</label>
+                            <input type="time" id="musafir-form-waktu" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Tipe Layanan</label>
+                        <select id="musafir-form-tipe" class="form-input" required>
+                            <option value="SINGGAH_SHALAT">Singgah Shalat</option>
+                            <option value="ISTIRAHAT_DARURAT_24JAM">Istirahat Darurat 24 Jam</option>
+                            <option value="TITIP_KENDARAAN">Titip Kendaraan</option>
+                            <option value="TITIP_LOKER">Titip Loker / Barang</option>
+                        </select>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Nama Musafir</label>
+                            <input type="text" id="musafir-form-nama" class="form-input" placeholder="Nama lengkap" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">No. Telepon</label>
+                            <input type="tel" id="musafir-form-telp" class="form-input" placeholder="08xxxxxxxxxx">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Asal Kota</label>
+                            <input type="text" id="musafir-form-asal" class="form-input" placeholder="Kota asal">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Kota Tujuan</label>
+                            <input type="text" id="musafir-form-tujuan" class="form-input" placeholder="Kota tujuan">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">No. Plat Kendaraan <span style="color: var(--color-charcoal-muted); font-weight: 400;">(opsional)</span></label>
+                            <input type="text" id="musafir-form-plat" class="form-input" placeholder="Contoh: B 1234 XYZ">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">No. Loker <span style="color: var(--color-charcoal-muted); font-weight: 400;">(opsional)</span></label>
+                            <input type="text" id="musafir-form-loker" class="form-input" placeholder="Nomor loker">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Estimasi Durasi (Jam)</label>
+                            <input type="number" id="musafir-form-durasi" class="form-input" placeholder="Contoh: 2" min="0" step="0.5">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Nama Petugas</label>
+                            <input type="text" id="musafir-form-petugas" class="form-input" placeholder="Nama petugas jaga" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Foto Identitas (KTP/SIM)</label>
+                        <input type="file" accept="image/*" class="form-input" style="padding: 0.4rem;" onchange="handleMusafirPhotoUpload(event)">
+                        <input type="hidden" id="musafir-form-foto-url" value="">
+                        <div id="musafir-form-preview-box" style="display: none; margin-top: 0.5rem; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-border);">
+                            <img id="musafir-form-preview-img" src="" alt="Preview Foto" style="width: 100%; max-height: 180px; object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Catatan Pelayanan</label>
+                        <textarea id="musafir-form-catatan" class="form-input" rows="2" placeholder="Catatan kondisi, kebutuhan khusus, atau informasi tambahan..."></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-musafir-entry')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Data Tamu
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: JURNAL KEUANGAN (KAS MASUK & KAS KELUAR)
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-journal-entry" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;" id="modal-journal-title">
+                    <i class="fa-solid fa-receipt" style="color: var(--color-gold-deep);"></i> Catat Transaksi Baru
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-journal-entry')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-journal-entry" onsubmit="handleJournalFormSubmit(event)">
+                    <input type="hidden" id="journal-entry-id" value="">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tipe Transaksi</label>
+                            <select id="journal-form-tipe" class="form-input" required>
+                                <option value="KAS_MASUK">Kas Masuk (Pemasukan)</option>
+                                <option value="KAS_KELUAR">Kas Keluar (Pengeluaran)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal Transaksi</label>
+                            <input type="date" id="journal-form-tanggal" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Kategori</label>
+                            <select id="journal-form-kategori" class="form-input" required>
+                                <option value="Infaq Jumat">Infaq Jumat</option>
+                                <option value="Donasi Online">Donasi Online</option>
+                                <option value="Sedekah Makan">Sedekah Program Makan</option>
+                                <option value="Operasional Dapur">Operasional Dapur</option>
+                                <option value="Sarpras & Perbaikan">Sarpras &amp; Perbaikan</option>
+                                <option value="Gaji & Honor">Gaji &amp; Honor Pengurus</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Metode Pembayaran</label>
+                            <select id="journal-form-metode" class="form-input" required>
+                                <option value="Tunai">Tunai</option>
+                                <option value="BSI Transfer">BSI Transfer</option>
+                                <option value="QRIS">QRIS</option>
+                                <option value="Transfer Bank Lain">Transfer Bank Lain</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Nominal (Rp)</label>
+                        <input type="number" id="journal-form-nominal" class="form-input" placeholder="Contoh: 150000" min="0" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Keterangan / Keperluan</label>
+                        <textarea id="journal-form-deskripsi" class="form-input" rows="2" placeholder="Deskripsi singkat transaksi..." required></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Bukti Kuitansi / Nota</label>
+                        <input type="file" accept="image/*" class="form-input" style="padding: 0.4rem;" onchange="handleJournalPhotoUpload(event)">
+                        <input type="hidden" id="journal-form-foto-url" value="">
+                        <div id="journal-form-preview-box" style="display: none; margin-top: 0.5rem; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-border);">
+                            <img id="journal-form-preview-img" src="" alt="Preview Bukti" style="width: 100%; max-height: 180px; object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-journal-entry')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Transaksi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: PENGAJUAN ANGGARAN / REIMBURSEMENT
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-budget-entry" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;" id="modal-budget-title">
+                    <i class="fa-solid fa-file-invoice-dollar" style="color: var(--color-gold-deep);"></i> Ajukan Anggaran / Reimbursement
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-budget-entry')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-budget-entry" onsubmit="handleBudgetFormSubmit(event)">
+                    <input type="hidden" id="budget-entry-id" value="">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tipe Pengajuan</label>
+                            <select id="budget-form-tipe" class="form-input" required>
+                                <option value="BUDGET_REQUEST">Pengajuan Anggaran</option>
+                                <option value="REIMBURSEMENT">Klaim Reimbursement</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal Pengajuan</label>
+                            <input type="date" id="budget-form-tanggal" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Divisi Pemohon</label>
+                        <select id="budget-form-divisi" class="form-input" required>
+                            <option value="Ibadah & Shalat">Ibadah &amp; Shalat</option>
+                            <option value="Logistik & Dapur">Logistik &amp; Dapur</option>
+                            <option value="Pelayanan Musafir">Pelayanan Musafir</option>
+                            <option value="Kebersihan & Sanitasi">Kebersihan &amp; Sanitasi</option>
+                            <option value="Keamanan">Keamanan</option>
+                            <option value="Pendidikan & Santri">Pendidikan &amp; Santri</option>
+                            <option value="Umum DKM">Umum DKM</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Judul Keperluan</label>
+                        <input type="text" id="budget-form-judul" class="form-input" placeholder="Contoh: Pengadaan Sabun Cair Toilet Bulan September" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Rincian Kebutuhan</label>
+                        <textarea id="budget-form-rincian" class="form-input" rows="3" placeholder="Jelaskan rincian barang/jasa yang dibutuhkan beserta jumlah dan estimasi harga satuan..."></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Nominal yang Diajukan (Rp)</label>
+                        <input type="number" id="budget-form-nominal" class="form-input" placeholder="Contoh: 250000" min="0" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Lampiran Nota / Bon</label>
+                        <input type="file" accept="image/*,application/pdf" class="form-input" style="padding: 0.4rem;" onchange="handleBudgetPhotoUpload(event)">
+                        <input type="hidden" id="budget-form-foto-url" value="">
+                        <div id="budget-form-preview-box" style="display: none; margin-top: 0.5rem; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-border);">
+                            <img id="budget-form-preview-img" src="" alt="Preview Lampiran" style="width: 100%; max-height: 180px; object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-budget-entry')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim Pengajuan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: EVALUASI & PENCAIRAN ANGGARAN (DKM)
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-budget-review" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-stamp" style="color: var(--color-gold-deep);"></i> Evaluasi Pengajuan Anggaran
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-budget-review')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-budget-review" onsubmit="handleBudgetReviewSubmit(event)">
+                    <input type="hidden" id="review-budget-id" value="">
+
+                    <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem;">
+                        <div style="display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 1rem; font-size: 0.85rem;">
+                            <span style="font-weight: 600; color: var(--color-charcoal-muted);">Tipe:</span>
+                            <span id="review-budget-tipe" style="color: var(--color-charcoal);">-</span>
+                            <span style="font-weight: 600; color: var(--color-charcoal-muted);">Pemohon:</span>
+                            <span id="review-budget-pemohon" style="color: var(--color-charcoal);">-</span>
+                            <span style="font-weight: 600; color: var(--color-charcoal-muted);">Tanggal:</span>
+                            <span id="review-budget-tanggal" style="color: var(--color-charcoal);">-</span>
+                            <span style="font-weight: 600; color: var(--color-charcoal-muted);">Judul:</span>
+                            <span id="review-budget-judul" style="color: var(--color-charcoal); font-weight: 700;">-</span>
+                            <span style="font-weight: 600; color: var(--color-charcoal-muted);">Nominal:</span>
+                            <span id="review-budget-nominal" style="color: var(--color-gold-deep); font-weight: 800;">-</span>
+                        </div>
+                        <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed var(--color-border);">
+                            <div style="font-size: 0.8rem; font-weight: 600; color: var(--color-charcoal-muted); margin-bottom: 0.4rem;">Rincian Kebutuhan:</div>
+                            <div id="review-budget-rincian" style="font-size: 0.85rem; color: var(--color-charcoal); line-height: 1.5;">-</div>
+                        </div>
+                        <div id="review-budget-lampiran-wrap" style="display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed var(--color-border);">
+                            <a id="review-budget-lampiran-link" href="#" target="_blank" rel="noopener noreferrer" style="font-size: 0.82rem; color: var(--color-gold-deep); text-decoration: underline;">
+                                <i class="fa-solid fa-paperclip"></i> Lihat Lampiran Nota
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0; grid-column: 1 / -1;">
+                            <label class="form-label" style="font-weight: 600;">Keputusan DKM</label>
+                            <select id="review-budget-action-status" class="form-input" required>
+                                <option value="PENDING">Tunda / Perlu Kajian Lebih Lanjut</option>
+                                <option value="APPROVED_DKM">Disetujui DKM</option>
+                                <option value="REJECTED">Ditolak</option>
+                                <option value="DISBURSED">Sudah Dicairkan oleh Bendahara</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Catatan Evaluasi Pimpinan</label>
+                        <textarea id="review-budget-eval-catatan" class="form-input" rows="3" placeholder="Alasan persetujuan, penolakan, atau catatan untuk bendahara..."></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-budget-review')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Keputusan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: LAPORAN PIKET RONDA & KEAMANAN
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-security-entry" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;" id="modal-security-title">
+                    <i class="fa-solid fa-shield-halved" style="color: var(--color-gold-deep);"></i> Buat Laporan Piket Ronda Baru
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-security-entry')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-security-entry" onsubmit="handleSecurityFormSubmit(event)">
+                    <input type="hidden" id="security-entry-id" value="">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal Piket</label>
+                            <input type="date" id="security-form-tanggal" class="form-input" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Shift Jaga</label>
+                            <select id="security-form-shift" class="form-input" required>
+                                <option value="PAGI">Shift Pagi (06.00 - 14.00)</option>
+                                <option value="SIANG">Shift Siang (14.00 - 22.00)</option>
+                                <option value="MALAM">Shift Malam (22.00 - 06.00)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Petugas Jaga</label>
+                            <input type="text" id="security-form-petugas" class="form-input" placeholder="Nama petugas" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Area Patroli</label>
+                            <select id="security-form-area" class="form-input" required>
+                                <option value="Parkir Motor">Parkir Motor</option>
+                                <option value="Parkir Mobil">Parkir Mobil</option>
+                                <option value="Halaman Depan">Halaman Depan</option>
+                                <option value="Ruang Shalat Utama">Ruang Shalat Utama</option>
+                                <option value="Pagar & Pintu Masuk">Pagar &amp; Pintu Masuk</option>
+                                <option value="Seluruh Area">Seluruh Area</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Kondisi Keamanan</label>
+                            <select id="security-form-kondisi" class="form-input" required>
+                                <option value="KONDUSIF">Kondusif</option>
+                                <option value="WASPADA">Waspada</option>
+                                <option value="INSIDEN">Insiden</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Status Tindak Lanjut</label>
+                            <select id="security-form-status" class="form-input" required>
+                                <option value="SELESAI">Selesai</option>
+                                <option value="DALAM_PROSES">Dalam Proses</option>
+                                <option value="ESKALASI_DKM">Eskalasi ke DKM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Judul Laporan</label>
+                        <input type="text" id="security-form-judul" class="form-input" placeholder="Contoh: Laporan Piket Ronda Malam - Area Parkir" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Kronologi Kejadian</label>
+                        <textarea id="security-form-kronologi" class="form-input" rows="3" placeholder="Ceritakan kronologi kejadian atau kondisi selama piket..."></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Foto Bukti Lapangan</label>
+                        <input type="file" accept="image/*" class="form-input" style="padding: 0.4rem;" onchange="handleSecurityPhotoUpload(event)">
+                        <input type="hidden" id="security-form-foto-url" value="">
+                        <div id="security-form-preview-box" style="display: none; margin-top: 0.5rem; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-border);">
+                            <img id="security-form-preview-img" src="" alt="Preview Foto" style="width: 100%; max-height: 180px; object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Catatan Koordinasi</label>
+                        <textarea id="security-form-catatan" class="form-input" rows="2" placeholder="Hal yang perlu dikomunikasikan ke shift berikutnya atau ke pimpinan..."></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-security-entry')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Laporan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: CHECKLIST KEBERSIHAN & SANITASI
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-cleaning-entry" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;" id="modal-cleaning-title">
+                    <i class="fa-solid fa-spray-can-sparkles" style="color: var(--color-gold-deep);"></i> Catat Checklist Sanitasi Baru
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-cleaning-entry')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-cleaning-entry" onsubmit="handleCleaningFormSubmit(event)">
+                    <input type="hidden" id="cleaning-entry-id" value="">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal</label>
+                            <input type="date" id="cleaning-form-tanggal" class="form-input" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Shift Kebersihan</label>
+                            <select id="cleaning-form-shift" class="form-input" required>
+                                <option value="PAGI">Shift Pagi (05.00 - 13.00)</option>
+                                <option value="SIANG">Shift Siang (13.00 - 21.00)</option>
+                                <option value="MALAM">Shift Malam (21.00 - 05.00)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Zona Lokasi</label>
+                            <select id="cleaning-form-zona" class="form-input" required>
+                                <option value="Tempat Wudhu Ikhwan">Tempat Wudhu Ikhwan</option>
+                                <option value="Tempat Wudhu Akhwat">Tempat Wudhu Akhwat</option>
+                                <option value="Toilet Ikhwan">Toilet Ikhwan</option>
+                                <option value="Toilet Akhwat">Toilet Akhwat</option>
+                                <option value="Ruang Shalat Utama">Ruang Shalat Utama</option>
+                                <option value="Serambi & Halaman">Serambi &amp; Halaman</option>
+                                <option value="Dapur">Dapur</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Status Sanitasi</label>
+                            <select id="cleaning-form-status" class="form-input" required>
+                                <option value="BERSIH_HARUM">Bersih &amp; Harum</option>
+                                <option value="CUKUP_BERSIH">Cukup Bersih</option>
+                                <option value="PERLU_ULANG">Perlu Pembersihan Ulang</option>
+                                <option value="DARURAT_KEBOCORAN">Darurat / Kebocoran</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Petugas Kebersihan</label>
+                        <input type="text" id="cleaning-form-petugas" class="form-input" placeholder="Nama petugas kebersihan" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Kondisi Sarana (Air, Sabun, dll.)</label>
+                        <textarea id="cleaning-form-sarana" class="form-input" rows="2" placeholder="Contoh: Air mengalir normal, sabun cair habis, perlu restok..."></textarea>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Foto Sebelum Dibersihkan</label>
+                            <input type="file" accept="image/*" class="form-input" style="padding: 0.4rem;" onchange="handleCleaningPhotoBefore(event)">
+                            <input type="hidden" id="cleaning-form-before-url" value="">
+                            <div id="cleaning-before-preview" style="display: none; margin-top: 0.5rem; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-border);">
+                                <img id="cleaning-before-img" src="" alt="Sebelum" style="width: 100%; max-height: 140px; object-fit: cover;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Foto Sesudah Dibersihkan</label>
+                            <input type="file" accept="image/*" class="form-input" style="padding: 0.4rem;" onchange="handleCleaningPhotoAfter(event)">
+                            <input type="hidden" id="cleaning-form-after-url" value="">
+                            <div id="cleaning-after-preview" style="display: none; margin-top: 0.5rem; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-border);">
+                                <img id="cleaning-after-img" src="" alt="Sesudah" style="width: 100%; max-height: 140px; object-fit: cover;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Kebutuhan Restok Bahan Pembersih</label>
+                        <textarea id="cleaning-form-stok" class="form-input" rows="2" placeholder="Contoh: Sabun cair 2 botol, karbol 1 liter, lap pembersih 3 pcs..."></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-cleaning-entry')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Checklist
                         </button>
                     </div>
                 </form>
@@ -16107,177 +16641,11 @@
         let ibadahKajianList = [];
         let currentIbadahSubView = 'input';
 
-        const DEFAULT_IBADAH_SCHEDULES_SEED = [
-            {
-                id: "b1000000-0000-4000-8000-000000000001",
-                tanggal: "2026-08-24",
-                hari: "Senin",
-                imsak: "04:31",
-                subuh: "04:41",
-                terbit: "05:54",
-                dhuha: "06:18",
-                dzuhur: "11:59",
-                ashar: "15:19",
-                maghrib: "17:58",
-                isya: "19:08",
-                ikhtiyat_minutes: 2,
-                is_manual_override: false,
-                imam_subuh: "Ust. Ahmad Fauzi (Rawatib)",
-                imam_dzuhur: "Ust. Muhammad Rizki",
-                imam_ashar: "Ust. Muhammad Rizki",
-                imam_maghrib: "Ust. Syamsul Huda",
-                imam_isya: "Ust. Syamsul Huda",
-                muadzin_rawatib: "Kang Ridwan (Marbot)",
-                khatib_jumat: "",
-                muadzin_jumat: "",
-                bilal_jumat: "",
-                status_approval: "Approved",
-                submitted_by: "Silvih Damayanti (PJ Ibadah)",
-                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
-                submitted_at: "2026-08-23T14:30:00Z",
-                reviewed_by: "Habib Maulana (Ketua DKM)",
-                reviewed_by_email: "ketuadkm@masjidsophiajatiwarna.com",
-                reviewed_at: "2026-08-23T16:00:00Z",
-                review_notes: "Jadwal dan susunan imam rawatib disetujui sesuai kalender peribadatan.",
-                created_at: "2026-08-23T14:30:00Z"
-            },
-            {
-                id: "b1000000-0000-4000-8000-000000000002",
-                tanggal: "2026-08-25",
-                hari: "Selasa",
-                imsak: "04:31",
-                subuh: "04:41",
-                terbit: "05:54",
-                dhuha: "06:18",
-                dzuhur: "11:59",
-                ashar: "15:19",
-                maghrib: "17:58",
-                isya: "19:08",
-                ikhtiyat_minutes: 2,
-                is_manual_override: false,
-                imam_subuh: "Ust. Ahmad Fauzi (Rawatib)",
-                imam_dzuhur: "Ust. Muhammad Rizki",
-                imam_ashar: "Ust. Muhammad Rizki",
-                imam_maghrib: "Ust. Syamsul Huda",
-                imam_isya: "Ust. Syamsul Huda",
-                muadzin_rawatib: "Kang Ridwan (Marbot)",
-                khatib_jumat: "",
-                muadzin_jumat: "",
-                bilal_jumat: "",
-                status_approval: "Pending Approval",
-                submitted_by: "Silvih Damayanti (PJ Ibadah)",
-                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
-                submitted_at: "2026-08-24T08:15:00Z",
-                reviewed_by: "",
-                reviewed_by_email: "",
-                reviewed_at: null,
-                review_notes: "",
-                created_at: "2026-08-24T08:15:00Z"
-            },
-            {
-                id: "b1000000-0000-4000-8000-000000000003",
-                tanggal: "2026-08-28",
-                hari: "Jumat",
-                imsak: "04:30",
-                subuh: "04:40",
-                terbit: "05:53",
-                dhuha: "06:17",
-                dzuhur: "11:58",
-                ashar: "15:18",
-                maghrib: "17:58",
-                isya: "19:08",
-                ikhtiyat_minutes: 2,
-                is_manual_override: false,
-                imam_subuh: "Ust. Ahmad Fauzi (Rawatib)",
-                imam_dzuhur: "Ust. Dr. H. Abdurrahman (Khatib)",
-                imam_ashar: "Ust. Muhammad Rizki",
-                imam_maghrib: "Ust. Syamsul Huda",
-                imam_isya: "Ust. Syamsul Huda",
-                muadzin_rawatib: "Kang Ridwan",
-                khatib_jumat: "Ust. Dr. H. Abdurrahman",
-                muadzin_jumat: "Kang Bilal (Santri)",
-                bilal_jumat: "Kang Ridwan (Marbot)",
-                status_approval: "Pending Approval",
-                submitted_by: "Silvih Damayanti (PJ Ibadah)",
-                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
-                submitted_at: "2026-08-24T09:00:00Z",
-                reviewed_by: "",
-                reviewed_by_email: "",
-                reviewed_at: null,
-                review_notes: "",
-                created_at: "2026-08-24T09:00:00Z"
-            },
-            {
-                id: "b1000000-0000-4000-8000-000000000004",
-                tanggal: "2026-08-29",
-                hari: "Sabtu",
-                imsak: "04:30",
-                subuh: "04:40",
-                terbit: "05:53",
-                dhuha: "06:17",
-                dzuhur: "11:58",
-                ashar: "15:18",
-                maghrib: "17:58",
-                isya: "19:08",
-                ikhtiyat_minutes: 2,
-                is_manual_override: false,
-                imam_subuh: "Ust. Syamsul Huda",
-                imam_dzuhur: "Ust. Muhammad Rizki",
-                imam_ashar: "Ust. Muhammad Rizki",
-                imam_maghrib: "Ust. Ahmad Fauzi",
-                imam_isya: "Ust. Ahmad Fauzi",
-                muadzin_rawatib: "Kang Ridwan",
-                khatib_jumat: "",
-                muadzin_jumat: "",
-                bilal_jumat: "",
-                status_approval: "Draft",
-                submitted_by: "Silvih Damayanti (PJ Ibadah)",
-                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
-                submitted_at: "2026-08-24T10:00:00Z",
-                reviewed_by: "",
-                reviewed_by_email: "",
-                reviewed_at: null,
-                review_notes: "",
-                created_at: "2026-08-24T10:00:00Z"
-            }
-        ];
+        const DEFAULT_IBADAH_SCHEDULES_SEED = [];
 
-        const DEFAULT_IBADAH_KAJIAN_SEED = [
-            {
-                id: "c1000000-0000-4000-8000-000000000001",
-                judul_kajian: "Tafsir Al-Qur'an Tematik: Menjaga Hati & Keikhlasan Beramal",
-                pemateri: "Ust. Dr. H. Abdurrahman",
-                tema_kategori: "Kajian Akhir Pekan",
-                tanggal_pelaksanaan: "2026-08-30",
-                waktu_mulai: "09:00",
-                waktu_selesai: "11:30",
-                lokasi: "Ruang Shalat Utama",
-                target_jamaah: "Umum & Musafir",
-                deskripsi: "Kajian mendalam tentang tazkiyatun nafs dan penjagaan amal harian di era modern.",
-                status_approval: "Approved",
-                submitted_by: "Silvih Damayanti (PJ Ibadah)",
-                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
-                reviewed_by: "Habib Maulana (Ketua DKM)",
-                created_at: "2026-08-23T10:00:00Z"
-            },
-            {
-                id: "c1000000-0000-4000-8000-000000000002",
-                judul_kajian: "Kajian Rutin Ba'da Subuh: Fiqih Shalat & Adab Musafir",
-                pemateri: "Ust. Syamsul Huda",
-                tema_kategori: "Kajian Rutin Ba'da Subuh",
-                tanggal_pelaksanaan: "2026-08-26",
-                waktu_mulai: "05:15",
-                waktu_selesai: "06:15",
-                lokasi: "Ruang Shalat Utama",
-                target_jamaah: "Jamaah Subuh & Musafir",
-                deskripsi: "Membahas fiqih praktis qashar & jamak shalat serta adab istirahat bagi musafir.",
-                status_approval: "Pending Approval",
-                submitted_by: "Silvih Damayanti (PJ Ibadah)",
-                submitted_by_email: "ibadah@masjidsophiajatiwarna.com",
-                reviewed_by: "",
-                created_at: "2026-08-24T08:00:00Z"
-            }
-        ];
+        
+
+        const DEFAULT_IBADAH_KAJIAN_SEED = [];
 
         // Hisab Astronomis Waktu Shalat Presisi Jatiwarna (-6.310391, 106.921264, WIB UTC+7)
         function calculatePrayerTimes(dateStr, ikhtiyatMin = 2) {
@@ -16352,6 +16720,19 @@
             }
 
             const role = getUserRole();
+
+            // === RBAC: Kontrol tombol berdasarkan hierarki wewenang DKM ===
+            const hasDirectPublishAccess = ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM'].includes(role);
+            const btnDirectPublish = document.getElementById('btn-ibadah-direct-publish');
+            if (btnDirectPublish) {
+                btnDirectPublish.style.display = hasDirectPublishAccess ? 'inline-flex' : 'none';
+            }
+            // Sembunyikan tombol Batch Approve dan Batch Reject dari PJ Ibadah
+            const batchApproveWrap = document.querySelector('#subview-ibadah-approval .section-container > div[style*="justify-content: space-between"] > div:last-child');
+            if (batchApproveWrap && !hasDirectPublishAccess) {
+                batchApproveWrap.style.display = 'none';
+            }
+
             // Default subview view based on role
             if (['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(role) && !localStorage.getItem('masjid_sophia_ibadah_subview')) {
                 switchIbadahSubView('approval');
@@ -16386,17 +16767,16 @@
                 console.debug('[Ibadah] Load schedules Supabase notice:', err);
             }
 
-            // Local fallback
+            // Local fallback — hanya dari cache localStorage, tidak pernah dari seed mock
             try {
                 const cached = localStorage.getItem('masjid_sophia_ibadah_schedules_master');
                 if (cached) {
                     ibadahSchedulesList = JSON.parse(cached);
                 } else {
-                    ibadahSchedulesList = [...DEFAULT_IBADAH_SCHEDULES_SEED];
-                    localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
+                    ibadahSchedulesList = [];
                 }
             } catch (e) {
-                ibadahSchedulesList = [...DEFAULT_IBADAH_SCHEDULES_SEED];
+                ibadahSchedulesList = [];
             }
 
             renderIbadahScheduleTable();
@@ -16425,17 +16805,16 @@
                 console.debug('[Ibadah] Load kajian Supabase notice:', err);
             }
 
-            // Local fallback
+            // Local fallback — hanya dari cache localStorage, tidak pernah dari seed mock
             try {
                 const cached = localStorage.getItem('masjid_sophia_ibadah_kajian_master');
                 if (cached) {
                     ibadahKajianList = JSON.parse(cached);
                 } else {
-                    ibadahKajianList = [...DEFAULT_IBADAH_KAJIAN_SEED];
-                    localStorage.setItem('masjid_sophia_ibadah_kajian_master', JSON.stringify(ibadahKajianList));
+                    ibadahKajianList = [];
                 }
             } catch (e) {
-                ibadahKajianList = [...DEFAULT_IBADAH_KAJIAN_SEED];
+                ibadahKajianList = [];
             }
 
             renderIbadahKajianTable();
@@ -19158,6 +19537,10 @@
 
         function toggleHomepageSection(secId) {
             renderHomepageLivePreview();
+            // Auto-save ke Supabase agar perubahan visibilitas langsung real-time ke index.html
+            if (typeof saveHomepageConfig === 'function') {
+                saveHomepageConfig();
+            }
         }
 
         function setBuilderDevice(device) {
@@ -21415,6 +21798,26 @@
                     alert('Gagal menyinkronkan data mutabaah ke Supabase: ' + (mtbErr.message || JSON.stringify(mtbErr)));
                     return;
                 }
+
+                // === Fase 3b: Update capaian_hafalan_juz berdasarkan distinct juz dari semua setoran ===
+                try {
+                    const { data: allSetoran, error: setoranErr } = await sbClient
+                        .from('santri_mutabaah')
+                        .select('juz')
+                        .eq('santri_id', santriId);
+                    if (!setoranErr && Array.isArray(allSetoran)) {
+                        const distinctJuz = new Set(allSetoran.map(r => r.juz).filter(j => j && j > 0));
+                        const capaianBaru = Math.min(30, distinctJuz.size);
+                        await sbClient.from('santri_data').update({ capaian_hafalan_juz: capaianBaru }).eq('id', santriId);
+                        // Sinkronisasi ke list lokal agar renderMilestoneGrid langsung akurat
+                        const santriIdx = santriList.findIndex(s => s.id === santriId);
+                        if (santriIdx !== -1) {
+                            santriList[santriIdx] = { ...santriList[santriIdx], capaian_hafalan_juz: capaianBaru };
+                        }
+                    }
+                } catch (updErr) {
+                    console.debug('[Mutabaah] Update capaian juz notice:', updErr);
+                }
             }
 
             broadcastEvent('MUTABAAH_SYNC', { action: 'upsert', record });
@@ -21459,7 +21862,12 @@
 
             grid.innerHTML = santriList.map(s => {
                 const target = parseInt(s.target_hafalan_juz || 30);
-                const capaian = parseInt(s.capaian_hafalan_juz || 0);
+
+                // Hitung distinct juz unik dari semua catatan mutabaah santri ini
+                const setoranSantri = (window.mutabaahList || mutabaahList || []).filter(m => m.santri_id === s.id);
+                const distinctJuzSet = new Set(setoranSantri.map(m => parseInt(m.juz)).filter(j => j > 0));
+                const capaian = Math.min(target, distinctJuzSet.size);
+
                 const pct = Math.min(100, Math.round((capaian / target) * 100));
 
                 const photoUrl = s.foto_santri_url || '';

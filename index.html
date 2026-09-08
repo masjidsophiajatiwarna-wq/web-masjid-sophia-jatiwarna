@@ -3710,6 +3710,84 @@
                     console.log('[Realtime] Complaint recorded:', payload);
                 })
                 .subscribe();
+
+            // Channel 7: Homepage Config (section visibility) — real-time CDC
+            sbClientIndex
+                .channel('public:homepage_media:config_master')
+                .on('postgres_changes', {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'homepage_media',
+                    filter: 'kategori=eq.HOMEPAGE_CONFIG_MASTER'
+                }, payload => {
+                    console.log('[Realtime] Homepage config change:', payload);
+                    if (payload?.new?.meta_json) {
+                        try {
+                            const cfg = typeof payload.new.meta_json === 'string'
+                                ? JSON.parse(payload.new.meta_json)
+                                : payload.new.meta_json;
+                            _applySectionVisibilityFromConfig(cfg);
+                        } catch (e) {
+                            console.debug('[Realtime] Config parse notice:', e);
+                        }
+                    }
+                })
+                .subscribe();
+        }
+
+        // ==========================================================================
+        // 12.5 SECTION VISIBILITY — REAL-TIME DARI HOMEPAGE_CONFIG_MASTER
+        // ==========================================================================
+
+        // Peta antara kunci config (dari admin.html) ke ID seksi di index.html
+        const SECTION_VISIBILITY_MAP = {
+            showSectionKajian:  ['section-kajian',  'kajian-section'],
+            showSectionGallery: ['section-gallery', 'gallery-section'],
+            showSectionNews:    ['section-news',    'news-section'],
+            showSectionDonate:  ['section-donate',  'donate-section'],
+            showSectionAbout:   ['section-about',   'about-section'],
+            showSectionPrayer:  ['section-prayer',  'prayer-section'],
+            showSectionHero:    ['section-hero',    'hero-section'],
+        };
+
+        function _applySectionVisibilityFromConfig(cfg) {
+            if (!cfg || typeof cfg !== 'object') return;
+            Object.entries(SECTION_VISIBILITY_MAP).forEach(([key, ids]) => {
+                // Jika key tidak ada di config, biarkan tampil (default: visible)
+                if (!(key in cfg)) return;
+                const shouldShow = cfg[key] !== false && cfg[key] !== 'false';
+                ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    if (shouldShow) {
+                        el.style.removeProperty('display');
+                        el.style.removeProperty('visibility');
+                        el.style.opacity = '1';
+                    } else {
+                        el.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        async function applySectionVisibility() {
+            if (!sbClientIndex) await initSupabasePromise;
+            if (!sbClientIndex) return;
+            try {
+                const { data, error } = await sbClientIndex
+                    .from('homepage_media')
+                    .select('meta_json')
+                    .eq('kategori', 'HOMEPAGE_CONFIG_MASTER')
+                    .single();
+                if (!error && data && data.meta_json) {
+                    const cfg = typeof data.meta_json === 'string'
+                        ? JSON.parse(data.meta_json)
+                        : data.meta_json;
+                    _applySectionVisibilityFromConfig(cfg);
+                }
+            } catch (e) {
+                console.debug('[SectionVisibility] Config load notice:', e);
+            }
         }
 
         // ==========================================================================
@@ -3727,6 +3805,7 @@
             loadGallery();
             loadPublishedArticles();
             loadDonationsProgress();
+            applySectionVisibility(); // Fase 3: terapkan visibilitas seksi dari Supabase config
             initAllRealtimeSubscriptions();
         });
     </script>
