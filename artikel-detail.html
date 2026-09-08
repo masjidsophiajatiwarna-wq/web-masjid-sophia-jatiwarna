@@ -12,12 +12,47 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" id="canonical-url" href="https://masjidsophia.com/artikel">
 
-    <!-- OpenGraph -->
+    <!-- OpenGraph Dinamis (akan diganti oleh JS setelah artikel dimuat) -->
     <meta property="og:type" content="article">
     <meta property="og:url" id="og-url" content="https://masjidsophia.com/artikel">
     <meta property="og:title" id="og-title" content="Warta &amp; Kabar Dakwah - Masjid Musafir Sophia Jatiwarna">
     <meta property="og:description" id="og-description" content="Kabar dakwah, artikel tausiyah, dan dokumentasi program khidmat Masjid Musafir Sophia Jatiwarna.">
     <meta property="og:image" id="og-image" content="https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:site_name" content="Masjid Musafir Sophia Jatiwarna">
+
+    <!-- Twitter Card Dinamis -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="tw-title" content="Warta &amp; Kabar Dakwah - Masjid Musafir Sophia Jatiwarna">
+    <meta name="twitter:description" id="tw-description" content="Kabar dakwah, artikel tausiyah, dan dokumentasi program khidmat Masjid Musafir Sophia Jatiwarna.">
+    <meta name="twitter:image" id="tw-image" content="https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp">
+
+    <!-- Schema.org JSON-LD NewsArticle (akan disuntikkan secara dinamis oleh JS) -->
+    <script id="json-ld-article" type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "Warta Dakwah Masjid Sophia Jatiwarna",
+      "description": "Kabar dakwah, artikel tausiyah, dan dokumentasi program khidmat Masjid Musafir Sophia Jatiwarna.",
+      "url": "https://masjidsophia.com/artikel",
+      "inLanguage": "id",
+      "publisher": {
+        "@type": "Organization",
+        "name": "DKM Masjid Musafir Sophia Jatiwarna",
+        "url": "https://masjidsophia.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://ik.imagekit.io/masjidsophia/masjid-sophia/logo_masjid_black.svg"
+        }
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Masjid Musafir Sophia Jatiwarna",
+        "url": "https://masjidsophia.com"
+      }
+    }
+    </script>
+
 
     <!-- Google Fonts: Plus Jakarta Sans & Amiri -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1381,6 +1416,55 @@
             if (ogDesc) ogDesc.content = article.excerpt || article.title;
             const ogImg = document.getElementById('og-image');
             if (ogImg) ogImg.content = article.thumbnail_url;
+            const ogUrl = document.getElementById('og-url');
+            if (ogUrl) ogUrl.content = window.location.href;
+
+            // Update Twitter Card
+            const twTitle = document.getElementById('tw-title');
+            if (twTitle) twTitle.content = article.title;
+            const twDesc = document.getElementById('tw-description');
+            if (twDesc) twDesc.content = article.excerpt || article.title;
+            const twImg = document.getElementById('tw-image');
+            if (twImg) twImg.content = article.thumbnail_url || '';
+
+            // Update Canonical URL
+            const canonical = document.getElementById('canonical-url');
+            if (canonical) canonical.href = window.location.href;
+
+            // Update Schema.org JSON-LD dinamis
+            const ldScript = document.getElementById('json-ld-article');
+            if (ldScript) {
+                const datePublished = article.published_at || new Date().toISOString();
+                ldScript.textContent = JSON.stringify({
+                    '@context': 'https://schema.org',
+                    '@type': 'NewsArticle',
+                    'headline': article.title,
+                    'description': article.excerpt || article.title,
+                    'url': window.location.href,
+                    'inLanguage': 'id',
+                    'datePublished': datePublished,
+                    'dateModified': article.updated_at || datePublished,
+                    'image': article.thumbnail_url || '',
+                    'author': {
+                        '@type': 'Person',
+                        'name': article.author_name || 'Redaksi DKM Sophia'
+                    },
+                    'publisher': {
+                        '@type': 'Organization',
+                        'name': 'DKM Masjid Musafir Sophia Jatiwarna',
+                        'url': 'https://masjidsophia.com',
+                        'logo': {
+                            '@type': 'ImageObject',
+                            'url': 'https://ik.imagekit.io/masjidsophia/masjid-sophia/logo_masjid_black.svg'
+                        }
+                    },
+                    'isPartOf': {
+                        '@type': 'WebSite',
+                        'name': 'Masjid Musafir Sophia Jatiwarna',
+                        'url': 'https://masjidsophia.com'
+                    }
+                });
+            }
         }
 
         // 5. Setup Share Links

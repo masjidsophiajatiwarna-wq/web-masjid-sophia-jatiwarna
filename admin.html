@@ -4412,6 +4412,9 @@
                         <button class="btn-action-gold" style="background: #FAFAFA; color: var(--color-charcoal); border-color: var(--color-border);" onclick="exportTasksToCSV()">
                             <i class="fa-solid fa-file-csv"></i> Unduh CSV
                         </button>
+                        <button class="btn-action-gold" style="background: #FAFAFA; color: var(--color-charcoal); border-color: var(--color-border);" onclick="exportKinerjaPDF()">
+                            <i class="fa-solid fa-file-pdf"></i> Cetak Laporan PDF
+                        </button>
                         <button class="btn-action-gold" onclick="openTaskModal()">
                             <i class="fa-solid fa-plus"></i> Tambah Tugas Baru
                         </button>
@@ -11920,8 +11923,276 @@
         }
 
         // ==========================================================================
-        // 5. ARCHIVE VIEW RENDERER & ACTIONS
+        // 4B. EKSPOR LAPORAN KINERJA PDF (jsPDF v2.5.1)
         // ==========================================================================
+        async function exportKinerjaPDF() {
+            // Muat jsPDF secara lazy bila belum tersedia
+            if (typeof window.jspdf === 'undefined' && typeof window.jsPDF === 'undefined') {
+                await new Promise((resolve, reject) => {
+                    const s = document.createElement('script');
+                    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+                    s.onload = resolve;
+                    s.onerror = reject;
+                    document.head.appendChild(s);
+                });
+            }
+
+            const jsPDF = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+            if (!jsPDF) {
+                showToast('Gagal memuat pustaka PDF. Pastikan koneksi internet tersedia.', 'error');
+                return;
+            }
+
+            const allTasks   = getFilteredTasks(false);
+            const tasksByDiv = {};
+
+            allTasks.forEach(t => {
+                const div = t.division || 'Tidak Terklasifikasi';
+                if (!tasksByDiv[div]) tasksByDiv[div] = [];
+                tasksByDiv[div].push(t);
+            });
+
+            // Ringkasan per PIC
+            const picSummary = {};
+            allTasks.forEach(t => {
+                const pic = t.assigned_to || 'Tidak Ditugaskan';
+                if (!picSummary[pic]) picSummary[pic] = { divisi: t.division || '-', selesai: 0, aktif: 0, progresTotal: 0, jumlah: 0 };
+                picSummary[pic].jumlah++;
+                picSummary[pic].progresTotal += (Number(t.progress_pct) || 0);
+                if (t.status === 'COMPLETED') picSummary[pic].selesai++;
+                else picSummary[pic].aktif++;
+            });
+
+            const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+            const pageW   = doc.internal.pageSize.getWidth();
+            const pageH   = doc.internal.pageSize.getHeight();
+            const MARGIN  = 15;
+            const GOLD    = [195, 160, 76];
+            const CHARCOAL = [29, 29, 27];
+            const LGRAY   = [245, 245, 243];
+            const today   = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            let y = MARGIN;
+
+            // ---- Header ---------------------------------------------------
+            doc.setFillColor(...CHARCOAL);
+            doc.rect(0, 0, pageW, 22, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(13);
+            doc.setFont('helvetica', 'bold');
+            doc.text('LAPORAN KINERJA TIM DKM', MARGIN, 10);
+
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Masjid Musafir Sophia Jatiwarna — Pondok Melati, Kota Bekasi', MARGIN, 17);
+
+            doc.setTextColor(...GOLD);
+            doc.setFontSize(9);
+            doc.text(`Dicetak: ${today}`, pageW - MARGIN, 10, { align: 'right' });
+            doc.setTextColor(200, 200, 200);
+            doc.text(`Filter aktif: ${document.getElementById('task-filter-division')?.value || 'Semua Divisi'}`, pageW - MARGIN, 17, { align: 'right' });
+
+            y = 32;
+
+            // ---- Ringkasan KPI Global ------------------------------------
+            const totalSelesai = allTasks.filter(t => t.status === 'COMPLETED').length;
+            const totalAktif   = allTasks.filter(t => t.status === 'IN_PROGRESS').length;
+            const totalPending = allTasks.filter(t => t.status === 'PENDING').length;
+            const avgProgress  = allTasks.length > 0
+                ? Math.round(allTasks.reduce((s, t) => s + (Number(t.progress_pct) || 0), 0) / allTasks.length)
+                : 0;
+
+            const kpiBoxW = (pageW - MARGIN * 2) / 4 - 3;
+            const kpiData = [
+                { label: 'Total Tugas',     val: allTasks.length,   color: CHARCOAL },
+                { label: 'Selesai',         val: totalSelesai,      color: [16, 124, 65] },
+                { label: 'Dikerjakan',      val: totalAktif,        color: [14, 96, 167] },
+                { label: 'Rata-rata Progres', val: `${avgProgress}%`, color: GOLD },
+            ];
+
+            kpiData.forEach((kpi, i) => {
+                const bx = MARGIN + i * (kpiBoxW + 4);
+                doc.setFillColor(...LGRAY);
+                doc.roundedRect(bx, y, kpiBoxW, 16, 2, 2, 'F');
+                doc.setDrawColor(...kpi.color);
+                doc.setLineWidth(0.6);
+                doc.roundedRect(bx, y, kpiBoxW, 16, 2, 2, 'S');
+                doc.setTextColor(...kpi.color);
+                doc.setFontSize(16);
+                doc.setFont('helvetica', 'bold');
+                doc.text(String(kpi.val), bx + kpiBoxW / 2, y + 9, { align: 'center' });
+                doc.setFontSize(7);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(100, 100, 100);
+                doc.text(kpi.label, bx + kpiBoxW / 2, y + 14, { align: 'center' });
+            });
+
+            y += 24;
+
+            // ---- Garis Pemisah -------------------------------------------
+            doc.setDrawColor(...GOLD);
+            doc.setLineWidth(0.4);
+            doc.line(MARGIN, y, pageW - MARGIN, y);
+            y += 6;
+
+            // ---- Tabel Ringkasan Kinerja per PIC -------------------------
+            doc.setTextColor(...CHARCOAL);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Ringkasan Kinerja per Penanggung Jawab (PJ)', MARGIN, y);
+            y += 6;
+
+            const colWidths = [62, 58, 26, 26, 30, 36];
+            const headers   = ['Nama PJ / Penanggung Jawab', 'Divisi', 'Selesai', 'Aktif', 'Rata Progres', 'Persentase Tugas Selesai'];
+            const tableW    = colWidths.reduce((a, b) => a + b, 0);
+            const startX    = MARGIN + (pageW - MARGIN * 2 - tableW) / 2;
+
+            // Header row
+            doc.setFillColor(...CHARCOAL);
+            doc.rect(startX, y, tableW, 8, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(7.5);
+            doc.setFont('helvetica', 'bold');
+            let cx = startX;
+            headers.forEach((h, i) => {
+                doc.text(h, cx + colWidths[i] / 2, y + 5.2, { align: 'center', maxWidth: colWidths[i] - 2 });
+                cx += colWidths[i];
+            });
+            y += 8;
+
+            // Data rows
+            const picEntries = Object.entries(picSummary).sort((a, b) => b[1].selesai - a[1].selesai);
+            picEntries.forEach(([pic, info], ri) => {
+                const avgP = info.jumlah > 0 ? Math.round(info.progresTotal / info.jumlah) : 0;
+                const pctSelesai = info.jumlah > 0 ? Math.round((info.selesai / info.jumlah) * 100) : 0;
+                const rowH = 8;
+
+                if (y + rowH > pageH - MARGIN - 12) {
+                    doc.addPage();
+                    y = MARGIN;
+                }
+
+                doc.setFillColor(ri % 2 === 0 ? 255 : 248, ri % 2 === 0 ? 255 : 248, ri % 2 === 0 ? 255 : 246);
+                doc.rect(startX, y, tableW, rowH, 'F');
+                doc.setDrawColor(230, 228, 225);
+                doc.setLineWidth(0.2);
+                doc.rect(startX, y, tableW, rowH, 'S');
+
+                doc.setTextColor(...CHARCOAL);
+                doc.setFontSize(7.5);
+                doc.setFont('helvetica', info.selesai > 0 ? 'bold' : 'normal');
+
+                const rowData = [pic, info.divisi, String(info.selesai), String(info.aktif), `${avgP}%`, `${pctSelesai}%`];
+                cx = startX;
+                rowData.forEach((cell, i) => {
+                    const align = i >= 2 ? 'center' : 'left';
+                    const xPos  = align === 'center' ? cx + colWidths[i] / 2 : cx + 2;
+                    doc.text(cell, xPos, y + 5.2, { align, maxWidth: colWidths[i] - 2 });
+                    cx += colWidths[i];
+                });
+                y += rowH;
+            });
+
+            y += 8;
+
+            // ---- Daftar Tugas Aktif per Divisi ---------------------------
+            const divisi = Object.keys(tasksByDiv).sort();
+            for (const div of divisi) {
+                const dtasks = tasksByDiv[div].filter(t => t.status !== 'COMPLETED');
+                if (dtasks.length === 0) continue;
+
+                if (y + 20 > pageH - MARGIN - 12) {
+                    doc.addPage();
+                    y = MARGIN;
+                }
+
+                doc.setDrawColor(...GOLD);
+                doc.setLineWidth(0.3);
+                doc.line(MARGIN, y, pageW - MARGIN, y);
+                y += 4;
+
+                doc.setTextColor(...CHARCOAL);
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'bold');
+                doc.text(div, MARGIN, y);
+                y += 5;
+
+                const tColW   = [78, 50, 24, 24, 25, 30];
+                const tHdrs   = ['Judul Tugas', 'PIC', 'Prioritas', 'Status', 'Progres', 'Tenggat'];
+                const tTableW = tColW.reduce((a, b) => a + b, 0);
+                const tStartX = MARGIN;
+
+                doc.setFillColor(240, 238, 234);
+                doc.rect(tStartX, y, tTableW, 7, 'F');
+                doc.setTextColor(80, 70, 50);
+                doc.setFontSize(7);
+                doc.setFont('helvetica', 'bold');
+                let tx = tStartX;
+                tHdrs.forEach((h, i) => {
+                    doc.text(h, tx + tColW[i] / 2, y + 4.5, { align: 'center', maxWidth: tColW[i] - 2 });
+                    tx += tColW[i];
+                });
+                y += 7;
+
+                dtasks.slice(0, 20).forEach((t, ri) => {
+                    const rowH = 7.5;
+                    if (y + rowH > pageH - MARGIN - 12) {
+                        doc.addPage();
+                        y = MARGIN;
+                    }
+                    doc.setFillColor(ri % 2 === 0 ? 255 : 252, ri % 2 === 0 ? 255 : 252, ri % 2 === 0 ? 255 : 250);
+                    doc.rect(tStartX, y, tTableW, rowH, 'F');
+                    doc.setDrawColor(235, 233, 229);
+                    doc.setLineWidth(0.15);
+                    doc.rect(tStartX, y, tTableW, rowH, 'S');
+
+                    doc.setFontSize(7);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(...CHARCOAL);
+
+                    const dueStr = t.due_date ? new Date(t.due_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : '-';
+                    const cells  = [
+                        t.title || '-',
+                        t.assigned_to || '-',
+                        t.priority || '-',
+                        t.status || '-',
+                        `${t.progress_pct || 0}%`,
+                        dueStr
+                    ];
+                    tx = tStartX;
+                    cells.forEach((cell, i) => {
+                        const align = i >= 2 ? 'center' : 'left';
+                        const xPos  = align === 'center' ? tx + tColW[i] / 2 : tx + 2;
+                        doc.text(String(cell), xPos, y + 5, { align, maxWidth: tColW[i] - 2 });
+                        tx += tColW[i];
+                    });
+                    y += rowH;
+                });
+
+                y += 5;
+            }
+
+            // ---- Footer --------------------------------------------------
+            const totalPages = doc.internal.getNumberOfPages();
+            for (let pg = 1; pg <= totalPages; pg++) {
+                doc.setPage(pg);
+                doc.setFillColor(245, 244, 241);
+                doc.rect(0, pageH - 10, pageW, 10, 'F');
+                doc.setDrawColor(...GOLD);
+                doc.setLineWidth(0.3);
+                doc.line(0, pageH - 10, pageW, pageH - 10);
+                doc.setFontSize(6.5);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(130, 120, 100);
+                doc.text('Dicetak dari Sistem Manajemen DKM Masjid Sophia Jatiwarna — DOKUMEN INTERNAL / RAHASIA', MARGIN, pageH - 4);
+                doc.text(`Halaman ${pg} dari ${totalPages}`, pageW - MARGIN, pageH - 4, { align: 'right' });
+            }
+
+            doc.save(`Laporan_Kinerja_DKM_Sophia_${new Date().toISOString().split('T')[0]}.pdf`);
+            showToast('Laporan PDF berhasil diunduh.', 'success');
+        }
+
+
         function renderArchive() {
             const tbody = document.getElementById('archive-tasks-tbody');
             if (!tbody) return;
