@@ -108,6 +108,9 @@ desktop.ini
 *.7z
 *.backup
 *.sql.gz
+asset/images/
+asset/images_webp/
+asset/videos/
 
 # Direktori Uji Coba & Arsip Internal Sementara
 scratch/

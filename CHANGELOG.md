@@ -4,6 +4,38 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.17] - 2026-09-08
+
+### Pembaruan Menyeluruh Beranda Publik Standar Istiqlal Jakarta & Pipeline Batch Media ImageKit CDN WebP
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[INDEX_REDESIGN_ISTIQLAL]` Desain ulang menyeluruh portal muka publik (`index.html`) mengadopsi standar arsitektur portal Masjid Istiqlal Jakarta:
+  - **Top Bar Utility:** Penampil penanggalan ganda Masehi & Hijriah Ummul Qura presisi (`Intl.DateTimeFormat`), badge status operasional masjid buka 24 jam dengan indikator pulsing dot hijau, dan tautan langsung WhatsApp Musafir Care.
+  - **Sticky Header Elegan:** Logo vektor resmi format SVG, tombol aksi cepat Infaq Donasi & Kotak Aspirasi Jamaah, serta mobile drawer navigasi yang adaptif.
+  - **Hero Showcase Istiqlal:** Dynamic Banner Slider Carousel (auto-slide interval 6 detik, kontrol tombol panah, indikator pagination dots dinamis) tersambung ke tabel `homepage_media` Supabase.
+  - **Live Prayer Countdown Card & Petugas Hari Ini:** Kartu hitung mundur shalat detik riil berbasis hisab astronomis Kemenag Jatiwarna dan sinkronisasi nama Imam 5 waktu, Muadzin, dan Khatib Jumat dari tabel `jadwal_shalat_petugas`.
+  - **Quick Access Grid 4 Pilar:** Akses cepat satu sentuhan ke Layanan Musafir 24 Jam, Sedekah Makan Dzuhur, Jadwal Shalat & Arah Kiblat, dan Pengaduan Fasilitas Jamaah.
+  - **Jadwal Shalat Presisi Kemenag:** 7 kartu shalat hisab astronomis (Imsak, Subuh, Terbit, Dzuhur, Ashar, Maghrib, Isya) dilengkapi highlight otomatis shalat berikutnya (*next prayer highlight*) + 4 kartu petugas ibadah aktif.
+  - **Agenda Majelis Kajian Pekanan:** Grid kartu jadwal kajian tematik dan tabligh akbar terhubung dinamis ke tabel `kajian_acara_ibadah`.
+  - **Galeri Sorotan Dokumentasi Interaktif:** Filter kategori dinamis (Semua, Makan Siang, Santri, Musafir, Ibadah, Fasad) terhubung ke `homepage_media` dan dilengkapi Fullscreen Lightbox Modal popup resolusi tinggi.
+  - **Kanal Filantropi & Realtime Donasi:** Widget progress bar capaian donasi harian 70+ porsi makan musafir, tombol 1-Click Salin Nomor Rekening BSI `7235464297`, QRIS Sedekah Makan (NMID `ID2025401816769`), dan formulir donasi incognito tanpa login.
+  - **Fasilitas Ramah Musafir 24 Jam:** 4 kartu informasi fasilitas utama bagi musafir transit (Kamar Mandi & Tempat Wudhu Bersih, Area Istirahat Nyaman, Dispenser Air Minum Gratis, Lokasi Strategis samping UMAR Travel).
+  - **Warta & Artikel Dakwah:** Direktori berita terbit terhubung dinamis ke tabel `artikel_berita` dengan ImageKit WebP thumbnail cover.
+  - **Modal Kotak Pengaduan & Aspirasi:** Modal popup interaktif terhubung ke serverless relay `/api/pengaduan` dan tabel `feedback_complaints` dengan notifikasi toast elegan & reset form otomatis.
+  - **Mobile Bottom Navigation Bar:** Navigasi 5 tab bawah khusus tampilan ponsel (< 768px) untuk kemudahan akses jempol satu tangan.
+  - **Supabase Realtime CDC 6-Channel:** Langganan aktif WebSocket sinkronisasi instan tanpa reload untuk `jadwal_shalat_petugas`, `homepage_media`, `kajian_acara_ibadah`, `artikel_berita`, `donations`, dan `feedback_complaints`.
+- `[IMAGEKIT_BATCH_OPTIMIZER]` Pipeline batch converter dan uploader otomatis berbasis Python (`scripts/batch_image_optimizer_imagekit.py`):
+  - Mengonversi 128 berkas foto mentah (JPG/PNG, total 422.10 MB) menjadi format WebP teroptimasi (`quality=85`, Lanczos resize max 1920/1440/800px) menjadi hanya **32.74 MB** (penghematan bandwidth 92.2%).
+  - Mengunggah 128 berkas ke CDN ImageKit.io (`https://ik.imagekit.io/masjidsophia/masjid-sophia/...`) dengan rasio keberhasilan 100% (0 kegagalan).
+  - Menyusun manifest katalog terstruktur di `asset/imagekit-manifest.json`.
+- `[SUPABASE_MANIFEST_SYNC]` Sinkronisasi manifest katalog ke database Supabase (`scripts/sync_manifest_to_supabase.py`):
+  - Memasukkan 128 rekaman berkas ke tabel `public.media_library`.
+  - Mengkurasi 22 item siap pakai ke `public.homepage_media` (4 slide BANNER_HERO dan 18 foto GALERI_KEGIATAN per kategori).
+  - Melakukan seeding 3 artikel dakwah terbit ke `public.artikel_berita` dengan thumbnail cover ImageKit WebP.
+- `[GITIGNORE_MEDIA_PROTECTION]` Melindungi repositori Git dari penambahan berkas biner media berukuran besar (~2.5 GB) dengan menambahkan `asset/images/`, `asset/images_webp/`, dan `asset/videos/` ke dalam `.gitignore`.
+
+---
+
 ## [1.9.16] - 2026-09-08
 
 ### Restrukturisasi Bilah Samping Navigasi (Sidebar) ke 4 Pilar Fungsional Masjid
@@ -254,7 +286,7 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 #### Fitur & Peningkatan Baru (New Features & Enhancements)
 - `[DAPUR_SEDEKAH_MAKAN]` Membangun Sub-Modul Sedekah Makan Dzuhur (`dapur_makan_siang`):
   - **Perekaman Porsi Harian:** Input menu makanan bergizi, target porsi (default 70+ porsi), dan realisasi pembagian ba'da Dzuhur.
-  - **Indikator Siklus Dapur:** Pelacak 4 tahapan siklus dapur (*Persiapan Bahan* ➔ *Sedang Memasak* ➔ *Siap Dibagikan* ➔ *Selesai Terbagi*) dengan saklar pengubah status 1-klik.
+  - **Indikator Siklus Dapur:** Pelacak 4 tahapan siklus dapur (*Persiapan Bahan* -> *Sedang Memasak* -> *Siap Dibagikan* -> *Selesai Terbagi*) dengan saklar pengubah status 1-klik.
   - **Manajemen Logistik Belanja:** Kolom rincian belanja bahan baku pasar dan catatan kebutuhan dapur.
   - **Dokumentasi Distribusi WebP:** Pengunggah foto dokumentasi dengan kompresi HTML5 Canvas otomatis ke format WebP dan viewer popup lightbox.
   - **Metrik KPI Dapur:** Papan ringkasan total porsi terbagi bulanan, status dapur hari ini, dan rata-rata porsi harian.

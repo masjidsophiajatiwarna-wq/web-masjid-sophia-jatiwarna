@@ -880,7 +880,7 @@
             </div>
             <div>
                 <span class="status-tag status-inprogress">
-                    <i class="fa-solid fa-spinner fa-spin"></i> Fase 4 Sedang Berjalan
+                    <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Fase 0 Selesai (100%) &amp; Fase 3 Beranda Istiqlal Live (85%)
                 </span>
             </div>
         </div>
@@ -914,10 +914,10 @@
                 <span class="metric-label">Progres Total</span>
                 <div class="metric-icon"><i class="fa-solid fa-chart-line"></i></div>
             </div>
-            <div class="metric-value" id="overall-progress-text">72%</div>
+            <div class="metric-value" id="overall-progress-text">88%</div>
             <div class="metric-subtext">Web Publik & 11 Modul Realtime Live</div>
             <div class="progress-track">
-                <div class="progress-bar-inner" id="overall-progress-bar" style="width: 72%;"></div>
+                <div class="progress-bar-inner" id="overall-progress-bar" style="width: 88%;"></div>
             </div>
         </div>
 
@@ -926,10 +926,10 @@
                 <span class="metric-label">Tugas Selesai</span>
                 <div class="metric-icon"><i class="fa-solid fa-list-check"></i></div>
             </div>
-            <div class="metric-value" id="tasks-count-text">26 / 34</div>
+            <div class="metric-value" id="tasks-count-text">30 / 34</div>
             <div class="metric-subtext">Tugas tervalidasi aktif</div>
             <div class="progress-track">
-                <div class="progress-bar-inner" style="width: 76%;"></div>
+                <div class="progress-bar-inner" style="width: 88%;"></div>
             </div>
         </div>
 
@@ -983,12 +983,12 @@
         <div class="gantt-card-item">
             <div class="gantt-item-top">
                 <span class="gantt-item-name">
-                    <i class="fa-solid fa-camera-retro" style="color: var(--color-charcoal-muted);"></i> Fase 0: Kurasi Aset Dokumentasi
+                    <i class="fa-solid fa-camera-retro" style="color: var(--color-success);"></i> Fase 0: Kurasi Aset Dokumentasi
                 </span>
-                <span class="status-tag status-inprogress">70% Selesai</span>
+                <span class="status-tag status-done">100% Selesai</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-70">70% - Logo & Favicon Siap</div>
+                <div class="gantt-bar-fill fill-100">100% - Foto Teroptimasi WebP &amp; ImageKit CDN Siap</div>
             </div>
         </div>
 
@@ -1021,10 +1021,10 @@
                 <span class="gantt-item-name">
                     <i class="fa-solid fa-desktop" style="color: var(--color-gold-deep);"></i> Fase 3: Portal Publik &amp; Shalat Engine
                 </span>
-                <span class="status-tag status-inprogress">60% Selesai</span>
+                <span class="status-tag status-inprogress">85% Selesai</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-60">60% - Beranda Live, Redesign &amp; Fitur Lanjutan Tersisa</div>
+                <div class="gantt-bar-fill fill-85">85% - Redesign Beranda Istiqlal, Pengaduan, Donasi &amp; CDC Live</div>
             </div>
         </div>
 
@@ -1086,14 +1086,14 @@
         <div class="phase-card" id="card-fase-0">
             <div class="phase-header" onclick="togglePhase('card-fase-0')">
                 <div class="phase-title-group">
-                    <div class="phase-badge in-progress">0</div>
+                    <div class="phase-badge done"><i class="fa-solid fa-check"></i></div>
                     <div class="phase-name">
                         <h3>Fase 0: Pipeline Kurasi Aset Dokumentasi</h3>
-                        <p>Logo resmi SVG, favicon multi-ukuran, dan foto dokumentasi kegiatan</p>
+                        <p>Logo resmi SVG, favicon multi-ukuran, batch optimizer WebP, dan ImageKit CDN</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-inprogress">Dalam Proses</span>
+                    <span class="status-tag status-done">Selesai (100%)</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
@@ -1119,24 +1119,24 @@
                             <div class="task-desc">Favicon 16x16, 32x32, favicon.ico, apple-touch-icon, dan site.webmanifest terpasang.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Kurasi Foto Riil Dokumentasi Makan Berjamaah Gratis
                                 <span class="task-badge-pill">Dokumentasi</span>
                             </div>
-                            <div class="task-desc">Pengumpulan foto riil penyaluran makanan ba'da Dzuhur kepada musafir & ojol.</div>
+                            <div class="task-desc">Pengumpulan dan konversi foto riil penyaluran makanan ba'da Dzuhur kepada musafir & ojol ke WebP ImageKit CDN.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Kurasi Foto Fasilitas Musafir & Halaqah Santri
                                 <span class="task-badge-pill">Dokumentasi</span>
                             </div>
-                            <div class="task-desc">Pengumpulan foto sudut wudhu bersih, area istirahat musafir, dan kegiatan santri tahfidz.</div>
+                            <div class="task-desc">Pengumpulan dan konversi foto sudut wudhu bersih, area istirahat musafir, dan santri tahfidz ke WebP ImageKit CDN (128 foto terunggah).</div>
                         </div>
                     </div>
                     <div style="margin-top: 0.5rem; padding: 0.75rem; background: #FAF6E8; border: 1px solid #E8D8A0; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
@@ -1344,7 +1344,7 @@
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-inprogress">60% Selesai</span>
+                    <span class="status-tag status-inprogress">85% Selesai</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
@@ -1410,8 +1410,8 @@
                             <div class="task-desc">Informasi wudhu bersih 24 jam, ruang istirahat, air minum gratis, dan rute lokasi.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Pembaruan Besar Tampilan Beranda
@@ -1420,8 +1420,8 @@
                             <div class="task-desc">Banner slider foto kegiatan, kartu layanan cepat, kalender hijriah, agenda kajian, galeri sorotan, animasi halus, dan navigasi bawah ponsel.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Kolom Pengaduan, Saran & Aspirasi Jamaah

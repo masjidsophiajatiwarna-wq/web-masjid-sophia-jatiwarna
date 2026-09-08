@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v5.6 (Restrukturisasi Navigasi Sidebar 4 Pilar DKM, Migrasi Media Terpusat ImageKit.io CDN via Supabase RPC, Arsitektur Keamanan Zero-Leak & Standarisasi RFC 4122 UUID)  
+**Versi Rencana Induk:** v5.7 (Pembaruan Menyeluruh Beranda Publik Standar Istiqlal, Pipeline Batch Optimizer ImageKit WebP, dan Realtime CDC 6-Channel)  
 **Terakhir Diperbarui:** 2026-09-08  
 
 ---
@@ -50,13 +50,13 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ## 2. Peta Fase Implementasi Teknis
 
 ```text
-[FASE 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid] (STATUS: 70% SELESAI)
+[FASE 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid] (STATUS: SELESAI 100%)
        |
 [FASE 1: Inisialisasi Infrastruktur, Berkas Tata Kelola & Monitoring] (STATUS: SELESAI 100%)
        |
 [FASE 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS] (STATUS: SELESAI 100%)
        |
-[FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: 60% SELESAI)
+[FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: 85% SELESAI)
        |
 [FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: 50% SELESAI)
        |
@@ -72,13 +72,14 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ## 3. Rincian Pekerjaan Tiap Fase
 
 ### Fase 0: Pipeline Kurasi & Pengumpulan Aset Media Dokumentasi Masjid
-- **Status:** 70% Selesai
-- **Penanganan:** Murni oleh Tim Media Masjid melalui portal checklist `media-checklist.html`.
+- **Status:** Selesai (100%)
+- **Penanganan:** Kurasi aset media, kompresi batch WebP Lanczos (`quality=85`), unggah ImageKit.io CDN via Python Pipeline (`scripts/batch_image_optimizer_imagekit.py`), dan sinkronisasi manifest katalog (`asset/imagekit-manifest.json`) ke tabel Supabase `media_library` & `homepage_media` (`scripts/sync_manifest_to_supabase.py`).
 - **Daftar Tugas:**
   - [x] Audit aset logo resmi format vektor SVG (`logo_masjid_black.svg`, `logo_masjid_white.svg`) dan PNG transparan.
   - [x] Verifikasi paket Favicon multi-ukuran (16x16, 32x32, Apple Touch Icon, Android Chrome, site.webmanifest).
-  - [ ] Kurasi galeri foto riil (Makan Siang Gratis, fasilitas 24 jam, santri tahfidz, ruang utama).
-  - [ ] Konversi dan kompresi seluruh aset foto ke format WebP teroptimasi untuk performa web.
+  - [x] Kurasi galeri foto riil (128 berkas foto: Makan Siang Gratis, fasilitas 24 jam, santri tahfidz, ruang utama, fasad).
+  - [x] Konversi dan kompresi seluruh aset foto ke format WebP teroptimasi untuk performa web (422.1 MB dikompresi menjadi 32.74 MB, efisiensi 92.2%).
+  - [x] Unggah 100% aset ke CDN ImageKit.io (`https://ik.imagekit.io/masjidsophia/masjid-sophia/...`) dan integrasi manifest ke Supabase DB.
 
 ---
 
@@ -125,15 +126,16 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 
 ### Fase 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat
 - **Benchmark Rujukan:** Masjid Istiqlal Jakarta (`https://www.istiqlal.or.id/`) & UMAR Travel (`artikel.html`, `artikel-detail.html`)
-- **Status:** 70% Selesai
+- **Status:** 85% Selesai
 - **Daftar Tugas:**
   - [x] **Design System & Komponen Beranda Inti (`index.html`):** Tema Terang Resmi, Hisab Jadwal Shalat Jatiwarna (Kemenag) + Live Countdown, Kartu Petugas Ibadah, Box Donasi BSI 1-Click Copy `7235464297` & QRIS SEDEKAH MAKAN, Dynamic Incognito Form, Informasi Fasilitas Musafir 24 Jam.
   - [x] **Integrasi Realtime Shalat & Petugas Ibadah (`index.html` <-> `admin.html`):** Query dinamis ke tabel Supabase `jadwal_shalat_petugas` status `Approved`, fallback hisab astronomis otomatis bila belum ada jadwal terbit, sinkronisasi live nama Imam 5 waktu, Muadzin, Khatib Jumat, dan update countdown timer tanpa reload via WebSocket Supabase Realtime channel `public:jadwal_shalat_petugas:index` dan `public:kajian_acara_ibadah:index`.
-  - [ ] **Redesign Besar Beranda Publik (Benchmark Istiqlal):** Hero Slider, Kartu Layanan Cepat, Kalender Ganda Hijriah/Masehi, Agenda Kajian Pekanan, Galeri Sorotan Carousel, Sticky Header, Mobile Bottom Nav Bar, Footer 4 Kolom.
-  - [ ] **Kolom Pengaduan, Saran & Aspirasi Jamaah di Web Publik:** Modal interaktif terhubung ke `/api/pengaduan` dan tabel `feedback_complaints`.
+  - [x] **Redesign Besar Beranda Publik (Benchmark Istiqlal):** Dynamic Hero Banner Slider ImageKit WebP terhubung ke `homepage_media`, Kartu Layanan Cepat 4 Pilar, Kalender Ganda Hijriah Ummul Qura & Masehi, Agenda Majelis Kajian Pekanan terhubung ke `kajian_acara_ibadah`, Galeri Sorotan Dokumentasi dengan filter kategori + Fullscreen Lightbox Modal, Sticky Header w/ Infaq Button, Mobile Bottom Navigation Bar 5-Tab, dan Footer Informatif 4 Kolom.
+  - [x] **Kolom Pengaduan, Saran & Aspirasi Jamaah di Web Publik:** Modal interaktif terhubung ke serverless `/api/pengaduan` dan tabel `feedback_complaints` dengan notifikasi toast elegan & reset form otomatis.
+  - [x] **Supabase Realtime CDC 6 Channel:** Langganan aktif WebSocket sinkronisasi instan tanpa refresh untuk `jadwal_shalat_petugas`, `homepage_media`, `kajian_acara_ibadah`, `artikel_berita`, `donations`, dan `feedback_complaints`.
   - [ ] **Halaman Direktori Berita & Artikel Dakwah (`artikel.html` - Benchmark UMAR):** Hero Search, Filter Kategori, Featured Article & Grid Artikel WebP, Pagination.
   - [ ] **Halaman Detail Artikel Mandiri (`artikel-detail.html` - Benchmark UMAR):** Header, Cover WebP, Rich Text Body, Tombol Share WhatsApp/FB, Rekomendasi Artikel Terkait.
-  - [ ] **Halaman Galeri Multimedia (`galeri.html`):** Album Foto & Video per Kategori, Lightbox Pop-up, Video Streaming ImageKit.io.
+  - [ ] **Halaman Galeri Multimedia Mandiri (`galeri.html`):** Album Foto & Video Lengkap per Kategori, Lightbox Pop-up, Video Streaming ImageKit.io.
   - [ ] **Live Chat Jamaah ke Panel Admin (Status: Coming Soon / Rencana Lanjutan):** Widget obrolan mengambang di pojok kanan bawah web publik.
 
 ---

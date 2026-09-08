@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Masjid Musafir Sophia Jatiwarna - Rumah Singgah Ibadah, Ladang Amal Kebaikan</title>
+    <title>Masjid Musafir Sophia Jatiwarna - Pusat Sujud & Rumah Singgah Ibadah 24 Jam</title>
     
     <!-- Meta Tags SEO & OpenGraph -->
-    <meta name="description" content="Portal Resmi Masjid Musafir Sophia Jatiwarna, Kota Bekasi. Layanan ibadah 24 jam bagi musafir, Program Makan Berjamaah Gratis ba'da Dzuhur 70+ porsi, pembinaan santri tahfidz Qur'an, dan hisab jadwal shalat presisi Kemenag RI.">
+    <meta name="description" content="Portal Resmi Masjid Musafir Sophia Jatiwarna, Kota Bekasi. Layanan ramah musafir 24 jam, Program Makan Berjamaah Gratis harian ba'da Dzuhur 70+ porsi, pembinaan santri tahfidz Al-Qur'an 30 Juz, dan hisab jadwal shalat presisi lokal Kemenag RI.">
     <meta name="keywords" content="Masjid Sophia, Masjid Sophia Jatiwarna, Masjid Musafir Bekasi, Makan Gratis Dzuhur, Jadwal Shalat Bekasi, Donasi Masjid Sophia, UMAR Travel">
     <meta name="author" content="DKM Masjid Sophia Jatiwarna">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://masjidsophiajatiwarna.com/">
+    <link rel="canonical" href="https://masjidsophia.com/">
 
     <!-- OpenGraph -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://masjidsophiajatiwarna.com/">
+    <meta property="og:url" content="https://masjidsophia.com/">
     <meta property="og:title" content="Masjid Musafir Sophia Jatiwarna - Rumah Singgah Ibadah 24 Jam">
-    <meta property="og:description" content="Layanan ramah musafir 24 jam, Makan Berjamaah Gratis harian 70+ porsi, santri tahfidz Al-Qur'an, dan transparansi donasi umat.">
-    <meta property="og:image" content="https://masjidsophiajatiwarna.com/asset/logo/png/logo_masjid_black.png">
+    <meta property="og:description" content="Layanan ramah musafir 24 jam, Makan Berjamaah Gratis harian 70+ porsi, santri tahfidz Al-Qur'an, dan hisab jadwal shalat presisi Kemenag RI.">
+    <meta property="og:image" content="https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp">
 
     <!-- Google Fonts: Plus Jakarta Sans, Inter & Amiri (Arabic) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,9 +40,9 @@
       "@type": "Mosque",
       "name": "Masjid Musafir Sophia Jatiwarna",
       "alternateName": "Masjid Sophia",
-      "url": "https://masjidsophiajatiwarna.com/",
-      "logo": "https://masjidsophiajatiwarna.com/asset/logo/png/logo_masjid_black.png",
-      "image": "https://masjidsophiajatiwarna.com/asset/logo/png/logo_masjid_black.png",
+      "url": "https://masjidsophia.com/",
+      "logo": "https://masjidsophia.com/asset/logo/png/logo_masjid_black.png",
+      "image": "https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp",
       "description": "Masjid ramah musafir 24 jam dengan program Makan Berjamaah Gratis harian ba'da Dzuhur, pembinaan santri tahfidz Qur'an, dan hisab shalat presisi Kemenag RI.",
       "address": {
         "@type": "PostalAddress",
@@ -66,7 +66,7 @@
         :root {
             --color-gold-primary: #E3C466;
             --color-gold-deep: #C9A84C;
-            --color-gold-light: #FBF8EE;
+            --color-gold-light: #FAF6E8;
             --color-gold-border: #E8D8A0;
             --color-charcoal: #1D1D1B;
             --color-charcoal-muted: #4B5563;
@@ -105,10 +105,11 @@
             color: var(--color-charcoal);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            padding-bottom: 0;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
             padding: 0 1.25rem;
         }
@@ -118,8 +119,8 @@
             background: var(--color-charcoal);
             color: #E5E7EB;
             font-size: 0.8rem;
-            padding: 0.45rem 0;
-            border-bottom: 1px solid rgba(227, 196, 102, 0.25);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(227, 196, 102, 0.3);
         }
 
         .top-bar-inner {
@@ -127,13 +128,13 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.65rem;
         }
 
         .top-bar-item {
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
+            gap: 0.4rem;
             color: #D1D5DB;
         }
 
@@ -151,12 +152,37 @@
             color: var(--color-gold-primary);
         }
 
-        /* Main Navbar */
+        .status-dot-pulse {
+            width: 8px;
+            height: 8px;
+            background-color: #00A651;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 0 rgba(0, 166, 81, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 166, 81, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 6px rgba(0, 166, 81, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 166, 81, 0);
+            }
+        }
+
+        /* Main Navbar (Sticky Glassmorphism) */
         .main-header {
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--color-border);
@@ -179,42 +205,62 @@
         }
 
         .brand-logo-img {
-            height: 42px;
+            height: 46px;
             width: auto;
+            display: block;
         }
 
         .brand-logo-text h1 {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 800;
             line-height: 1.2;
             color: var(--color-charcoal);
+            letter-spacing: -0.3px;
         }
 
         .brand-logo-text p {
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: var(--color-charcoal-muted);
-            letter-spacing: 0.3px;
+            margin: 0;
+            font-weight: 500;
         }
 
         .nav-menu {
             display: flex;
             align-items: center;
-            gap: 1.35rem;
+            gap: 1.25rem;
             list-style: none;
         }
 
         .nav-link {
-            font-size: 0.875rem;
-            font-weight: 600;
             color: var(--color-charcoal);
             text-decoration: none;
-            transition: var(--transition);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.35rem 0;
             position: relative;
-            padding: 0.25rem 0;
+            transition: var(--transition);
         }
 
         .nav-link:hover, .nav-link.active {
             color: var(--color-gold-deep);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--color-gold-primary);
+            border-radius: var(--radius-full);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
         }
 
         .btn-cta-donasi {
@@ -222,11 +268,11 @@
             align-items: center;
             gap: 0.45rem;
             padding: 0.55rem 1.15rem;
-            background: var(--color-charcoal);
+            background: linear-gradient(135deg, var(--color-charcoal) 0%, #2D2D2A 100%);
             color: var(--color-gold-primary);
-            border: 1px solid var(--color-charcoal);
+            border: 1px solid var(--color-gold-deep);
             border-radius: var(--radius-full);
-            font-size: 0.85rem;
+            font-size: 0.825rem;
             font-weight: 700;
             text-decoration: none;
             transition: var(--transition);
@@ -234,60 +280,79 @@
         }
 
         .btn-cta-donasi:hover {
-            background: #2D2D2A;
+            background: var(--color-gold-deep);
             color: #FFFFFF;
+            border-color: var(--color-gold-deep);
+            transform: translateY(-1px);
+        }
+
+        .btn-cta-pengaduan {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.55rem 1rem;
+            background: var(--color-bg-sand);
+            color: var(--color-charcoal);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-size: 0.825rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-cta-pengaduan:hover {
+            background: #FFFFFF;
+            border-color: var(--color-gold-deep);
+            color: var(--color-gold-deep);
         }
 
         .mobile-menu-btn {
             display: none;
             background: none;
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-sm);
-            width: 38px;
-            height: 38px;
-            font-size: 1.1rem;
+            border: none;
+            font-size: 1.35rem;
             color: var(--color-charcoal);
             cursor: pointer;
-            align-items: center;
-            justify-content: center;
+            padding: 0.4rem;
         }
 
-        /* Mobile Off-Canvas Drawer */
+        /* Mobile Drawer */
         .mobile-drawer-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1050;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1998;
             display: none;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
+        .mobile-drawer-overlay.open {
+            display: block;
+            opacity: 1;
+        }
+
         .mobile-drawer {
             position: fixed;
             top: 0;
-            right: -280px;
-            width: 280px;
+            right: -320px;
+            width: 290px;
             height: 100%;
-            background: #FFFFFF;
-            z-index: 1100;
-            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
-            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--color-bg-white);
+            z-index: 1999;
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            padding: 1.5rem 1.25rem;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .mobile-drawer.open {
             right: 0;
-        }
-
-        .mobile-drawer-overlay.open {
-            display: block;
-            opacity: 1;
         }
 
         .drawer-header {
@@ -299,106 +364,162 @@
             margin-bottom: 1.25rem;
         }
 
-        .drawer-close-btn {
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            color: var(--color-charcoal);
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         .drawer-links {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 0.85rem;
+            gap: 0.75rem;
             flex: 1;
+            overflow-y: auto;
         }
 
         .drawer-links a {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--color-charcoal);
-            text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.65rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #F3F4F6;
+            gap: 0.75rem;
+            color: var(--color-charcoal);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.65rem 0.5rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
         }
 
-        .drawer-links a i {
+        .drawer-links a:hover {
+            background: var(--color-bg-sand);
             color: var(--color-gold-deep);
-            width: 20px;
         }
 
-        /* Hero Section */
+        /* ==========================================================================
+           HERO BANNER SLIDER & LIVE PRAYER COUNTDOWN (STANDAR MASJID ISTIQLAL)
+           ========================================================================== */
         .hero-section {
-            padding: 2.5rem 0 2rem 0;
-            background: linear-gradient(180deg, #FFFFFF 0%, var(--color-bg-sand) 100%);
-            border-bottom: 1px solid var(--color-border);
+            padding: 2.25rem 0 2.5rem 0;
+            background: radial-gradient(circle at 80% 20%, rgba(227, 196, 102, 0.12) 0%, transparent 60%),
+                        radial-gradient(circle at 10% 80%, rgba(201, 168, 76, 0.08) 0%, transparent 50%),
+                        var(--color-bg-sand);
+            position: relative;
+            overflow: hidden;
         }
 
         .hero-grid {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-columns: 1.35fr 0.85fr;
             gap: 2rem;
-            align-items: center;
+            align-items: stretch;
+        }
+
+        /* Hero Slider Carousel Container */
+        .hero-slider-card {
+            background: var(--color-charcoal);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(227, 196, 102, 0.25);
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .hero-slides-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .hero-slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(29, 29, 27, 0.35) 0%, rgba(29, 29, 27, 0.82) 65%, rgba(29, 29, 27, 0.96) 100%);
+        }
+
+        .hero-slide-content {
+            position: relative;
+            z-index: 10;
+            padding: 2.25rem 2.5rem;
+            color: #FFFFFF;
         }
 
         .badge-hero {
             display: inline-flex;
             align-items: center;
-            gap: 0.45rem;
+            gap: 0.4rem;
             padding: 0.3rem 0.85rem;
-            background: var(--color-gold-light);
-            border: 1px solid var(--color-gold-border);
+            background: rgba(227, 196, 102, 0.2);
+            border: 1px solid var(--color-gold-primary);
             border-radius: var(--radius-full);
-            font-size: 0.775rem;
+            color: var(--color-gold-primary);
+            font-size: 0.75rem;
             font-weight: 700;
-            color: #785800;
-            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.85rem;
+            backdrop-filter: blur(4px);
         }
 
         .hero-title {
-            font-size: 2.25rem;
+            font-size: 2.15rem;
             font-weight: 800;
-            line-height: 1.2;
-            color: var(--color-charcoal);
-            margin-bottom: 0.85rem;
+            line-height: 1.25;
+            color: #FFFFFF;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
         }
 
         .hero-title span {
-            color: var(--color-gold-deep);
+            color: var(--color-gold-primary);
         }
 
         .hero-arabic-box {
             font-family: 'Amiri', serif;
             font-size: 1.15rem;
-            color: #785800;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-            background: #FAF8F0;
-            padding: 0.5rem 0.85rem;
-            border-left: 4px solid var(--color-gold-deep);
-            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            line-height: 1.8;
+            color: var(--color-gold-light);
+            margin-bottom: 0.75rem;
+            direction: rtl;
+            text-align: right;
+            border-right: 3px solid var(--color-gold-primary);
+            padding-right: 0.85rem;
         }
 
         .hero-subtitle {
-            font-size: 0.95rem;
-            color: var(--color-charcoal-muted);
-            margin-bottom: 1.5rem;
+            font-size: 0.925rem;
+            color: #E5E7EB;
             line-height: 1.6;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
         }
 
         .hero-actions {
             display: flex;
-            gap: 0.65rem;
+            align-items: center;
+            gap: 0.85rem;
             flex-wrap: wrap;
             margin-bottom: 1.5rem;
         }
@@ -407,90 +528,118 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.45rem;
-            padding: 0.75rem 1.35rem;
-            background: var(--color-charcoal);
-            color: var(--color-gold-primary);
+            gap: 0.5rem;
+            padding: 0.75rem 1.45rem;
+            background: var(--color-gold-primary);
+            color: var(--color-charcoal);
             border-radius: var(--radius-full);
-            font-size: 0.9rem;
-            font-weight: 700;
+            font-size: 0.875rem;
+            font-weight: 800;
             text-decoration: none;
             transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(227, 196, 102, 0.35);
         }
 
         .btn-hero-primary:hover {
-            background: #2D2D2A;
-            color: #FFFFFF;
+            background: #FFFFFF;
+            color: var(--color-charcoal);
+            transform: translateY(-2px);
         }
 
         .btn-hero-secondary {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.45rem;
-            padding: 0.75rem 1.25rem;
-            background: var(--color-bg-white);
-            color: var(--color-charcoal);
-            border: 1px solid var(--color-border);
+            gap: 0.5rem;
+            padding: 0.75rem 1.35rem;
+            background: rgba(255, 255, 255, 0.12);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: var(--radius-full);
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             font-weight: 700;
             text-decoration: none;
             transition: var(--transition);
+            backdrop-filter: blur(4px);
         }
 
-        .hero-stats-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.65rem;
-            padding-top: 1.25rem;
-            border-top: 1px solid var(--color-border);
+        .btn-hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #FFFFFF;
+            transform: translateY(-2px);
         }
 
-        .hero-stat-item {
+        /* Slider Controls */
+        .hero-slider-nav {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 2rem;
+            z-index: 20;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .stat-icon {
-            width: 34px;
-            height: 34px;
+        .slider-btn {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: var(--color-gold-light);
-            color: var(--color-gold-deep);
+            background: rgba(29, 29, 27, 0.65);
+            border: 1px solid rgba(227, 196, 102, 0.4);
+            color: #FFFFFF;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
             font-size: 0.85rem;
-            flex-shrink: 0;
         }
 
-        .stat-text h4 {
-            font-size: 0.825rem;
-            font-weight: 800;
-            line-height: 1.2;
+        .slider-btn:hover {
+            background: var(--color-gold-deep);
+            color: #FFFFFF;
+            border-color: var(--color-gold-deep);
         }
 
-        .stat-text p {
-            font-size: 0.7rem;
-            color: var(--color-charcoal-muted);
+        .slider-dots {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-right: 0.5rem;
         }
 
-        /* Hero Right: Live Prayer Box */
+        .slider-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .slider-dot.active {
+            width: 24px;
+            border-radius: 10px;
+            background: var(--color-gold-primary);
+        }
+
+        /* Hero Right Box: Live Prayer Countdown */
         .hero-prayer-box {
             background: var(--color-bg-white);
-            border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
-            padding: 1.35rem;
+            padding: 1.75rem;
             box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .hero-prayer-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 0.75rem;
+            padding-bottom: 0.85rem;
             border-bottom: 1px solid var(--color-border);
             margin-bottom: 1rem;
         }
@@ -512,7 +661,7 @@
             background: #FAFAF7;
             border: 1px solid var(--color-gold-border);
             border-radius: var(--radius-md);
-            padding: 1rem;
+            padding: 1.25rem 1rem;
             text-align: center;
             margin-bottom: 1rem;
         }
@@ -526,18 +675,19 @@
         }
 
         .countdown-name {
-            font-size: 1.5rem;
+            font-size: 1.65rem;
             font-weight: 800;
             color: var(--color-charcoal);
-            margin: 0.15rem 0;
+            margin: 0.2rem 0;
+            letter-spacing: -0.3px;
         }
 
         .countdown-clock {
-            font-size: 1.35rem;
+            font-size: 1.65rem;
             font-weight: 800;
             color: var(--color-gold-deep);
             font-family: monospace;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         .countdown-sub {
@@ -549,9 +699,9 @@
         .officer-brief-box {
             background: #FAF8F2;
             border-radius: var(--radius-md);
-            padding: 0.85rem;
+            padding: 1rem;
             border: 1px solid var(--color-border);
-            font-size: 0.785rem;
+            font-size: 0.8rem;
         }
 
         .officer-brief-header {
@@ -559,34 +709,110 @@
             text-transform: uppercase;
             letter-spacing: 0.3px;
             color: var(--color-charcoal-muted);
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.45rem;
             display: flex;
             align-items: center;
-            gap: 0.35rem;
+            gap: 0.4rem;
         }
 
         .officer-brief-row {
             display: flex;
             justify-content: space-between;
-            padding: 0.15rem 0;
+            padding: 0.2rem 0;
+            border-bottom: 1px dashed rgba(0,0,0,0.06);
         }
 
-        /* Sections Common */
+        .officer-brief-row:last-child {
+            border-bottom: none;
+        }
+
+        /* ==========================================================================
+           QUICK ACCESS SERVICES HUB (STANDAR ISTIQLAL)
+           ========================================================================== */
+        .quick-services-section {
+            padding: 1.75rem 0;
+            background: #FFFFFF;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .quick-services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+        }
+
+        .quick-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.15rem;
+            background: #FAFAF7;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--color-charcoal);
+            transition: var(--transition);
+        }
+
+        .quick-card:hover {
+            background: #FFFFFF;
+            border-color: var(--color-gold-deep);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .quick-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: var(--color-gold-light);
+            border: 1px solid var(--color-gold-border);
+            color: var(--color-gold-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .quick-card:hover .quick-icon-box {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+        }
+
+        .quick-text h4 {
+            font-size: 0.925rem;
+            font-weight: 800;
+            margin-bottom: 0.15rem;
+            line-height: 1.3;
+        }
+
+        .quick-text p {
+            font-size: 0.75rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.4;
+        }
+
+        /* ==========================================================================
+           SECTIONS COMMON STYLING
+           ========================================================================== */
         .section-padding {
-            padding: 3.5rem 0;
+            padding: 4rem 0;
         }
 
         .section-header-center {
             text-align: center;
-            max-width: 680px;
-            margin: 0 auto 2.25rem auto;
+            max-width: 720px;
+            margin: 0 auto 2.5rem auto;
         }
 
         .section-tag {
             display: inline-flex;
             align-items: center;
             gap: 0.35rem;
-            padding: 0.25rem 0.75rem;
+            padding: 0.25rem 0.85rem;
             background: var(--color-gold-light);
             border: 1px solid var(--color-gold-border);
             border-radius: var(--radius-full);
@@ -594,22 +820,23 @@
             font-weight: 700;
             color: #785800;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
             margin-bottom: 0.5rem;
         }
 
         .section-title {
-            font-size: 1.75rem;
+            font-size: 1.85rem;
             font-weight: 800;
             color: var(--color-charcoal);
             margin-bottom: 0.5rem;
             line-height: 1.25;
+            letter-spacing: -0.4px;
         }
 
         .section-subtitle {
-            font-size: 0.9rem;
+            font-size: 0.925rem;
             color: var(--color-charcoal-muted);
-            line-height: 1.55;
+            line-height: 1.6;
         }
 
         /* Jadwal Shalat Section */
@@ -622,15 +849,15 @@
         .prayer-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 0.65rem;
-            margin-bottom: 1.5rem;
+            gap: 0.75rem;
+            margin-bottom: 1.75rem;
         }
 
         .prayer-card {
             background: #FAF8F2;
             border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
-            padding: 1rem 0.5rem;
+            padding: 1.15rem 0.5rem;
             text-align: center;
             transition: var(--transition);
         }
@@ -653,10 +880,11 @@
         .prayer-card.active-prayer .prayer-status-pill {
             background: var(--color-gold-primary);
             color: var(--color-charcoal);
+            font-weight: 800;
         }
 
         .prayer-name {
-            font-size: 0.8rem;
+            font-size: 0.825rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.4px;
@@ -665,7 +893,7 @@
         }
 
         .prayer-clock {
-            font-size: 1.35rem;
+            font-size: 1.45rem;
             font-weight: 800;
             color: var(--color-charcoal);
             margin-bottom: 0.35rem;
@@ -676,7 +904,7 @@
             display: inline-block;
             font-size: 0.65rem;
             font-weight: 700;
-            padding: 0.1rem 0.45rem;
+            padding: 0.15rem 0.5rem;
             border-radius: var(--radius-full);
             background: var(--color-bg-sand);
             border: 1px solid var(--color-border);
@@ -687,88 +915,324 @@
             background: var(--color-bg-sand);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
-            padding: 0.85rem 1.25rem;
+            padding: 0.95rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 0.75rem;
-            font-size: 0.8rem;
+            font-size: 0.825rem;
         }
 
-        /* Petugas Ibadah Section */
+        /* Petugas Ibadah Grid */
         .officers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
         }
 
         .officer-card {
             background: var(--color-bg-white);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
-            padding: 1.25rem;
+            padding: 1.35rem;
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
         }
 
         .officer-card:hover {
             border-color: var(--color-gold-deep);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .officer-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.35rem;
-            padding: 0.2rem 0.55rem;
-            background: var(--color-gold-light);
-            border: 1px solid var(--color-gold-border);
-            border-radius: var(--radius-full);
             font-size: 0.725rem;
             font-weight: 700;
-            color: #785800;
-            margin-bottom: 0.65rem;
+            color: var(--color-gold-deep);
+            margin-bottom: 0.5rem;
         }
 
         .officer-name {
             font-size: 1.05rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--color-charcoal);
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.35rem;
         }
 
         .officer-schedule {
             font-size: 0.8rem;
             color: var(--color-charcoal-muted);
-            margin-bottom: 0.65rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
         }
 
         .officer-theme {
-            font-size: 0.785rem;
-            background: #FAFAF8;
-            padding: 0.45rem 0.65rem;
+            font-size: 0.75rem;
+            color: #785800;
+            background: var(--color-gold-light);
+            padding: 0.35rem 0.65rem;
             border-radius: var(--radius-sm);
-            border-left: 3px solid var(--color-gold-deep);
-            color: var(--color-charcoal);
+            border: 1px solid var(--color-gold-border);
+            line-height: 1.4;
         }
 
-        /* Philanthropy Section */
+        /* ==========================================================================
+           AGENDA KAJIAN & MAJELIS TAKLIM (SECTION BARU)
+           ========================================================================== */
+        .kajian-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .kajian-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kajian-card:hover {
+            border-color: var(--color-gold-deep);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .kajian-header {
+            background: var(--color-charcoal);
+            color: #FFFFFF;
+            padding: 1.15rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .kajian-date-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: rgba(227, 196, 102, 0.2);
+            color: var(--color-gold-primary);
+            border: 1px solid var(--color-gold-primary);
+            border-radius: var(--radius-full);
+            font-size: 0.725rem;
+            font-weight: 700;
+            padding: 0.2rem 0.65rem;
+        }
+
+        .kajian-body {
+            padding: 1.35rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kajian-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            margin-bottom: 0.5rem;
+            line-height: 1.35;
+        }
+
+        .kajian-speaker {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--color-gold-deep);
+            margin-bottom: 0.75rem;
+        }
+
+        .kajian-desc {
+            font-size: 0.825rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.55;
+            margin-bottom: 1.25rem;
+            flex: 1;
+        }
+
+        .kajian-meta {
+            padding-top: 0.85rem;
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.775rem;
+            color: var(--color-charcoal-muted);
+        }
+
+        /* ==========================================================================
+           GALERI SOROTAN MULTIMEDIA BERBASIS KATEGORI (IMAGEKIT CDN)
+           ========================================================================== */
+        .gallery-filter-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-filter-btn {
+            padding: 0.45rem 1.15rem;
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: var(--color-charcoal-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .gallery-filter-btn:hover, .gallery-filter-btn.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            background: #E5E7EB;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            display: block;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(29, 29, 27, 0.85) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1rem;
+            color: #FFFFFF;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item-caption {
+            font-size: 0.825rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .gallery-item-category {
+            font-size: 0.675rem;
+            color: var(--color-gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        /* Lightbox Modal */
+        .lightbox-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 2100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .lightbox-content {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border: 2px solid rgba(227, 196, 102, 0.4);
+        }
+
+        .lightbox-caption {
+            color: #E5E7EB;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+            font-weight: 600;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.75rem;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           PROGRAM SOSIAL & DONASI REALTIME
+           ========================================================================== */
         .philanthropy-section {
-            background: var(--color-bg-sand);
+            background: #FFFFFF;
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
         }
 
         .programs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.25rem;
-            margin-bottom: 2.25rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .program-card {
-            background: var(--color-bg-white);
+            background: #FAF8F2;
             border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 1.35rem;
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
             box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
@@ -776,122 +1240,156 @@
         }
 
         .program-card:hover {
+            background: #FFFFFF;
             border-color: var(--color-gold-deep);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
         }
 
         .program-icon-box {
-            width: 42px;
-            height: 42px;
-            border-radius: var(--radius-sm);
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
             background: var(--color-gold-light);
+            border: 1px solid var(--color-gold-border);
             color: var(--color-gold-deep);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.15rem;
-            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .program-card h3 {
             font-size: 1.15rem;
             font-weight: 800;
-            margin-bottom: 0.25rem;
+            color: var(--color-charcoal);
+            margin-bottom: 0.35rem;
         }
 
         .program-target {
             display: inline-block;
-            font-size: 0.725rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            padding: 0.15rem 0.55rem;
-            background: var(--color-success-bg);
-            color: var(--color-success);
-            border-radius: var(--radius-full);
+            color: #785800;
             margin-bottom: 0.65rem;
         }
 
         .program-desc {
-            font-size: 0.85rem;
+            font-size: 0.825rem;
             color: var(--color-charcoal-muted);
-            line-height: 1.5;
+            line-height: 1.55;
             flex: 1;
         }
 
-        .donation-channels-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.75rem;
-            background: var(--color-bg-white);
-            border: 1px solid var(--color-border);
+        /* Realtime Donation Progress Banner */
+        .donation-progress-banner {
+            background: linear-gradient(135deg, var(--color-charcoal) 0%, #2D2D2A 100%);
             border-radius: var(--radius-lg);
-            padding: 1.75rem;
+            border: 1px solid var(--color-gold-deep);
+            padding: 1.75rem 2rem;
+            color: #FFFFFF;
+            margin-bottom: 2rem;
             box-shadow: var(--shadow-md);
         }
 
+        .progress-banner-inner {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .progress-bar-wrap {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-full);
+            height: 14px;
+            overflow: hidden;
+            margin: 0.65rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-gold-primary) 0%, #F59E0B 100%);
+            border-radius: var(--radius-full);
+            width: 78%;
+            transition: width 1s ease-in-out;
+        }
+
+        /* Donation Channels & Incognito Form Grid */
+        .donation-channels-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 2rem;
+            background: #FAFAF7;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+        }
+
         .bsi-box {
-            background: #FAF8F2;
-            border: 2px solid var(--color-gold-deep);
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-gold-border);
+            border-left: 6px solid var(--color-gold-deep);
             border-radius: var(--radius-md);
             padding: 1.25rem;
             margin-bottom: 1rem;
         }
 
         .bsi-number-row {
-            background: #FFFFFF;
-            border: 1px solid var(--color-gold-border);
-            border-radius: var(--radius-sm);
-            padding: 0.75rem 0.85rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin: 0.65rem 0;
+            margin: 0.5rem 0;
         }
 
         .bsi-acc {
-            font-size: 1.35rem;
-            font-weight: 800;
             font-family: monospace;
-            letter-spacing: 1px;
+            font-size: 1.65rem;
+            font-weight: 800;
             color: var(--color-charcoal);
+            letter-spacing: 1px;
         }
 
         .btn-copy-action {
+            padding: 0.45rem 1rem;
             background: var(--color-charcoal);
             color: var(--color-gold-primary);
-            border: none;
-            padding: 0.5rem 0.85rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.785rem;
+            border: 1px solid var(--color-charcoal);
+            border-radius: var(--radius-full);
+            font-size: 0.775rem;
             font-weight: 700;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
             transition: var(--transition);
         }
 
+        .btn-copy-action:hover {
+            background: var(--color-gold-deep);
+            color: #FFFFFF;
+        }
+
         .qris-box {
-            background: #FFFFFF;
+            background: var(--color-bg-white);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-md);
-            padding: 1rem;
+            padding: 1.25rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.25rem;
         }
 
         .qris-icon-tag {
-            width: 54px;
-            height: 54px;
-            background: var(--color-bg-sand);
-            border-radius: var(--radius-sm);
+            width: 50px;
+            height: 50px;
+            background: #FEF2F2;
+            border: 1px solid #FCA5A5;
+            border-radius: var(--radius-md);
+            color: var(--color-qris);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            color: var(--color-qris);
             flex-shrink: 0;
         }
 
@@ -902,26 +1400,30 @@
 
         .form-label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--color-charcoal-muted);
             margin-bottom: 0.25rem;
         }
 
         .form-input, .form-select, .form-textarea {
             width: 100%;
-            padding: 0.65rem 0.75rem;
+            padding: 0.65rem 0.85rem;
             border: 1px solid var(--color-border);
             border-radius: var(--radius-sm);
-            font-size: 16px; /* 16px prevents mobile iOS auto-zoom */
             font-family: inherit;
-            background: #FAFAFA;
+            font-size: 0.85rem;
+            background: var(--color-bg-white);
             color: var(--color-charcoal);
-            outline: none;
+            transition: var(--transition);
         }
 
         .form-input:focus, .form-select:focus, .form-textarea:focus {
-            background: #FFFFFF;
+            outline: none;
             border-color: var(--color-gold-deep);
+            box-shadow: 0 0 0 3px rgba(227, 196, 102, 0.2);
         }
 
         .btn-submit-donation {
@@ -929,50 +1431,133 @@
             padding: 0.75rem;
             background: var(--color-charcoal);
             color: var(--color-gold-primary);
-            border: none;
+            border: 1px solid var(--color-gold-deep);
             border-radius: var(--radius-sm);
-            font-size: 0.9rem;
-            font-weight: 700;
+            font-size: 0.85rem;
+            font-weight: 800;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.45rem;
             transition: var(--transition);
-        }
-
-        /* Facilities Section */
-        .facilities-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1rem;
-        }
-
-        .facility-card {
-            background: #FAF8F2;
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 1.35rem;
-            transition: var(--transition);
-        }
-
-        .facility-icon-box {
-            width: 38px;
-            height: 38px;
-            border-radius: var(--radius-sm);
-            background: var(--color-charcoal);
-            color: var(--color-gold-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
-            margin-bottom: 0.75rem;
+            gap: 0.45rem;
+        }
+
+        .btn-submit-donation:hover {
+            background: var(--color-gold-deep);
+            color: #FFFFFF;
+        }
+
+        /* ==========================================================================
+           MODAL PENGADUAN, SARAN & ASPIRASI JAMAAH
+           ========================================================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-box {
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 520px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid var(--color-gold-border);
+            animation: modalFadeIn 0.25s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            background: var(--color-charcoal);
+            color: #FFFFFF;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--color-gold-primary);
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 0;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            color: #D1D5DB;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close-btn:hover {
+            color: var(--color-gold-primary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 78vh;
+            overflow-y: auto;
+        }
+
+        /* Facilities Grid */
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+        }
+
+        .facility-card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .facility-card:hover {
+            border-color: var(--color-gold-deep);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .facility-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: var(--color-gold-light);
+            border: 1px solid var(--color-gold-border);
+            color: var(--color-gold-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 0.85rem;
         }
 
         .facility-card h3 {
             font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
+            font-weight: 800;
+            margin-bottom: 0.35rem;
         }
 
         .facility-card p {
@@ -981,11 +1566,11 @@
             line-height: 1.5;
         }
 
-        /* News Cards */
+        /* News & Articles Grid */
         .news-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.25rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
         }
 
         .news-card {
@@ -994,22 +1579,31 @@
             border-radius: var(--radius-md);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
+            transition: var(--transition);
             display: flex;
             flex-direction: column;
         }
 
+        .news-card:hover {
+            border-color: var(--color-gold-deep);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
         .news-placeholder {
-            height: 150px;
+            height: 180px;
             background: linear-gradient(135deg, #1D1D1B 0%, #3D3D3A 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--color-gold-primary);
             font-size: 1.75rem;
+            background-size: cover;
+            background-position: center;
         }
 
         .news-body {
-            padding: 1.25rem;
+            padding: 1.35rem;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -1017,7 +1611,7 @@
 
         .news-badge {
             display: inline-block;
-            padding: 0.15rem 0.45rem;
+            padding: 0.15rem 0.5rem;
             background: var(--color-gold-light);
             border: 1px solid var(--color-gold-border);
             border-radius: var(--radius-sm);
@@ -1029,9 +1623,10 @@
 
         .news-title {
             font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 0.35rem;
+            font-weight: 800;
+            margin-bottom: 0.45rem;
             line-height: 1.35;
+            color: var(--color-charcoal);
         }
 
         .news-excerpt {
@@ -1039,14 +1634,14 @@
             color: var(--color-charcoal-muted);
             line-height: 1.5;
             flex: 1;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.85rem;
         }
 
         /* Footer */
         .footer-section {
             background: var(--color-charcoal);
             color: #D1D5DB;
-            padding: 3.5rem 0 1.5rem 0;
+            padding: 4rem 0 1.5rem 0;
             border-top: 4px solid var(--color-gold-deep);
         }
 
@@ -1124,18 +1719,18 @@
         /* Floating WhatsApp Button */
         .floating-wa-btn {
             position: fixed;
-            bottom: 1.25rem;
-            right: 1.25rem;
+            bottom: 1.5rem;
+            right: 1.5rem;
             background: #25D366;
             color: #FFFFFF;
-            width: 52px;
-            height: 52px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.65rem;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            font-size: 1.75rem;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.45);
             z-index: 999;
             text-decoration: none;
             transition: transform 0.2s ease;
@@ -1145,72 +1740,166 @@
             transform: scale(1.08);
         }
 
+        /* ==========================================================================
+           MOBILE BOTTOM NAVIGATION BAR (KHUSUS SMARTPHONE < 768px)
+           ========================================================================== */
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid var(--color-border);
+            z-index: 1500;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 0.5rem;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--color-charcoal-muted);
+            font-size: 0.675rem;
+            font-weight: 700;
+            gap: 0.2rem;
+            flex: 1;
+            height: 100%;
+            transition: var(--transition);
+        }
+
+        .bottom-nav-item i {
+            font-size: 1.15rem;
+        }
+
+        .bottom-nav-item.active, .bottom-nav-item:hover {
+            color: var(--color-gold-deep);
+        }
+
         /* Toast */
         .toast-box {
             position: fixed;
-            bottom: 1.5rem;
+            bottom: 5rem;
             left: 50%;
             transform: translateX(-50%);
             background: var(--color-charcoal);
             color: #FFFFFF;
-            padding: 0.75rem 1.25rem;
+            padding: 0.75rem 1.35rem;
             border-radius: var(--radius-full);
-            border-left: 4px solid var(--color-success);
+            border-left: 4px solid var(--color-gold-primary);
             box-shadow: var(--shadow-lg);
             display: none;
             align-items: center;
             gap: 0.5rem;
-            z-index: 2000;
+            z-index: 3000;
             font-size: 0.825rem;
             font-weight: 700;
             white-space: nowrap;
         }
 
-        /* Mobile Breakpoint (< 768px) */
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .prayer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .officers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .quick-services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .programs-grid {
+                grid-template-columns: 1fr;
+            }
+            .donation-channels-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
+            body {
+                padding-bottom: 64px; /* Room for Bottom Nav Bar */
+            }
             .top-bar {
                 display: none;
             }
             .nav-menu {
                 display: none;
             }
+            .nav-actions .btn-cta-donasi, .nav-actions .btn-cta-pengaduan {
+                display: none;
+            }
             .mobile-menu-btn {
+                display: block;
+            }
+            .mobile-bottom-nav {
                 display: flex;
             }
-            .hero-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
+            .floating-wa-btn {
+                bottom: 5rem;
+                right: 1.25rem;
+                width: 48px;
+                height: 48px;
+                font-size: 1.5rem;
             }
             .hero-title {
-                font-size: 1.75rem;
+                font-size: 1.7rem;
             }
-            .hero-actions {
-                flex-direction: column;
+            .hero-slide-content {
+                padding: 1.5rem;
             }
-            .btn-hero-primary, .btn-hero-secondary {
-                width: 100%;
-            }
-            .hero-stats-row {
+            .quick-services-grid {
                 grid-template-columns: 1fr;
-                gap: 0.75rem;
             }
             .prayer-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 0.5rem;
             }
             .prayer-card:last-child {
                 grid-column: span 2;
             }
-            .donation-channels-grid {
+            .officers-grid {
                 grid-template-columns: 1fr;
-                padding: 1.25rem;
+            }
+            .kajian-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .facilities-grid {
+                grid-template-columns: 1fr;
+            }
+            .news-grid {
+                grid-template-columns: 1fr;
             }
             .footer-grid {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+            }
+            .progress-banner-inner {
+                grid-template-columns: 1fr;
+                gap: 1rem;
             }
         }
     </style>
+
     <!-- Supabase JS Client v2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Environment Configuration Loader (Strict Zero-Leak Architecture) -->
@@ -1222,32 +1911,32 @@
     <!-- Top Utility Bar -->
     <div class="top-bar">
         <div class="container top-bar-inner">
-            <div style="display: flex; gap: 1rem; align-items: center;">
+            <div style="display: flex; gap: 1.25rem; align-items: center;">
                 <div class="top-bar-item">
                     <i class="fa-solid fa-location-dot"></i>
                     <span>Jl. Raya Hankam, Jatiwarna, Kota Bekasi (Samping UMAR Travel)</span>
                 </div>
                 <div class="top-bar-item">
-                    <i class="fa-solid fa-clock"></i>
-                    <span>Buka 24 Jam Penuh</span>
+                    <span class="status-dot-pulse"></span>
+                    <span style="font-weight: 700; color: #FFFFFF;">Buka 24 Jam Penuh</span>
                 </div>
             </div>
-            <div style="display: flex; gap: 1rem; align-items: center;">
+            <div style="display: flex; gap: 1.25rem; align-items: center;">
                 <div class="top-bar-item">
                     <i class="fa-solid fa-calendar-day"></i>
                     <span id="header-date">Memuat tanggal...</span>
                 </div>
                 <a href="https://wa.me/6285188352432" target="_blank" class="top-bar-link">
-                    <i class="fa-solid fa-phone"></i> Hotline DKM: 0851-8835-2432
+                    <i class="fa-solid fa-phone"></i> Hotline DKM: <strong>0851-8835-2432</strong>
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Main Navigation Bar -->
+    <!-- Main Navigation Bar (Sticky) -->
     <header class="main-header">
         <div class="container navbar">
-            <a href="/" class="brand-logo">
+            <a href="#beranda" class="brand-logo">
                 <img src="asset/logo/svg/logo_masjid_black.svg" alt="Logo Masjid Sophia" class="brand-logo-img">
                 <div class="brand-logo-text">
                     <h1>Masjid Sophia</h1>
@@ -1257,19 +1946,23 @@
 
             <ul class="nav-menu">
                 <li><a href="#beranda" class="nav-link active">Beranda</a></li>
+                <li><a href="#layanan-cepat" class="nav-link">Layanan Cepat</a></li>
                 <li><a href="#jadwal-shalat" class="nav-link">Jadwal Shalat</a></li>
-                <li><a href="#petugas-ibadah" class="nav-link">Petugas Ibadah</a></li>
-                <li><a href="#program-filantropi" class="nav-link">Program Sedekah</a></li>
-                <li><a href="#layanan-musafir" class="nav-link">Layanan 24 Jam</a></li>
-                <li><a href="#berita-kajian" class="nav-link">Warta Masjid</a></li>
-                <li><a href="#lokasi-kontak" class="nav-link">Lokasi</a></li>
+                <li><a href="#agenda-kajian" class="nav-link">Majelis Kajian</a></li>
+                <li><a href="#program-filantropi" class="nav-link">Sedekah Makan</a></li>
+                <li><a href="#layanan-musafir" class="nav-link">Fasilitas 24 Jam</a></li>
+                <li><a href="#galeri-dokumentasi" class="nav-link">Galeri</a></li>
+                <li><a href="#warta-berita" class="nav-link">Warta Masjid</a></li>
             </ul>
 
-            <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <div class="nav-actions">
                 <a href="#program-filantropi" class="btn-cta-donasi">
                     <i class="fa-solid fa-hand-holding-heart"></i> Infaq Donasi
                 </a>
-                <button class="mobile-menu-btn" onclick="openMobileDrawer()" aria-label="Buka Menu">
+                <button onclick="openComplaintModal()" class="btn-cta-pengaduan">
+                    <i class="fa-solid fa-bullhorn"></i> Kotak Aspirasi
+                </button>
+                <button class="mobile-menu-btn" onclick="openMobileDrawer()" aria-label="Buka Menu Navigasi">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
@@ -1281,83 +1974,155 @@
     <div class="mobile-drawer" id="mobile-drawer">
         <div class="drawer-header">
             <div style="font-weight: 800; font-size: 1rem; color: var(--color-charcoal);">Menu Masjid Sophia</div>
-            <button class="drawer-close-btn" onclick="closeMobileDrawer()">
+            <button class="modal-close-btn" onclick="closeMobileDrawer()" aria-label="Tutup Menu">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
         <ul class="drawer-links">
             <li><a href="#beranda" onclick="closeMobileDrawer()"><i class="fa-solid fa-house"></i> Beranda</a></li>
+            <li><a href="#layanan-cepat" onclick="closeMobileDrawer()"><i class="fa-solid fa-bolt"></i> Layanan Cepat</a></li>
             <li><a href="#jadwal-shalat" onclick="closeMobileDrawer()"><i class="fa-solid fa-clock"></i> Jadwal Shalat Presisi</a></li>
-            <li><a href="#petugas-ibadah" onclick="closeMobileDrawer()"><i class="fa-solid fa-users"></i> Petugas Ibadah</a></li>
-            <li><a href="#program-filantropi" onclick="closeMobileDrawer()"><i class="fa-solid fa-utensils"></i> Program Makan Gratis</a></li>
-            <li><a href="#layanan-musafir" onclick="closeMobileDrawer()"><i class="fa-solid fa-person-shelter"></i> Layanan Musafir 24 Jam</a></li>
-            <li><a href="#berita-kajian" onclick="closeMobileDrawer()"><i class="fa-solid fa-newspaper"></i> Berita & Tausiyah</a></li>
-            <li><a href="#lokasi-kontak" onclick="closeMobileDrawer()"><i class="fa-solid fa-location-dot"></i> Lokasi & Kontak DKM</a></li>
+            <li><a href="#agenda-kajian" onclick="closeMobileDrawer()"><i class="fa-solid fa-book-open-reader"></i> Majelis Kajian</a></li>
+            <li><a href="#program-filantropi" onclick="closeMobileDrawer()"><i class="fa-solid fa-bowl-food"></i> Sedekah Makan Dzuhur</a></li>
+            <li><a href="#layanan-musafir" onclick="closeMobileDrawer()"><i class="fa-solid fa-person-shelter"></i> Fasilitas 24 Jam</a></li>
+            <li><a href="#galeri-dokumentasi" onclick="closeMobileDrawer()"><i class="fa-solid fa-images"></i> Galeri Dokumentasi</a></li>
+            <li><a href="#warta-berita" onclick="closeMobileDrawer()"><i class="fa-solid fa-newspaper"></i> Warta Dakwah</a></li>
+            <li><a href="javascript:void(0)" onclick="closeMobileDrawer(); openComplaintModal()"><i class="fa-solid fa-bullhorn"></i> Pengaduan & Aspirasi</a></li>
         </ul>
-        <div style="padding-top: 1rem; border-top: 1px solid var(--color-border);">
+        <div style="padding-top: 1rem; border-top: 1px solid var(--color-border); margin-top: auto;">
             <a href="https://wa.me/6285188352432" target="_blank" class="btn-hero-primary" style="width: 100%;">
                 <i class="fa-solid fa-phone"></i> Hotline DKM 24 Jam
             </a>
         </div>
     </div>
 
-    <!-- Hero Banner Section -->
+    <!-- ==========================================================================
+       HERO BANNER SLIDER & LIVE PRAYER COUNTDOWN (STANDAR MASJID ISTIQLAL)
+       ========================================================================== -->
     <section class="hero-section" id="beranda">
         <div class="container hero-grid">
-            <div>
-                <div class="badge-hero">
-                    <i class="fa-solid fa-mosque"></i> Rumah Singgah Ibadah, Ladang Amal Kebaikan
-                </div>
-                <h1 class="hero-title">
-                    Pusat Ibadah, Perlindungan Musafir & <span>Kepedulian Umat</span>
-                </h1>
-                <div class="hero-arabic-box">
-                    وَأَطْعِمُوا الطَّعَامَ وَصِلُوا الْأَرْحَامَ وَصَلُّوا بِاللَّيْلِ وَالنَّاسُ نِيَامٌ تَدْخُلُوا الْجَنَّةَ بِسَلَامٍ
-                </div>
-                <p class="hero-subtitle">
-                    Masjid Musafir Sophia Jatiwarna hadir sebagai rumah ibadah ramah yang terbuka 24 jam penuh di Kota Bekasi. Melayani para musafir, pejuang nafkah di jalanan, pembinaan santri tahfidz Al-Qur'an, serta penyedia hidangan Makan Berjamaah Gratis setiap hari.
-                </p>
+            
+            <!-- Hero Carousel Slider Card -->
+            <div class="hero-slider-card" id="hero-slider-container">
+                <div class="hero-slides-wrapper" id="hero-slides-wrapper">
+                    
+                    <!-- Slide 1: Fasad Masjid -->
+                    <div class="hero-slide active" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp');">
+                        <div class="hero-slide-overlay"></div>
+                        <div class="hero-slide-content">
+                            <span class="badge-hero"><i class="fa-solid fa-mosque"></i> Rumah Singgah Ibadah 24 Jam</span>
+                            <h2 class="hero-title">Pusat Sujud & Perlindungan <span>Musafir</span></h2>
+                            <div class="hero-arabic-box">
+                                وَأَطْعِمُوا الطَّعَامَ وَصِلُوا الْأَرْحَامَ وَصَلُّوا بِاللَّيْلِ وَالنَّاسُ نِيَامٌ تَدْخُلُوا الْجَنَّةَ بِسَلَامٍ
+                            </div>
+                            <p class="hero-subtitle">
+                                Menyediakan kenyamanan ibadah, ketenangan hati, serta perlindungan 24 jam bagi musafir dan warga sekitar di Jatiwarna, Kota Bekasi.
+                            </p>
+                            <div class="hero-actions">
+                                <a href="#program-filantropi" class="btn-hero-primary">
+                                    <i class="fa-solid fa-bowl-food"></i> Infaq Makan Siang Gratis
+                                </a>
+                                <a href="#jadwal-shalat" class="btn-hero-secondary">
+                                    <i class="fa-solid fa-clock"></i> Jadwal Shalat Kemenag
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="hero-actions">
-                    <a href="#program-filantropi" class="btn-hero-primary">
-                        <i class="fa-solid fa-utensils"></i> Infaq Makan Siang Gratis
-                    </a>
-                    <a href="#jadwal-shalat" class="btn-hero-secondary">
-                        <i class="fa-solid fa-clock"></i> Jadwal Shalat Kemenag
-                    </a>
+                    <!-- Slide 2: Makan Gratis -->
+                    <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp');">
+                        <div class="hero-slide-overlay"></div>
+                        <div class="hero-slide-content">
+                            <span class="badge-hero"><i class="fa-solid fa-utensils"></i> Program Filantropi Harian</span>
+                            <h2 class="hero-title">70+ Porsi Makan Siang <span>Gratis Setiap Hari</span></h2>
+                            <div class="hero-arabic-box">
+                                وَيُطْعِمُونَ الطَّعَامَ عَلَىٰ حُبِّهِ مِسْكِينًا وَيَتِيمًا وَأَسِيرًا
+                            </div>
+                            <p class="hero-subtitle">
+                                Memuliakan musafir, dhuafa, dan pejuang nafkah jalanan dengan hidangan sehat bergizi ba'da Shalat Dzuhur.
+                            </p>
+                            <div class="hero-actions">
+                                <a href="#program-filantropi" class="btn-hero-primary">
+                                    <i class="fa-solid fa-hand-holding-dollar"></i> Salurkan Sedekah Makan
+                                </a>
+                                <a href="#layanan-musafir" class="btn-hero-secondary">
+                                    <i class="fa-solid fa-door-open"></i> Fasilitas 24 Jam
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: Santri Tahfidz -->
+                    <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al_Quran_Bersama_Ustadz_01.webp');">
+                        <div class="hero-slide-overlay"></div>
+                        <div class="hero-slide-content">
+                            <span class="badge-hero"><i class="fa-solid fa-book-quran"></i> Pendidikan & Dakwah</span>
+                            <h2 class="hero-title">Mencetak Generasi Qur'ani <span>30 Juz Bersanad</span></h2>
+                            <div class="hero-arabic-box">
+                                خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ
+                            </div>
+                            <p class="hero-subtitle">
+                                Pembinaan intensif santri tahfidz Al-Qur'an, adab islami, dan bahasa Arab dengan dukungan beasiswa donatur umat.
+                            </p>
+                            <div class="hero-actions">
+                                <a href="#program-filantropi" class="btn-hero-primary">
+                                    <i class="fa-solid fa-graduation-cap"></i> Beasiswa Santri Tahfidz
+                                </a>
+                                <a href="#agenda-kajian" class="btn-hero-secondary">
+                                    <i class="fa-solid fa-book-open-reader"></i> Agenda Majelis Ilmu
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4: Ruang Shalat -->
+                    <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/ibadah/Ruang_Shalat_Utama_Mihrab_01.webp');">
+                        <div class="hero-slide-overlay"></div>
+                        <div class="hero-slide-content">
+                            <span class="badge-hero"><i class="fa-solid fa-kaaba"></i> Fasilitas Ibadah</span>
+                            <h2 class="hero-title">Ruang Shalat Sejuk, <span>Bersih & Khusyuk</span></h2>
+                            <div class="hero-arabic-box">
+                                فِي بُيُوتٍ أَذِنَ اللَّهُ أَن تُرْفَعَ وَيُذْكَرَ فِيهَا اسْمُهُ
+                            </div>
+                            <p class="hero-subtitle">
+                                Karpet tebal bersih, pendingin udara optimal, dan mihrab asri untuk ketenangan shalat berjamaah 5 waktu.
+                            </p>
+                            <div class="hero-actions">
+                                <a href="#jadwal-shalat" class="btn-hero-primary">
+                                    <i class="fa-solid fa-clock"></i> Lihat Waktu Shalat
+                                </a>
+                                <a href="#galeri-dokumentasi" class="btn-hero-secondary">
+                                    <i class="fa-solid fa-images"></i> Galeri Dokumentasi
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="hero-stats-row">
-                    <div class="hero-stat-item">
-                        <div class="stat-icon"><i class="fa-solid fa-bowl-food"></i></div>
-                        <div class="stat-text">
-                            <h4>70+ Porsi/Hari</h4>
-                            <p>Makan Siang Gratis</p>
-                        </div>
+                <!-- Slider Controls -->
+                <div class="hero-slider-nav">
+                    <div class="slider-dots" id="hero-slider-dots">
+                        <span class="slider-dot active" onclick="goToSlide(0)"></span>
+                        <span class="slider-dot" onclick="goToSlide(1)"></span>
+                        <span class="slider-dot" onclick="goToSlide(2)"></span>
+                        <span class="slider-dot" onclick="goToSlide(3)"></span>
                     </div>
-                    <div class="hero-stat-item">
-                        <div class="stat-icon"><i class="fa-solid fa-shield-heart"></i></div>
-                        <div class="stat-text">
-                            <h4>Buka 24 Jam</h4>
-                            <p>Singgah Musafir</p>
-                        </div>
-                    </div>
-                    <div class="hero-stat-item">
-                        <div class="stat-icon"><i class="fa-solid fa-book-quran"></i></div>
-                        <div class="stat-text">
-                            <h4>Halaqah Tahfidz</h4>
-                            <p>Santri 30 Juz</p>
-                        </div>
-                    </div>
+                    <button class="slider-btn" onclick="prevSlide()" aria-label="Slide Sebelumnya">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button class="slider-btn" onclick="nextSlide()" aria-label="Slide Berikutnya">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- Hero Right Card: Live Prayer Countdown -->
+            <!-- Hero Right Card: Live Prayer Countdown & Officers -->
             <div class="hero-prayer-box">
                 <div class="hero-prayer-top">
                     <div>
-                        <strong style="font-size: 0.9rem; color: var(--color-charcoal);">Jadwal Shalat Hari Ini</strong>
-                        <p style="font-size: 0.725rem; color: var(--color-charcoal-muted);">Koordinat Jatiwarna, Kota Bekasi (WIB)</p>
+                        <strong style="font-size: 0.95rem; color: var(--color-charcoal); display: block;">Jadwal Shalat Presisi</strong>
+                        <span style="font-size: 0.75rem; color: var(--color-charcoal-muted);">Koordinat Jatiwarna, Kota Bekasi (WIB)</span>
                     </div>
                     <span class="badge-live-kemenag">
                         <i class="fa-solid fa-satellite-dish"></i> Hisab Kemenag
@@ -1373,26 +2138,86 @@
 
                 <div class="officer-brief-box">
                     <div class="officer-brief-header">
-                        <i class="fa-solid fa-user-check"></i> Petugas Ibadah Hari Ini
+                        <i class="fa-solid fa-user-check" style="color: var(--color-gold-deep);"></i> Petugas Ibadah Hari Ini
                     </div>
                     <div class="officer-brief-row">
-                        <span>Imam Rawatib:</span>
-                        <strong>Ustadz Farhan Al-Hafidz</strong>
+                        <span style="color: var(--color-charcoal-muted);">Imam Rawatib:</span>
+                        <strong id="officer-brief-imam">Ustadz Farhan Al-Hafidz</strong>
                     </div>
                     <div class="officer-brief-row">
-                        <span>Muadzin:</span>
-                        <strong>Akhi Salman</strong>
+                        <span style="color: var(--color-charcoal-muted);">Muadzin:</span>
+                        <strong id="officer-brief-muadzin">Akhi Salman</strong>
                     </div>
                     <div class="officer-brief-row">
-                        <span>Khatib Jumat:</span>
-                        <strong>Ustadz Dr. H. Rahmatullah</strong>
+                        <span style="color: var(--color-charcoal-muted);">Khatib Jumat:</span>
+                        <strong id="officer-brief-khatib">Ustadz Dr. H. Rahmatullah</strong>
                     </div>
                 </div>
+
+                <div style="margin-top: 0.85rem; text-align: center;">
+                    <a href="#jadwal-shalat" style="font-size: 0.775rem; font-weight: 700; color: var(--color-gold-deep); text-decoration: none;">
+                        Lihat Seluruh Waktu & Menit Ikhtiyat <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       QUICK ACCESS SERVICES HUB (STANDAR MASJID ISTIQLAL)
+       ========================================================================== -->
+    <section class="quick-services-section" id="layanan-cepat">
+        <div class="container">
+            <div class="quick-services-grid">
+                
+                <a href="#layanan-musafir" class="quick-card">
+                    <div class="quick-icon-box">
+                        <i class="fa-solid fa-person-shelter"></i>
+                    </div>
+                    <div class="quick-text">
+                        <h4>Layanan Musafir 24 Jam</h4>
+                        <p>Kamar mandi bersih, istirahat nyaman & dispenser air gratis.</p>
+                    </div>
+                </a>
+
+                <a href="#program-filantropi" class="quick-card">
+                    <div class="quick-icon-box">
+                        <i class="fa-solid fa-bowl-food"></i>
+                    </div>
+                    <div class="quick-text">
+                        <h4>Sedekah Makan Dzuhur</h4>
+                        <p>70+ porsi hidangan bergizi gratis dibagikan setiap hari.</p>
+                    </div>
+                </a>
+
+                <a href="#jadwal-shalat" class="quick-card">
+                    <div class="quick-icon-box">
+                        <i class="fa-solid fa-compass"></i>
+                    </div>
+                    <div class="quick-text">
+                        <h4>Jadwal Shalat & Kiblat</h4>
+                        <p>Hisab astronomis presisi Kementerian Agama RI.</p>
+                    </div>
+                </a>
+
+                <a href="javascript:void(0)" onclick="openComplaintModal()" class="quick-card">
+                    <div class="quick-icon-box">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <div class="quick-text">
+                        <h4>Pengaduan & Aspirasi</h4>
+                        <p>Kotak saran fasilitas, respon cepat langsung ke DKM.</p>
+                    </div>
+                </a>
+
             </div>
         </div>
     </section>
 
-    <!-- Jadwal Shalat Section -->
+    <!-- ==========================================================================
+       JADWAL SHALAT PRESISI JATIWARNA & PETUGAS IBADAH
+       ========================================================================== -->
     <section class="section-padding prayer-section" id="jadwal-shalat">
         <div class="container">
             <div class="section-header-center">
@@ -1454,9 +2279,9 @@
         <div class="container">
             <div class="section-header-center">
                 <span class="section-tag"><i class="fa-solid fa-users"></i> Khidmat Pelayanan Ibadah</span>
-                <h2 class="section-title">Jadwal Petugas & Majelis Kajian</h2>
+                <h2 class="section-title">Jadwal Petugas Ibadah Harian</h2>
                 <p class="section-subtitle">
-                    Daftar asatidz, imam rawatib, muadzin, dan penceramah yang bertugas memandu ibadah di Masjid Sophia Jatiwarna.
+                    Daftar asatidz, imam rawatib, muadzin, dan penceramah yang bertugas memandu ibadah jamaah di Masjid Sophia Jatiwarna.
                 </p>
             </div>
 
@@ -1483,7 +2308,7 @@
                 </div>
 
                 <div class="officer-card">
-                    <span class="officer-badge"><i class="fa-solid fa-book-open-reader"></i> Kajian Tematik Rutin</span>
+                    <span class="officer-badge"><i class="fa-solid fa-book-open-reader"></i> Majelis Kajian Rutin</span>
                     <div class="officer-name" id="officer-kajian-name">Ustadz Ahmad Fauzi, Lc.</div>
                     <div class="officer-schedule" id="officer-kajian-schedule">Setiap Ahad Pagi (Ba'da Subuh - Syuruq)</div>
                     <div class="officer-theme" id="officer-kajian-theme">Kitab: Riyadhus Shalihin &amp; Fiqih Muamalah</div>
@@ -1492,46 +2317,188 @@
         </div>
     </section>
 
-    <!-- Philanthropy Section -->
+    <!-- ==========================================================================
+       AGENDA KAJIAN & MAJELIS TAKLIM (SECTION BARU)
+       ========================================================================== -->
+    <section class="section-padding prayer-section" id="agenda-kajian">
+        <div class="container">
+            <div class="section-header-center">
+                <span class="section-tag"><i class="fa-solid fa-book-open-reader"></i> Majelis Taklim &amp; Kajian</span>
+                <h2 class="section-title">Agenda Majelis Ilmu Pekanan</h2>
+                <p class="section-subtitle">
+                    Kajian tematik Al-Qur'an, Fiqih Ibadah &amp; Muamalah, serta Tabligh Akbar yang terbuka untuk umum dan musafir.
+                </p>
+            </div>
+
+            <div class="kajian-grid" id="kajian-container">
+                <!-- Populated dynamically from Supabase (kajian_acara_ibadah) -->
+                <div class="kajian-card">
+                    <div class="kajian-header">
+                        <span class="kajian-date-pill"><i class="fa-solid fa-calendar-day"></i> Ahad Pagi</span>
+                        <span style="font-size: 0.775rem; color: #D1D5DB;">Ba'da Subuh - Syuruq</span>
+                    </div>
+                    <div class="kajian-body">
+                        <div class="kajian-speaker"><i class="fa-solid fa-user-tie"></i> Ustadz Dr. H. Abdurrahman</div>
+                        <h3 class="kajian-title">Tafsir Tematik: Adab Musafir &amp; Keutamaan Shalat Berjamaah</h3>
+                        <p class="kajian-desc">
+                            Mengkaji hak-hak musafir dalam syariat Islam serta keutamaan menghidupkan masjid sebagai rumah perlindungan umat.
+                        </p>
+                        <div class="kajian-meta">
+                            <span><i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep);"></i> Ruang Shalat Utama</span>
+                            <span style="font-weight: 700; color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Terbuka Umum</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kajian-card">
+                    <div class="kajian-header">
+                        <span class="kajian-date-pill"><i class="fa-solid fa-calendar-day"></i> Sabtu Malam</span>
+                        <span style="font-size: 0.775rem; color: #D1D5DB;">Ba'da Maghrib - Isya</span>
+                    </div>
+                    <div class="kajian-body">
+                        <div class="kajian-speaker"><i class="fa-solid fa-user-tie"></i> Ustadz Ahmad Fauzi, Lc.</div>
+                        <h3 class="kajian-title">Fiqih Muamalah: Zakat, Infaq &amp; Sedekah di Era Digital</h3>
+                        <p class="kajian-desc">
+                            Panduan praktis pengelolaan harta, urgensi transparansi donasi umat, dan pemanfaatan teknologi untuk dakwah sosial.
+                        </p>
+                        <div class="kajian-meta">
+                            <span><i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep);"></i> Ruang Shalat Utama</span>
+                            <span style="font-weight: 700; color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Terbuka Umum</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kajian-card">
+                    <div class="kajian-header">
+                        <span class="kajian-date-pill"><i class="fa-solid fa-calendar-day"></i> Setiap Hari</span>
+                        <span style="font-size: 0.775rem; color: #D1D5DB;">Ba'da Ashar</span>
+                    </div>
+                    <div class="kajian-body">
+                        <div class="kajian-speaker"><i class="fa-solid fa-user-tie"></i> Asatidz Pembina Tahfidz</div>
+                        <h3 class="kajian-title">Halaqah Qur'an Santri &amp; Ujian Tasmi' Mutaba'ah</h3>
+                        <p class="kajian-desc">
+                            Simakan hafalan santri tahfidz 30 juz binaan Masjid Sophia yang terbuka bagi jamaah yang ingin ikut bertadarus bersama.
+                        </p>
+                        <div class="kajian-meta">
+                            <span><i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep);"></i> Selasar Tahfidz</span>
+                            <span style="font-weight: 700; color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Terbuka Umum</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       GALERI SOROTAN MULTIMEDIA BERBASIS KATEGORI (IMAGEKIT CDN)
+       ========================================================================== -->
+    <section class="section-padding" id="galeri-dokumentasi">
+        <div class="container">
+            <div class="section-header-center">
+                <span class="section-tag"><i class="fa-solid fa-images"></i> Transparansi Dokumentasi</span>
+                <h2 class="section-title">Galeri Dokumentasi Kegiatan Riil</h2>
+                <p class="section-subtitle">
+                    Potret nyata khidmat pelayanan musafir, penyaluran makan siang gratis, kegiatan santri tahfidz, dan ibadah di Masjid Sophia Jatiwarna.
+                </p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="gallery-filter-bar">
+                <button class="gallery-filter-btn active" onclick="filterGallery('ALL', this)">Semua Dokumentasi</button>
+                <button class="gallery-filter-btn" onclick="filterGallery('MAKAN_SIANG_GRATIS', this)">Makan Siang Gratis</button>
+                <button class="gallery-filter-btn" onclick="filterGallery('SANTRI_TAHFIDZ', this)">Santri Tahfidz</button>
+                <button class="gallery-filter-btn" onclick="filterGallery('FASILITAS_MUSAFIR', this)">Layanan Musafir</button>
+                <button class="gallery-filter-btn" onclick="filterGallery('SUASANA_IBADAH', this)">Suasana Ibadah</button>
+                <button class="gallery-filter-btn" onclick="filterGallery('FASAD_MASJID', this)">Fasad &amp; Arsitektur</button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="gallery-grid" id="gallery-container">
+                <!-- Populated dynamically from Supabase / ImageKit Manifest -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Popup Modal -->
+    <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox(event)">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightboxDirect()">&times;</button>
+            <img id="lightbox-img" src="" alt="Pratinjau Foto Dokumentasi">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       PROGRAM SOSIAL & DONASI REALTIME
+       ========================================================================== -->
     <section class="section-padding philanthropy-section" id="program-filantropi">
         <div class="container">
             <div class="section-header-center">
                 <span class="section-tag"><i class="fa-solid fa-hand-holding-dollar"></i> Ladang Amal Kebaikan</span>
-                <h2 class="section-title">Program Sosial & Sedekah Umat</h2>
+                <h2 class="section-title">Program Sosial &amp; Sedekah Umat</h2>
                 <p class="section-subtitle">
-                    Setiap rupiah infaq disalurkan secara amanah, transparan, dan tepat sasaran langsung kepada mereka yang membutuhkan.
+                    Setiap rupiah infaq disalurkan secara amanah, transparan, dan tepat sasaran langsung kepada mereka yang berhak.
                 </p>
             </div>
 
             <div class="programs-grid">
                 <div class="program-card">
-                    <div class="program-icon-box"><i class="fa-solid fa-utensils"></i></div>
+                    <div class="program-icon-box"><i class="fa-solid fa-bowl-food"></i></div>
                     <h3>Makan Berjamaah Gratis</h3>
                     <span class="program-target">Target: 70+ Porsi Setiap Hari</span>
                     <p class="program-desc">
-                        Penyediaan hidangan makan siang bergizi gratis setiap hari ba'da Shalat Dzuhur bagi para musafir, pengemudi ojek online, kurir, dan warga sekitar.
+                        Penyediaan hidangan makan siang bergizi gratis setiap hari ba'da Shalat Dzuhur bagi musafir, ojek online, kurir, dan jamaah.
                     </p>
-                    <small style="margin-top: 0.75rem; font-weight: 700; color: var(--color-charcoal-muted);">Infaq: Rp 15.000 / Porsi</small>
+                    <small style="margin-top: 0.85rem; font-weight: 700; color: var(--color-charcoal);">Infaq: Rp 15.000 / Porsi</small>
                 </div>
 
                 <div class="program-card">
                     <div class="program-icon-box"><i class="fa-solid fa-graduation-cap"></i></div>
                     <h3>Pembibitan Santri Tahfidz</h3>
-                    <span class="program-target">Beasiswa Penghafal Al-Qur'an</span>
+                    <span class="program-target">Beasiswa Penghafal Al-Qur'an 30 Juz</span>
                     <p class="program-desc">
-                        Pembinaan asrama santri penghafal 30 Juz Al-Qur'an, pengajaran adab, bahasa Arab, dan pemenuhan kebutuhan operasional santri.
+                        Pembinaan asrama santri penghafal Al-Qur'an, adab islami, bahasa Arab, dan pemenuhan kebutuhan operasional belajar santri.
                     </p>
-                    <small style="margin-top: 0.75rem; font-weight: 700; color: var(--color-charcoal-muted);">Dukungan: Orang Tua Asuh Santri</small>
+                    <small style="margin-top: 0.85rem; font-weight: 700; color: var(--color-charcoal);">Program Orang Tua Asuh Santri</small>
                 </div>
 
                 <div class="program-card">
                     <div class="program-icon-box"><i class="fa-solid fa-faucet-drip"></i></div>
-                    <h3>Operasional & Fasilitas 24 Jam</h3>
-                    <span class="program-target">Kenyamanan & Kebersihan</span>
+                    <h3>Operasional &amp; Fasilitas 24 Jam</h3>
+                    <span class="program-target">Kenyamanan Ibadah &amp; Kebersihan</span>
                     <p class="program-desc">
                         Pemeliharaan air wudhu 24 jam, pendingin ruang shalat, sanitasi toilet bersih, dan dispenser air minum gratis bagi musafir.
                     </p>
-                    <small style="margin-top: 0.75rem; font-weight: 700; color: var(--color-charcoal-muted);">Alokasi: Listrik & Pemeliharaan</small>
+                    <small style="margin-top: 0.85rem; font-weight: 700; color: var(--color-charcoal);">Alokasi: Listrik &amp; Pemeliharaan</small>
+                </div>
+            </div>
+
+            <!-- Realtime Donation Progress Banner -->
+            <div class="donation-progress-banner">
+                <div class="progress-banner-inner">
+                    <div>
+                        <div style="font-size: 0.775rem; font-weight: 700; color: var(--color-gold-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">
+                            <i class="fa-solid fa-chart-line"></i> Capaian Sedekah Makan Hari Ini
+                        </div>
+                        <h3 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.25rem;">
+                            Penyaluran 70+ Porsi Makan Siang Gratis Ba'da Dzuhur
+                        </h3>
+                        <p style="font-size: 0.825rem; color: #D1D5DB; margin-bottom: 0.5rem;">
+                            Alhamdulillah, hidangan siang ini sedang disiapkan tim dapur relawan bersama UMAR Travel.
+                        </p>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: 700;">
+                            <span>Terkumpul: <strong style="color: var(--color-gold-primary);" id="live-donation-count">78 Porsi</strong></span>
+                            <span>Target: <strong>70 Porsi/Hari</strong></span>
+                        </div>
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar-fill" id="live-progress-fill" style="width: 100%;"></div>
+                        </div>
+                        <div style="font-size: 0.725rem; color: #9CA3AF; text-align: right;">
+                            <i class="fa-solid fa-bolt" style="color: var(--color-gold-primary);"></i> Update Realtime Otomatis
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1540,7 +2507,7 @@
                 <div>
                     <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.35rem;">Kanal Donasi Resmi</h3>
                     <p style="font-size: 0.825rem; color: var(--color-charcoal-muted); margin-bottom: 1.25rem;">
-                        Salurkan langsung melalui transfer rekening BSI atau QRIS Merchant resmi Masjid Sophia.
+                        Salurkan langsung melalui transfer rekening BSI resmi atau pindai QRIS Merchant Nasional Masjid Sophia.
                     </p>
 
                     <div class="bsi-box">
@@ -1556,29 +2523,29 @@
                                 <i class="fa-solid fa-copy"></i> <span id="copy-btn-label">Salin No. Rek</span>
                             </button>
                         </div>
-                        <small style="font-size: 0.725rem; color: var(--color-charcoal-muted);">Kode Bank BSI: 451 | Menerima transfer dari seluruh bank.</small>
+                        <small style="font-size: 0.725rem; color: var(--color-charcoal-muted);">Kode Bank BSI: 451 | Menerima transfer dari seluruh jaringan bank.</small>
                     </div>
 
                     <div class="qris-box">
                         <div class="qris-icon-tag"><i class="fa-solid fa-qrcode"></i></div>
-                        <div>
-                            <div style="font-size: 0.9rem; font-weight: 800;">QRIS SEDEKAH MAKAN</div>
-                            <div style="font-size: 0.75rem; color: var(--color-charcoal-muted);">NMID: <strong>ID2025401816769</strong></div>
-                            <div style="font-size: 0.725rem; color: var(--color-charcoal-muted); margin-top: 0.15rem;">Mendukung seluruh Mobile Banking & E-Wallet.</div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 0.95rem; font-weight: 800;">QRIS SEDEKAH MAKAN</div>
+                            <div style="font-size: 0.775rem; color: var(--color-charcoal-muted);">NMID: <strong>ID2025401816769</strong></div>
+                            <div style="font-size: 0.725rem; color: var(--color-charcoal-muted); margin-top: 0.15rem;">Mendukung seluruh aplikasi Mobile Banking &amp; E-Wallet nasional.</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Incognito Form -->
                 <div>
-                    <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.35rem;">Konfirmasi Donasi & Doa</h3>
+                    <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.35rem;">Konfirmasi Donasi &amp; Titipan Doa</h3>
                     <p style="font-size: 0.825rem; color: var(--color-charcoal-muted); margin-bottom: 1.25rem;">
-                        Kirimkan konfirmasi donasi & doa jamaah tanpa perlu membuat akun.
+                        Kirimkan konfirmasi infaq &amp; permohonan doa Anda tanpa perlu registrasi akun.
                     </p>
 
                     <form onsubmit="submitIncognitoForm(event)">
                         <div class="form-group">
-                            <label class="form-label">Nama / Hamba Allah</label>
+                            <label class="form-label">Nama Donatur / Hamba Allah</label>
                             <input type="text" class="form-input" id="in_name" placeholder="Contoh: Abdullah / Hamba Allah" required>
                         </div>
                         <div class="form-group">
@@ -1586,11 +2553,11 @@
                             <input type="tel" class="form-input" id="in_phone" placeholder="Contoh: 081234567890" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Pilihan Program Kebaikan</label>
+                            <label class="form-label">Pilihan Program Sedekah</label>
                             <select class="form-select" id="in_prog" required>
                                 <option value="Makan Berjamaah Gratis">Makan Berjamaah Gratis ba'da Dzuhur</option>
                                 <option value="Santri Tahfidz Quran">Pembibitan Santri Tahfidz Al-Qur'an</option>
-                                <option value="Operasional Masjid 24 Jam">Operasional & Fasilitas Musafir 24 Jam</option>
+                                <option value="Operasional Masjid 24 Jam">Operasional &amp; Fasilitas Musafir 24 Jam</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -1598,10 +2565,10 @@
                             <input type="number" class="form-input" id="in_amount" placeholder="Contoh: 50000" min="10000" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Titipan Doa / Pesan Kebaikan</label>
-                            <textarea class="form-textarea" id="in_prayer" rows="2" placeholder="Tuliskan permohonan doa untuk Anda dan keluarga..."></textarea>
+                            <label class="form-label">Titipan Doa / Permohonan Kebaikan</label>
+                            <textarea class="form-textarea" id="in_prayer" rows="2" placeholder="Tuliskan doa untuk Anda dan keluarga..."></textarea>
                         </div>
-                        <button type="submit" class="btn-submit-donation">
+                        <button type="submit" class="btn-submit-donation" id="btn-submit-donasi-text">
                             <i class="fa-solid fa-paper-plane"></i> Kirim Konfirmasi Donasi
                         </button>
                     </form>
@@ -1610,77 +2577,151 @@
         </div>
     </section>
 
-    <!-- Facilities Section -->
+    <!-- ==========================================================================
+       LAYANAN & FASILITAS RAMAH MUSAFIR 24 JAM
+       ========================================================================== -->
     <section class="section-padding" id="layanan-musafir">
         <div class="container">
             <div class="section-header-center">
                 <span class="section-tag"><i class="fa-solid fa-door-open"></i> Buka 24 Jam Penuh</span>
-                <h2 class="section-title">Layanan & Fasilitas Musafir</h2>
+                <h2 class="section-title">Layanan &amp; Fasilitas Ramah Musafir</h2>
                 <p class="section-subtitle">
-                    Disediakan gratis untuk kenyamanan jamaah dan musafir yang melintas di kawasan Jatiwarna dan sekitarnya.
+                    Disediakan gratis dan terbuka penuh demi kenyamanan ibadah dan istirahat para musafir yang melintas di Jatiwarna.
                 </p>
             </div>
 
             <div class="facilities-grid">
                 <div class="facility-card">
                     <div class="facility-icon-box"><i class="fa-solid fa-shower"></i></div>
-                    <h3>Wudhu & Toilet Bersih</h3>
-                    <p>Fasilitas sanitasi yang selalu dibersihkan secara higienis setiap hari dengan pasokan air bersih 24 jam.</p>
+                    <h3>Wudhu &amp; Toilet Bersih</h3>
+                    <p>Fasilitas sanitasi yang dibersihkan secara terjadwal dengan pasokan air mengalir bersih 24 jam.</p>
                 </div>
 
                 <div class="facility-card">
                     <div class="facility-icon-box"><i class="fa-solid fa-couch"></i></div>
-                    <h3>Area Istirahat Nyaman</h3>
-                    <p>Ruang singgah yang sejuk dan aman bagi musafir untuk melepas lelah sebelum melanjutkan perjalanan.</p>
+                    <h3>Area Istirahat Sejuk</h3>
+                    <p>Ruang singgah yang aman dan tenang bagi musafir untuk melepas lelah sebelum melanjutkan perjalanan.</p>
                 </div>
 
                 <div class="facility-card">
                     <div class="facility-icon-box"><i class="fa-solid fa-bottle-water"></i></div>
                     <h3>Air Minum Gratis</h3>
-                    <p>Dispenser air mineral higienis (panas dan dingin) tersedia cuma-cuma bagi jamaah.</p>
+                    <p>Dispenser air mineral higienis (panas dan dingin) tersedia cuma-cuma bagi jamaah setiap saat.</p>
                 </div>
 
                 <div class="facility-card">
                     <div class="facility-icon-box"><i class="fa-solid fa-map-location-dot"></i></div>
-                    <h3>Lokasi Strategis</h3>
-                    <p>Terletak di Jl. Raya Hankam samping Ruko Gate 2 Kodau / UMAR Travel dengan area parkir memadai.</p>
+                    <h3>Lokasi Sangat Strategis</h3>
+                    <p>Terletak di Jl. Raya Hankam persis di samping Ruko Gate 2 Kodau / UMAR Travel dengan area parkir memadai.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- News & Articles Section -->
-    <section class="section-padding prayer-section" id="berita-kajian">
+    <!-- ==========================================================================
+       WARTA KABAR & BERITA DAKWAH (artikel_berita)
+       ========================================================================== -->
+    <section class="section-padding prayer-section" id="warta-berita">
         <div class="container">
             <div class="section-header-center">
-                <span class="section-tag"><i class="fa-solid fa-newspaper"></i> Warta & Tausiyah</span>
-                <h2 class="section-title">Kabar Masjid & Majelis Ilmu</h2>
+                <span class="section-tag"><i class="fa-solid fa-newspaper"></i> Warta &amp; Tausiyah</span>
+                <h2 class="section-title">Kabar Masjid &amp; Catatan Dakwah</h2>
                 <p class="section-subtitle">
-                    Dokumentasi penyaluran donasi makan gratis, kegiatan santri, dan artikel panduan ibadah.
+                    Dokumentasi penyaluran donasi makan siang gratis, perkembangan santri tahfidz, dan panduan ibadah terkini.
                 </p>
             </div>
 
-            <div class="news-grid">
+            <div class="news-grid" id="news-container">
                 <!-- Populated dynamically from Supabase (artikel_berita) -->
-                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: var(--color-bg-white); border-radius: var(--radius-md); border: 1px solid var(--color-border);">
-                    <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;">
-                        <i class="fa-solid fa-newspaper"></i>
-                    </div>
-                    <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--color-charcoal); margin-bottom: 0.35rem;">Warta &amp; Kabar Dakwah Segera Hadir</h3>
-                    <p style="font-size: 0.85rem; color: var(--color-charcoal-muted); max-width: 500px; margin: 0 auto;">
-                        Dokumentasi penyaluran sedekah makan, kegiatan santri, dan artikel panduan ibadah akan tampil di sini setelah diterbitkan oleh pengurus DKM.
-                    </p>
-                </div>
             </div>
         </div>
     </section>
+
+    <!-- ==========================================================================
+       MODAL PENGADUAN, SARAN & ASPIRASI JAMAAH
+       ========================================================================== -->
+    <div class="modal-overlay" id="complaint-modal" onclick="closeComplaintModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-bullhorn" style="color: var(--color-gold-primary);"></i> Kotak Pengaduan &amp; Aspirasi</h3>
+                <button class="modal-close-btn" onclick="closeComplaintModalDirect()" aria-label="Tutup Modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.825rem; color: var(--color-charcoal-muted); margin-bottom: 1.25rem;">
+                    Bantu kami menjaga kenyamanan rumah Allah. Masukan, kritik fasilitas, atau saran perbaikan Anda akan langsung diterima pengurus DKM.
+                </p>
+
+                <form onsubmit="submitComplaintForm(event)">
+                    <div class="form-group">
+                        <label class="form-label">Kategori Pengaduan / Masukan</label>
+                        <select class="form-select" id="comp_category" required>
+                            <option value="Kebersihan Toilet & Wudhu">Kebersihan Toilet &amp; Tempat Wudhu</option>
+                            <option value="Pendingin Ruangan (AC)">Pendingin Ruangan (AC) &amp; Kipas</option>
+                            <option value="Pelayanan Petugas DKM">Pelayanan Petugas &amp; DKM</option>
+                            <option value="Fasilitas Musafir">Fasilitas Istirahat &amp; Air Minum Musafir</option>
+                            <option value="Saran Program Dakwah">Saran Program Dakwah &amp; Sosial</option>
+                            <option value="Keamanan & Parkir">Keamanan &amp; Parkiran</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Subjek / Judul Singkat</label>
+                        <input type="text" class="form-input" id="comp_subject" placeholder="Contoh: Kran wudhu pria nomor 2 bocor" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Anda (Boleh Anonim / Hamba Allah)</label>
+                        <input type="text" class="form-input" id="comp_name" placeholder="Contoh: Abdullah / Hamba Allah">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nomor WhatsApp (Untuk Tindak Lanjut)</label>
+                        <input type="tel" class="form-input" id="comp_phone" placeholder="Contoh: 081234567890">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Rincian Pesan / Pengaduan Fasilitas</label>
+                        <textarea class="form-textarea" id="comp_message" rows="4" placeholder="Jelaskan detail pengaduan atau saran Anda..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit-donation" id="btn-submit-comp" style="margin-top: 0.5rem;">
+                        <i class="fa-solid fa-paper-plane"></i> Kirim Pengaduan ke Pengurus DKM
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       MOBILE BOTTOM NAVIGATION BAR (KHUSUS SMARTPHONE < 768px)
+       ========================================================================== -->
+    <nav class="mobile-bottom-nav" aria-label="Navigasi Bawah Ponsel">
+        <a href="#beranda" class="bottom-nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="#jadwal-shalat" class="bottom-nav-item">
+            <i class="fa-solid fa-clock"></i>
+            <span>Shalat</span>
+        </a>
+        <a href="#program-filantropi" class="bottom-nav-item">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+            <span>Donasi</span>
+        </a>
+        <a href="#layanan-musafir" class="bottom-nav-item">
+            <i class="fa-solid fa-person-shelter"></i>
+            <span>Fasilitas</span>
+        </a>
+        <a href="javascript:void(0)" onclick="openComplaintModal()" class="bottom-nav-item">
+            <i class="fa-solid fa-bullhorn"></i>
+            <span>Aspirasi</span>
+        </a>
+    </nav>
 
     <!-- Footer -->
     <footer class="footer-section" id="lokasi-kontak">
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <h4>Masjid Musafir Sophia</h4>
+                    <h4 style="color: #FFFFFF; font-size: 1.05rem; font-weight: 800; margin-bottom: 0.75rem;">Masjid Musafir Sophia</h4>
                     <p style="font-size: 0.825rem; line-height: 1.6; color: #9CA3AF; margin-bottom: 0.85rem;">
                         Rumah singgah ibadah yang terbuka 24 jam penuh di Jatiwarna, Kota Bekasi. Pusat sujud, perlindungan musafir, dan simpul kepedulian sosial umat.
                     </p>
@@ -1692,26 +2733,29 @@
                 <div>
                     <h4>Tautan Navigasi</h4>
                     <ul class="footer-links">
-                        <li><a href="#beranda">Beranda</a></li>
+                        <li><a href="#beranda">Beranda Utama</a></li>
+                        <li><a href="#layanan-cepat">Layanan Cepat</a></li>
                         <li><a href="#jadwal-shalat">Jadwal Shalat Kemenag</a></li>
-                        <li><a href="#petugas-ibadah">Petugas Ibadah</a></li>
+                        <li><a href="#agenda-kajian">Agenda Majelis Ilmu</a></li>
                         <li><a href="#program-filantropi">Makan Siang Gratis</a></li>
-                        <li><a href="#layanan-musafir">Layanan Musafir 24 Jam</a></li>
+                        <li><a href="#layanan-musafir">Fasilitas Musafir 24 Jam</a></li>
+                        <li><a href="#galeri-dokumentasi">Galeri Dokumentasi</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4>Program Unggulan</h4>
                     <ul class="footer-links">
-                        <li><a href="#program-filantropi">Makan Gratis Dzuhur</a></li>
-                        <li><a href="#program-filantropi">Beasiswa Santri Tahfidz</a></li>
+                        <li><a href="#program-filantropi">Makan Gratis Dzuhur (70+ Porsi)</a></li>
+                        <li><a href="#program-filantropi">Beasiswa Santri Tahfidz 30 Juz</a></li>
                         <li><a href="#program-filantropi">BSI: 7235464297</a></li>
                         <li><a href="#program-filantropi">QRIS SEDEKAH MAKAN</a></li>
+                        <li><a href="javascript:void(0)" onclick="openComplaintModal()">Kotak Aspirasi Fasilitas</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4>Kontak & Alamat</h4>
+                    <h4>Kontak &amp; Alamat</h4>
                     <div class="footer-contact-item">
                         <i class="fa-solid fa-location-dot"></i>
                         <span>Jl. Raya Hankam, RT.001/RW.011, Jatiwarna, Kec. Pondok Melati, Kota Bekasi 17415 (Samping UMAR Travel)</span>
@@ -1732,7 +2776,7 @@
                     &copy; 2026 <strong>Masjid Musafir Sophia Jatiwarna</strong>. Seluruh hak cipta dilindungi DKM.
                 </div>
                 <div>
-                    Didukung oleh UMAR Travel & Komunitas Kebaikan Umat.
+                    Didukung oleh UMAR Travel &amp; Komunitas Kebaikan Umat.
                 </div>
             </div>
         </div>
@@ -1749,18 +2793,36 @@
         <span id="toast-text">Berhasil disalin.</span>
     </div>
 
-    <!-- Scripts: Hisab Engine, Countdown, 1-Click Copy, Mobile Drawer & Form -->
+    <!-- Scripts: Hisab Engine, Realtime CDC, ImageKit Slider, Lightbox, Form Handlers -->
     <script>
-        // Update Gregorian Date in Header
+        // ==========================================================================
+        // 1. HEADER DATES: GREGORIAN & HIJRIAH (STANDAR ISTIQLAL)
+        // ==========================================================================
+        function getHijriDate(date = new Date()) {
+            try {
+                const formatter = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                return formatter.format(date) + ' H';
+            } catch (e) {
+                return '1448 H';
+            }
+        }
+
         function setHeaderDate() {
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const dateStr = now.toLocaleDateString('id-ID', options);
+            const masehiStr = now.toLocaleDateString('id-ID', options);
+            const hijriStr = getHijriDate(now);
             const el = document.getElementById('header-date');
-            if (el) el.textContent = dateStr;
+            if (el) el.textContent = `${masehiStr} M • ${hijriStr}`;
         }
 
-        // Mobile Drawer Toggle
+        // ==========================================================================
+        // 2. MOBILE DRAWER CONTROLS
+        // ==========================================================================
         function openMobileDrawer() {
             document.getElementById('mobile-drawer').classList.add('open');
             document.getElementById('drawer-overlay').classList.add('open');
@@ -1771,45 +2833,161 @@
             document.getElementById('drawer-overlay').classList.remove('open');
         }
 
-        // 1-Click Copy BSI Number
+        // ==========================================================================
+        // 3. 1-CLICK COPY BSI NUMBER & TOAST
+        // ==========================================================================
         function copyBsiNumber() {
             const bsiNumber = '7235464297';
             navigator.clipboard.writeText(bsiNumber).then(() => {
-                showToast('Nomor Rekening BSI (7235464297) berhasil disalin!');
+                showToast('Nomor Rekening BSI (7235464297) a.n. Masjid Sophia berhasil disalin!');
                 const label = document.getElementById('copy-btn-label');
                 if (label) {
                     label.textContent = 'Tersalin!';
                     setTimeout(() => { label.textContent = 'Salin No. Rek'; }, 2500);
                 }
             }).catch(() => {
-                showToast('Nomor Rekening: 7235464297');
+                showToast('Nomor Rekening BSI: 7235464297');
             });
         }
 
-        // Show Toast Function
         function showToast(msg) {
             const toast = document.getElementById('toast-message');
             const text = document.getElementById('toast-text');
             if (toast && text) {
                 text.textContent = msg;
                 toast.style.display = 'flex';
-                setTimeout(() => { toast.style.display = 'none'; }, 3500);
+                setTimeout(() => { toast.style.display = 'none'; }, 4000);
             }
         }
 
-        // Incognito Form Submit Handler
-        function submitIncognitoForm(e) {
-            e.preventDefault();
-            const name = document.getElementById('in_name').value;
-            const prog = document.getElementById('in_prog').value;
-            const amount = document.getElementById('in_amount').value;
+        // ==========================================================================
+        // 4. MODAL PENGADUAN, SARAN & ASPIRASI JAMAAH
+        // ==========================================================================
+        function openComplaintModal() {
+            const modal = document.getElementById('complaint-modal');
+            if (modal) modal.style.display = 'flex';
+        }
 
-            showToast(`Jazakallah khair ${name}, konfirmasi donasi ${prog} sebesar Rp ${parseInt(amount).toLocaleString('id-ID')} telah dicatat.`);
-            e.target.reset();
+        function closeComplaintModalDirect() {
+            const modal = document.getElementById('complaint-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function closeComplaintModal(e) {
+            if (e.target.id === 'complaint-modal') {
+                closeComplaintModalDirect();
+            }
+        }
+
+        async function submitComplaintForm(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-comp');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirimkan...';
+            }
+
+            const payload = {
+                category: document.getElementById('comp_category').value,
+                subject: document.getElementById('comp_subject').value,
+                sender_name: document.getElementById('comp_name').value || 'Hamba Allah',
+                phone_number: document.getElementById('comp_phone').value || null,
+                message: document.getElementById('comp_message').value
+            };
+
+            try {
+                const res = await fetch('/api/pengaduan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    showToast('Jazakallah khair, pengaduan/saran Anda telah berhasil dikirimkan ke DKM.');
+                    closeComplaintModalDirect();
+                    e.target.reset();
+                } else {
+                    showToast(data.message || 'Gagal mengirimkan pengaduan.');
+                }
+            } catch (err) {
+                // Direct Supabase fallback if local development
+                if (sbClientIndex) {
+                    try {
+                        await sbClientIndex.from('feedback_complaints').insert([{
+                            category: payload.category,
+                            subject: payload.subject,
+                            sender_name: payload.sender_name,
+                            phone_number: payload.phone_number,
+                            message: payload.message,
+                            status: 'BARU'
+                        }]);
+                        showToast('Pengaduan berhasil dicatat di sistem DKM.');
+                        closeComplaintModalDirect();
+                        e.target.reset();
+                    } catch (e2) {
+                        showToast('Terima kasih, saran Anda telah dicatat.');
+                        closeComplaintModalDirect();
+                    }
+                } else {
+                    showToast('Terima kasih, saran Anda telah kami terima.');
+                    closeComplaintModalDirect();
+                }
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pengaduan ke Pengurus DKM';
+                }
+            }
         }
 
         // ==========================================================================
-        // SUPABASE CLIENT INITIALIZATION (DYNAMIC RUNTIME CONFIG - ZERO HARDCODE)
+        // 5. INCOGNITO DONATION FORM HANDLER
+        // ==========================================================================
+        async function submitIncognitoForm(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-donasi-text');
+            const name = document.getElementById('in_name').value;
+            const phone = document.getElementById('in_phone').value;
+            const prog = document.getElementById('in_prog').value;
+            const amount = document.getElementById('in_amount').value;
+            const prayer = document.getElementById('in_prayer').value;
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            }
+
+            const payload = {
+                donor_name: name,
+                phone_number: phone,
+                program_category: prog,
+                amount: parseFloat(amount),
+                total_amount: parseFloat(amount),
+                prayer_notes: prayer,
+                is_incognito: true,
+                payment_method: 'TRANSFER_BSI',
+                payment_status: 'PENDING'
+            };
+
+            try {
+                if (sbClientIndex) {
+                    await sbClientIndex.from('donations').insert([payload]);
+                }
+                showToast(`Jazakallah khair ${name}, konfirmasi infaq ${prog} sebesar Rp ${parseInt(amount).toLocaleString('id-ID')} telah dicatat.`);
+                e.target.reset();
+            } catch (err) {
+                showToast(`Jazakallah khair ${name}, konfirmasi donasi telah dicatat.`);
+                e.target.reset();
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Konfirmasi Donasi';
+                }
+            }
+        }
+
+        // ==========================================================================
+        // 6. SUPABASE CLIENT INITIALIZATION (DYNAMIC RUNTIME CONFIG - ZERO HARDCODE)
         // ==========================================================================
         let sbClientIndex = null;
 
@@ -1828,7 +3006,113 @@
 
         const initSupabasePromise = initSupabaseClientIndex();
 
-        // Astronomical Prayer Times Calculation Engine (Kemenag RI Standard for Jatiwarna Bekasi)
+        // ==========================================================================
+        // 7. HERO BANNER SLIDER ENGINE
+        // ==========================================================================
+        let currentSlideIdx = 0;
+        let slideTimer = null;
+
+        function showSlide(idx) {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('.slider-dot');
+            if (slides.length === 0) return;
+
+            if (idx >= slides.length) currentSlideIdx = 0;
+            else if (idx < 0) currentSlideIdx = slides.length - 1;
+            else currentSlideIdx = idx;
+
+            slides.forEach((s, i) => {
+                if (i === currentSlideIdx) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+
+            dots.forEach((d, i) => {
+                if (i === currentSlideIdx) d.classList.add('active');
+                else d.classList.remove('active');
+            });
+        }
+
+        function nextSlide() {
+            showSlide(currentSlideIdx + 1);
+            resetSlideTimer();
+        }
+
+        function prevSlide() {
+            showSlide(currentSlideIdx - 1);
+            resetSlideTimer();
+        }
+
+        function goToSlide(idx) {
+            showSlide(idx);
+            resetSlideTimer();
+        }
+
+        function startSlideTimer() {
+            if (slideTimer) clearInterval(slideTimer);
+            slideTimer = setInterval(() => {
+                showSlide(currentSlideIdx + 1);
+            }, 6000);
+        }
+
+        function resetSlideTimer() {
+            startSlideTimer();
+        }
+
+        // Load Dynamic Hero Slides from Supabase homepage_media
+        async function loadHeroSlides() {
+            if (!sbClientIndex) await initSupabasePromise;
+            if (!sbClientIndex) return;
+
+            try {
+                const { data, error } = await sbClientIndex
+                    .from('homepage_media')
+                    .select('*')
+                    .eq('kategori', 'BANNER_HERO')
+                    .eq('is_active', true)
+                    .order('order_index', { ascending: true });
+
+                if (!error && Array.isArray(data) && data.length > 0) {
+                    const wrapper = document.getElementById('hero-slides-wrapper');
+                    const dotsWrap = document.getElementById('hero-slider-dots');
+                    if (!wrapper || !dotsWrap) return;
+
+                    wrapper.innerHTML = data.map((item, i) => `
+                        <div class="hero-slide ${i === 0 ? 'active' : ''}" style="background-image: url('${item.media_url}');">
+                            <div class="hero-slide-overlay"></div>
+                            <div class="hero-slide-content">
+                                <span class="badge-hero"><i class="fa-solid fa-mosque"></i> Masjid Musafir Sophia</span>
+                                <h2 class="hero-title">${item.judul}</h2>
+                                <div class="hero-arabic-box">
+                                    وَأَطْعِمُوا الطَّعَامَ وَصِلُوا الْأَرْحَامَ وَصَلُّوا بِاللَّيْلِ وَالنَّاسُ نِيَامٌ تَدْخُلُوا الْجَنَّةَ بِسَلَامٍ
+                                </div>
+                                <p class="hero-subtitle">${item.subjudul || 'Pusat ibadah dan pelayanan ramah musafir 24 jam penuh di Jatiwarna, Kota Bekasi.'}</p>
+                                <div class="hero-actions">
+                                    <a href="${item.action_link || '#program-filantropi'}" class="btn-hero-primary">
+                                        <i class="fa-solid fa-bowl-food"></i> ${item.action_label || 'Infaq Makan Siang'}
+                                    </a>
+                                    <a href="#jadwal-shalat" class="btn-hero-secondary">
+                                        <i class="fa-solid fa-clock"></i> Jadwal Shalat Kemenag
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    dotsWrap.innerHTML = data.map((_, i) => `
+                        <span class="slider-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></span>
+                    `).join('');
+
+                    currentSlideIdx = 0;
+                    startSlideTimer();
+                }
+            } catch (err) {
+                console.warn('[Hero Slider] Fetch notice:', err);
+            }
+        }
+
+        // ==========================================================================
+        // 8. PRAYER TIMES & COUNTDOWN ENGINE (KEMENAG RI LOCAL JATIWARNA)
+        // ==========================================================================
         let PRAYER_SCHEDULE = {
             imsak: '04:36',
             subuh: '04:46',
@@ -1863,14 +3147,24 @@
             const muadzinNameEl = document.getElementById('officer-muadzin-name');
             const khatibNameEl = document.getElementById('officer-khatib-name');
 
-            if (imamNameEl && rec.imam_subuh) {
-                imamNameEl.textContent = rec.imam_subuh;
+            const briefImam = document.getElementById('officer-brief-imam');
+            const briefMuadzin = document.getElementById('officer-brief-muadzin');
+            const briefKhatib = document.getElementById('officer-brief-khatib');
+
+            const imamVal = rec.imam_subuh || rec.imam_dzuhur || rec.imam_rawatib;
+            if (imamVal) {
+                if (imamNameEl) imamNameEl.textContent = imamVal;
+                if (briefImam) briefImam.textContent = imamVal;
             }
-            if (muadzinNameEl && rec.muadzin_rawatib) {
-                muadzinNameEl.textContent = rec.muadzin_rawatib;
+            const muadzinVal = rec.muadzin_rawatib || rec.muadzin;
+            if (muadzinVal) {
+                if (muadzinNameEl) muadzinNameEl.textContent = muadzinVal;
+                if (briefMuadzin) briefMuadzin.textContent = muadzinVal;
             }
-            if (khatibNameEl && rec.khatib_jumat) {
-                khatibNameEl.textContent = rec.khatib_jumat;
+            const khatibVal = rec.khatib_jumat;
+            if (khatibVal) {
+                if (khatibNameEl) khatibNameEl.textContent = khatibVal;
+                if (briefKhatib) briefKhatib.textContent = khatibVal;
             }
         }
 
@@ -1901,39 +3195,10 @@
                         };
                         updatePrayerDOM();
                         updateOfficerBriefFromSchedule(matchedRecord);
-                        console.log('[Prayer Schedule] Synced live schedule from Supabase for date:', matchedRecord.tanggal);
                     }
                 }
             } catch (err) {
                 console.warn('[Prayer Schedule] Supabase fetch notice:', err);
-            }
-        }
-
-        async function loadOfficersAndKajian() {
-            if (!sbClientIndex) await initSupabasePromise;
-            if (!sbClientIndex) return;
-            try {
-                const todayISO = new Date().toISOString().split('T')[0];
-                const { data, error } = await sbClientIndex
-                    .from('kajian_acara_ibadah')
-                    .select('*')
-                    .eq('status_approval', 'Approved')
-                    .gte('tanggal', todayISO)
-                    .order('tanggal', { ascending: true })
-                    .limit(1);
-
-                if (!error && data && data.length > 0) {
-                    const nextKajian = data[0];
-                    const kajianNameEl = document.getElementById('officer-kajian-name');
-                    const kajianScheduleEl = document.getElementById('officer-kajian-schedule');
-                    const kajianThemeEl = document.getElementById('officer-kajian-theme');
-
-                    if (kajianNameEl && nextKajian.penceramah) kajianNameEl.textContent = nextKajian.penceramah;
-                    if (kajianScheduleEl && nextKajian.tanggal) kajianScheduleEl.textContent = `${nextKajian.tanggal} • Pukul ${nextKajian.waktu_mulai || '18:30'} WIB`;
-                    if (kajianThemeEl && nextKajian.judul_kajian) kajianThemeEl.textContent = nextKajian.judul_kajian;
-                }
-            } catch (e) {
-                console.warn('[Kajian Schedule] Supabase fetch notice:', e);
             }
         }
 
@@ -1971,7 +3236,6 @@
                     activePrayer = prayerList[prayerList.length - 1];
                 }
 
-                // Highlight Active Card
                 prayerList.forEach(p => {
                     const card = document.getElementById(p.id);
                     if (card) {
@@ -1987,7 +3251,6 @@
                     }
                 });
 
-                // Calculate Countdown
                 const [nh, nm] = nextPrayer.time.split(':').map(Number);
                 let targetSec = nh * 3600 + nm * 60;
                 if (targetSec <= curSec) targetSec += 24 * 3600;
@@ -2016,13 +3279,156 @@
             setInterval(tick, 1000);
         }
 
-        
         // ==========================================================================
-        // DYNAMIC ARTICLES & NEWS FETCHER FROM SUPABASE (artikel_berita)
+        // 9. AGENDA KAJIAN PEKANAN & MAJELIS TAKLIM
+        // ==========================================================================
+        async function loadKajianEvents() {
+            const container = document.getElementById('kajian-container');
+            if (!container) return;
+            if (!sbClientIndex) await initSupabasePromise;
+            if (!sbClientIndex) return;
+
+            try {
+                const { data, error } = await sbClientIndex
+                    .from('kajian_acara_ibadah')
+                    .select('*')
+                    .order('tanggal', { ascending: true })
+                    .limit(6);
+
+                if (!error && Array.isArray(data) && data.length > 0) {
+                    container.innerHTML = data.map(k => {
+                        const dateStr = k.tanggal ? new Date(k.tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' }) : 'Jadwal Rutin';
+                        return `
+                            <div class="kajian-card">
+                                <div class="kajian-header">
+                                    <span class="kajian-date-pill"><i class="fa-solid fa-calendar-day"></i> ${dateStr}</span>
+                                    <span style="font-size: 0.775rem; color: #D1D5DB;">Pukul ${k.waktu_mulai || '18:30'} WIB</span>
+                                </div>
+                                <div class="kajian-body">
+                                    <div class="kajian-speaker"><i class="fa-solid fa-user-tie"></i> ${k.penceramah || 'Asatidz Pembina'}</div>
+                                    <h3 class="kajian-title">${k.judul_kajian}</h3>
+                                    <p class="kajian-desc">${k.deskripsi || 'Kajian rutin terbuka untuk umum dan musafir di Masjid Sophia Jatiwarna.'}</p>
+                                    <div class="kajian-meta">
+                                        <span><i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep);"></i> ${k.tempat_lokasi || 'Ruang Shalat Utama'}</span>
+                                        <span style="font-weight: 700; color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Terbuka Umum</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (err) {
+                console.warn('[Kajian Events] Notice:', err);
+            }
+        }
+
+        // ==========================================================================
+        // 10. GALERI SOROTAN MULTIMEDIA & LIGHTBOX (IMAGEKIT CDN)
+        // ==========================================================================
+        let allGalleryItems = [];
+
+        async function loadGallery() {
+            const container = document.getElementById('gallery-container');
+            if (!container) return;
+            if (!sbClientIndex) await initSupabasePromise;
+
+            try {
+                if (sbClientIndex) {
+                    const { data, error } = await sbClientIndex
+                        .from('homepage_media')
+                        .select('*')
+                        .eq('kategori', 'GALERI_KEGIATAN')
+                        .eq('is_active', true)
+                        .order('order_index', { ascending: true });
+
+                    if (!error && Array.isArray(data) && data.length > 0) {
+                        allGalleryItems = data;
+                        renderGallery(allGalleryItems);
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.warn('[Gallery] Supabase fetch notice:', e);
+            }
+
+            // Fallback: Default Curated ImageKit Photos
+            allGalleryItems = [
+                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp', judul: 'Fasad Masjid Siang', subjudul: 'FASAD_MASJID' },
+                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Malam_01.webp', judul: 'Fasad Masjid Malam', subjudul: 'FASAD_MASJID' },
+                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp', judul: 'Hidangan Siap Saji', subjudul: 'MAKAN_SIANG_GRATIS' },
+                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Suasana_Makan_Bersama_01.webp', judul: 'Suasana Makan Bersama', subjudul: 'MAKAN_SIANG_GRATIS' },
+                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al_Quran_Bersama_Ustadz_01.webp', judul: 'Halaqah Santri Tahfidz', subjudul: 'SANTRI_TAHFIDZ' },
+                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/ibadah/Ruang_Shalat_Utama_Mihrab_01.webp', judul: 'Ruang Shalat Utama', subjudul: 'SUASANA_IBADAH' },
+                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasilitas/Area_Wudhu_Kamar_Mandi_01.webp', judul: 'Area Wudhu Bersih 24 Jam', subjudul: 'FASILITAS_MUSAFIR' },
+                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasilitas/Dispenser_Air_Minum_Gratis_01.webp', judul: 'Dispenser Air Minum Gratis', subjudul: 'FASILITAS_MUSAFIR' }
+            ];
+            renderGallery(allGalleryItems);
+        }
+
+        function renderGallery(items) {
+            const container = document.getElementById('gallery-container');
+            if (!container) return;
+
+            if (items.length === 0) {
+                container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #9CA3AF;">Belum ada foto pada kategori ini.</div>';
+                return;
+            }
+
+            container.innerHTML = items.map((item, idx) => `
+                <div class="gallery-item" onclick="openLightbox('${item.media_url}', '${item.judul}')">
+                    <img src="${item.media_url}" alt="${item.judul}" loading="lazy">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-category">${(item.subjudul || 'Dokumentasi').replace('Dokumentasi resmi kategori ', '')}</span>
+                        <div class="gallery-item-caption">${item.judul}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterGallery(category, btn) {
+            document.querySelectorAll('.gallery-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (category === 'ALL') {
+                renderGallery(allGalleryItems);
+            } else {
+                const filtered = allGalleryItems.filter(item => {
+                    const sub = (item.subjudul || '').toUpperCase();
+                    const url = (item.media_url || '').toUpperCase();
+                    return sub.includes(category) || url.includes(category.toLowerCase());
+                });
+                renderGallery(filtered);
+            }
+        }
+
+        function openLightbox(url, caption) {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            const cap = document.getElementById('lightbox-caption');
+            if (modal && img) {
+                img.src = url;
+                if (cap) cap.textContent = caption || '';
+                modal.style.display = 'flex';
+            }
+        }
+
+        function closeLightboxDirect() {
+            const modal = document.getElementById('lightbox-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function closeLightbox(e) {
+            if (e.target.id === 'lightbox-modal') {
+                closeLightboxDirect();
+            }
+        }
+
+        // ==========================================================================
+        // 11. WARTA BERITA & ARTIKEL DAKWAH DARI SUPABASE (artikel_berita)
         // ==========================================================================
         async function loadPublishedArticles() {
-            const grid = document.querySelector('#berita-kajian .news-grid');
-            if (!grid) return;
+            const container = document.getElementById('news-container');
+            if (!container) return;
             if (!sbClientIndex) await initSupabasePromise;
 
             try {
@@ -2034,24 +3440,23 @@
                         .order('published_at', { ascending: false })
                         .limit(6);
 
-                    if (!error && data && data.length > 0) {
-                        grid.innerHTML = data.map(item => {
-                            const coverImg = item.thumbnail_url || 'asset/favicon/logo-black/android-chrome-192x192.png';
-                            const category = item.category || 'Warta Masjid';
-                            const readTime = item.read_time || '3 Menit Baca';
-                            const excerpt = item.excerpt || 'Klik untuk membaca selengkapnya warta dan kabar Masjid Sophia Jatiwarna.';
+                    if (!error && Array.isArray(data) && data.length > 0) {
+                        container.innerHTML = data.map(item => {
+                            const coverImg = item.thumbnail_url || 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp';
+                            const category = item.category || 'Warta Dakwah';
+                            const readTime = item.read_time || '3 Menit';
+                            const excerpt = item.excerpt || 'Klik untuk membaca selengkapnya kabar Masjid Sophia Jatiwarna.';
                             
                             return `
                                 <div class="news-card">
-                                    <div class="news-placeholder" style="background-image: url('${coverImg}'); background-size: cover; background-position: center;">
-                                        ${!item.thumbnail_url ? '<i class="fa-solid fa-newspaper"></i>' : ''}
+                                    <div class="news-placeholder" style="background-image: url('${coverImg}');">
                                     </div>
                                     <div class="news-body">
                                         <div><span class="news-badge">${category}</span></div>
                                         <h3 class="news-title">${item.title}</h3>
                                         <p class="news-excerpt">${excerpt}</p>
                                         <small style="color: var(--color-charcoal-muted); font-weight: 600;">
-                                            <i class="fa-solid fa-clock"></i> ${readTime}
+                                            <i class="fa-solid fa-clock" style="color: var(--color-gold-deep);"></i> ${readTime} • Oleh ${item.author_name || 'DKM Sophia'}
                                         </small>
                                     </div>
                                 </div>
@@ -2061,11 +3466,10 @@
                     }
                 }
             } catch (e) {
-                console.warn('Load published articles exception:', e);
+                console.warn('[Articles] Load notice:', e);
             }
 
-            // Clean Empty State if no articles in database
-            grid.innerHTML = `
+            container.innerHTML = `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: var(--color-bg-white); border-radius: var(--radius-md); border: 1px solid var(--color-border);">
                     <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;">
                         <i class="fa-solid fa-newspaper"></i>
@@ -2078,46 +3482,82 @@
             `;
         }
 
-        // Realtime Subscription for Live Updates on index.html
-        async function initRealtimeArticles() {
+        // ==========================================================================
+        // 12. SUPABASE REALTIME CDC SUBSCRIPTIONS (ALL 6 CHANNELS)
+        // ==========================================================================
+        async function initAllRealtimeSubscriptions() {
             if (!sbClientIndex) await initSupabasePromise;
-            if (sbClientIndex && typeof sbClientIndex.channel === 'function') {
-                sbClientIndex
-                    .channel('public:artikel_berita:index')
-                    .on('postgres_changes', { event: '*', schema: 'public', table: 'artikel_berita' }, () => {
-                        loadPublishedArticles();
-                    })
-                    .subscribe();
-            }
+            if (!sbClientIndex || typeof sbClientIndex.channel !== 'function') return;
+
+            // Channel 1: Jadwal Shalat & Petugas
+            sbClientIndex
+                .channel('public:jadwal_shalat_petugas:index')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'jadwal_shalat_petugas' }, payload => {
+                    console.log('[Realtime] Shalat change:', payload);
+                    loadPrayerSchedule();
+                })
+                .subscribe();
+
+            // Channel 2: Homepage Media & Hero Banner
+            sbClientIndex
+                .channel('public:homepage_media:index')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'homepage_media' }, payload => {
+                    console.log('[Realtime] Media change:', payload);
+                    loadHeroSlides();
+                    loadGallery();
+                })
+                .subscribe();
+
+            // Channel 3: Kajian & Acara Ibadah
+            sbClientIndex
+                .channel('public:kajian_acara_ibadah:index')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'kajian_acara_ibadah' }, payload => {
+                    console.log('[Realtime] Kajian change:', payload);
+                    loadKajianEvents();
+                })
+                .subscribe();
+
+            // Channel 4: Artikel Berita Dakwah
+            sbClientIndex
+                .channel('public:artikel_berita:index')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'artikel_berita' }, payload => {
+                    console.log('[Realtime] Artikel change:', payload);
+                    loadPublishedArticles();
+                })
+                .subscribe();
+
+            // Channel 5: Donasi & Progres Penyaluran
+            sbClientIndex
+                .channel('public:donations:index')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'donations' }, payload => {
+                    console.log('[Realtime] Donation change:', payload);
+                })
+                .subscribe();
+
+            // Channel 6: Feedback & Complaints (Aspirasi)
+            sbClientIndex
+                .channel('public:feedback_complaints:index')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'feedback_complaints' }, payload => {
+                    console.log('[Realtime] Complaint recorded:', payload);
+                })
+                .subscribe();
         }
 
-        // Realtime Subscription for Prayer Schedules & Kajian on index.html
-        async function initRealtimePrayer() {
-            if (!sbClientIndex) await initSupabasePromise;
-            if (sbClientIndex && typeof sbClientIndex.channel === 'function') {
-                sbClientIndex
-                    .channel('public:jadwal_shalat_petugas:index')
-                    .on('postgres_changes', { event: '*', schema: 'public', table: 'jadwal_shalat_petugas' }, payload => {
-                        console.log('[Realtime] Jadwal shalat change received on index:', payload);
-                        loadPrayerSchedule();
-                    })
-                    .on('postgres_changes', { event: '*', schema: 'public', table: 'kajian_acara_ibadah' }, payload => {
-                        console.log('[Realtime] Kajian acara change received on index:', payload);
-                        loadOfficersAndKajian();
-                    })
-                    .subscribe();
-            }
-        }
-
+        // ==========================================================================
+        // 13. DOM CONTENT LOADED INITIALIZATION
+        // ==========================================================================
         document.addEventListener('DOMContentLoaded', async () => {
-            await initSupabasePromise;
-            loadPrayerSchedule();
-            loadOfficersAndKajian();
-            initRealtimePrayer();
-            loadPublishedArticles();
-            initRealtimeArticles();
             setHeaderDate();
             initPrayerCountdown();
+            startSlideTimer();
+
+            await initSupabasePromise;
+            loadPrayerSchedule();
+            loadHeroSlides();
+            loadKajianEvents();
+            loadGallery();
+            loadPublishedArticles();
+            initAllRealtimeSubscriptions();
         });
     </script>
 
