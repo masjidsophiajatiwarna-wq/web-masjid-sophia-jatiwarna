@@ -9,6 +9,9 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 ### Penyelesaian Komprehensif 21 Poin Perbaikan: Tata Kelola Modal Dialog, RBAC, Realtime CDC Supabase, Serverless CDN ImageKit, Standardisasi Nomenklatur, dan Fluid Mobile
 
 #### Perbaikan Bug Kritis & Pemulihan DOM (Critical Bug Fixes & DOM Restorations)
+- `[CONFIG_LOCAL_REMOVAL]` Menghapus tag `<script src="config.local.js">` dari `admin.html` dan `media-checklist.html`:
+  - Mengeliminasi error konsol browser merah: `net::ERR_ABORTED 404 (Not Found) config.local.js` saat memuat atau menyegarkan (*refresh*) halaman admin pada lingkungan produksi.
+  - Memastikan seluruh pemuatan variabel konfigurasi aman terpusat melalui `asset/js/env-loader.js`.
 - `[MODAL_TAG_CLOSURE]` Memperbaiki sintaks tag penutup `</div>` yang hilang pada `#modal-cover-preview` di `admin.html`:
   - Mengatasi malfungsi penumpukan backdrop modal di mana seluruh jendela dialog sistem saling menindih atau tidak responsif saat diklik.
   - Memulihkan fungsionalitas tombol "Ajukan Izin / Cuti Pengurus", tombol edit slider, dan modal modul lainnya.
