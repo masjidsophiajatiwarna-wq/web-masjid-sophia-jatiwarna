@@ -9601,9 +9601,8 @@
             localStorage.removeItem('masjid_sophia_logistik_subview');
             localStorage.removeItem('masjid_sophia_santri_subview');
             try {
-                history.replaceState(null, '', window.location.pathname);
+                history.replaceState(null, document.title, window.location.pathname + window.location.search);
             } catch (e) {}
-            window.location.hash = '';
 
             document.querySelectorAll('.tab-content-panel').forEach(p => p.style.display = 'none');
             showAuthScreen();

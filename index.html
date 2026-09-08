@@ -1778,6 +1778,37 @@
         }
 
         /* ==========================================================================
+           FAB (FLOATING ACTION BUTTON) KOTAK ASPIRASI
+           ========================================================================== */
+        .fab-aspirasi {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            background: linear-gradient(135deg, var(--color-gold-primary), var(--color-gold-deep));
+            color: var(--color-charcoal);
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(227, 196, 102, 0.4);
+            cursor: pointer;
+            z-index: 999;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+
+        .fab-aspirasi:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(227, 196, 102, 0.6);
+            color: var(--color-charcoal);
+        }
+
+        /* ==========================================================================
            MOBILE BOTTOM NAVIGATION BAR (KHUSUS SMARTPHONE < 768px)
            ========================================================================== */
         .mobile-bottom-nav {
@@ -1893,6 +1924,18 @@
                 width: 48px;
                 height: 48px;
                 font-size: 1.5rem;
+            }
+            .fab-aspirasi {
+                bottom: 5rem;
+                left: 1.25rem;
+                padding: 0;
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                font-size: 1.5rem;
+            }
+            .fab-aspirasi span {
+                display: none;
             }
             .hero-title {
                 font-size: 1.7rem;
@@ -2017,9 +2060,6 @@
                 <a href="#program-filantropi" class="btn-cta-donasi">
                     <i class="fa-solid fa-hand-holding-heart"></i> Infaq Donasi
                 </a>
-                <button onclick="openComplaintModal()" class="btn-cta-pengaduan">
-                    <i class="fa-solid fa-bullhorn"></i> Kotak Aspirasi
-                </button>
                 <button class="mobile-menu-btn" onclick="openMobileDrawer()" aria-label="Buka Menu Navigasi">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -2767,6 +2807,14 @@
             </div>
         </div>
     </div>
+
+    <!-- ==========================================================================
+       FAB (FLOATING ACTION BUTTON) KOTAK ASPIRASI
+       ========================================================================== -->
+    <a href="javascript:void(0)" onclick="openComplaintModal()" class="fab-aspirasi" aria-label="Buka Kotak Pengaduan & Aspirasi">
+        <i class="fa-solid fa-bullhorn"></i>
+        <span>Kotak Aspirasi</span>
+    </a>
 
     <!-- ==========================================================================
        MOBILE BOTTOM NAVIGATION BAR (KHUSUS SMARTPHONE < 768px)

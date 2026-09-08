@@ -23,6 +23,12 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 - `[ELIMINATE_PHANTOM_FALLBACK_ARTICLES]` Penegakan mutlak Single Source of Truth database Supabase:
   - Menghapus total array `FALLBACK_ARTICLES` dari `artikel-detail.html` dan `artikel.html`.
   - Mengeliminasi kemunculan artikel hantu (*phantom data*) pada seksi warta terkait dan memastikan sistem hanya menyajikan data yang benar-benar ada di tabel Supabase `artikel_berita`.
+- `[LAYOUT_OPTIMIZATION]` Pemindahan Tombol Kotak Aspirasi (`index.html`):
+  - Mengonversi tombol Kotak Aspirasi dari navigasi atas (Header) menjadi elemen Floating Action Button (FAB) melayang di pojok kiri bawah.
+  - Mengurangi kepadatan dan menyeimbangkan tampilan header utama agar lebih rapi setara dengan `artikel.html`.
+  - Melindungi agar posisi FAB baru tidak bertabrakan dengan tombol WhatsApp Hotline.
+- `[STATE_SANITIZATION]` Perbaikan sesi navigasi pada Super Admin (`admin.html`):
+  - Menyempurnakan pembersihan status `window.location.hash` (`history.replaceState`) saat *Keluar Sistem* (Logout) untuk mencegah alamat navigasi tersangkut (contoh: `#logistik`) sehingga memicu pesan peringatan peran tak diizinkan (*Role-Based Alert*) bila pengguna masuk dengan akun yang berbeda.
   - Jika tidak ada artikel lain di database, seksi "Warta Lainnya" otomatis disembunyikan secara bersih, dan jika pengunjung mengakses slug fiktif, sistem menampilkan status 404 Warta Tidak Ditemukan secara elegan.
 
 ## [1.9.22] - 2026-09-09
