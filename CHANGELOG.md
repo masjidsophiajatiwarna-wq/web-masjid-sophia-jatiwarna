@@ -4,7 +4,7 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
-## [1.9.14] - 2026-09-08
+## [1.9.16] - 2026-09-08
 
 ### Restrukturisasi Bilah Samping Navigasi (Sidebar) ke 4 Pilar Fungsional Masjid
 
@@ -22,7 +22,7 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 
 ---
 
-## [1.9.13] - 2026-09-08
+## [1.9.15] - 2026-09-08
 
 ### Migrasi Menyeluruh Unggah & Hapus Berkas Media ke ImageKit.io CDN via Supabase RPC
 
@@ -51,6 +51,85 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
     15. Modul Kebersihan & Sanitasi: Unggah foto bukti kebersihan Sebelum & Sesudah (*Before & After*) (`handleCleaningPhotoBefore` & `handleCleaningPhotoAfter`).
   - **Dual-Mode Fallback & Auto-Compression:** Kompresi otomatis WebP berkualitas tinggi di sisi client sebelum diunggah, dengan mekanisme fallback tangguh jika terjadi kendala jaringan.
   - **Pembaruan Skema Database (`database/migration_imagekit_rpc_setup.sql`):** Tabel `public.media_library` dan penambahan kolom `imagekit_file_id` pada `public.homepage_media`.
+
+---
+
+## [1.9.14] - 2026-09-07
+
+### Arsitektur Keamanan Zero-Leak & Isolasi Kredensial Runtime (.env, /api/config, asset/js/env-loader.js)
+
+#### Analisa & Audit Celah Keamanan (Vulnerability Audit)
+- `[HARDCODED_JWT_ANON_LEAK]` Ditemukan paparan kredensial langsung berupa token JWT anonim (`SUPABASE_ANON_PUBLIC_KEY`) dan URL proyek Supabase (`SUPABASE_PROJECT_URL`) yang ter-hardcode di dalam berkas antarmuka publik dan admin (`index.html`, `admin.html`, dan `media-checklist.html`). Meskipun kunci anon Supabase dilindungi oleh Row Level Security (RLS), membiarkan token mentah berada di dalam kode sumber repositori memicu peringatan pemindaian keamanan pihak ketiga (GitGuardian, TruffleHog, GitHub Secret Scanning) serta mengekspos endpoint database secara terbuka kepada pengunjung kode sumber publik.
+- `[SERVERLESS_ENDPOINT_LEAK]` Ditemukan string URL proyek Supabase dan referensi proyek ter-hardcode di fungsi serverless `/api/health.js`, `/api/donasi.js`, `/api/pengaduan.js`, `/api/cloud-usage.js`, berkas migrasi SQL lama, dan GitHub Actions workflow `supabase-keepalive.yml`.
+
+#### Perbaikan & Solusi Arsitektur Keamanan (Security Hardening & Zero-Leak Architecture)
+- `[SERVERLESS_CONFIG_API]` Membangun endpoint konfigurasi aman `/api/config` (`api/config.js`) berbasis Edge/Serverless Vercel yang menyajikan `supabaseUrl` dan `supabaseAnonKey` secara dinamis pada saat *runtime* dari `process.env`. Endpoint ini dilengkapi proteksi header `Cache-Control: public, max-age=300, stale-while-revalidate=600`, dukungan CORS, dan validasi fail-safe environment.
+- `[DYNAMIC_ENV_LOADER]` Membangun pustaka pemuat konfigurasi universal `asset/js/env-loader.js` (`window.MasjidConfig`) dengan mekanisme resolusi 5-tingkat (*5-tier failover*):
+  1. **Tier 1 (In-Memory Cache):** Menghindari pembacaan berulang dan latensi jaringan.
+  2. **Tier 2 (Session Storage):** Cache sesi pengguna aktif untuk kecepatan muat instan tanpa membebani serverless API.
+  3. **Tier 3 (Local Config File):** Membaca `window.__ENV__` dari `config.local.js` khusus untuk pengujian lokal/offline statis.
+  4. **Tier 4 (Serverless Endpoint):** Pengambilan dinamis melalui `fetch('/api/config')` saat aplikasi berjalan online di server.
+  5. **Tier 5 (Local Storage Override):** Pemuatan darurat dari preferensi tersimpan pengurus jika serverless tidak terjangkau.
+  Pustaka ini juga menyediakan `initSupabaseClient(options)` terintegrasi yang menjamin inisialisasi instance Supabase terjadi setelah konfigurasi berhasil diperoleh.
+- `[CLIENT_HTML_SANITIZATION]` Menghapus 100% hardcode URL proyek dan token anonim dari:
+  - `index.html`: Diintegrasikan dengan `initSupabaseClientIndex()` dan listener dinamis `initSupabasePromise` untuk modul jadwal shalat, nama petugas ibadah, dan artikel berita.
+  - `admin.html`: Diintegrasikan dengan `initAdminSupabase()` dan listener terpadu `adminSupabasePromise` untuk seluruh 11 modul operasional dan Realtime WebSocket. Tautan billing Supabase diperbarui dinamis.
+  - `media-checklist.html`: Diintegrasikan dengan `initMediaSupabase()` dan sinkronisasi status cloud otomatis.
+- `[BACKEND_FUNCTIONS_SANITIZATION]` Membersihkan seluruh fallback hardcode pada:
+  - `api/health.js`: Ekstraksi referensi proyek Supabase murni dari `process.env.SUPABASE_URL` via parsing hostname dinamis.
+  - `api/donasi.js` & `api/pengaduan.js`: Menggunakan `process.env.SUPABASE_URL` dan `process.env.SUPABASE_SERVICE_ROLE_KEY` secara ketat tanpa fallback string mentah.
+  - `api/cloud-usage.js`: Menghilangkan hardcoded Supabase project ref URL.
+  - `database/migration_task_management_v1.6.sql`: Menghapus URL proyek pada baris komentar dokumentasi.
+  - `.github/workflows/supabase-keepalive.yml`: Mengganti URL proyek statis dengan rahasia GitHub Actions `${{ secrets.SUPABASE_URL }}`.
+- `[GITIGNORE_AND_ENV_HARDENING]` Memperketat berkas `.gitignore` untuk mencegah segala kemungkinan kebocoran ke repositori GitHub:
+  - Penambahan pola `.env*`, `config.local.js`, `config.*.local.js`, `local.config.js`, `logerror/`, `.agents/`.
+  - Pembuatan template panduan `.env.example` yang bersih tanpa rahasia riil sebagai dokumentasi standar instalasi.
+  - Berkas rahasia riil (`.env`, `config.local.js`, `credentials.txt`, `AKUN_PENGURUS_DKM.txt`) dipastikan 100% berstatus *untracked* dan diabaikan oleh Git.
+- `[ZERO_LEAK_PROGRAMMATIC_AUDIT]` Menjalankan pemindaian otomatis ke seluruh berkas kode repositori dengan hasil: **0 KEBOCORAN KREDENSIAL / ZERO LEAKS**.
+- `[E2E_REGRESSION_TEST]` Menjalankan suite pengujian end-to-end `test_all_modules_e2e.js` dengan hasil 100% lulus, memverifikasi tidak ada gangguan fungsionalitas pada sinkronisasi jadwal shalat publik maupun operasi database 10 modul admin DKM.
+
+---
+
+## [1.9.13] - 2026-09-07
+
+### Perbaikan Kritis Sinkronisasi Realtime Shalat Publik & Standarisasi RFC 4122 UUID 11 Modul Operasional
+
+#### Analisa & Akar Masalah (Root Cause Identification)
+- `[UUID_SYNTAX_ERROR]` Identifikasi akar masalah kegagalan penyimpanan data ke Supabase Postgres: Tipe data kolom `id` pada seluruh 23 tabel adalah `UUID` (PostgreSQL), sedangkan antarmuka admin sebelumnya menghasilkan string acak berbasis timestamp (contoh: `'dpr_' + Date.now()`, `'ast_' + Date.now()`, `'trx_' + Date.now()`, dll.). Postgres menolak setiap transaksi dengan kode error `22P02: invalid input syntax for type uuid`.
+- `[SILENT_FAIL_LOCAL_STORAGE]` Identifikasi akar masalah record hanya tersimpan di browser lokal pengurus namun kosong di perangkat lain atau Supabase: Supabase JavaScript SDK mengembalikan objek `{ data, error }` tanpa melempar eksepsi (*no throw*). Blok `try-catch` lama tidak memeriksa properti `error`, sehingga kegagalan database tidak disadari dan aplikasi secara senyap hanya menyimpan data ke `localStorage`. Akibatnya, data hanya tampil di laptop pengurus yang bersangkutan dan tidak pernah masuk ke Supabase.
+- `[SCHEMA_COLUMNS_MISMATCH]` Identifikasi kegagalan sinkronisasi modul ibadah: Tabel `jadwal_shalat_petugas` kekurangan 14 kolom kritis (`ikhtiyat_minutes`, `imsak`, `terbit`, `dhuha`, `imam_subuh`, `imam_dzuhur`, `imam_ashar`, `imam_maghrib`, `imam_isya`, `muadzin_rawatib`, `muadzin_jumat`, `bilal_jumat`, `review_notes`, `submitted_at`), serta constraint `NOT NULL` berlebih pada `santri_data`, `musafir_logbook`, `security_reports`, dan `budget_requests`.
+- `[STATIC_PRAYER_INDEX]` Identifikasi ketidakterhubungan jadwal shalat di `index.html`: Web publik beranda menggunakan hisab statis lokal tanpa listener Supabase Realtime CDC maupun query awal ke tabel `jadwal_shalat_petugas`.
+
+#### Perbaikan & Peningkatan Sistem (Fixes & Architectural Enhancements)
+- `[RFC_UUID_STANDARDIZATION]` Menerapkan generator RFC 4122 UUID v4 (`generateUUID()`) pada 11 modul operasional di `admin.html`:
+  - Modul Logistik & Dapur (`dapur_makan_siang`)
+  - Modul Inventaris Aset (`masjid_assets`)
+  - Modul Buku Kas Keuangan (`financial_journals`)
+  - Modul Pengajuan Anggaran & Bon (`budget_requests` & auto disbursement journal)
+  - Modul Direktori Santri Tahfidz (`santri_data`)
+  - Modul Mutaba'ah Setoran Quran (`santri_mutabaah` - relasi FK UUID valid)
+  - Modul Buku Tamu Musafir 24 Jam (`musafir_logbook`)
+  - Modul Laporan Ronda Keamanan (`security_reports`)
+  - Modul Checklist Sanitasi Kebersihan (`cleaning_reports`)
+  - Modul Media Visual Beranda (`homepage_media`)
+  - Modul Publikasi Artikel & Berita (`artikel_berita`)
+- `[AUTO_MIGRATION_ENGINE]` Menambahkan fungsi `autoMigrateLegacyLocalStorage()` pada inisialisasi `admin.html` yang secara otomatis mendeteksi record lama ber-ID non-UUID di cache browser pengguna, mengonversinya ke RFC UUID valid, dan menyinkronkannya kembali ke Supabase DB.
+- `[STRICT_ERROR_HANDLING]` Menambahkan pengecekan eksplisit terhadap objek `{ error }` hasil pemanggilan Supabase API di seluruh modul dengan notifikasi peringatan (*alert*) informatif apabila terjadi kegagalan transaksi, mengeliminasi risiko data terjebak di penyimpanan lokal secara diam-diam.
+- `[REALTIME_CDC_BROADCAST_HUB]` Memperluas kanal listener Realtime CDC WebSocket dan Broadcast event pada `realtimeHub` untuk seluruh 11 tabel operasional di `admin.html`.
+- `[DIRECT_PUBLISH_DKM_BUTTON]` Menambahkan tombol *Simpan & Terbitkan Langsung ke Web* (`status_approval = 'Approved'`) untuk Pimpinan DKM dan Super Admin pada formulir jadwal shalat & petugas ibadah, memungkinkan publikasi instan tanpa proses perantara.
+- `[REALTIME_PRAYER_ENGINE_INDEX]` Mengintegrasikan `index.html` dengan database Supabase secara dinamis:
+  - Query awal otomatis mengambil jadwal shalat harian ter-approve (`status_approval = 'Approved'`) untuk hari ini atau jadwal approved terbaru.
+  - Fallback otomatis ke hisab astronomis lokal presisi Jatiwarna jika belum ada jadwal resmi yang disetujui.
+  - Pembaruan DOM dinamis untuk waktu shalat (Imsak, Subuh, Terbit, Dhuha, Dzuhur, Ashar, Maghrib, Isya) dan nama petugas ibadah (Imam Rawatib, Muadzin, Khatib Shalat Jumat, Pengisi Kajian).
+  - Countdown timer dinamis yang mengakses jadwal terkini setiap detik.
+  - Langganan Supabase Realtime channel WebSocket (`public:jadwal_shalat_petugas:index` dan `public:kajian_acara_ibadah:index`) untuk memperbarui jadwal seketika saat disetujui di panel admin tanpa reload browser.
+- `[DATABASE_SCHEMA_MIGRATION]` Menjalankan migrasi PostgreSQL Supabase melalui Port 6543 pooler:
+  - Menambahkan 14 kolom lengkap pada tabel `jadwal_shalat_petugas`.
+  - Merelaksasi constraint `NOT NULL` berlebih pada `santri_data`, `musafir_logbook`, `security_reports`, dan `budget_requests`.
+  - Memverifikasi publikasi `supabase_realtime` aktif untuk seluruh 23 tabel sistem.
+  - Memperbarui skema acuan pada `database/migration_suite_all_modules_v2.sql`.
+- `[E2E_AUTOMATED_VERIFICATION]` Menjalankan skrip uji otomatis end-to-end (`test_all_modules_e2e.js`) dengan hasil lulus 100% pada seluruh 10 modul operasional dan sinkronisasi publik `index.html`.
+>>>>>>> main
 
 ---
 

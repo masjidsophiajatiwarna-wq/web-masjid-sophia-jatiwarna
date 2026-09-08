@@ -1,7 +1,7 @@
 -- ==============================================================================
 -- SKRIP MIGRASI SUPABASE: MODUL MANAJEMEN TUGAS PENGURUS & REALTIME CDC V1.6.0
 -- MASJID MUSAFIR SOPHIA JATIWARNA
--- Jalankan skrip ini langsung di Supabase SQL Editor: https://supabase.com/dashboard/project/fcwajbemkbhkogwtqcmx/sql
+-- Jalankan skrip ini langsung di Supabase SQL Editor pada Dashboard Proyek Anda
 -- ==============================================================================
 
 -- 1. PEMBARUAN STRUKTUR TABEL team_tasks (KOLOM GANTT, KANBAN, ARSIP & PROGRES)

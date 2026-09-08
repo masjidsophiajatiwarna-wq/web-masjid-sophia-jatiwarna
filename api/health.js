@@ -29,7 +29,7 @@ export default async function handler(req, res) {
             },
             supabase_db: {
                 status: 'HEALTHY',
-                project_ref: 'fcwajbemkbhkogwtqcmx',
+                project_ref: process.env.SUPABASE_URL ? new URL(process.env.SUPABASE_URL).hostname.split('.')[0] : 'configured',
                 latency_ms: 0
             },
             imagekit_cdn: {
@@ -50,17 +50,20 @@ export default async function handler(req, res) {
     // Test Supabase connection latency
     try {
         const sbStart = Date.now();
+        const sbUrl = process.env.SUPABASE_URL || '';
         const sbKey = process.env.SUPABASE_ANON_KEY || '';
-        const sbRes = await fetch('https://fcwajbemkbhkogwtqcmx.supabase.co/rest/v1/media_checklists?select=id&limit=1', {
-            headers: {
-                'apikey': sbKey,
-                'Authorization': `Bearer ${sbKey}`
+        if (sbUrl && sbKey) {
+            const sbRes = await fetch(`${sbUrl}/rest/v1/media_checklists?select=id&limit=1`, {
+                headers: {
+                    'apikey': sbKey,
+                    'Authorization': `Bearer ${sbKey}`
+                }
+            });
+            healthReport.services.supabase_db.latency_ms = Date.now() - sbStart;
+            if (!sbRes.ok) {
+                healthReport.services.supabase_db.status = 'DEGRADED';
+                healthReport.overall_status = 'DEGRADED';
             }
-        });
-        healthReport.services.supabase_db.latency_ms = Date.now() - sbStart;
-        if (!sbRes.ok) {
-            healthReport.services.supabase_db.status = 'DEGRADED';
-            healthReport.overall_status = 'DEGRADED';
         }
     } catch (e) {
         healthReport.services.supabase_db.status = 'DOWN';

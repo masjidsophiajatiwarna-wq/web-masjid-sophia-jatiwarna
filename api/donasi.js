@@ -3,7 +3,7 @@
 // Ingestion Donasi & Sedekah Makan - Masjid Musafir Sophia Jatiwarna
 // ==============================================================================
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://fcwajbemkbhkogwtqcmx.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || '';
 
 export default async function handler(req, res) {

@@ -19,6 +19,9 @@
 
     <!-- Supabase JS Client v2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Environment Configuration Loader (Strict Zero-Leak Architecture) -->
+    <script src="config.local.js" onerror="this.remove()"></script>
+    <script src="asset/js/env-loader.js"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="asset/favicon/logo-black/favicon.ico">
@@ -5263,7 +5266,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="https://supabase.com/dashboard/project/fcwajbemkbhkogwtqcmx/settings/billing/subscription" target="_blank" rel="noopener noreferrer" class="pillar-footer-link">
+                            <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer" class="pillar-footer-link" id="supabase-billing-link">
                                 <span>Buka Supabase Billing</span>
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             </a>
@@ -7100,6 +7103,9 @@
                                 <button type="button" class="btn-auth-primary" style="width: auto; padding: 0.65rem 1.4rem;" onclick="handleSaveIbadahSchedule('Pending Approval')">
                                     <i class="fa-solid fa-paper-plane"></i> Ajukan Persetujuan ke Pimpinan DKM
                                 </button>
+                                <button type="button" class="btn-action-green" id="btn-ibadah-direct-publish" style="background: #059669; color: #ffffff; border: 1px solid #059669; border-radius: 8px; font-weight: 700; padding: 0.65rem 1.35rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;" onclick="handleSaveIbadahSchedule('Approved')">
+                                    <i class="fa-solid fa-circle-check"></i> Simpan &amp; Terbitkan Langsung ke Web
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -8384,20 +8390,38 @@
     </div>
 
     <script>
-        // Supabase Client Config
-        const SUPABASE_PROJECT_URL = "https://fcwajbemkbhkogwtqcmx.supabase.co";
-        const SUPABASE_ANON_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjd2FqYmVta2Joa29nd3RxY214Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzg2ODMsImV4cCI6MjEwMjcxNDY4M30.SdkWOVO8TyWzQn_96SCLUzryv-blvKKCi1poXlPk5Y4";
-        
+        // Supabase Client Config (Dynamic Runtime Config - Zero Hardcode)
         let sbClient = null;
         let currentUser = null;
 
-        try {
-            if (window.supabase && typeof window.supabase.createClient === 'function') {
-                sbClient = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_PUBLIC_KEY);
+        async function initAdminSupabase() {
+            if (sbClient) return sbClient;
+            try {
+                if (window.MasjidConfig && typeof window.MasjidConfig.initSupabaseClient === 'function') {
+                    sbClient = await window.MasjidConfig.initSupabaseClient();
+                    
+                    // Dynamically update Supabase Billing Link if config is available
+                    try {
+                        const conf = await window.MasjidConfig.loadConfig();
+                        if (conf && conf.supabaseUrl) {
+                            const urlObj = new URL(conf.supabaseUrl);
+                            const ref = urlObj.hostname.split('.')[0];
+                            const billEl = document.getElementById('supabase-billing-link');
+                            if (billEl && ref) {
+                                billEl.href = `https://supabase.com/dashboard/project/${ref}/settings/billing/subscription`;
+                            }
+                        }
+                    } catch (e) {}
+
+                    return sbClient;
+                }
+            } catch (e) {
+                console.warn("[Supabase Admin] Dynamic init notice:", e);
             }
-        } catch (e) {
-            console.warn("Supabase Admin init:", e);
+            return null;
         }
+
+        const adminSupabasePromise = initAdminSupabase();
 
         let realtimeHub = null;
 
@@ -8704,6 +8728,7 @@
 
         // Check Auth Session & Callback Hash on Load
         document.addEventListener('DOMContentLoaded', async () => {
+            await adminSupabasePromise;
             const rawHash = window.location.hash || '';
             const rawSearch = window.location.search || '';
 
@@ -8942,7 +8967,7 @@
                     if (!matchingUser && email.endsWith('@masjidsophiajatiwarna.com')) {
                         const meta = getRoleAndDivisionFromEmail(email);
                         matchingUser = {
-                            id: 'user_' + Date.now(),
+                            id: generateUUID(),
                             email: email,
                             full_name: meta.name,
                             role: meta.role,
@@ -8997,7 +9022,7 @@
                             }
 
                             authUser = sbUser || {
-                                id: matchingUser.id || ('user_' + Date.now()),
+                                id: matchingUser.id || generateUUID(),
                                 email: matchingUser.email,
                                 user_metadata: {
                                     full_name: matchingUser.full_name,
@@ -9509,7 +9534,7 @@
 
         // Switch Navigation Tabs with Browser Memory & URL Hash Persistence
         function switchTab(tabId, btn = null) {
-            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik'];
+            const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik', 'santri', 'musafir', 'keamanan', 'kebersihan'];
             if (!tabId || !validTabs.includes(tabId)) tabId = 'overview';
 
             const role = getUserRole();
@@ -9981,6 +10006,57 @@
         }
 
         // ==========================================================================
+        // AUTO MIGRATION FOR LEGACY NON-UUID LOCAL STORAGE ITEMS
+        // ==========================================================================
+        async function autoMigrateLegacyLocalStorage() {
+            const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+            const tablesToMigrate = [
+                { key: 'masjid_sophia_ibadah_schedules_master', table: 'jadwal_shalat_petugas' },
+                { key: 'masjid_sophia_dapur_master', table: 'dapur_makan_siang' },
+                { key: 'masjid_sophia_assets_master', table: 'masjid_assets' },
+                { key: 'masjid_sophia_journals_master', table: 'financial_journals' },
+                { key: 'masjid_sophia_budget_master', table: 'budget_requests' },
+                { key: 'masjid_sophia_santri_master', table: 'santri_data' },
+                { key: 'masjid_sophia_mutabaah_master', table: 'santri_mutabaah' },
+                { key: 'masjid_sophia_musafir_master', table: 'musafir_logbook' },
+                { key: 'masjid_sophia_security_master', table: 'security_reports' },
+                { key: 'masjid_sophia_cleaning_master', table: 'cleaning_reports' }
+            ];
+
+            for (const item of tablesToMigrate) {
+                try {
+                    const raw = localStorage.getItem(item.key);
+                    if (!raw) continue;
+                    let list = JSON.parse(raw);
+                    if (!Array.isArray(list) || list.length === 0) continue;
+                    let modified = false;
+
+                    for (let entry of list) {
+                        if (!entry.id || !uuidRegex.test(entry.id)) {
+                            const oldId = entry.id;
+                            entry.id = generateUUID();
+                            modified = true;
+                            if (sbClient) {
+                                try {
+                                    await sbClient.from(item.table).upsert([entry], { onConflict: 'id' });
+                                    console.log(`[AutoMigrate] Migrated legacy record from ${item.key} (${oldId} -> ${entry.id}) to Supabase`);
+                                } catch (e) {
+                                    console.warn(`[AutoMigrate] Failed to sync migrated item ${oldId}:`, e);
+                                }
+                            }
+                        }
+                    }
+
+                    if (modified) {
+                        localStorage.setItem(item.key, JSON.stringify(list));
+                    }
+                } catch (e) {
+                    console.warn(`[AutoMigrate] Error processing ${item.key}:`, e);
+                }
+            }
+        }
+
+        // ==========================================================================
         // DATA LOADER & REALTIME SETUP
         // ==========================================================================
         async function loadAllAdminData() {
@@ -9997,6 +10073,13 @@
             loadLeaveRequests();
 
             if (!sbClient) return;
+
+            // Auto-migrate legacy localStorage entries to RFC UUIDs and sync to Supabase
+            try {
+                await autoMigrateLegacyLocalStorage();
+            } catch (migErr) {
+                console.warn('[AutoMigrate] Notice:', migErr);
+            }
 
             try {
                 // 1. Fetch Donations
@@ -10115,7 +10198,86 @@
                         console.log('[Realtime CDC] dkm_leave_requests:', payload);
                         handleRealtimeLeaveChange(payload);
                     })
+                    // Mosque Operational Modules Realtime CDC (Postgres Changes)
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'jadwal_shalat_petugas' }, () => {
+                        console.log('[Realtime CDC] jadwal_shalat_petugas updated');
+                        if (typeof loadIbadahSchedules === 'function') loadIbadahSchedules();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'kajian_acara_ibadah' }, () => {
+                        console.log('[Realtime CDC] kajian_acara_ibadah updated');
+                        if (typeof loadIbadahKajian === 'function') loadIbadahKajian();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'dapur_makan_siang' }, () => {
+                        console.log('[Realtime CDC] dapur_makan_siang updated');
+                        if (typeof loadDapurData === 'function') loadDapurData();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'masjid_assets' }, () => {
+                        console.log('[Realtime CDC] masjid_assets updated');
+                        if (typeof loadAssetsData === 'function') loadAssetsData();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'financial_journals' }, () => {
+                        console.log('[Realtime CDC] financial_journals updated');
+                        if (typeof loadFinancialJournals === 'function') loadFinancialJournals();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'budget_requests' }, () => {
+                        console.log('[Realtime CDC] budget_requests updated');
+                        if (typeof loadBudgetRequests === 'function') loadBudgetRequests();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'santri_data' }, () => {
+                        console.log('[Realtime CDC] santri_data updated');
+                        if (typeof loadSantriList === 'function') loadSantriList();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'santri_mutabaah' }, () => {
+                        console.log('[Realtime CDC] santri_mutabaah updated');
+                        if (typeof loadMutabaahList === 'function') loadMutabaahList();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'musafir_logbook' }, () => {
+                        console.log('[Realtime CDC] musafir_logbook updated');
+                        if (typeof loadMusafirList === 'function') loadMusafirList();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'security_reports' }, () => {
+                        console.log('[Realtime CDC] security_reports updated');
+                        if (typeof loadSecurityList === 'function') loadSecurityList();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'cleaning_reports' }, () => {
+                        console.log('[Realtime CDC] cleaning_reports updated');
+                        if (typeof loadCleaningList === 'function') loadCleaningList();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'artikel_berita' }, () => {
+                        console.log('[Realtime CDC] artikel_berita updated');
+                        if (typeof getArticles === 'function') getArticles();
+                    })
                     // 2. Broadcast Channel (Ultra Fast Multi-Tab / Multi-Client Realtime Sync)
+                    .on('broadcast', { event: 'IBADAH_SYNC' }, () => {
+                        if (typeof loadIbadahSchedules === 'function') loadIbadahSchedules();
+                    })
+                    .on('broadcast', { event: 'DAPUR_SYNC' }, () => {
+                        if (typeof loadDapurData === 'function') loadDapurData();
+                    })
+                    .on('broadcast', { event: 'ASSET_SYNC' }, () => {
+                        if (typeof loadAssetsData === 'function') loadAssetsData();
+                    })
+                    .on('broadcast', { event: 'JOURNAL_SYNC' }, () => {
+                        if (typeof loadFinancialJournals === 'function') loadFinancialJournals();
+                    })
+                    .on('broadcast', { event: 'BUDGET_SYNC' }, () => {
+                        if (typeof loadBudgetRequests === 'function') loadBudgetRequests();
+                    })
+                    .on('broadcast', { event: 'SANTRI_SYNC' }, () => {
+                        if (typeof loadSantriList === 'function') loadSantriList();
+                    })
+                    .on('broadcast', { event: 'MUTABAAH_SYNC' }, () => {
+                        if (typeof loadMutabaahList === 'function') loadMutabaahList();
+                    })
+                    .on('broadcast', { event: 'MUSAFIR_SYNC' }, () => {
+                        if (typeof loadMusafirList === 'function') loadMusafirList();
+                    })
+                    .on('broadcast', { event: 'SECURITY_SYNC' }, () => {
+                        if (typeof loadSecurityList === 'function') loadSecurityList();
+                    })
+                    .on('broadcast', { event: 'CLEANING_SYNC' }, () => {
+                        if (typeof loadCleaningList === 'function') loadCleaningList();
+                    })
                     .on('broadcast', { event: 'TASK_SYNC' }, ({ payload }) => {
                         console.log('[Realtime Broadcast] TASK_SYNC received:', payload);
                         if (payload && payload.action) {
@@ -13335,7 +13497,7 @@
             const role = getRoleFromDivision(div);
 
             const newUser = {
-                id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : ('user_' + Date.now()),
+                id: generateUUID(),
                 email: email,
                 full_name: fullname,
                 role: role,
@@ -15837,6 +15999,11 @@
                 return;
             }
 
+            if (statusTarget === 'Approved' && !['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(role)) {
+                alert('Akses Ditolak: Hanya Pimpinan DKM (Super Admin/Ketua DKM) yang dapat langsung menerbitkan jadwal ke web publik.');
+                return;
+            }
+
             const formId = document.getElementById('ibadah-form-id').value;
             const tanggal = document.getElementById('ibadah-input-tanggal').value;
             const hari = document.getElementById('ibadah-input-hari').value || getIndonesianDayName(tanggal);
@@ -15848,6 +16015,7 @@
             }
 
             const existingSchedule = formId ? ibadahSchedulesList.find(s => s.id === formId) : null;
+            const isApprovedDirect = statusTarget === 'Approved';
             const record = {
                 id: formId || (typeof generateUUID === 'function' ? generateUUID() : ('b1000000-0000-4000-8000-' + String(Date.now()).slice(-12).padStart(12, '0'))),
                 tanggal: tanggal,
@@ -15874,19 +16042,20 @@
                 submitted_by: getUserDisplayName(currentUser),
                 submitted_by_email: currentUser ? (currentUser.email || '') : '',
                 submitted_at: new Date().toISOString(),
-                reviewed_by: (statusTarget === 'Pending Approval') ? '' : (existingSchedule ? existingSchedule.reviewed_by : ''),
-                reviewed_by_email: (statusTarget === 'Pending Approval') ? '' : (existingSchedule ? existingSchedule.reviewed_by_email : ''),
-                reviewed_at: (statusTarget === 'Pending Approval') ? null : (existingSchedule ? existingSchedule.reviewed_at : null),
-                review_notes: (statusTarget === 'Pending Approval') ? '' : (existingSchedule ? (existingSchedule.review_notes || '') : ''),
+                reviewed_by: isApprovedDirect ? getUserDisplayName(currentUser) : ((statusTarget === 'Pending Approval') ? '' : (existingSchedule ? existingSchedule.reviewed_by : '')),
+                reviewed_by_email: isApprovedDirect ? (currentUser ? (currentUser.email || '') : '') : ((statusTarget === 'Pending Approval') ? '' : (existingSchedule ? existingSchedule.reviewed_by_email : '')),
+                reviewed_at: isApprovedDirect ? new Date().toISOString() : ((statusTarget === 'Pending Approval') ? null : (existingSchedule ? existingSchedule.reviewed_at : null)),
+                review_notes: isApprovedDirect ? 'Disetujui dan dipublikasikan langsung ke web oleh Pimpinan DKM' : ((statusTarget === 'Pending Approval') ? '' : (existingSchedule ? (existingSchedule.review_notes || '') : '')),
                 updated_at: new Date().toISOString()
             };
 
             // DB Upsert
             if (sbClient) {
-                try {
-                    await sbClient.from('jadwal_shalat_petugas').upsert(record);
-                } catch (e) {
-                    console.warn('[Ibadah] Supabase schedule upsert warning:', e);
+                const { error: upsertErr } = await sbClient.from('jadwal_shalat_petugas').upsert(record);
+                if (upsertErr) {
+                    console.error('[Ibadah] Supabase schedule upsert error:', upsertErr);
+                    alert('Peringatan Database: Gagal menyinkronkan jadwal ke Supabase. Detail: ' + (upsertErr.message || JSON.stringify(upsertErr)));
+                    return;
                 }
             }
 
@@ -15899,15 +16068,18 @@
             }
 
             localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
+            broadcastEvent('IBADAH_SYNC', { table: 'jadwal_shalat_petugas', action: 'upsert', record });
             renderIbadahScheduleTable();
             renderIbadahApprovalTable();
             updateIbadahKpiStats();
             updateIbadahPendingBadge();
             resetIbadahForm();
 
-            const msg = (statusTarget === 'Pending Approval')
-                ? 'Alhamdulillah, jadwal peribadatan berhasil diajukan ke Pimpinan DKM untuk persetujuan.'
-                : 'Jadwal peribadatan berhasil disimpan sebagai draf.';
+            const msg = isApprovedDirect
+                ? 'Alhamdulillah, jadwal peribadatan berhasil disimpan dan langsung dipublikasikan ke web publik (index.html) secara realtime!'
+                : (statusTarget === 'Pending Approval')
+                    ? 'Alhamdulillah, jadwal peribadatan berhasil diajukan ke Pimpinan DKM untuk persetujuan.'
+                    : 'Jadwal peribadatan berhasil disimpan sebagai draf.';
             alert(msg);
         }
 
@@ -15928,23 +16100,27 @@
             if (note) schedule.review_notes = note;
 
             if (sbClient) {
-                try {
-                    await sbClient.from('jadwal_shalat_petugas').update({
-                        status_approval: 'Approved',
-                        reviewed_by: schedule.reviewed_by,
-                        reviewed_by_email: schedule.reviewed_by_email,
-                        reviewed_at: schedule.reviewed_at,
-                        review_notes: schedule.review_notes || ''
-                    }).eq('id', id);
-                } catch (e) {}
+                const { error: approveErr } = await sbClient.from('jadwal_shalat_petugas').update({
+                    status_approval: 'Approved',
+                    reviewed_by: schedule.reviewed_by,
+                    reviewed_by_email: schedule.reviewed_by_email,
+                    reviewed_at: schedule.reviewed_at,
+                    review_notes: schedule.review_notes || ''
+                }).eq('id', id);
+                if (approveErr) {
+                    console.error('[Ibadah] Supabase approve error:', approveErr);
+                    alert('Gagal menyetujui jadwal di cloud Supabase: ' + (approveErr.message || JSON.stringify(approveErr)));
+                    return;
+                }
             }
 
             localStorage.setItem('masjid_sophia_ibadah_schedules_master', JSON.stringify(ibadahSchedulesList));
+            broadcastEvent('IBADAH_SYNC', { table: 'jadwal_shalat_petugas', action: 'approve', id });
             renderIbadahScheduleTable();
             renderIbadahApprovalTable();
             updateIbadahKpiStats();
             updateIbadahPendingBadge();
-            alert(`Jadwal tanggal ${schedule.tanggal} berhasil disetujui.`);
+            alert(`Jadwal tanggal ${schedule.tanggal} berhasil disetujui dan aktif di portal publik.`);
         }
 
         function openIbadahReviewModal(id, actionType = 'REJECT') {
@@ -17295,7 +17471,7 @@
             } else {
                 const cleanTitle = title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
                 const slug = cleanTitle + '-' + Date.now().toString().slice(-4);
-                const newId = 'art-' + Date.now();
+                const newId = generateUUID();
 
                 const newArt = {
                     id: newId,
@@ -17320,6 +17496,7 @@
                 if (typeof sbClient !== 'undefined' && sbClient) {
                     try {
                         await sbClient.from('artikel_berita').insert([{
+                            id: newId,
                             slug: newArt.slug,
                             title: newArt.title,
                             category: newArt.category,
@@ -18035,7 +18212,7 @@
 
         async function handleDapurFormSubmit(e) {
             e.preventDefault();
-            const id = document.getElementById('dapur-entry-id').value || ('dpr_' + Date.now());
+            const id = document.getElementById('dapur-entry-id').value || generateUUID();
             const tanggal = document.getElementById('dapur-form-tanggal').value;
             const hari = document.getElementById('dapur-form-hari').value || getDayNameFromDate(tanggal);
             const menu = document.getElementById('dapur-form-menu').value.trim();
@@ -18071,12 +18248,15 @@
             localStorage.setItem('masjid_sophia_dapur_master', JSON.stringify(dapurLogList));
 
             if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('dapur_makan_siang').upsert([record], { onConflict: 'id' });
-                } catch (err) {
-                    console.warn('[Dapur] Supabase upsert notice:', err);
+                const { error: dprErr } = await sbClient.from('dapur_makan_siang').upsert([record], { onConflict: 'id' });
+                if (dprErr) {
+                    console.error('[Dapur] Supabase upsert error:', dprErr);
+                    alert('Gagal menyinkronkan data dapur ke Supabase: ' + (dprErr.message || JSON.stringify(dprErr)));
+                    return;
                 }
             }
+
+            broadcastEvent('DAPUR_SYNC', { action: 'upsert', record });
 
             closeModal('modal-dapur-entry');
             renderDapurTable();
@@ -18356,7 +18536,7 @@
 
         async function handleAssetFormSubmit(e) {
             e.preventDefault();
-            const id = document.getElementById('asset-entry-id').value || ('ast_' + Date.now());
+            const id = document.getElementById('asset-entry-id').value || generateUUID();
             const kode = document.getElementById('asset-form-kode').value.trim();
             const kategori = document.getElementById('asset-form-kategori').value;
             const nama = document.getElementById('asset-form-nama').value.trim();
@@ -18397,12 +18577,15 @@
             localStorage.setItem('masjid_sophia_assets_master', JSON.stringify(assetsList));
 
             if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('masjid_assets').upsert([record], { onConflict: 'id' });
-                } catch (err) {
-                    console.warn('[Assets] Supabase upsert notice:', err);
+                const { error: astErr } = await sbClient.from('masjid_assets').upsert([record], { onConflict: 'id' });
+                if (astErr) {
+                    console.error('[Assets] Supabase upsert error:', astErr);
+                    alert('Gagal menyinkronkan data aset ke Supabase: ' + (astErr.message || JSON.stringify(astErr)));
+                    return;
                 }
             }
+
+            broadcastEvent('ASSET_SYNC', { action: 'upsert', record });
 
             closeModal('modal-asset-entry');
             renderAssetsTable();
@@ -18428,10 +18611,10 @@
 
         // Service Logs Engine
         function openAssetServiceModal(id) {
-            activeAssetServiceId = id;
             const asset = assetsList.find(a => a.id === id);
             if (!asset) return;
 
+            activeAssetServiceId = id;
             document.getElementById('service-modal-asset-name').textContent = asset.nama_barang;
             document.getElementById('service-modal-asset-meta').textContent = 'Kode: ' + asset.kode_aset + ' • Lokasi: ' + (asset.lokasi_penyimpanan || 'Ruang Utama') + ' • Kondisi: ' + asset.kondisi;
             document.getElementById('service-log-tanggal').value = new Date().toISOString().split('T')[0];
@@ -18478,7 +18661,7 @@
             const newKondisi = document.getElementById('service-log-update-kondisi').value;
 
             const serviceEntry = {
-                id: 'srv_' + Date.now(),
+                id: generateUUID(),
                 tanggal: tanggal,
                 teknisi: teknisi,
                 biaya: biaya,
@@ -18816,7 +18999,7 @@
 
         async function handleJournalFormSubmit(e) {
             e.preventDefault();
-            const id = document.getElementById('journal-entry-id').value || ('trx_' + Date.now());
+            const id = document.getElementById('journal-entry-id').value || generateUUID();
             const kode = document.getElementById('journal-form-kode').value.trim();
             const tanggal = document.getElementById('journal-form-tanggal').value;
             const tipe = document.getElementById('journal-form-tipe').value;
@@ -18853,12 +19036,15 @@
             localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
 
             if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('financial_journals').upsert([record], { onConflict: 'id' });
-                } catch (err) {
-                    console.warn('[Keuangan] Supabase upsert notice:', err);
+                const { error: jrnErr } = await sbClient.from('financial_journals').upsert([record], { onConflict: 'id' });
+                if (jrnErr) {
+                    console.error('[Keuangan] Supabase upsert error:', jrnErr);
+                    alert('Gagal menyinkronkan data jurnal ke Supabase: ' + (jrnErr.message || JSON.stringify(jrnErr)));
+                    return;
                 }
             }
+
+            broadcastEvent('JOURNAL_SYNC', { action: 'upsert', record });
 
             closeModal('modal-journal-entry');
             renderJournalsTable();
@@ -19155,7 +19341,7 @@
 
         async function handleBudgetFormSubmit(e) {
             e.preventDefault();
-            const id = document.getElementById('budget-entry-id').value || ('req_' + Date.now());
+            const id = document.getElementById('budget-entry-id').value || generateUUID();
             const tipe = document.getElementById('budget-form-tipe').value;
             const kode = document.getElementById('budget-form-kode').value || generateBudgetCode(tipe);
             const divisi = document.getElementById('budget-form-divisi').value;
@@ -19199,12 +19385,15 @@
             localStorage.setItem('masjid_sophia_budget_master', JSON.stringify(budgetRequestsList));
 
             if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('budget_requests').upsert([record], { onConflict: 'id' });
-                } catch (err) {
-                    console.warn('[Budget] Supabase upsert notice:', err);
+                const { error: bgtErr } = await sbClient.from('budget_requests').upsert([record], { onConflict: 'id' });
+                if (bgtErr) {
+                    console.error('[Budget] Supabase upsert error:', bgtErr);
+                    alert('Gagal menyinkronkan pengajuan anggaran ke Supabase: ' + (bgtErr.message || JSON.stringify(bgtErr)));
+                    return;
                 }
             }
+
+            broadcastEvent('BUDGET_SYNC', { action: 'upsert', record });
 
             closeModal('modal-budget-entry');
             renderBudgetTable();
@@ -19258,7 +19447,7 @@
 
                 // Otomatis catat ke Jurnal Kas Keluar jika dicairkan!
                 const journalRecord = {
-                    id: 'trx_auto_' + Date.now(),
+                    id: generateUUID(),
                     kode_transaksi: generateJournalCode('KAS_KELUAR'),
                     tanggal: new Date().toISOString().split('T')[0],
                     tipe_transaksi: 'KAS_KELUAR',
@@ -19277,30 +19466,33 @@
                 financialJournalsList.unshift(journalRecord);
                 localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
                 if (typeof sbClient !== 'undefined' && sbClient) {
-                    try {
-                        await sbClient.from('financial_journals').upsert([journalRecord], { onConflict: 'id' });
-                    } catch (e) {}
+                    const { error: jrnAutoErr } = await sbClient.from('financial_journals').upsert([journalRecord], { onConflict: 'id' });
+                    if (jrnAutoErr) console.warn('[Budget] Auto journal upsert warning:', jrnAutoErr);
                 }
+                broadcastEvent('JOURNAL_SYNC', { action: 'upsert', record: journalRecord });
             }
             item.updated_at = new Date().toISOString();
 
             localStorage.setItem('masjid_sophia_budget_master', JSON.stringify(budgetRequestsList));
 
             if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('budget_requests').update({
-                        status_pengajuan: item.status_pengajuan,
-                        catatan_evaluasi: item.catatan_evaluasi,
-                        reviewed_by: item.reviewed_by,
-                        reviewed_by_email: item.reviewed_by_email,
-                        reviewed_at: item.reviewed_at,
-                        disbursed_at: item.disbursed_at,
-                        updated_at: item.updated_at
-                    }).eq('id', id);
-                } catch (err) {
-                    console.warn('[Budget] Update review notice:', err);
+                const { error: bgtUpdErr } = await sbClient.from('budget_requests').update({
+                    status_pengajuan: item.status_pengajuan,
+                    catatan_evaluasi: item.catatan_evaluasi,
+                    reviewed_by: item.reviewed_by,
+                    reviewed_by_email: item.reviewed_by_email,
+                    reviewed_at: item.reviewed_at,
+                    disbursed_at: item.disbursed_at,
+                    updated_at: item.updated_at
+                }).eq('id', id);
+                if (bgtUpdErr) {
+                    console.error('[Budget] Update review error:', bgtUpdErr);
+                    alert('Gagal memperbarui status pengajuan di Supabase: ' + (bgtUpdErr.message || JSON.stringify(bgtUpdErr)));
+                    return;
                 }
             }
+
+            broadcastEvent('BUDGET_SYNC', { action: 'update_status', item });
 
             closeModal('modal-budget-review');
             renderBudgetTable();
@@ -19593,7 +19785,7 @@
 
         async function handleSantriFormSubmit(e) {
             e.preventDefault();
-            const id = document.getElementById('santri-entry-id').value || ('str_' + Date.now());
+            const id = document.getElementById('santri-entry-id').value || generateUUID();
             const nis = document.getElementById('santri-form-nis').value.trim();
             const gender = document.getElementById('santri-form-gender').value;
             const nama = document.getElementById('santri-form-nama').value.trim();
@@ -19639,12 +19831,15 @@
             localStorage.setItem('masjid_sophia_santri_master', JSON.stringify(santriList));
 
             if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('santri_data').upsert([record], { onConflict: 'id' });
-                } catch (err) {
-                    console.warn('[Santri] Supabase upsert notice:', err);
+                const { error: sanErr } = await sbClient.from('santri_data').upsert([record], { onConflict: 'id' });
+                if (sanErr) {
+                    console.error('[Santri] Supabase upsert error:', sanErr);
+                    alert('Gagal menyinkronkan data santri ke Supabase: ' + (sanErr.message || JSON.stringify(sanErr)));
+                    return;
                 }
             }
+
+            broadcastEvent('SANTRI_SYNC', { action: 'upsert', record });
 
             closeModal('modal-santri-entry');
             renderSantriTable();
@@ -19874,7 +20069,7 @@
 
         async function handleMutabaahFormSubmit(e) {
             e.preventDefault();
-            const id = document.getElementById('mutabaah-entry-id').value || ('mtb_' + Date.now());
+            const id = document.getElementById('mutabaah-entry-id').value || generateUUID();
             const santriId = document.getElementById('mutabaah-form-santri-id').value;
             const santri = santriList.find(s => s.id === santriId);
             const namaSantri = santri ? santri.nama_lengkap : 'Santri';
@@ -19915,12 +20110,15 @@
             localStorage.setItem('masjid_sophia_mutabaah_master', JSON.stringify(mutabaahList));
 
             if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('santri_mutabaah').upsert([record], { onConflict: 'id' });
-                } catch (err) {
-                    console.warn('[Mutabaah] Supabase upsert notice:', err);
+                const { error: mtbErr } = await sbClient.from('santri_mutabaah').upsert([record], { onConflict: 'id' });
+                if (mtbErr) {
+                    console.error('[Mutabaah] Supabase upsert error:', mtbErr);
+                    alert('Gagal menyinkronkan data mutabaah ke Supabase: ' + (mtbErr.message || JSON.stringify(mtbErr)));
+                    return;
                 }
             }
+
+            broadcastEvent('MUTABAAH_SYNC', { action: 'upsert', record });
 
             closeModal('modal-mutabaah-entry');
             renderMutabaahTable();
@@ -20371,7 +20569,7 @@
 
         async function handleMusafirFormSubmit(e) {
             e.preventDefault();
-            const id = document.getElementById('musafir-entry-id').value || ('msf_' + Date.now());
+            const id = document.getElementById('musafir-entry-id').value || generateUUID();
             const tanggal = document.getElementById('musafir-form-tanggal').value;
             const waktu = document.getElementById('musafir-form-waktu').value;
             const nama = document.getElementById('musafir-form-nama').value.trim();
@@ -20418,12 +20616,15 @@
             localStorage.setItem('masjid_sophia_musafir_master', JSON.stringify(musafirLogList));
 
             if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('musafir_logbook').upsert([record], { onConflict: 'id' });
-                } catch (err) {
-                    console.warn('[Musafir] Supabase upsert notice:', err);
+                const { error: msfErr } = await sbClient.from('musafir_logbook').upsert([record], { onConflict: 'id' });
+                if (msfErr) {
+                    console.error('[Musafir] Supabase upsert error:', msfErr);
+                    alert('Gagal menyinkronkan data buku tamu musafir ke Supabase: ' + (msfErr.message || JSON.stringify(msfErr)));
+                    return;
                 }
             }
+
+            broadcastEvent('MUSAFIR_SYNC', { action: 'upsert', record });
 
             closeModal('modal-musafir-entry');
             renderMusafirTable();
@@ -20766,7 +20967,7 @@
 
         async function handleSecurityFormSubmit(e) {
             e.preventDefault();
-            const id = document.getElementById('security-entry-id').value || ('sec_' + Date.now());
+            const id = document.getElementById('security-entry-id').value || generateUUID();
             const tanggal = document.getElementById('security-form-tanggal').value;
             const shift = document.getElementById('security-form-shift').value;
             const petugas = document.getElementById('security-form-petugas').value.trim();
@@ -20804,12 +21005,15 @@
             localStorage.setItem('masjid_sophia_security_master', JSON.stringify(securityReportsList));
 
             if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('security_reports').upsert([record], { onConflict: 'id' });
-                } catch (err) {
-                    console.warn('[Security] Supabase upsert notice:', err);
+                const { error: secErr } = await sbClient.from('security_reports').upsert([record], { onConflict: 'id' });
+                if (secErr) {
+                    console.error('[Security] Supabase upsert error:', secErr);
+                    alert('Gagal menyinkronkan laporan keamanan ke Supabase: ' + (secErr.message || JSON.stringify(secErr)));
+                    return;
                 }
             }
+
+            broadcastEvent('SECURITY_SYNC', { action: 'upsert', record });
 
             closeModal('modal-security-entry');
             renderSecurityTable();
@@ -21169,7 +21373,7 @@
 
         async function handleCleaningFormSubmit(e) {
             e.preventDefault();
-            const id = document.getElementById('cleaning-entry-id').value || ('cln_' + Date.now());
+            const id = document.getElementById('cleaning-entry-id').value || generateUUID();
             const tanggal = document.getElementById('cleaning-form-tanggal').value;
             const shift = document.getElementById('cleaning-form-shift').value;
             const zona = document.getElementById('cleaning-form-zona').value;
@@ -21205,12 +21409,15 @@
             localStorage.setItem('masjid_sophia_cleaning_master', JSON.stringify(cleaningReportsList));
 
             if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('cleaning_reports').upsert([record], { onConflict: 'id' });
-                } catch (err) {
-                    console.warn('[Cleaning] Supabase upsert notice:', err);
+                const { error: clnErr } = await sbClient.from('cleaning_reports').upsert([record], { onConflict: 'id' });
+                if (clnErr) {
+                    console.error('[Cleaning] Supabase upsert error:', clnErr);
+                    alert('Gagal menyinkronkan checklist kebersihan ke Supabase: ' + (clnErr.message || JSON.stringify(clnErr)));
+                    return;
                 }
             }
+
+            broadcastEvent('CLEANING_SYNC', { action: 'upsert', record });
 
             closeModal('modal-cleaning-entry');
             renderCleaningTable();

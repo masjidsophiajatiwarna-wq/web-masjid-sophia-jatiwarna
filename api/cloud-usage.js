@@ -108,7 +108,7 @@ export default async function handler(req, res) {
 
     // 1. Supabase Live Query: Count records across core tables
     const sbKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-    const sbUrl = 'https://fcwajbemkbhkogwtqcmx.supabase.co';
+    const sbUrl = process.env.SUPABASE_URL || '';
 
     try {
         const sbStart = Date.now();
