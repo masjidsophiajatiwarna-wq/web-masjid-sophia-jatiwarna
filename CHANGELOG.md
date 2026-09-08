@@ -56,6 +56,33 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 
 ## [1.9.15] - 2026-09-08
 
+### Perbaikan Rute Navigasi 4 Modul Operasional, Pembersihan Top App Bar, dan Penyelarasan Galeri Media ImageKit CDN 20 GB
+
+#### Perbaikan Bug (Bug Fixes)
+- `[NAV_ROUTING_FIX]` Memperbaiki bug whitelist array `validTabs` pada fungsi `switchTab(tabId)` di `admin.html`:
+  - Menambahkan identitas 4 modul baru: `'santri'`, `'musafir'`, `'keamanan'`, dan `'kebersihan'`.
+  - Mengeliminasi kegagalan navigasi di mana modul *Buku Tamu & Pelayanan Musafir 24 Jam*, *Santri & Mutaba'ah Tahfidz*, *Piket Ronda & Keamanan 24 Jam*, dan *Checklist Sanitasi & Wudhu* sebelumnya selalu me-reset tampilan kembali ke Ringkasan Operasional (*Overview*).
+- `[HEADER_ACTION_CLEANUP]` Menghapus tombol *Hub Checklist Media* dan tombol *Refresh Data* pada bilah judul aplikasi atas (`top-app-bar` header):
+  - Menghilangkan kebingungan pengurus yang mengira tombol "Refresh Data" sebagai fungsi reload browser.
+  - Memperjelas fokus area header untuk menyajikan judul dan deskripsi modul aktif secara bersih dan elegan.
+
+#### Penyempurnaan Tampilan & Antarmuka (UI/UX Refinement)
+- `[GALLERY_CDN_METRICS]` Penyelarasan kapasitas penyimpanan pada modul Galeri Media dan Tab Artikel:
+  - Mengubah kuota penyimpanan dari Supabase 1.0 GB menjadi **Penyimpanan Media CDN (ImageKit.io) dengan kuota 20 GB (20.480 MB)**.
+  - Menghapus kalimat berkesan AI flexing (*"Engine pintar: Setiap foto yang diunggah otomatis dikompresi ke format WebP..."*), digantikan dengan deskripsi fungsional infrastruktur distribusi konten DKM yang hangat dan santun.
+  - Memperbarui kalkulasi dinamis `updateStorageBarStats()` berbasis kapasitas 20.480 MB dan format badge: `{totalMb} MB / 20.480 MB ({totalBerkas} Berkas)`.
+- `[GALLERY_TOOLBAR_SYMMETRY]` Merapikan tata letak bilah aksi (*toolbar*) galeri media:
+  - Input pencarian berkas dilengkapi ikon kaca pembesar dan tinggi seragam 38px.
+  - Tombol unggah disejajarkan rapi secara simetris horizontal dengan label baku *"Unggah Media"*, menghilangkan teks teknis `(Auto WebP)`.
+- `[MEDIA_LABELS_STANDARDIZATION]` Standardisasi penamaan dan status proses unggah di seluruh modal picker dan editor artikel warta:
+  - Judul modul diubah dari *"Galeri Media & Kompresi WebP"* menjadi *"Galeri Media"*.
+  - Label tombol unggah diseragamkan menjadi *"Unggah Foto"* dan *"Unggah Baru"*.
+  - Indikator proses unggah disesuaikan menjadi *"Memproses & Mengunggah ke CDN..."*.
+
+---
+
+## [1.9.14] - 2026-09-08
+
 ### Migrasi Menyeluruh Unggah & Hapus Berkas Media ke ImageKit.io CDN via Supabase RPC
 
 #### Fitur & Peningkatan Baru (New Features & Enhancements)

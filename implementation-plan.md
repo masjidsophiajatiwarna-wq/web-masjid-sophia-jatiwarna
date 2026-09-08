@@ -58,7 +58,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
        |
 [FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: 85% SELESAI)
        |
-[FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: 50% SELESAI)
+[FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: 52% SELESAI)
        |
 [FASE 5: Pengujian Terpadu, Audit Keamanan & User Acceptance Testing] (STATUS: MENUNGGU FASE 3 & 4)
        |
@@ -146,6 +146,10 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 - **Daftar Tugas:**
   - [x] **Pondasi Admin Core & Auth Gate (`admin.html`):** Gerbang login Supabase Auth JWT, sidebar adaptif RBAC 10 peran, panel KPI Real-Time, inbox kotak saran, dan rekonsiliasi kas harian.
   - [x] **Restrukturisasi Bilah Samping Navigasi (Sidebar 4 Pilar Fungsional):** Penataan 9 kelompok menu terfragmentasi menjadi 4 pilar fungsional operasional masjid (Ruang Kerja & Tugas, Pelayanan & Pendidikan, Operasional & Fasilitas, Media & Keuangan) plus Pengaturan & Sistem, menghemat 40% ruang vertikal dan mengeliminasi anti-pola menu tunggal.
+  - [x] **Perbaikan Rute Navigasi 4 Modul Operasional & Penyelarasan Galeri Media ImageKit CDN 20 GB (`admin.html`):**
+    - Whitelist array `validTabs` pada fungsi `switchTab(tabId)` ditambahkan 4 modul operasional (`santri`, `musafir`, `keamanan`, `kebersihan`), mengeliminasi bug reset tampilan ke Ringkasan Operasional.
+    - Pembersihan header `top-app-bar`: menghapus tombol *Hub Checklist Media* dan tombol *Refresh Data* yang rawan memicu kekeliruan pengurus.
+    - Penyelarasan modul Galeri Media dan Tab Artikel ke infrastruktur **ImageKit.io CDN 20 GB (20.480 MB)**, menghapus teks AI flexing (*Engine pintar...*), merapikan simetri bilah pencarian dan tombol *"Unggah Media"*, serta menyempurnakan status unggah berkas CDN.
   - [x] **Optimasi Antarmuka Fluid Desktop & Mobile-First Touch UI (`admin.html`):**
     - **Tampilan Desktop / Laptop:** Multi-kolom lebar, split-pane layout gantt (fixed sidebar 250px + timeline), tabel data komprehensif, sidebar collapse to icon mode (72px).
     - **Tampilan Smartphone (Android & iPhone):** Table Drag Grabber Engine (`.table-responsive`), drag-to-scroll kursor grab/grabbing, target sentuh min 48px, gestur swipe touch pan, auto-center Today view, modal backdrop scroll lock (`overflow: hidden`).
