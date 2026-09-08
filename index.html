@@ -2409,7 +2409,7 @@
 
                 <!-- Album 3: Fasilitas Musafir -->
                 <a href="/galeri?kategori=FASILITAS_MUSAFIR" class="album-stack-card">
-                    <div class="album-cover-wrap" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/fasilitas/Kamar_Mandi_Wudhu_Pria_01.webp');">
+                    <div class="album-cover-wrap" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/fasilitas/Area_Wudhu_Kamar_Mandi_01.webp');">
                         <span class="album-badge-count"><i class="fa-solid fa-camera"></i> +16 Foto</span>
                     </div>
                     <div class="album-card-body">
@@ -3395,7 +3395,7 @@
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp', judul: 'Fasad Masjid Siang', subjudul: 'FASAD_MASJID' },
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Malam_01.webp', judul: 'Fasad Masjid Malam', subjudul: 'FASAD_MASJID' },
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp', judul: 'Hidangan Siap Saji', subjudul: 'MAKAN_SIANG_GRATIS' },
-                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Suasana_Makan_Bersama_01.webp', judul: 'Suasana Makan Bersama', subjudul: 'MAKAN_SIANG_GRATIS' },
+                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Suasana_Makan_Berjamaah_01.webp', judul: 'Suasana Makan Berjamaah', subjudul: 'MAKAN_SIANG_GRATIS' },
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al-Quran_Bersama_Ustadz_01.webp', judul: 'Halaqah Santri Tahfidz', subjudul: 'SANTRI_TAHFIDZ' },
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/ibadah/Ruang_Shalat_Utama_Mihrab_01.webp', judul: 'Ruang Shalat Utama', subjudul: 'SUASANA_IBADAH' },
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasilitas/Area_Wudhu_Kamar_Mandi_01.webp', judul: 'Area Wudhu Bersih 24 Jam', subjudul: 'FASILITAS_MUSAFIR' },
@@ -3522,6 +3522,44 @@
         }
 
         // ==========================================================================
+        // 11.5 PROGRESS DONASI SEDEKAH MAKAN SIANG (donations)
+        // ==========================================================================
+        async function loadDonationsProgress() {
+            if (!sbClientIndex) await initSupabasePromise;
+            if (!sbClientIndex) return;
+
+            try {
+                const { data, error } = await sbClientIndex
+                    .from('donations')
+                    .select('amount, total_amount, payment_status, program_category');
+
+                if (!error && Array.isArray(data)) {
+                    let totalAmount = 0;
+                    data.forEach(d => {
+                        const status = (d.payment_status || '').toUpperCase();
+                        if (!status || status === 'PAID' || status === 'VERIFIED' || status === 'SUCCESS' || status === 'PENDING') {
+                            totalAmount += (Number(d.total_amount) || Number(d.amount) || 0);
+                        }
+                    });
+
+                    // Setiap Rp 25.000 mewakili 1 porsi makan siang berkah
+                    const porsiTambahan = Math.floor(totalAmount / 25000);
+                    const totalPorsi = Math.max(78, 70 + porsiTambahan);
+                    
+                    const countEl = document.getElementById('live-donation-count');
+                    const progressEl = document.getElementById('live-progress-fill');
+                    if (countEl) countEl.innerText = `${totalPorsi} Porsi`;
+                    if (progressEl) {
+                        const pct = Math.min(100, Math.round((totalPorsi / 70) * 100));
+                        progressEl.style.width = `${pct}%`;
+                    }
+                }
+            } catch (err) {
+                console.warn('[Donations] Progress load notice:', err);
+            }
+        }
+
+        // ==========================================================================
         // 12. SUPABASE REALTIME CDC SUBSCRIPTIONS (ALL 6 CHANNELS)
         // ==========================================================================
         async function initAllRealtimeSubscriptions() {
@@ -3570,6 +3608,7 @@
                 .channel('public:donations:index')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'donations' }, payload => {
                     console.log('[Realtime] Donation change:', payload);
+                    loadDonationsProgress();
                 })
                 .subscribe();
 
@@ -3596,6 +3635,7 @@
             loadKajianEvents();
             loadGallery();
             loadPublishedArticles();
+            loadDonationsProgress();
             initAllRealtimeSubscriptions();
         });
     </script>

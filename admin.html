@@ -17811,6 +17811,29 @@
         // =========================================================================
         let adminHeroSlidesList = [];
 
+        function broadcastHeroSlideSync(action, slideData = null) {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const payload = { action, slideData, timestamp: Date.now() };
+                    if (typeof realtimeHub !== 'undefined' && realtimeHub) {
+                        realtimeHub.send({
+                            type: 'broadcast',
+                            event: 'HERO_SLIDE_SYNC',
+                            payload: payload
+                        });
+                    }
+                    const channel = sbClient.channel('public:homepage_media:broadcast');
+                    channel.send({
+                        type: 'broadcast',
+                        event: 'HERO_SLIDE_SYNC',
+                        payload: payload
+                    });
+                } catch (e) {
+                    console.warn('[Hero Slide] Broadcast sync exception:', e);
+                }
+            }
+        }
+
         async function loadAdminHeroSlides() {
             const container = document.getElementById('hero-slides-admin-list');
             if (!container) return;
@@ -17826,6 +17849,7 @@
                     if (!error && Array.isArray(data)) {
                         adminHeroSlidesList = data;
                         renderAdminHeroSlidesDOM();
+                        renderHomepageLivePreview();
                         return;
                     }
                 }
@@ -17839,22 +17863,24 @@
                 try {
                     adminHeroSlidesList = JSON.parse(saved);
                     renderAdminHeroSlidesDOM();
+                    renderHomepageLivePreview();
                     return;
                 } catch (e) {}
             }
             renderAdminHeroSlidesDOM();
+            renderHomepageLivePreview();
         }
 
         function renderAdminHeroSlidesDOM() {
             const container = document.getElementById('hero-slides-admin-list');
             if (!container) return;
 
-            if (adminHeroSlidesList.length === 0) {
+            if (!adminHeroSlidesList || adminHeroSlidesList.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align: center; padding: 1.5rem; background: #F9FAFB; border-radius: var(--radius-sm); border: 1px dashed var(--color-border); color: var(--color-charcoal-muted);">
-                        <i class="fa-solid fa-images" style="font-size: 1.8rem; color: #D1D5DB; margin-bottom: 0.5rem;"></i>
-                        <p style="font-weight: 600; margin-bottom: 0.25rem;">Belum ada slide hero terdaftar</p>
-                        <p style="font-size: 0.75rem;">Klik tombol "Tambah Slide Baru" di atas untuk menambahkan slide beranda.</p>
+                    <div style="text-align: center; padding: 2rem 1.5rem; background: #F9FAFB; border-radius: var(--radius-sm); border: 1px dashed var(--color-border); color: var(--color-charcoal-muted);">
+                        <i class="fa-solid fa-images" style="font-size: 2rem; color: #D1D5DB; margin-bottom: 0.5rem; display: block;"></i>
+                        <p style="font-weight: 700; margin-bottom: 0.25rem; color: var(--color-charcoal);">Belum ada slide hero terdaftar</p>
+                        <p style="font-size: 0.78rem;">Klik tombol "Tambah Slide Baru" di atas untuk menambahkan slide beranda.</p>
                     </div>
                 `;
                 return;
@@ -17863,42 +17889,52 @@
             container.innerHTML = adminHeroSlidesList.map((slide, idx) => {
                 const isActive = slide.is_active !== false;
                 const statusBadge = isActive 
-                    ? '<span class="status-badge" style="background: var(--color-success-bg); color: var(--color-success); font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">Aktif</span>'
-                    : '<span class="status-badge" style="background: #F3F4F6; color: #9CA3AF; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px;">Non-Aktif</span>';
+                    ? '<span class="status-badge" style="background: var(--color-success-bg); color: var(--color-success); font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.25rem;"><i class="fa-solid fa-circle-check" style="font-size: 0.65rem;"></i> Aktif</span>'
+                    : '<span class="status-badge" style="background: #F3F4F6; color: #9CA3AF; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.25rem;"><i class="fa-solid fa-circle-xmark" style="font-size: 0.65rem;"></i> Non-Aktif</span>';
                 
                 return `
-                    <div style="display: flex; gap: 0.75rem; align-items: center; padding: 0.75rem; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
-                        <div style="width: 75px; height: 50px; border-radius: 4px; overflow: hidden; background: #E5E7EB center / cover no-repeat; background-image: url('${slide.media_url}'); flex-shrink: 0;"></div>
+                    <div style="display: flex; gap: 0.85rem; align-items: flex-start; padding: 0.85rem 1rem; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); box-shadow: 0 1px 3px rgba(0,0,0,0.03); transition: var(--transition);" id="hero-slide-item-${escapeHtml(slide.id)}">
+                        <div style="width: 85px; height: 58px; border-radius: var(--radius-sm); overflow: hidden; background: #E5E7EB center / cover no-repeat; background-image: url('${escapeHtml(slide.media_url || '')}'); flex-shrink: 0; border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);"></div>
                         <div style="flex: 1; min-width: 0;">
-                            <div style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 2px;">
-                                <span style="font-size: 0.7rem; font-weight: 700; color: var(--color-gold-deep);">Slide #${slide.order_index || (idx + 1)}</span>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem;">
+                                <span style="font-size: 0.72rem; font-weight: 800; color: var(--color-gold-deep); background: var(--color-gold-light); padding: 0.1rem 0.45rem; border-radius: 4px; border: 1px solid var(--color-gold-border);">Slide #${escapeHtml(String(slide.order_index || (idx + 1)))}</span>
                                 ${statusBadge}
                             </div>
-                            <div style="font-size: 0.82rem; font-weight: 700; color: var(--color-charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                ${slide.judul || 'Tanpa Judul'}
+                            <div style="font-size: 0.88rem; font-weight: 700; color: var(--color-charcoal); line-height: 1.35; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                ${escapeHtml(slide.judul || 'Tanpa Judul')}
                             </div>
-                            ${slide.arabic_quote ? `<div style="font-size: 0.75rem; color: var(--color-charcoal-muted); font-family: 'Amiri', serif; direction: rtl; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">${slide.arabic_quote}</div>` : ''}
-                            <div style="font-size: 0.72rem; color: var(--color-charcoal-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                ${slide.subjudul || 'Tanpa quotes'}
+                            ${slide.arabic_quote ? `
+                                <div style="font-size: 0.85rem; color: var(--color-charcoal-muted); font-family: 'Amiri', serif; direction: rtl; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.25rem; line-height: 1.6;">
+                                    ${escapeHtml(slide.arabic_quote)}
+                                </div>
+                            ` : ''}
+                            <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.35rem;">
+                                ${escapeHtml(slide.subjudul || 'Tanpa quotes terjemahan')}
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: var(--color-charcoal-muted); background: #F9FAFB; padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; border: 1px solid #F3F4F6;">
+                                <i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--color-gold-deep); font-size: 0.65rem;"></i>
+                                <span style="font-weight: 700; color: var(--color-charcoal);">${escapeHtml(slide.action_label || 'Infaq')}</span>
+                                <span style="color: #9CA3AF;">&rarr;</span>
+                                <span style="font-family: monospace; color: var(--color-charcoal-muted);">${escapeHtml(slide.action_link || '#')}</span>
                             </div>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 0.25rem; flex-shrink: 0;">
+                        <div style="display: flex; flex-direction: column; gap: 0.35rem; flex-shrink: 0; align-items: flex-end;">
                             <div style="display: flex; gap: 0.25rem;">
-                                <button type="button" class="btn btn-outline btn-sm" style="padding: 0.2rem 0.4rem; font-size: 0.72rem;" onclick="openHeroSlideModal('${slide.id}')" title="Edit Slide">
+                                <button type="button" class="btn btn-outline btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="openHeroSlideModal('${escapeHtml(slide.id)}')" title="Edit Slide">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline btn-sm" style="padding: 0.2rem 0.4rem; font-size: 0.72rem; color: ${isActive ? '#9CA3AF' : 'var(--color-success)'};" onclick="toggleHeroSlideActive('${slide.id}', ${isActive})" title="${isActive ? 'Nonaktifkan' : 'Aktifkan'}">
+                                <button type="button" class="btn btn-outline btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.72rem; color: ${isActive ? '#6B7280' : 'var(--color-success)'};" onclick="toggleHeroSlideActive('${escapeHtml(slide.id)}', ${isActive})" title="${isActive ? 'Nonaktifkan Slide' : 'Aktifkan Slide'}">
                                     <i class="fa-solid ${isActive ? 'fa-eye-slash' : 'fa-eye'}"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline btn-sm" style="padding: 0.2rem 0.4rem; font-size: 0.72rem; color: var(--color-danger); border-color: #FECACA;" onclick="deleteHeroSlide('${slide.id}')" title="Hapus Slide">
+                                <button type="button" class="btn btn-outline btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.72rem; color: var(--color-danger); border-color: #FECACA;" onclick="deleteHeroSlide('${escapeHtml(slide.id)}')" title="Hapus Slide">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
-                            <div style="display: flex; gap: 0.25rem; justify-content: flex-end;">
-                                <button type="button" class="btn btn-outline btn-sm" style="padding: 0.15rem 0.35rem; font-size: 0.65rem;" onclick="moveHeroSlideOrder('${slide.id}', -1)" title="Pindah Naik" ${idx === 0 ? 'disabled' : ''}>
+                            <div style="display: flex; gap: 0.25rem;">
+                                <button type="button" class="btn btn-outline btn-sm" style="padding: 0.2rem 0.4rem; font-size: 0.68rem;" onclick="moveHeroSlideOrder('${escapeHtml(slide.id)}', -1)" title="Pindah Urutan ke Atas" ${idx === 0 ? 'disabled' : ''}>
                                     <i class="fa-solid fa-arrow-up"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline btn-sm" style="padding: 0.15rem 0.35rem; font-size: 0.65rem;" onclick="moveHeroSlideOrder('${slide.id}', 1)" title="Pindah Turun" ${idx === adminHeroSlidesList.length - 1 ? 'disabled' : ''}>
+                                <button type="button" class="btn btn-outline btn-sm" style="padding: 0.2rem 0.4rem; font-size: 0.68rem;" onclick="moveHeroSlideOrder('${escapeHtml(slide.id)}', 1)" title="Pindah Urutan ke Bawah" ${idx === adminHeroSlidesList.length - 1 ? 'disabled' : ''}>
                                     <i class="fa-solid fa-arrow-down"></i>
                                 </button>
                             </div>
@@ -17971,15 +18007,15 @@
             event.preventDefault();
             const btn = document.getElementById('btn-save-hero-slide');
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan ke Supabase...';
             btn.disabled = true;
 
-            const id = document.getElementById('hero-slide-id').value;
+            const id = document.getElementById('hero-slide-id').value.trim();
             const mediaUrl = document.getElementById('hero-slide-media-url').value.trim();
             const judul = document.getElementById('hero-slide-judul').value.trim();
             const arabicQuote = document.getElementById('hero-slide-arabic').value.trim();
             const subjudul = document.getElementById('hero-slide-subjudul').value.trim();
-            const actionLabel = document.getElementById('hero-slide-cta-label').value.trim();
+            const actionLabel = document.getElementById('hero-slide-cta-label').value.trim() || 'Infaq Makan Siang';
             const actionLink = document.getElementById('hero-slide-cta-link').value.trim() || '#program-filantropi';
             const orderIndex = parseInt(document.getElementById('hero-slide-order').value, 10) || 1;
             const isActive = document.getElementById('hero-slide-active').checked;
@@ -17996,27 +18032,34 @@
                 kategori: 'BANNER_HERO',
                 media_type: 'IMAGE',
                 status_review: 'APPROVED',
-                reviewer_name: getUserDisplayName(currentUser)
+                reviewer_name: typeof getUserDisplayName === 'function' ? getUserDisplayName(currentUser) : 'Pengurus DKM',
+                updated_at: new Date().toISOString()
             };
-
-            if (id) {
-                slidePayload.id = id;
-            }
 
             try {
                 if (typeof sbClient !== 'undefined' && sbClient) {
-                    const { error } = await sbClient
-                        .from('homepage_media')
-                        .upsert([slidePayload]);
-
-                    if (error) throw error;
+                    if (id) {
+                        const { error } = await sbClient
+                            .from('homepage_media')
+                            .update(slidePayload)
+                            .eq('id', id);
+                        if (error) throw error;
+                    } else {
+                        const { error } = await sbClient
+                            .from('homepage_media')
+                            .insert([slidePayload]);
+                        if (error) throw error;
+                    }
                 }
+
                 closeModal('modal-hero-slide');
                 await loadAdminHeroSlides();
-                alert('Slide hero berhasil disimpan dan disinkronisasikan ke beranda!');
+                renderHomepageLivePreview();
+                broadcastHeroSlideSync(id ? 'UPDATE' : 'INSERT', slidePayload);
+                alert('Slide banner hero berhasil disimpan dan disinkronisasikan ke beranda publik secara realtime!');
             } catch (err) {
                 console.error('[Hero Slide] Save error:', err);
-                alert('Gagal menyimpan slide: ' + (err.message || 'Terjadi kesalahan sistem'));
+                alert('Gagal menyimpan slide banner: ' + (err.message || 'Terjadi kesalahan sistem'));
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -18024,17 +18067,20 @@
         }
 
         async function deleteHeroSlide(slideId) {
-            if (!confirm('Apakah Anda yakin ingin menghapus slide banner hero ini?')) return;
+            if (!confirm('Apakah Anda yakin ingin menghapus slide banner hero ini dari database dan beranda publik?')) return;
             try {
                 if (typeof sbClient !== 'undefined' && sbClient) {
-                    await sbClient.from('homepage_media').delete().eq('id', slideId);
+                    const { error } = await sbClient.from('homepage_media').delete().eq('id', slideId);
+                    if (error) throw error;
                 }
                 adminHeroSlidesList = adminHeroSlidesList.filter(s => s.id !== slideId);
                 renderAdminHeroSlidesDOM();
-                alert('Slide berhasil dihapus.');
+                renderHomepageLivePreview();
+                broadcastHeroSlideSync('DELETE', { id: slideId });
+                alert('Slide banner hero berhasil dihapus.');
             } catch (err) {
                 console.error('[Hero Slide] Delete error:', err);
-                alert('Gagal menghapus slide: ' + err.message);
+                alert('Gagal menghapus slide banner: ' + err.message);
             }
         }
 
@@ -18042,16 +18088,20 @@
             try {
                 const newStatus = !currentStatus;
                 if (typeof sbClient !== 'undefined' && sbClient) {
-                    await sbClient
+                    const { error } = await sbClient
                         .from('homepage_media')
-                        .update({ is_active: newStatus })
+                        .update({ is_active: newStatus, updated_at: new Date().toISOString() })
                         .eq('id', slideId);
+                    if (error) throw error;
                 }
                 const item = adminHeroSlidesList.find(s => s.id === slideId);
                 if (item) item.is_active = newStatus;
                 renderAdminHeroSlidesDOM();
+                renderHomepageLivePreview();
+                broadcastHeroSlideSync('TOGGLE', { id: slideId, is_active: newStatus });
             } catch (err) {
                 console.error('[Hero Slide] Toggle error:', err);
+                alert('Gagal memperbarui status aktif: ' + err.message);
             }
         }
 
@@ -18070,14 +18120,18 @@
 
             try {
                 if (typeof sbClient !== 'undefined' && sbClient) {
-                    await sbClient.from('homepage_media').upsert([
-                        { id: itemA.id, order_index: itemA.order_index },
-                        { id: itemB.id, order_index: itemB.order_index }
+                    const { error } = await sbClient.from('homepage_media').upsert([
+                        { id: itemA.id, order_index: itemA.order_index, updated_at: new Date().toISOString() },
+                        { id: itemB.id, order_index: itemB.order_index, updated_at: new Date().toISOString() }
                     ]);
+                    if (error) throw error;
                 }
                 await loadAdminHeroSlides();
+                renderHomepageLivePreview();
+                broadcastHeroSlideSync('REORDER', { itemAId: itemA.id, itemBId: itemB.id });
             } catch (err) {
                 console.error('[Hero Slide] Reorder error:', err);
+                alert('Gagal memindahkan urutan slide: ' + err.message);
             }
         }
 
@@ -18151,12 +18205,17 @@
         }
 
         function renderHomepageLivePreview() {
-            const badge = document.getElementById('builder-hero-badge')?.value || DEFAULT_HOMEPAGE_CONFIG.heroBadge;
-            const title = document.getElementById('builder-hero-title')?.value || DEFAULT_HOMEPAGE_CONFIG.heroTitle;
-            const arabic = document.getElementById('builder-hero-arabic')?.value || DEFAULT_HOMEPAGE_CONFIG.heroArabic;
-            const sub = document.getElementById('builder-hero-subtitle')?.value || DEFAULT_HOMEPAGE_CONFIG.heroSubtitle;
-            const cta1 = document.getElementById('builder-hero-cta1-text')?.value || DEFAULT_HOMEPAGE_CONFIG.heroCta1Text;
+            const activeSlides = (adminHeroSlidesList || []).filter(s => s.is_active !== false);
+            const heroSlide = activeSlides.length > 0 ? activeSlides[0] : null;
+
+            const badge = 'Masjid Musafir Sophia Jatiwarna';
+            const title = heroSlide ? heroSlide.judul : (document.getElementById('builder-hero-title')?.value || DEFAULT_HOMEPAGE_CONFIG.heroTitle);
+            const arabic = heroSlide ? (heroSlide.arabic_quote || '') : (document.getElementById('builder-hero-arabic')?.value || DEFAULT_HOMEPAGE_CONFIG.heroArabic);
+            const sub = heroSlide ? (heroSlide.subjudul || '') : (document.getElementById('builder-hero-subtitle')?.value || DEFAULT_HOMEPAGE_CONFIG.heroSubtitle);
+            const cta1 = heroSlide ? (heroSlide.action_label || 'Infaq Makan Siang') : (document.getElementById('builder-hero-cta1-text')?.value || DEFAULT_HOMEPAGE_CONFIG.heroCta1Text);
+            const cta1Link = heroSlide ? (heroSlide.action_link || '#program-filantropi') : (document.getElementById('builder-hero-cta1-url')?.value || DEFAULT_HOMEPAGE_CONFIG.heroCta1Url);
             const cta2 = document.getElementById('builder-hero-cta2-text')?.value || DEFAULT_HOMEPAGE_CONFIG.heroCta2Text;
+            const mediaUrl = heroSlide ? heroSlide.media_url : 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp';
 
             const s1v = document.getElementById('builder-stat1-val')?.value || DEFAULT_HOMEPAGE_CONFIG.stat1Val;
             const s1l = document.getElementById('builder-stat1-lbl')?.value || DEFAULT_HOMEPAGE_CONFIG.stat1Lbl;
@@ -18165,6 +18224,7 @@
             const s3v = document.getElementById('builder-stat3-val')?.value || DEFAULT_HOMEPAGE_CONFIG.stat3Val;
             const s3l = document.getElementById('builder-stat3-lbl')?.value || DEFAULT_HOMEPAGE_CONFIG.stat3Lbl;
 
+            const pMockup = document.querySelector('.builder-hero-mockup');
             const pBadge = document.getElementById('prev-hero-badge');
             const pTitle = document.getElementById('prev-hero-title');
             const pArabic = document.getElementById('prev-hero-arabic');
@@ -18172,35 +18232,51 @@
             const pCta1 = document.getElementById('prev-cta1');
             const pCta2 = document.getElementById('prev-cta2');
 
-            if (pBadge) pBadge.innerText = badge;
+            if (pMockup && mediaUrl) {
+                pMockup.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65)), url('${mediaUrl}')`;
+                pMockup.style.backgroundSize = 'cover';
+                pMockup.style.backgroundPosition = 'center';
+                pMockup.style.color = '#FFFFFF';
+            }
+
+            if (pBadge) pBadge.textContent = badge;
             if (pTitle) {
                 const words = title.split(' ');
                 if (words.length > 2) {
                     const lastWords = words.slice(-2).join(' ');
                     const firstWords = words.slice(0, -2).join(' ');
-                    pTitle.innerHTML = firstWords + ' <span style="color: var(--color-gold-deep);">' + lastWords + '</span>';
+                    pTitle.innerHTML = escapeHtml(firstWords) + ' <span style="color: var(--color-gold-deep);">' + escapeHtml(lastWords) + '</span>';
                 } else {
-                    pTitle.innerText = title;
+                    pTitle.textContent = title;
                 }
             }
-            if (pArabic) pArabic.innerText = arabic;
-            if (pSub) pSub.innerText = sub;
-            if (pCta1) pCta1.innerText = cta1;
-            if (pCta2) pCta2.innerText = cta2;
+            if (pArabic) {
+                pArabic.textContent = arabic;
+                pArabic.style.display = arabic ? 'block' : 'none';
+                pArabic.style.fontFamily = "'Amiri', serif";
+                pArabic.style.direction = 'rtl';
+                pArabic.style.textAlign = 'right';
+            }
+            if (pSub) pSub.textContent = sub;
+            if (pCta1) {
+                pCta1.textContent = cta1;
+                pCta1.onclick = () => { if (cta1Link) window.open(cta1Link, '_blank'); };
+            }
+            if (pCta2) pCta2.textContent = cta2;
 
-            if (document.getElementById('prev-stat1-val')) document.getElementById('prev-stat1-val').innerText = s1v;
-            if (document.getElementById('prev-stat1-lbl')) document.getElementById('prev-stat1-lbl').innerText = s1l;
-            if (document.getElementById('prev-stat2-val')) document.getElementById('prev-stat2-val').innerText = s2v;
-            if (document.getElementById('prev-stat2-lbl')) document.getElementById('prev-stat2-lbl').innerText = s2l;
-            if (document.getElementById('prev-stat3-val')) document.getElementById('prev-stat3-val').innerText = s3v;
-            if (document.getElementById('prev-stat3-lbl')) document.getElementById('prev-stat3-lbl').innerText = s3l;
+            if (document.getElementById('prev-stat1-val')) document.getElementById('prev-stat1-val').textContent = s1v;
+            if (document.getElementById('prev-stat1-lbl')) document.getElementById('prev-stat1-lbl').textContent = s1l;
+            if (document.getElementById('prev-stat2-val')) document.getElementById('prev-stat2-val').textContent = s2v;
+            if (document.getElementById('prev-stat2-lbl')) document.getElementById('prev-stat2-lbl').textContent = s2l;
+            if (document.getElementById('prev-stat3-val')) document.getElementById('prev-stat3-val').textContent = s3v;
+            if (document.getElementById('prev-stat3-lbl')) document.getElementById('prev-stat3-lbl').textContent = s3l;
 
             // Section Toggles
-            const secPrayer = document.getElementById('toggle-sec-prayer')?.checked;
-            const secOfficers = document.getElementById('toggle-sec-officers')?.checked;
-            const secPhilanthropy = document.getElementById('toggle-sec-philanthropy')?.checked;
-            const secMusafir = document.getElementById('toggle-sec-musafir')?.checked;
-            const secNews = document.getElementById('toggle-sec-news')?.checked;
+            const secPrayer = document.getElementById('toggle-sec-prayer')?.checked !== false;
+            const secOfficers = document.getElementById('toggle-sec-officers')?.checked !== false;
+            const secPhilanthropy = document.getElementById('toggle-sec-philanthropy')?.checked !== false;
+            const secMusafir = document.getElementById('toggle-sec-musafir')?.checked !== false;
+            const secNews = document.getElementById('toggle-sec-news')?.checked !== false;
 
             if (document.getElementById('prev-sec-prayer')) document.getElementById('prev-sec-prayer').style.display = secPrayer ? 'block' : 'none';
             if (document.getElementById('prev-sec-officers')) document.getElementById('prev-sec-officers').style.display = secOfficers ? 'block' : 'none';
@@ -18259,13 +18335,13 @@
                         id: '00000000-0000-0000-0000-000000000001',
                         judul: 'HOMEPAGE_CONFIG_MASTER',
                         subjudul: config.heroTitle,
-                        kategori: 'BANNER_HERO',
+                        kategori: 'HOMEPAGE_CONFIG',
                         media_url: 'config',
                         media_type: 'CONFIG_JSON',
                         action_link: JSON.stringify(config),
                         is_active: true,
                         status_review: 'APPROVED',
-                        reviewer_name: getUserDisplayName(currentUser)
+                        reviewer_name: typeof getUserDisplayName === 'function' ? getUserDisplayName(currentUser) : 'Pengurus DKM'
                     }], { onConflict: 'id' });
                 } catch (e) {
                     console.warn('Supabase homepage config save exception:', e);
