@@ -617,6 +617,54 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .mobile-menu-btn {
+            display: none;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            align-items: center;
+            justify-content: center;
+            color: var(--color-charcoal);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .mobile-category-select-wrapper {
+            display: none;
+            width: 100%;
+            margin-top: 0.75rem;
+        }
+
+        .mobile-category-dropdown {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #FFFFFF;
+            border: 1.5px solid var(--color-gold-deep);
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--color-charcoal);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            outline: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 640px) {
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            .filter-pills {
+                display: none !important;
+            }
+            .mobile-category-select-wrapper {
+                display: block !important;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -665,9 +713,14 @@
                     <li><a href="/artikel" class="nav-link active">Warta Masjid</a></li>
                 </ul>
 
-                <a href="/#program-filantropi" class="btn-cta-donasi">
-                    <i class="fa-solid fa-hand-holding-heart"></i> Infaq Donasi
-                </a>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <a href="/#program-filantropi" class="btn-cta-donasi">
+                        <i class="fa-solid fa-hand-holding-heart"></i> Infaq Donasi
+                    </a>
+                    <button class="mobile-menu-btn" onclick="window.location.href='/'" aria-label="Kembali ke Beranda">
+                        <i class="fa-solid fa-house"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -699,10 +752,23 @@
                 <div class="filter-pills">
                     <button class="filter-pill active" onclick="setArticleCategory('ALL', this)">Semua Warta</button>
                     <button class="filter-pill" onclick="setArticleCategory('Layanan Musafir', this)">Layanan Musafir</button>
-                    <button class="filter-pill" onclick="setArticleCategory('Sedekah Makan', this)">Sedekah Makan</button>
+                    <button class="filter-pill" onclick="setArticleCategory('Sedekah Makan', this)">Makan Berjamaah Gratis</button>
                     <button class="filter-pill" onclick="setArticleCategory('Santri Tahfidz', this)">Santri Tahfidz</button>
                     <button class="filter-pill" onclick="setArticleCategory('Kajian & Acara', this)">Kajian &amp; Acara</button>
                     <button class="filter-pill" onclick="setArticleCategory('Panduan Ibadah', this)">Panduan Ibadah</button>
+                </div>
+
+                <!-- Dropdown Kategori Khusus Mode Ponsel (Fluid Adaptive <= 640px) -->
+                <div class="mobile-category-select-wrapper">
+                    <label for="mobile-article-cat-select" class="sr-only">Pilih Kategori Warta</label>
+                    <select id="mobile-article-cat-select" class="mobile-category-dropdown" onchange="setArticleCategory(this.value)">
+                        <option value="ALL">Semua Warta &amp; Catatan Dakwah</option>
+                        <option value="Layanan Musafir">Layanan Musafir 24 Jam</option>
+                        <option value="Sedekah Makan">Makan Berjamaah Gratis</option>
+                        <option value="Santri Tahfidz">Pembinaan Santri Tahfidz</option>
+                        <option value="Kajian & Acara">Majelis Kajian &amp; Acara</option>
+                        <option value="Panduan Ibadah">Panduan Ibadah &amp; Shalat</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -745,7 +811,7 @@
                         <li><a href="/">Beranda Utama</a></li>
                         <li><a href="/#jadwal-shalat">Jadwal Shalat Kemenag</a></li>
                         <li><a href="/#agenda-kajian">Agenda Majelis Kajian</a></li>
-                        <li><a href="/#program-filantropi">Sedekah Makan Dzuhur</a></li>
+                        <li><a href="/#program-filantropi">Makan Berjamaah Gratis</a></li>
                         <li><a href="/#layanan-musafir">Layanan Musafir 24 Jam</a></li>
                         <li><a href="/galeri">Galeri Dokumentasi</a></li>
                         <li><a href="/artikel">Warta Dakwah</a></li>
@@ -843,7 +909,7 @@
                 },
                 {
                     slug: 'dokumentasi-penyaluran-sedekah-makan-dzuhur',
-                    title: 'Dokumentasi Penyaluran Sedekah Makan Dzuhur Jamaah & Musafir',
+                    title: 'Dokumentasi Penyaluran Makan Berjamaah Gratis Jamaah & Musafir',
                     category: 'Sedekah Makan',
                     thumbnail_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp',
                     author_name: 'Tim Relawan Dapur',

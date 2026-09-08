@@ -914,10 +914,10 @@
                 <span class="metric-label">Progres Total</span>
                 <div class="metric-icon"><i class="fa-solid fa-chart-line"></i></div>
             </div>
-            <div class="metric-value" id="overall-progress-text">88%</div>
+            <div class="metric-value" id="overall-progress-text">94%</div>
             <div class="metric-subtext">Web Publik & 11 Modul Realtime Live</div>
             <div class="progress-track">
-                <div class="progress-bar-inner" id="overall-progress-bar" style="width: 88%;"></div>
+                <div class="progress-bar-inner" id="overall-progress-bar" style="width: 94%;"></div>
             </div>
         </div>
 
@@ -926,10 +926,10 @@
                 <span class="metric-label">Tugas Selesai</span>
                 <div class="metric-icon"><i class="fa-solid fa-list-check"></i></div>
             </div>
-            <div class="metric-value" id="tasks-count-text">30 / 34</div>
+            <div class="metric-value" id="tasks-count-text">39 / 41</div>
             <div class="metric-subtext">Tugas tervalidasi aktif</div>
             <div class="progress-track">
-                <div class="progress-bar-inner" style="width: 88%;"></div>
+                <div class="progress-bar-inner" style="width: 94%;"></div>
             </div>
         </div>
 
@@ -1478,14 +1478,14 @@
         <div class="phase-card" id="card-fase-4">
             <div class="phase-header" onclick="togglePhase('card-fase-4')">
                 <div class="phase-title-group">
-                    <div class="phase-badge in-progress">4</div>
+                    <div class="phase-badge done"><i class="fa-solid fa-check"></i></div>
                     <div class="phase-name">
                         <h3>Fase 4: Dashboard Admin DKM & Manajemen Operasional Pengurus</h3>
                         <p>Papan tugas 5 tampilan, obrolan realtime, pengelola konten, pembukuan kas, dan suite modul kerja tiap divisi</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-inprogress">50% Selesai</span>
+                    <span class="status-tag status-done">Selesai (100%)</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
@@ -1958,6 +1958,61 @@
                                 <span class="task-badge-pill">PDF Export</span>
                             </div>
                             <div class="task-desc">Fungsi exportKinerjaPDF() menggunakan jsPDF v2.5.1 lazy-load — landscape A4, KPI global, tabel ringkasan per PIC, daftar tugas aktif per divisi, header/footer brand Sophia. Terhubung langsung ke data Supabase live via getFilteredTasks().</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-group: 21 Poin Perbaikan Sistem (v5.8) -->
+                    <div style="margin: 0.75rem 0 0.35rem 0; padding: 0.35rem 0.65rem; background: var(--color-gold-light); border-left: 3px solid var(--color-gold-deep); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 700; color: #785800;">
+                        <i class="fa-solid fa-wrench" style="color: var(--color-gold-deep);"></i> Penyelesaian Komprehensif 21 Poin Perbaikan Sistem (v5.8 - Selesai 100%)
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pemulihan Tag Penutup Modal &amp; 5 Formulir Dialog Lengkap
+                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                            </div>
+                            <div class="task-desc">Penutupan tag div unclosed pada modal preview cover dan pengembalian markup 5 formulir modal CRUD: Dapur Makan Berjamaah Gratis, Registri Aset, Riwayat Servis, Data Santri, dan Mutaba'ah Hafalan.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Pengamanan Sesi Antar-Role &amp; Penghapusan Hash URL Logout
+                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                            </div>
+                            <div class="task-desc">Pembersihan total session hash URL (#logistik dll.) dan local storage saat logout, serta pemasangan strict role gate pada tab Galeri Media untuk mencegah kebocoran modul antar akun.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Serverless Endpoint Penghapusan CDN ImageKit (/api/imagekit-delete)
+                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                            </div>
+                            <div class="task-desc">Serverless relay Vercel dengan proteksi IMAGEKIT_PRIVATE_KEY untuk menghapus berkas fisik di CDN saat media dihapus oleh pengurus di admin panel.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Standardisasi Nomenklatur Resmi "Makan Berjamaah Gratis"
+                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                            </div>
+                            <div class="task-desc">Standardisasi sebutan program di seluruh basis kode proyek, basis data Supabase, dan dokumen perencanaan dari istilah tidak resmi 'Sedekah Makan Dzuhur'.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Adaptasi Fluid Mobile-First (Dropdown Kategori &amp; Proteksi Logo)
+                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                            </div>
+                            <div class="task-desc">Dropdown kategori dinamis fluid di galeri.html &amp; artikel.html pada layar smartphone, tombol navigasi Home pada mobile navbar warta, dan proteksi logo Masjid Sophia agar tidak terpotong.</div>
                         </div>
                     </div>
                 </div>

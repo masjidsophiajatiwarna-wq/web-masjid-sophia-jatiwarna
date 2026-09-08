@@ -7,8 +7,8 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v5.7 (Pembaruan Menyeluruh Beranda Publik Standar Istiqlal, Pipeline Batch Optimizer ImageKit WebP, dan Realtime CDC 6-Channel)  
-**Terakhir Diperbarui:** 2026-09-08  
+**Versi Rencana Induk:** v5.8 (Penyelesaian Komprehensif 21 Poin Perbaikan Tata Kelola Modal, Sesi Antar-Role, Realtime CDC, Standarisasi Nomenklatur, dan Mobile Layout)  
+**Terakhir Diperbarui:** 2026-09-09  
 
 ---
 
@@ -19,7 +19,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 1. **Layanan Informasi & Filantropi Terbuka untuk Publik (Benchmark: Masjid Istiqlal Jakarta & Web-UMAR Artikel):**
    - Portal umat & musafir mandiri bertema terang (*Pure White*, *Soft Cream Sand*, *Charcoal*, dan *Sophia Gold*).
    - Hisab jadwal shalat presisi lokal Kemenag Jatiwarna dengan *Live Countdown Timer*.
-   - Program Sedekah Makan Dzuhur (70+ porsi/hari) & Pembinaan Santri Tahfidz.
+   - Program Makan Berjamaah Gratis (70+ porsi/hari) & Pembinaan Santri Tahfidz.
    - Kanal Donasi 1-Click Copy Rekening BSI `7235464297` & QRIS SEDEKAH MAKAN (NMID `ID2025401816769`).
    - Direktori Berita & Artikel Dakwah (`artikel.html` & `artikel-detail.html`) dengan pencarian instan, filter kategori, estimasi waktu baca, dan tombol share.
    - Galeri Multimedia (`galeri.html`) terhubung ke ImageKit CDN 20GB.
@@ -384,3 +384,32 @@ Berikut adalah modul coaching langkah-demi-langkah yang akan dipandu secara inte
 | `Plus Jakarta Sans` / `Inter` | Standar | Google Fonts | Tipografi antarmuka modern |
 | `Amiri` | Standar | Google Fonts | Tipografi ayat Al-Qur'an, hadits, dan doa Arab |
 | `Font Awesome` | `6.5.1` | CDNjs | Sistem ikon vektor monokrom (Strict No-Emoji) |
+
+---
+
+## 6. Matriks Verifikasi 21 Poin Perbaikan Sistem (v5.8 - Status: 100% Selesai)
+
+| No | Poin Masalah / Perbaikan | Komponen / Modul | Status Teknis & Solusi |
+| :---: | :--- | :--- | :--- |
+| 1 | Modal dialog saling menumpuk / backdrop lumpuh | `admin.html` (`#modal-cover-preview`) | **SELESAI** — Menutup tag `</div>` unclosed pada baris 7558. Seluruh modal pulih. |
+| 2 | Error console modal Dapur, Aset, Santri, Mutaba'ah | `admin.html` (5 modal markup) | **SELESAI** — Menginjeksi 5 modal form lengkap: `#modal-dapur-entry`, `#modal-asset-entry`, `#modal-asset-service`, `#modal-santri-entry`, `#modal-mutabaah-entry`. |
+| 3 | Reorder hero slide error NOT NULL on 'judul' | `admin.html` (`moveHeroSlide`) | **SELESAI** — Mengganti klausa upsert parsial dengan 2 update atomik berbasis ID. |
+| 4 | Unggah langsung ImageKit pada modal Hero Slide | `admin.html` (`#modal-hero-slide`) | **SELESAI** — Tombol unggah ImageKit WebP langsung di modal slide tanpa buka galeri dulu. |
+| 5 | Perubahan nama menu sidebar Galeri Media | `admin.html` (`.sidebar-nav`) | **SELESAI** — Mengganti teks 'Galeri Media & WebP' menjadi 'Galeri Media'. |
+| 6 | Kunci penutupan backdrop modal (klik luar) | `admin.html` (`closeModalOnBackdrop`) | **SELESAI** — Backdrop dismiss dinonaktifkan; modal hanya ditutup via tombol X atau Batal. |
+| 7 | Kontras tombol Buka Tab Baru pada preview foto | `admin.html` (`#cover-modal-open-tab`) | **SELESAI** — Menerapkan gaya kontras gelap elegan (`#1D1D1B`, teks `#FFFFFF`). |
+| 8 | Logo Masjid Sophia terpotong pada mobile | `index.html` (Navbar CSS) | **SELESAI** — Proteksi CSS `max-height: 40px`, `object-fit: contain`, dan padding terukur. |
+| 9 | Filter kategori galeri merusak layout mobile | `galeri.html` (Filter Bar) | **SELESAI** — Dropdown seleksi fluid adaptif aktif pada layar $\le$ 640px. |
+| 10 | Tombol Home tidak ada di navbar mobile artikel | `artikel.html`, `artikel-detail.html` | **SELESAI** — Tombol ikon Beranda (`fa-house`) disuntikkan di bilah navbar mobile. |
+| 11 | Live preview builder mentah / tidak realistis | `admin.html` (`#builder-preview-screen`) | **SELESAI** — Rombak ke high-fidelity showcase dengan jadwal shalat, mini sedekah makan, dan warta. |
+| 12 | Super Admin Task Management terlihat kosong | `admin.html` (`initAdminApp`) | **SELESAI** — Default filter divisi Super Admin dan Ketua DKM diset ke `'ALL'`. |
+| 13 | Tombol Ajukan Izin / Cuti tidak dapat diklik | `admin.html` (`#modal-leave-request`) | **SELESAI** — Pulih normal seiring perbaikan penutupan tag modal dialog. |
+| 14 | Gambar terhapus di admin belum terhapus di CDN | `api/imagekit-delete.js`, `admin.html` | **SELESAI** — Serverless endpoint Vercel relay ke REST API resmi ImageKit CDN. |
+| 15 | Menu Galeri persisten saat logout & login role lain | `admin.html` (`handleLogout`, `switchTab`) | **SELESAI** — Hapus session hash URL (`#logistik`) dan pasang strict role gate pada tab gallery. |
+| 16 | Standardisasi Nomenklatur Makan Berjamaah Gratis | Universal (HTML, JS, DB, Dokumen) | **SELESAI** — Seluruh istilah 'Sedekah Makan Dzuhur' diganti menjadi 'Makan Berjamaah Gratis'. |
+| 17 | Sinkronisasi Supabase Realtime CDC modul PJ | Supabase DB & `admin.html` | **SELESAI** — Replikasi CDC aktif di `media_library`, fungsi delete periksa error Supabase. |
+| 18 | Tombol Catat Sesi Dapur & Edit Log Dapur | `admin.html` (`openDapurModal`) | **SELESAI** — Formulir `#modal-dapur-entry` aktif penuh untuk catat dan edit log dapur. |
+| 19 | Tombol Tambah Aset, Servis & Edit Barang | `admin.html` (`openAssetModal`, `openServiceModal`) | **SELESAI** — Modal registrasi aset dan riwayat servis berfungsi penuh. |
+| 20 | Tombol Registrasi Santri Baru & Edit Profil | `admin.html` (`openSantriModal`) | **SELESAI** — Modal data santri aktif penuh dengan validasi form. |
+| 21 | Tombol Input Setoran Hafalan & +Setor Khatam | `admin.html` (`openMutabaahModal`) | **SELESAI** — Modal pencatatan mutaba'ah hafalan aktif dan tersinkronisasi ke DB. |
+

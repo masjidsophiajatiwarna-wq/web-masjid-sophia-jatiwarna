@@ -1929,6 +1929,34 @@
                 gap: 1rem;
             }
         }
+
+        /* Proteksi Logo Mobile agar tidak terpotong */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.6rem 0;
+            }
+            .brand-logo {
+                gap: 0.5rem;
+                max-width: 80%;
+            }
+            .brand-logo-img {
+                height: 38px;
+                flex-shrink: 0;
+            }
+            .brand-logo-text h1 {
+                font-size: 1.05rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .brand-logo-text p {
+                font-size: 0.65rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
     </style>
 
     <!-- Supabase JS Client v2 CDN -->
@@ -1965,8 +1993,9 @@
 
     <!-- Main Navigation Bar (Sticky) -->
     <header class="main-header">
-        <div class="container navbar">
-            <a href="#beranda" class="brand-logo">
+        <div class="container">
+            <div class="navbar">
+                <a href="#beranda" class="brand-logo">
                 <img src="asset/logo/svg/logo_masjid_black.svg" alt="Logo Masjid Sophia" class="brand-logo-img">
                 <div class="brand-logo-text">
                     <h1>Masjid Sophia</h1>
@@ -2011,7 +2040,7 @@
             <li><a href="#beranda" onclick="closeMobileDrawer()"><i class="fa-solid fa-house"></i> Beranda</a></li>
             <li><a href="#jadwal-shalat" onclick="closeMobileDrawer()"><i class="fa-solid fa-clock"></i> Jadwal Shalat Presisi</a></li>
             <li><a href="#agenda-kajian" onclick="closeMobileDrawer()"><i class="fa-solid fa-book-open-reader"></i> Majelis Kajian</a></li>
-            <li><a href="#program-filantropi" onclick="closeMobileDrawer()"><i class="fa-solid fa-bowl-food"></i> Sedekah Makan Dzuhur</a></li>
+            <li><a href="#program-filantropi" onclick="closeMobileDrawer()"><i class="fa-solid fa-bowl-food"></i> Makan Berjamaah Gratis</a></li>
             <li><a href="#layanan-musafir" onclick="closeMobileDrawer()"><i class="fa-solid fa-person-shelter"></i> Fasilitas 24 Jam</a></li>
             <li><a href="/galeri" onclick="closeMobileDrawer()"><i class="fa-solid fa-images"></i> Galeri Dokumentasi</a></li>
             <li><a href="/artikel" onclick="closeMobileDrawer()"><i class="fa-solid fa-newspaper"></i> Warta Dakwah</a></li>

@@ -4,6 +4,60 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.22] - 2026-09-09
+
+### Penyelesaian Komprehensif 21 Poin Perbaikan: Tata Kelola Modal Dialog, RBAC, Realtime CDC Supabase, Serverless CDN ImageKit, Standardisasi Nomenklatur, dan Fluid Mobile
+
+#### Perbaikan Bug Kritis & Pemulihan DOM (Critical Bug Fixes & DOM Restorations)
+- `[MODAL_TAG_CLOSURE]` Memperbaiki sintaks tag penutup `</div>` yang hilang pada `#modal-cover-preview` di `admin.html`:
+  - Mengatasi malfungsi penumpukan backdrop modal di mana seluruh jendela dialog sistem saling menindih atau tidak responsif saat diklik.
+  - Memulihkan fungsionalitas tombol "Ajukan Izin / Cuti Pengurus", tombol edit slider, dan modal modul lainnya.
+- `[MODAL_CRUD_INJECTION]` Menyuntikkan kembali 5 markup modal HTML operasional yang hilang pada `admin.html`:
+  - `#modal-dapur-entry` (Pencatatan Sesi Dapur Makan Berjamaah Gratis).
+  - `#modal-asset-entry` (Registrasi & Pembaruan Aset Inventaris Masjid).
+  - `#modal-asset-service` (Pencatatan Riwayat Servis & Perawatan Aset).
+  - `#modal-santri-entry` (Pendaftaran & Edit Profil Santri Tahfidz).
+  - `#modal-mutabaah-entry` (Pencatatan Setoran Hafalan Qur'an / Mutaba'ah Santri).
+  - Mengeliminasi secara permanen error konsol JavaScript: `Cannot read properties of null (reading 'reset' / setting 'value')`.
+- `[BACKDROP_DISMISS_LOCK]` Menonaktifkan penutupan modal via klik latar belakang (backdrop dismiss) pada `closeModalOnBackdrop`:
+  - Seluruh modal sistem kini hanya dapat ditutup melalui tombol 'X' (tutup) atau tombol 'Batal' eksplisit untuk mencegah kehilangan data akibat ketidaksengajaan klik.
+- `[GALLERY_PREVIEW_CONTRAST]` Memperbaiki visibilitas tombol "Buka Tab Baru" (`#cover-modal-open-tab`) pada modal pratinjau foto galeri:
+  - Menerapkan kontras gelap elegan (`background: #1D1D1B`, `color: #FFFFFF`) sehingga terlihat jelas di atas backdrop foto.
+- `[HERO_DIRECT_UPLOAD]` Menambahkan tombol Unggah Langsung ImageKit WebP pada modal Hero Slide (`#modal-hero-slide`):
+  - Memungkinkan pengurus langsung mengunggah foto slide baru tanpa harus berpindah manual ke galeri media terlebih dahulu.
+- `[HERO_REORDER_FIX]` Memperbaiki logika reorder slide hero pada Supabase (`NOT NULL constraint on 'judul'`):
+  - Mengganti operasi `upsert` parsial dengan pembaruan atomik paralel berbasis kolom `id`.
+
+#### Keamanan Sesi, RBAC & Arsitektur Data (Session Security, RBAC & Architecture)
+- `[LOGOUT_HASH_CLEANUP]` Pembersihan total status URL dan session storage saat logout:
+  - Menghapus kunci `masjid_sophia_active_tab` di localStorage.
+  - Membersihkan fragmen URL hash (`window.location.hash = ''` & `history.replaceState`) guna mencegah login berikutnya mendarat di modul sesi sebelumnya (seperti `#logistik`).
+- `[STRICT_ROLE_GATE]` Menerapkan proteksi gerbang peran (Role Gate) ketat pada navigasi tab `gallery` dan `media`:
+  - Membatasi akses tab media dan galeri hanya untuk peran berwenang (`PJ_MEDIA`, `SUPER_ADMIN`, `SUPER_USER`, `KETUA_DKM`).
+  - Mencegah persistensi tampilan modul media saat login menggunakan akun peran lain (seperti PJ Logistik).
+- `[SUPER_ADMIN_TASK_FILTER]` Menyelaraskan default filter divisi pada Task Management untuk role eksekutif:
+  - Akun `SUPER_ADMIN` dan `KETUA_DKM` kini otomatis menampilkan seluruh tugas (`filter = 'ALL'`) saat pertama kali masuk, menghilangkan ilusi tugas kosong.
+- `[IMAGEKIT_SERVERLESS_DELETE]` Pembangunan serverless endpoint `api/imagekit-delete.js`:
+  - Menghubungkan tombol hapus media di admin panel ke REST API resmi ImageKit CDN (`DELETE https://api.imagekit.io/v1/files/:fileId`).
+  - Mengamankan `IMAGEKIT_PRIVATE_KEY` di serverless backend Vercel tanpa kebocoran ke sisi klien.
+- `[SUPABASE_SINGLE_SOURCE_OF_TRUTH]` Menghubungkan seluruh modul operasional (Dapur, Aset, Santri, Mutaba'ah) langsung ke tabel Supabase sebagai *Single Source of Truth*:
+  - Memperbaiki penanganan error Supabase `{ error }` pada fungsi hapus agar tidak hanya menghapus data lokal sementara.
+  - Mengaktifkan CDC WebSocket Supabase Realtime pada tabel `media_library` sehingga perubahan ter-broadcast instan ke seluruh klien.
+
+#### Standarisasi Nomenklatur & Antarmuka Publik Mobile (Nomenclature & Mobile UI)
+- `[NOMENCLATURE_STANDARDIZATION]` Menstandardisasi seluruh sebutan program:
+  - Mengganti istilah tidak resmi *"Sedekah Makan Dzuhur"* menjadi nama resmi **"Makan Berjamaah Gratis"** secara universal di seluruh basis kode, markup, database tasks, dan dokumentasi.
+- `[MOBILE_LOGO_PROTECTION]` Menerapkan proteksi CSS logo Masjid Sophia pada tampilan layar ponsel di `index.html`:
+  - Memastikan logo tidak terpotong dengan pembatasan `max-height: 40px` dan `object-fit: contain`.
+- `[MOBILE_CATEGORY_DROPDOWN]` Menambahkan dropdown seleksi kategori adaptif fluid pada layar smartphone ($\le$ 640px):
+  - Diterapkan pada `galeri.html` dan `artikel.html` sehingga tombol filter pill tidak menumpuk atau merusak tata letak mobile.
+- `[MOBILE_HOME_NAVIGATION]` Menambahkan tombol ikon Beranda (Home) pada bilah navigasi atas mobile:
+  - Memudahkan navigasi kembali ke halaman utama dari `artikel.html` dan `artikel-detail.html` tanpa harus mengedit address bar.
+- `[HIGH_FIDELITY_SHOWCASE]` Merombak live preview visual builder `#builder-preview-screen` di `admin.html`:
+  - Menggantikan tampilan mentah dengan miniatur interaktif berkualitas tinggi bertema gelap dengan tipografi kontras tinggi, miniatur kartu shalat 5 waktu, indikator capaian porsi makan, dan fasilitas musafir.
+
+---
+
 ## [1.9.21] - 2026-09-09
 
 ### Perbaikan Skema Routing Vercel, Pembersihan Error Console, dan Universal Article URL Helper

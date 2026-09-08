@@ -3994,7 +3994,7 @@
                             <i class="fa-solid fa-utensils"></i>
                         </div>
                         <div class="kpi-details">
-                            <span>Sedekah Makan Dzuhur</span>
+                            <span>Makan Berjamaah Gratis</span>
                             <h3 id="kpi-makan-count">70+ Porsi</h3>
                             <div class="kpi-badge"><i class="fa-solid fa-circle-check"></i> Tersalurkan Setiap Hari</div>
                         </div>
@@ -5060,7 +5060,7 @@
                                     <strong>Petugas Ibadah Hari Ini</strong> • Ustadz Farhan (Imam Rawatib), Bilal Shiddiq
                                 </div>
                                 <div id="prev-sec-philanthropy" style="background: #FFFFFF; border-radius: var(--radius-sm); padding: 0.6rem; margin-bottom: 0.5rem; border: 1px solid var(--color-border); font-size: 0.72rem;">
-                                    <strong>Sedekah Makan Dzuhur</strong> • Rek BSI 7235464297 / QRIS Sophia
+                                    <strong>Makan Berjamaah Gratis</strong> • Rek BSI 7235464297 / QRIS Sophia
                                 </div>
                                 <div id="prev-sec-musafir" style="background: #FFFFFF; border-radius: var(--radius-sm); padding: 0.6rem; margin-bottom: 0.5rem; border: 1px solid var(--color-border); font-size: 0.72rem;">
                                     <strong>Layanan Musafir 24 Jam</strong> • Loker barang, istirahat, kopi/teh hangat gratis
@@ -6649,7 +6649,7 @@
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
                     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                         <button type="button" class="btn-subview-logistik active" id="btn-subview-logistik-dapur" onclick="switchLogistikSubView('dapur')">
-                            <i class="fa-solid fa-utensils"></i> Sedekah Makan Dzuhur (70+ Porsi/Hari)
+                            <i class="fa-solid fa-utensils"></i> Makan Berjamaah Gratis (70+ Porsi/Hari)
                         </button>
                         <button type="button" class="btn-subview-logistik" id="btn-subview-logistik-aset" onclick="switchLogistikSubView('aset')">
                             <i class="fa-solid fa-boxes-stacked"></i> Manajemen Inventaris Aset &amp; Sarpras
@@ -6662,7 +6662,7 @@
                     </div>
                 </div>
 
-                <!-- SUBVIEW 1: DAPUR SEDEKAH MAKAN DZUHUR -->
+                <!-- SUBVIEW 1: DAPUR MAKAN BERJAMAAH GRATIS -->
                 <div id="subview-logistik-dapur" class="logistik-subview-pane" style="display: block;">
                     <!-- KPI Row -->
                     <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
@@ -6712,7 +6712,7 @@
                     <div class="section-panel" style="margin-bottom: 2rem;">
                         <div class="panel-header">
                             <div>
-                                <div class="panel-title"><i class="fa-solid fa-utensils" style="color: var(--color-gold-deep);"></i> Log Operasional Dapur Sedekah Makan Dzuhur</div>
+                                <div class="panel-title"><i class="fa-solid fa-utensils" style="color: var(--color-gold-deep);"></i> Log Operasional Dapur Makan Berjamaah Gratis</div>
                                 <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
                                     Perekaman menu harian, target vs realisasi pembagian, logistik bahan baku, dan dokumentasi foto distribusi
                                 </p>
@@ -7286,7 +7286,7 @@
                     <!-- Judul Artikel -->
                     <div class="form-group" style="margin-bottom: 1.2rem;">
                         <label class="form-label" style="font-weight: 700;">Judul Artikel / Publikasi <span style="color: var(--color-danger);">*</span></label>
-                        <input type="text" id="new-art-title" class="form-input" style="font-size: 1.05rem; font-weight: 600;" placeholder="Contoh: Penyaluran Sedekah Makan Dzuhur & Bimbingan Santri Tahfidz..." oninput="onArticleTitleInput(this.value)" required>
+                        <input type="text" id="new-art-title" class="form-input" style="font-size: 1.05rem; font-weight: 600;" placeholder="Contoh: Penyaluran Makan Berjamaah Gratis & Bimbingan Santri Tahfidz..." oninput="onArticleTitleInput(this.value)" required>
                     </div>
 
                     <!-- Grid Kategori & Penulis -->
@@ -7547,7 +7547,7 @@
             <div style="padding: 0.75rem 1.25rem; background: #1F2937; border-top: 1px solid #374151; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
                 <span id="cover-modal-url" style="font-size: 0.75rem; color: #9CA3AF; word-break: break-all; max-width: 65%;"></span>
                 <div style="display: flex; gap: 0.5rem;">
-                    <a id="cover-modal-open-tab" href="#" target="_blank" class="btn btn-outline" style="color: #FFF; font-size: 0.75rem;">
+                    <a id="cover-modal-open-tab" href="#" target="_blank" style="background: #374151; border: 1px solid #4B5563; color: #F9FAFB; font-size: 0.75rem; text-decoration: none; padding: 0.4rem 0.8rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.35rem;">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Tab Baru
                     </a>
                     <button type="button" class="btn btn-primary btn-sm" onclick="closeCoverFullPreview()" style="font-size: 0.75rem;">
@@ -7555,6 +7555,7 @@
                     </button>
                 </div>
             </div>
+        </div>
     </div>
 
     <!-- =========================================================================
@@ -7574,11 +7575,18 @@
                     
                     <div class="form-group" style="margin-bottom: 0.85rem;">
                         <label class="form-label" style="font-weight: 600;">Foto Background Banner (WebP ImageKit)</label>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="hero-slide-media-url" class="form-input" placeholder="https://ik.imagekit.io/masjidsophia/..." required oninput="previewHeroSlideImage()">
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <input type="text" id="hero-slide-media-url" class="form-input" style="flex: 1; min-width: 200px;" placeholder="https://ik.imagekit.io/masjidsophia/..." required oninput="previewHeroSlideImage()">
                             <button type="button" class="btn btn-outline btn-sm" onclick="openMediaPicker('hero-slide-media-url')" style="white-space: nowrap;">
-                                <i class="fa-solid fa-images"></i> Pilih Media
+                                <i class="fa-solid fa-images"></i> Pilih Galeri
                             </button>
+                            <label class="btn btn-gold btn-sm" style="white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; margin: 0;">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Unggah Langsung
+                                <input type="file" accept="image/*" style="display: none;" onchange="handleHeroSlideDirectUpload(this)">
+                            </label>
+                        </div>
+                        <div id="hero-slide-upload-progress" style="display: none; font-size: 0.75rem; color: var(--color-gold-deep); margin-top: 0.35rem;">
+                            <i class="fa-solid fa-spinner fa-spin"></i> Mengompresi WebP & mengunggah ke ImageKit...
                         </div>
                         <div id="hero-slide-img-preview" style="margin-top: 0.5rem; height: 120px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); background: #f3f4f6 center / cover no-repeat; display: none;"></div>
                     </div>
@@ -8395,6 +8403,477 @@
     </div>
 
     <!-- Modal: Popup Notifikasi Penugasan Pengganti Piket Saat Login (1x per Hari) -->
+    
+    <!-- =========================================================================
+         MODAL: SESI DAPUR MAKAN BERJAMAAH GRATIS
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-dapur-entry" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;" id="modal-dapur-title">
+                    <i class="fa-solid fa-utensils" style="color: var(--color-gold-deep);"></i> Catat Sesi Dapur Makan Berjamaah Gratis Baru
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-dapur-entry')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-dapur-entry" onsubmit="handleDapurFormSubmit(event)">
+                    <input type="hidden" id="dapur-entry-id" value="">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal Sesi</label>
+                            <input type="date" id="dapur-form-tanggal" class="form-input" required onchange="document.getElementById('dapur-form-hari').value = getDayNameFromDate(this.value)">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Hari</label>
+                            <input type="text" id="dapur-form-hari" class="form-input" placeholder="Misal: Senin" readonly style="background: #F9FAFB;">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Menu Utama Hidangan</label>
+                        <input type="text" id="dapur-form-menu" class="form-input" placeholder="Contoh: Nasi Rames Ayam Bakar Madu, Sayur Asem, Tahu Tempe & Es Teh" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Target Porsi</label>
+                            <input type="number" id="dapur-form-target" class="form-input" value="70" min="1" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Realisasi Terbagi</label>
+                            <input type="number" id="dapur-form-realisasi" class="form-input" value="0" min="0">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Status Distribusi</label>
+                            <select id="dapur-form-status" class="form-input" required>
+                                <option value="PERSIAPAN">PERSIAPAN</option>
+                                <option value="MEMASAK">MEMASAK</option>
+                                <option value="DISTRIBUSI">DISTRIBUSI</option>
+                                <option value="SELESAI_TERBAGI">SELESAI_TERBAGI</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Catatan Belanja & Logistik Bahan Baku</label>
+                        <textarea id="dapur-form-catatan" class="form-input" rows="2" placeholder="Contoh: Kebutuhan beras 15kg, ayam potong 12kg dari pasar Jatiwarna pukul 06:00 WIB"></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Dokumentasi Foto Distribusi (WebP / ImageKit)</label>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <input type="text" id="dapur-form-foto-url" class="form-input" style="flex: 1; min-width: 200px;" placeholder="URL foto atau unggah langsung...">
+                            <label class="btn btn-outline btn-sm" style="white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; margin: 0;">
+                                <i class="fa-solid fa-camera"></i> Unggah Foto
+                                <input type="file" accept="image/*" style="display: none;" onchange="handleDapurPhotoUpload(event)">
+                            </label>
+                        </div>
+                        <div id="dapur-form-preview-box" style="margin-top: 0.5rem; display: none;">
+                            <img id="dapur-form-preview-img" src="" alt="Pratinjau Foto Dapur" style="max-height: 120px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Penanggung Jawab Sesi</label>
+                        <input type="text" id="dapur-form-pj" class="form-input" placeholder="Nama PJ Dapur / Logistik">
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-dapur-entry')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Sesi Dapur
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: REGISTRASI & EDIT INVENTARIS ASET MASJID
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-asset-entry" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;" id="modal-asset-title">
+                    <i class="fa-solid fa-boxes-stacked" style="color: var(--color-gold-deep);"></i> Registrasi Aset Fisik Baru
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-asset-entry')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-asset-entry" onsubmit="handleAssetFormSubmit(event)">
+                    <input type="hidden" id="asset-entry-id" value="">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Kategori Aset</label>
+                            <select id="asset-form-kategori" class="form-input" required onchange="handleAssetCategoryChange(this.value)">
+                                <option value="Elektronik & Sound">Elektronik &amp; Sound</option>
+                                <option value="Perlengkapan Ibadah">Perlengkapan Ibadah</option>
+                                <option value="Sarpras & Dapur">Sarpras &amp; Dapur</option>
+                                <option value="Kendaraan Operasional">Kendaraan Operasional</option>
+                                <option value="Peralatan Kebersihan">Peralatan Kebersihan</option>
+                                <option value="Perabot & Mebel">Perabot &amp; Mebel</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Kode Registri Aset</label>
+                            <input type="text" id="asset-form-kode" class="form-input" placeholder="Misal: AST-ELK-001" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Nama Barang / Aset</label>
+                        <input type="text" id="asset-form-nama" class="form-input" placeholder="Contoh: Wireless Microphone Shure QLXD24" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Lokasi Penempatan</label>
+                            <input type="text" id="asset-form-lokasi" class="form-input" placeholder="Ruang Utama / Mihrab" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Jumlah</label>
+                            <input type="number" id="asset-form-jumlah" class="form-input" value="1" min="1" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Satuan</label>
+                            <select id="asset-form-satuan" class="form-input">
+                                <option value="Unit">Unit</option>
+                                <option value="Set">Set</option>
+                                <option value="Pcs">Pcs</option>
+                                <option value="Rol">Rol</option>
+                                <option value="Lembar">Lembar</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Kondisi Aset</label>
+                            <select id="asset-form-kondisi" class="form-input" required>
+                                <option value="BAIK">BAIK (Normal)</option>
+                                <option value="PERLU_SERVIS">PERLU SERVIS</option>
+                                <option value="RUSAK_RINGAN">RUSAK RINGAN</option>
+                                <option value="RUSAK_BERAT">RUSAK BERAT</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal Perolehan</label>
+                            <input type="date" id="asset-form-tanggal" class="form-input">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Nilai Estimasi (Rp)</label>
+                            <input type="number" id="asset-form-nilai" class="form-input" placeholder="0" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Foto Dokumentasi Aset</label>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <input type="text" id="asset-form-foto-url" class="form-input" style="flex: 1; min-width: 200px;" placeholder="URL foto aset atau unggah langsung...">
+                            <label class="btn btn-outline btn-sm" style="white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; margin: 0;">
+                                <i class="fa-solid fa-camera"></i> Unggah Foto
+                                <input type="file" accept="image/*" style="display: none;" onchange="handleAssetPhotoUpload(event)">
+                            </label>
+                        </div>
+                        <div id="asset-form-preview-box" style="margin-top: 0.5rem; display: none;">
+                            <img id="asset-form-preview-img" src="" alt="Pratinjau Foto Aset" style="max-height: 120px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-asset-entry')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Data Aset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: LINIMASA & CATATAN RIWAYAT SERVIS ASET
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-asset-service" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <div>
+                    <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;" id="service-modal-asset-name">
+                        <i class="fa-solid fa-wrench" style="color: var(--color-gold-deep);"></i> Riwayat Servis & Perawatan Aset
+                    </h4>
+                    <p id="service-modal-asset-meta" style="margin: 2px 0 0; font-size: 0.75rem; color: var(--color-charcoal-muted);"></p>
+                </div>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-asset-service')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-asset-add-service" onsubmit="handleAddServiceLog(event)" style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
+                    <div style="font-weight: 700; font-size: 0.85rem; color: var(--color-charcoal); margin-bottom: 0.75rem;">
+                        <i class="fa-solid fa-plus-circle" style="color: var(--color-gold-deep);"></i> Tambah Riwayat Servis / Perbaikan
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal Pengerjaan</label>
+                            <input type="date" id="service-log-tanggal" class="form-input" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Teknisi / Bengkel Rekanan</label>
+                            <input type="text" id="service-log-teknisi" class="form-input" placeholder="Misal: Teknisi Audio Jaya" required>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Biaya Servis (Rp)</label>
+                            <input type="number" id="service-log-biaya" class="form-input" placeholder="0" min="0" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Perbarui Kondisi Aset</label>
+                            <select id="service-log-update-kondisi" class="form-input">
+                                <option value="BAIK">BAIK (Sudah Selesai Diperbaiki)</option>
+                                <option value="PERLU_SERVIS">MASIH PERLU SERVIS</option>
+                                <option value="RUSAK_RINGAN">RUSAK RINGAN</option>
+                                <option value="RUSAK_BERAT">RUSAK BERAT</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Deskripsi Perbaikan & Penggantian Sparepart</label>
+                        <textarea id="service-log-catatan" class="form-input" rows="2" placeholder="Contoh: Penggantian membran spul mic wireless dan pembersihan soket baterai." required></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end;">
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.5rem 1.25rem; font-size: 0.82rem;">
+                            <i class="fa-solid fa-wrench"></i> Catat Servis Ini
+                        </button>
+                    </div>
+                </form>
+
+                <div>
+                    <h5 style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--color-charcoal); font-weight: 700;">
+                        <i class="fa-solid fa-clock-rotate-left" style="color: var(--color-gold-deep);"></i> Linimasa Servis Sebelumnya
+                    </h5>
+                    <div id="service-logs-timeline-list" style="display: flex; flex-direction: column; gap: 0.6rem; max-height: 250px; overflow-y: auto;">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 0.75rem 1.25rem; border-top: 1px solid var(--color-border); display: flex; justify-content: flex-end;">
+                <button type="button" class="btn btn-outline" onclick="closeModal('modal-asset-service')">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: REGISTRASI & EDIT PROFIL SANTRI TAHFIDZ
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-santri-entry" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;" id="modal-santri-title">
+                    <i class="fa-solid fa-graduation-cap" style="color: var(--color-gold-deep);"></i> Registrasi Profil Santri Baru
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-santri-entry')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-santri-entry" onsubmit="handleSantriFormSubmit(event)">
+                    <input type="hidden" id="santri-entry-id" value="">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Nomor Induk Santri (NIS)</label>
+                            <input type="text" id="santri-form-nis" class="form-input" placeholder="STR-2026-001" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Jenis Kelamin</label>
+                            <select id="santri-form-gender" class="form-input" required>
+                                <option value="Ikhwan">Ikhwan (Laki-laki)</option>
+                                <option value="Akhwat">Akhwat (Perempuan)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Nama Lengkap Santri</label>
+                            <input type="text" id="santri-form-nama" class="form-input" placeholder="Misal: Muhammad Fatih Al-Ayyubi" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Nama Panggilan</label>
+                            <input type="text" id="santri-form-panggilan" class="form-input" placeholder="Fatih">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Nama Orang Tua / Wali</label>
+                            <input type="text" id="santri-form-wali" class="form-input" placeholder="Misal: H. Rahmat Hidayat" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Kontak WhatsApp Wali</label>
+                            <input type="text" id="santri-form-kontak" class="form-input" placeholder="+628123456789" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Alamat Asal Santri</label>
+                        <textarea id="santri-form-alamat" class="form-input" rows="2" placeholder="Alamat asal kota / domisili wali"></textarea>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal Masuk Pembinaan</label>
+                            <input type="date" id="santri-form-tgl-masuk" class="form-input" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal Lahir</label>
+                            <input type="date" id="santri-form-tgl-lahir" class="form-input">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Capaian Saat Ini (Juz)</label>
+                            <input type="number" id="santri-form-capaian" class="form-input" value="0" min="0" max="30">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Target Hafalan (Juz)</label>
+                            <input type="number" id="santri-form-target" class="form-input" value="30" min="1" max="30">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Status Belajar</label>
+                            <select id="santri-form-status" class="form-input">
+                                <option value="AKTIF">AKTIF</option>
+                                <option value="CUTI">CUTI</option>
+                                <option value="LULUS">LULUS (Khatam)</option>
+                                <option value="ALUMNI">ALUMNI</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Foto Profil Santri</label>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <input type="text" id="santri-form-foto-url" class="form-input" style="flex: 1; min-width: 200px;" placeholder="URL foto atau unggah langsung...">
+                            <label class="btn btn-outline btn-sm" style="white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; margin: 0;">
+                                <i class="fa-solid fa-camera"></i> Unggah Foto
+                                <input type="file" accept="image/*" style="display: none;" onchange="handleSantriPhotoUpload(event)">
+                            </label>
+                        </div>
+                        <div id="santri-form-preview-box" style="margin-top: 0.5rem; display: none;">
+                            <img id="santri-form-preview-img" src="" alt="Pratinjau Foto Santri" style="max-height: 120px; border-radius: 50%; width: 120px; object-fit: cover; border: 2px solid var(--color-gold-deep);">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Catatan Karakter & Perkembangan Adab</label>
+                        <textarea id="santri-form-catatan" class="form-input" rows="2" placeholder="Catatan asatidz terkait makharijul huruf, kedisiplinan shalat berjamaah, dan adab halaqah..."></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-santri-entry')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Profil Santri
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: PENCATATAN MUTABA'AH SETORAN HAFALAN SANTRI
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-mutabaah-entry" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;" id="modal-mutabaah-title">
+                    <i class="fa-solid fa-quran" style="color: var(--color-gold-deep);"></i> Catat Setoran Hafalan Qur'an Baru
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-mutabaah-entry')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-mutabaah-entry" onsubmit="handleMutabaahFormSubmit(event)">
+                    <input type="hidden" id="mutabaah-entry-id" value="">
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Nama Santri Penyetor</label>
+                        <select id="mutabaah-form-santri-id" class="form-input" required onchange="handleMutabaahSantriChange(this.value)">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Tanggal Setoran</label>
+                            <input type="date" id="mutabaah-form-tanggal" class="form-input" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Sesi Halaqah</label>
+                            <select id="mutabaah-form-sesi" class="form-input" required>
+                                <option value="SUBUH">Ba'da Subuh</option>
+                                <option value="MAGHRIB">Ba'da Maghrib</option>
+                                <option value="ZIYADAH_MALAM">Ziyadah Malam</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Juz</label>
+                            <input type="number" id="mutabaah-form-juz" class="form-input" value="1" min="1" max="30" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Nama Surat</label>
+                            <input type="text" id="mutabaah-form-surat" class="form-input" placeholder="Contoh: Al-Baqarah" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Ayat Mulai</label>
+                            <input type="number" id="mutabaah-form-ayat-mulai" class="form-input" value="1" min="1" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Ayat Selesai</label>
+                            <input type="number" id="mutabaah-form-ayat-selesai" class="form-input" value="10" min="1" required>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Predikat Tajwid & Kelancaran</label>
+                            <select id="mutabaah-form-predikat" class="form-input" required>
+                                <option value="MUMTAZ">Mumtaz (Sangat Sempurna)</option>
+                                <option value="JAYYID_JIDDAN">Jayyid Jiddan (Sangat Baik)</option>
+                                <option value="JAYYID">Jayyid (Baik)</option>
+                                <option value="MAQBUL">Maqbul (Cukup)</option>
+                                <option value="MURAJAAH">Perlu Muraja'ah Ulang</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-weight: 600;">Ustadz Pembimbing</label>
+                            <input type="text" id="mutabaah-form-ustadz" class="form-input" placeholder="Nama Ustadz Penyimak" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label" style="font-weight: 600;">Catatan Tajwid & Evaluasi</label>
+                        <textarea id="mutabaah-form-catatan" class="form-input" rows="2" placeholder="Catatan hukum mad, ikhfa, qolqolah, atau kelancaran tasmi'..."></textarea>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-mutabaah-entry')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Setoran
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="modal-substitute-alert" style="display: none;">
         <div class="modal-box" style="max-width: 500px; border-top: 4px solid var(--color-gold-deep);">
             <div class="modal-header">
@@ -9117,6 +9596,17 @@
                 } catch (e) {}
             }
             currentUser = null;
+
+            // Bersihkan sesi navigasi, cache subview, dan URL hash secara absolut
+            localStorage.removeItem('masjid_sophia_active_tab');
+            localStorage.removeItem('masjid_sophia_logistik_subview');
+            localStorage.removeItem('masjid_sophia_santri_subview');
+            try {
+                history.replaceState(null, '', window.location.pathname);
+            } catch (e) {}
+            window.location.hash = '';
+
+            document.querySelectorAll('.tab-content-panel').forEach(p => p.style.display = 'none');
             showAuthScreen();
             renderAdminUsersTable();
         }
@@ -9356,7 +9846,7 @@
                     },
                     {
                         id: 'gallery',
-                        label: 'Galeri Media & WebP',
+                        label: 'Galeri Media',
                         icon: 'fa-solid fa-images',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA']
                     },
@@ -9544,20 +10034,41 @@
                 }
             } catch (e) {}
 
-            // Auto-focus division filter for PJ role
+            // Auto-focus division filter for PJ role (Pimpinan DKM default 'ALL' agar melihat seluruh tugas)
             const userDiv = getUserDivision();
             const divSelect = document.getElementById('task-filter-division');
-            if (divSelect && userDiv !== 'ALL') {
-                divSelect.value = userDiv;
+            if (divSelect) {
+                if (['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM'].includes(getUserRole())) {
+                    divSelect.value = 'ALL';
+                } else if (userDiv !== 'ALL') {
+                    divSelect.value = userDiv;
+                }
             }
 
-            // Restore active tab from URL Hash or localStorage (Memory Browser)
+            // Restore active tab from URL Hash or smart role default
             const rawHash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
             const validTabs = ['overview', 'donations', 'tasks', 'history', 'chat', 'feedback', 'leave_requests', 'articles', 'media', 'gallery', 'health', 'accounts', 'ibadah', 'logistik', 'santri', 'musafir', 'keamanan', 'kebersihan'];
-            const savedTab = (rawHash && validTabs.includes(rawHash))
-                ? rawHash 
-                : (localStorage.getItem('masjid_sophia_active_tab') || 'overview');
-            switchTab(savedTab);
+            
+            // Tentukan tab bawaan berdasarkan wewenang peran
+            let defaultRoleTab = 'overview';
+            const curRole = getUserRole();
+            if (curRole === 'PJ_LOGISTIK') defaultRoleTab = 'logistik';
+            else if (curRole === 'PJ_SANTRI') defaultRoleTab = 'santri';
+            else if (curRole === 'PJ_MEDIA') defaultRoleTab = 'articles';
+            else if (curRole === 'PJ_KEUANGAN') defaultRoleTab = 'donations';
+            else if (curRole === 'PJ_IBADAH') defaultRoleTab = 'ibadah';
+            else if (curRole === 'PJ_MUSAFIR') defaultRoleTab = 'musafir';
+            else if (curRole === 'PJ_KEAMANAN') defaultRoleTab = 'keamanan';
+            else if (curRole === 'PJ_KEBERSIHAN') defaultRoleTab = 'kebersihan';
+
+            let targetTab = defaultRoleTab;
+            if (rawHash && validTabs.includes(rawHash)) {
+                targetTab = rawHash;
+            } else {
+                const saved = localStorage.getItem('masjid_sophia_active_tab');
+                if (saved && validTabs.includes(saved)) targetTab = saved;
+            }
+            switchTab(targetTab);
 
             loadAllAdminData();
             loadAdminUsers();
@@ -9581,6 +10092,11 @@
             const role = getUserRole();
 
             // Strict Role Gates
+            if (['gallery', 'media'].includes(tabId) && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA'].includes(role)) {
+                alert('Akses Ditolak: Modul Galeri & Visual Builder hanya dapat diakses oleh Tim Media dan Pimpinan DKM.');
+                switchTab('overview');
+                return;
+            }
             if (tabId === 'accounts' && !['SUPER_ADMIN', 'KETUA_DKM'].includes(role)) {
                 alert('Akses Ditolak: Modul Manajemen Pengguna DKM hanya dapat diakses oleh Super Administrator dan Ketua DKM.');
                 switchTab('overview');
@@ -17064,13 +17580,16 @@
 
         async function deleteImageKitFile(fileId) {
             if (!fileId) return;
-            if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    const { data, error } = await sbClient.rpc('delete_imagekit_file', { p_file_id: fileId });
-                    console.log('[ImageKit] RPC delete result:', data);
-                } catch (err) {
-                    console.warn('[ImageKit] Delete RPC notice:', err);
-                }
+            try {
+                const res = await fetch('/api/imagekit-delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fileId: fileId })
+                });
+                const data = await res.json();
+                console.log('[ImageKit] Serverless delete result:', data);
+            } catch (err) {
+                console.warn('[ImageKit] Serverless delete notice:', err);
             }
         }
 
@@ -17877,7 +18396,8 @@
                             file_type: 'image/webp',
                             dimensions: '1200x800',
                             folder: d.kategori || 'gallery',
-                            uploaded_at: d.created_at
+                            uploaded_at: d.created_at,
+                            imagekit_file_id: d.imagekit_file_id || null
                         }));
                         localStorage.setItem('masjid_sophia_media_library', JSON.stringify(mapped));
                         mediaGalleryList = mapped;
@@ -18262,6 +18782,28 @@
             openModal('modal-hero-slide');
         }
 
+                async function handleHeroSlideDirectUpload(input) {
+            if (!input || !input.files || input.files.length === 0) return;
+            const file = input.files[0];
+            const progressEl = document.getElementById('hero-slide-upload-progress');
+            if (progressEl) progressEl.style.display = 'block';
+            try {
+                const result = await uploadImageToImageKit(file, 'heroes');
+                if (result && result.publicUrl) {
+                    const urlInput = document.getElementById('hero-slide-media-url');
+                    if (urlInput) {
+                        urlInput.value = result.publicUrl;
+                        previewHeroSlideImage();
+                    }
+                }
+            } catch (err) {
+                alert('Gagal mengunggah foto slide ke ImageKit: ' + (err.message || String(err)));
+            } finally {
+                if (progressEl) progressEl.style.display = 'none';
+                input.value = '';
+            }
+        }
+
         function previewHeroSlideImage() {
             const url = document.getElementById('hero-slide-media-url')?.value || '';
             const preview = document.getElementById('hero-slide-img-preview');
@@ -18391,11 +18933,12 @@
 
             try {
                 if (typeof sbClient !== 'undefined' && sbClient) {
-                    const { error } = await sbClient.from('homepage_media').upsert([
-                        { id: itemA.id, order_index: itemA.order_index, updated_at: new Date().toISOString() },
-                        { id: itemB.id, order_index: itemB.order_index, updated_at: new Date().toISOString() }
+                    const [resA, resB] = await Promise.all([
+                        sbClient.from('homepage_media').update({ order_index: itemA.order_index, updated_at: new Date().toISOString() }).eq('id', itemA.id),
+                        sbClient.from('homepage_media').update({ order_index: itemB.order_index, updated_at: new Date().toISOString() }).eq('id', itemB.id)
                     ]);
-                    if (error) throw error;
+                    if (resA.error) throw resA.error;
+                    if (resB.error) throw resB.error;
                 }
                 await loadAdminHeroSlides();
                 renderHomepageLivePreview();
@@ -18504,21 +19047,29 @@
             const pCta2 = document.getElementById('prev-cta2');
 
             if (pMockup && mediaUrl) {
-                pMockup.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65)), url('${mediaUrl}')`;
+                pMockup.style.backgroundImage = `linear-gradient(to bottom, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.85) 100%), url('${mediaUrl}')`;
                 pMockup.style.backgroundSize = 'cover';
                 pMockup.style.backgroundPosition = 'center';
                 pMockup.style.color = '#FFFFFF';
+                pMockup.style.borderRadius = 'var(--radius-md)';
+                pMockup.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
             }
 
-            if (pBadge) pBadge.textContent = badge;
+            if (pBadge) {
+                pBadge.textContent = badge;
+                pBadge.style.background = 'rgba(0, 0, 0, 0.55)';
+                pBadge.style.color = '#FCD34D';
+                pBadge.style.border = '1px solid rgba(252, 211, 77, 0.4)';
+                pBadge.style.backdropFilter = 'blur(4px)';
+            }
             if (pTitle) {
                 const words = title.split(' ');
                 if (words.length > 2) {
                     const lastWords = words.slice(-2).join(' ');
                     const firstWords = words.slice(0, -2).join(' ');
-                    pTitle.innerHTML = escapeHtml(firstWords) + ' <span style="color: var(--color-gold-deep);">' + escapeHtml(lastWords) + '</span>';
+                    pTitle.innerHTML = `<span style="color: #FFFFFF; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">${escapeHtml(firstWords)}</span> <span style="color: #F6E05E; text-shadow: 0 0 15px rgba(246, 224, 94, 0.7);">${escapeHtml(lastWords)}</span>`;
                 } else {
-                    pTitle.textContent = title;
+                    pTitle.innerHTML = `<span style="color: #FFFFFF; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">${escapeHtml(title)}</span>`;
                 }
             }
             if (pArabic) {
@@ -18527,13 +19078,30 @@
                 pArabic.style.fontFamily = "'Amiri', serif";
                 pArabic.style.direction = 'rtl';
                 pArabic.style.textAlign = 'right';
+                pArabic.style.color = '#E3C466';
+                pArabic.style.fontSize = '1.05rem';
+                pArabic.style.textShadow = '0 2px 8px rgba(0,0,0,0.8)';
             }
-            if (pSub) pSub.textContent = sub;
+            if (pSub) {
+                pSub.textContent = sub;
+                pSub.style.color = '#E5E7EB';
+                pSub.style.textShadow = '0 1px 4px rgba(0,0,0,0.7)';
+            }
             if (pCta1) {
                 pCta1.textContent = cta1;
                 pCta1.onclick = () => { if (cta1Link) window.open(cta1Link, '_blank'); };
+                pCta1.style.background = 'linear-gradient(135deg, #E3C466 0%, #C49E35 100%)';
+                pCta1.style.color = '#111827';
+                pCta1.style.fontWeight = '700';
+                pCta1.style.border = 'none';
             }
-            if (pCta2) pCta2.textContent = cta2;
+            if (pCta2) {
+                pCta2.textContent = cta2;
+                pCta2.style.background = 'rgba(255,255,255,0.15)';
+                pCta2.style.color = '#FFFFFF';
+                pCta2.style.backdropFilter = 'blur(4px)';
+                pCta2.style.border = '1px solid rgba(255,255,255,0.3)';
+            }
 
             if (document.getElementById('prev-stat1-val')) document.getElementById('prev-stat1-val').textContent = s1v;
             if (document.getElementById('prev-stat1-lbl')) document.getElementById('prev-stat1-lbl').textContent = s1l;
@@ -18978,16 +19546,20 @@
         }
 
         async function deleteDapurEntry(id) {
-            if (!confirm('Apakah Anda yakin ingin menghapus sesi dapur sedekah makan ini?')) return;
+            if (!confirm('Apakah Anda yakin ingin menghapus sesi dapur makan berjamaah ini?')) return;
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                const { error: delErr } = await sbClient.from('dapur_makan_siang').delete().eq('id', id);
+                if (delErr) {
+                    console.error('[Dapur] Supabase delete error:', delErr);
+                    alert('Gagal menghapus data dapur dari Supabase: ' + delErr.message);
+                    return;
+                }
+            }
 
             dapurLogList = dapurLogList.filter(d => d.id !== id);
             localStorage.setItem('masjid_sophia_dapur_master', JSON.stringify(dapurLogList));
-
-            if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('dapur_makan_siang').delete().eq('id', id);
-                } catch (e) {}
-            }
+            broadcastEvent('DAPUR_SYNC', { action: 'delete', id });
 
             renderDapurTable();
             updateDapurKpiStats();
@@ -19283,14 +19855,18 @@
         async function deleteAssetEntry(id) {
             if (!confirm('Apakah Anda yakin ingin menghapus data inventaris aset ini?')) return;
 
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                const { error: astDelErr } = await sbClient.from('masjid_assets').delete().eq('id', id);
+                if (astDelErr) {
+                    console.error('[Assets] Supabase delete error:', astDelErr);
+                    alert('Gagal menghapus aset dari Supabase: ' + astDelErr.message);
+                    return;
+                }
+            }
+
             assetsList = assetsList.filter(a => a.id !== id);
             localStorage.setItem('masjid_sophia_assets_master', JSON.stringify(assetsList));
-
-            if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('masjid_assets').delete().eq('id', id);
-                } catch (e) {}
-            }
+            broadcastEvent('ASSET_SYNC', { action: 'delete', id });
 
             renderAssetsTable();
             updateAssetsKpiStats();
@@ -20539,14 +21115,18 @@
         async function deleteSantriEntry(id) {
             if (!confirm('Apakah Anda yakin ingin menghapus profil santri ini? Seluruh riwayat mutaba\'ah terkait juga akan dihapus.')) return;
 
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                const { error: sanDelErr } = await sbClient.from('santri_data').delete().eq('id', id);
+                if (sanDelErr) {
+                    console.error('[Santri] Delete error from Supabase:', sanDelErr);
+                    alert('Gagal menghapus santri dari Supabase: ' + sanDelErr.message);
+                    return;
+                }
+            }
+
             santriList = santriList.filter(s => s.id !== id);
             localStorage.setItem('masjid_sophia_santri_master', JSON.stringify(santriList));
-
-            if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('santri_data').delete().eq('id', id);
-                } catch (e) {}
-            }
+            broadcastEvent('SANTRI_SYNC', { action: 'delete', id });
 
             renderSantriTable();
             updateSantriKpiStats();
@@ -20816,14 +21396,18 @@
         async function deleteMutabaahEntry(id) {
             if (!confirm('Apakah Anda yakin ingin menghapus catatan mutaba\'ah setoran ini?')) return;
 
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                const { error: mtbDelErr } = await sbClient.from('santri_mutabaah').delete().eq('id', id);
+                if (mtbDelErr) {
+                    console.error('[Mutabaah] Supabase delete error:', mtbDelErr);
+                    alert('Gagal menghapus setoran dari Supabase: ' + mtbDelErr.message);
+                    return;
+                }
+            }
+
             mutabaahList = mutabaahList.filter(m => m.id !== id);
             localStorage.setItem('masjid_sophia_mutabaah_master', JSON.stringify(mutabaahList));
-
-            if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('santri_mutabaah').delete().eq('id', id);
-                } catch (e) {}
-            }
+            broadcastEvent('MUTABAAH_SYNC', { action: 'delete', id });
 
             renderMutabaahTable();
             updateMutabaahKpiStats();
@@ -22158,9 +22742,8 @@
         }
 
         function closeModalOnBackdrop(modalId, event) {
-            if (event.target && event.target.id === modalId) {
-                closeModal(modalId);
-            }
+            // Dinonaktifkan sesuai standar keamanan: modal hanya boleh ditutup via tombol X atau Batal
+            return;
         }
 
 
@@ -22207,8 +22790,8 @@
             // Global Modal Backdrop Dismiss & Escape Key Listener
             document.addEventListener('click', (e) => {
                 if (e.target && e.target.classList && e.target.classList.contains('modal-overlay')) {
-                    if (e.target.id === 'modal-reset-password') return;
-                    closeAnyOpenModal(e.target);
+                    // Dinonaktifkan sesuai permintaan pengguna: cegah popup tertutup saat klik tidak sengaja di luar
+                    return;
                 }
             });
 

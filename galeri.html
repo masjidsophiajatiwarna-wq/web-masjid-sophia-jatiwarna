@@ -684,6 +684,36 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .mobile-category-select-wrapper {
+            display: none;
+            width: 100%;
+            margin-top: 0.75rem;
+        }
+
+        .mobile-category-dropdown {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #FFFFFF;
+            border: 1.5px solid var(--color-gold-deep);
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--color-charcoal);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            outline: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 640px) {
+            .filter-pills {
+                display: none !important;
+            }
+            .mobile-category-select-wrapper {
+                display: block !important;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -773,7 +803,7 @@
                         <i class="fa-solid fa-border-all"></i> Semua Dokumentasi
                     </button>
                     <button class="filter-pill" onclick="setCategoryFilter('MAKAN_SIANG_GRATIS', this)">
-                        <i class="fa-solid fa-bowl-food"></i> Makan Siang Gratis
+                        <i class="fa-solid fa-bowl-food"></i> Makan Berjamaah Gratis
                     </button>
                     <button class="filter-pill" onclick="setCategoryFilter('SANTRI_TAHFIDZ', this)">
                         <i class="fa-solid fa-book-quran"></i> Santri Tahfidz
@@ -787,6 +817,19 @@
                     <button class="filter-pill" onclick="setCategoryFilter('FASAD_MASJID', this)">
                         <i class="fa-solid fa-archway"></i> Fasad &amp; Arsitektur
                     </button>
+                </div>
+
+                <!-- Dropdown Kategori Khusus Mode Ponsel (Fluid Adaptive <= 640px) -->
+                <div class="mobile-category-select-wrapper">
+                    <label for="mobile-gallery-cat-select" class="sr-only">Pilih Kategori Galeri</label>
+                    <select id="mobile-gallery-cat-select" class="mobile-category-dropdown" onchange="setCategoryFilter(this.value)">
+                        <option value="ALL">Semua Dokumentasi (Semua Foto)</option>
+                        <option value="MAKAN_SIANG_GRATIS">Makan Berjamaah Gratis</option>
+                        <option value="SANTRI_TAHFIDZ">Pembinaan Santri Tahfidz</option>
+                        <option value="FASILITAS_MUSAFIR">Pelayanan Musafir 24 Jam</option>
+                        <option value="SUASANA_IBADAH">Suasana Ibadah &amp; Majelis</option>
+                        <option value="FASAD_MASJID">Fasad &amp; Arsitektur Masjid</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -846,7 +889,7 @@
                         <li><a href="/">Beranda Utama</a></li>
                         <li><a href="/#jadwal-shalat">Jadwal Shalat Kemenag</a></li>
                         <li><a href="/#agenda-kajian">Agenda Majelis Kajian</a></li>
-                        <li><a href="/#program-filantropi">Sedekah Makan Dzuhur</a></li>
+                        <li><a href="/#program-filantropi">Makan Berjamaah Gratis</a></li>
                         <li><a href="/#layanan-musafir">Layanan Musafir 24 Jam</a></li>
                         <li><a href="/galeri">Galeri Dokumentasi</a></li>
                         <li><a href="/artikel">Warta Dakwah</a></li>
