@@ -4,6 +4,25 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.21] - 2026-09-09
+
+### Perbaikan Skema Routing Vercel, Pembersihan Error Console, dan Universal Article URL Helper
+
+#### Perbaikan Bug & Penyempurnaan (Bug Fixes & Refinements)
+- `[VERCEL_BUILD_FIX]` Menghapus blok konfigurasi `errors` yang tidak didukung dari `vercel.json`:
+  - Mengatasi kegagalan build Vercel (*schema validation failed: should NOT have additional property errors*).
+  - Memastikan seluruh deployment preview branch `dev` kini berhasil terkompilasi dan berstatus `READY`.
+  - Halaman `404.html` kustom Sophia kini otomatis disajikan oleh Vercel saat rute tidak ditemukan (*zero configuration 404 handler*).
+- `[CONSOLE_ERROR_CLEANUP]` Pembersihan menyeluruh peringatan dan error pada browser developer console:
+  - Menghapus tag `<script src="/config.local.js">` dari berkas `galeri.html`, `artikel.html`, `artikel-detail.html`, dan `index.html` guna mengeliminasi error merah 404 pada network tab saat berjalan di lingkungan produksi.
+  - Memperbarui `asset/js/env-loader.js` dengan proteksi protokol `file:` dan penanganan fallback Supabase yang sepenuhnya senyap (*silent graceful fallback*) tanpa mencemari log konsol.
+  - Memperbaiki path tautan favicon dan logo SVG pada `galeri.html` dan `artikel.html` dengan awalan garis miring mutlak (`/asset/...`) untuk mencegah 404 saat diakses dari subpath clean URL.
+- `[UNIVERSAL_ARTICLE_ROUTING]` Implementasi helper `getArticleUrl(slug)` pada `index.html`, `artikel.html`, dan `artikel-detail.html`:
+  - Otomatis mendeteksi lingkungan eksekusi: menggunakan clean URL `/artikel/:slug` pada lingkungan Vercel produksi, dan secara cerdas beralih ke `/artikel-detail.html?slug=:slug` jika dibuka secara lokal melalui Live Server atau protokol berkas (*file protocol*).
+  - Mengeliminasi risiko halaman 404 saat mengklik artikel warta di lingkungan mana pun.
+
+---
+
 ## [1.9.20] - 2026-09-09
 
 ### Ekspor Laporan Kinerja PDF, Halaman 404 Kustom Sophia, dan SEO Lanjutan (Twitter Card + Schema.org JSON-LD)
