@@ -64,7 +64,11 @@
     },
     {
       "source": "/artikel/:slug",
-      "destination": "/artikel-detail.html?slug=:slug"
+      "destination": "/artikel-detail.html"
+    },
+    {
+      "source": "/artikel-detail/:slug",
+      "destination": "/artikel-detail.html"
     },
     {
       "source": "/admin",

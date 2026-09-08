@@ -17847,6 +17847,9 @@
                     ? '<button type="button" class="btn-action publish" onclick="togglePublishStatus(\'' + art.id + '\')" title="Publikasikan Sekarang (Publish Live)"><i class="fa-solid fa-globe"></i></button>'
                     : '<button type="button" class="btn-action draft" onclick="togglePublishStatus(\'' + art.id + '\')" title="Tarik ke Draft (Unpublish)"><i class="fa-solid fa-file-pen"></i></button>';
 
+                const liveUrl = '/artikel-detail.html?slug=' + encodeURIComponent(art.slug || art.id);
+                const viewLiveBtn = '<a href="' + liveUrl + '" target="_blank" class="btn-action view" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;" title="Lihat Artikel Live"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>';
+
                 return '<tr>' +
                     '<td>' +
                         '<div style="display: flex; align-items: center; gap: 0.75rem;">' +
@@ -17865,6 +17868,7 @@
                     '<td>' + statusBadge + '</td>' +
                     '<td style="text-align: right;">' +
                         '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                            viewLiveBtn +
                             '<button type="button" class="btn-action edit" onclick="openEditArticleModal(\'' + art.id + '\')" title="Edit Konten &amp; Status"><i class="fa-solid fa-pen-to-square"></i></button>' +
                             publishActionBtn +
                             '<button type="button" class="btn-action delete" onclick="deleteArticle(\'' + art.id + '\')" title="Hapus Publikasi"><i class="fa-solid fa-trash"></i></button>' +
@@ -18370,7 +18374,9 @@
                 if (realtimeHub) {
                     try { realtimeHub.send({ type: 'broadcast', event: 'ARTICLE_SYNC', payload: { action: 'INSERT', id: newId } }); } catch (e) {}
                 }
-                alert('Warta/artikel baru "' + title + '" berhasil diterbitkan sebagai [' + status + '].');
+                if (confirm('Warta/artikel baru "' + title + '" berhasil diterbitkan sebagai [' + status + ']!\n\nApakah Anda ingin membuka dan melihat artikel ini sekarang di tab baru?')) {
+                    window.open('/artikel-detail.html?slug=' + encodeURIComponent(slug), '_blank');
+                }
             }
         }
 

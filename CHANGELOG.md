@@ -9,6 +9,10 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 ### Penyelesaian Komprehensif 21 Poin Perbaikan: Tata Kelola Modal Dialog, RBAC, Realtime CDC Supabase, Serverless CDN ImageKit, Standardisasi Nomenklatur, dan Fluid Mobile
 
 #### Perbaikan Bug Kritis & Pemulihan DOM (Critical Bug Fixes & DOM Restorations)
+- `[ARTICLE_ROUTING_REWRITE_FIX]` Memperbaiki aturan perutean Vercel dan pembacaan slug artikel:
+  - Mengoreksi target rewrite di `vercel.json` dari `"/artikel-detail.html?slug=:slug"` menjadi `"/artikel-detail.html"` untuk rute `/artikel/:slug` dan `/artikel-detail/:slug`. Mengatasi pesan error 404 pada perutean statis Vercel.
+  - Memperkuat parser slug di `artikel-detail.html` (`decodeURIComponent` dan pencocokan UUID/slug via `maybeSingle()`) agar mendukung format clean URL `/artikel/:slug` maupun query parameter benchmark UMAR Travel (`artikel-detail.html?slug=...`).
+  - Menambahkan tombol aksi "Lihat Artikel Live" (`<a class="btn-action view">`) pada tabel artikel di `admin.html` dan dialog pembuka otomatis di tab baru setelah penerbitan artikel.
 - `[CONFIG_LOCAL_REMOVAL]` Menghapus tag `<script src="config.local.js">` dari `admin.html` dan `media-checklist.html`:
   - Mengeliminasi error konsol browser merah: `net::ERR_ABORTED 404 (Not Found) config.local.js` saat memuat atau menyegarkan (*refresh*) halaman admin pada lingkungan produksi.
   - Memastikan seluruh pemuatan variabel konfigurasi aman terpusat melalui `asset/js/env-loader.js`.

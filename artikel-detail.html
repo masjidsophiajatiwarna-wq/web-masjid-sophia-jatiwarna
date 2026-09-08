@@ -1306,16 +1306,16 @@
             const urlParams = new URLSearchParams(window.location.search);
             const slugParam = urlParams.get('slug');
             if (slugParam && slugParam.trim() !== '') {
-                return slugParam.trim();
+                return decodeURIComponent(slugParam.trim());
             }
 
             // Check URL path e.g. /artikel/slug-name or /artikel-detail/slug-name
             const pathParts = window.location.pathname.split('/').filter(Boolean);
-            if (pathParts.length >= 2 && pathParts[0] === 'artikel') {
-                return pathParts[1].replace(/\.html$/, '');
+            if (pathParts.length >= 2 && (pathParts[0] === 'artikel' || pathParts[0] === 'artikel-detail')) {
+                return decodeURIComponent(pathParts[1].replace(/\.html$/, ''));
             }
             if (pathParts.length >= 1 && pathParts[0] !== 'artikel.html' && pathParts[0] !== 'artikel-detail.html') {
-                return pathParts[pathParts.length - 1].replace(/\.html$/, '');
+                return decodeURIComponent(pathParts[pathParts.length - 1].replace(/\.html$/, ''));
             }
 
             return null;
@@ -1339,12 +1339,15 @@
             try {
                 const client = await getSupabaseClient();
                 if (client) {
-                    const { data, error } = await client
-                        .from('artikel_berita')
-                        .select('*')
-                        .eq('slug', slug)
-                        .eq('is_published', true)
-                        .single();
+                    let query = client.from('artikel_berita').select('*');
+                    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug);
+                    if (isUUID) {
+                        query = query.eq('id', slug);
+                    } else {
+                        query = query.eq('slug', slug);
+                    }
+
+                    const { data, error } = await query.maybeSingle();
 
                     if (!error && data) {
                         article = data;
