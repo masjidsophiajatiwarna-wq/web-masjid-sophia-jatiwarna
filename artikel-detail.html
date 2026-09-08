@@ -281,14 +281,33 @@
             box-shadow: 0 4px 12px rgba(227, 196, 102, 0.35);
         }
 
-        .mobile-toggle {
+        .mobile-nav-actions {
             display: none;
-            background: transparent;
-            border: none;
-            font-size: 1.35rem;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mobile-home-btn, .mobile-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
             color: var(--color-charcoal);
+            font-size: 1rem;
             cursor: pointer;
-            padding: 0.5rem;
+            transition: var(--transition);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 0;
+        }
+
+        .mobile-home-btn:hover, .mobile-toggle:hover {
+            color: var(--color-gold-deep);
+            border-color: var(--color-gold-primary);
+            background: var(--color-gold-light);
         }
 
         /* Mobile Drawer */
@@ -888,10 +907,10 @@
 
         @media (max-width: 1024px) {
             .nav-menu, .btn-cta-donasi {
-                display: none;
+                display: none !important;
             }
-            .mobile-toggle {
-                display: block;
+            .mobile-nav-actions {
+                display: flex !important;
             }
             .footer-grid {
                 grid-template-columns: 1fr 1fr;
@@ -899,6 +918,23 @@
         }
 
         @media (max-width: 640px) {
+            .header-inner {
+                height: 64px;
+            }
+            .brand-logo-img {
+                height: 38px;
+            }
+            .brand-logo-text h1 {
+                font-size: 1.05rem;
+            }
+            .brand-logo-text p {
+                display: none;
+            }
+            .mobile-home-btn, .mobile-toggle {
+                width: 38px;
+                height: 38px;
+                font-size: 0.95rem;
+            }
             .article-headline {
                 font-size: 1.65rem;
             }
@@ -974,12 +1010,14 @@
                     <i class="fa-solid fa-heart"></i> Infaq &amp; Donasi
                 </a>
 
-                <button class="mobile-menu-btn" onclick="window.location.href='/'" aria-label="Kembali ke Beranda" style="margin-right: 0.35rem;">
-                    <i class="fa-solid fa-house"></i>
-                </button>
-                <button class="mobile-toggle" onclick="toggleDrawer(true)" aria-label="Buka Menu">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
+                <div class="mobile-nav-actions">
+                    <button class="mobile-home-btn" onclick="window.location.href='/'" aria-label="Kembali ke Beranda" title="Kembali ke Beranda">
+                        <i class="fa-solid fa-house"></i>
+                    </button>
+                    <button class="mobile-toggle" onclick="toggleDrawer(true)" aria-label="Buka Menu" title="Buka Menu Navigasi">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>

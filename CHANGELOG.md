@@ -17,6 +17,9 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
   - Format perutean kini 100% identik dengan arsitektur benchmark UMAR Travel (`umrahmarifatullah.com/artikel-detail.html?slug=...`) yang terbukti stabil, tahan banting (*bulletproof*), dan bebas 404.
 - `[SLUG_EXTRACTOR_ROBUSTNESS]` Memperkuat parser slug di `artikel-detail.html`:
   - Menjaga agar nama path `/artikel-detail` tidak secara keliru terdeteksi sebagai parameter slug warta saat URL bersih aktif.
+- `[NAV_RESPONSIVE_ISOLATION]` Perbaikan tata letak tombol navigasi pada `artikel-detail.html`:
+  - Mengisolasi tombol aksi mobile (`.mobile-nav-actions` berisi `.mobile-home-btn` dan `.mobile-toggle`) dengan aturan tegas `display: none` pada mode desktop (layar > 1024px) sehingga bilah navigasi desktop bersih dari tombol ikon beranda yang tidak semestinya.
+  - Memperbaiki bug visual pada mode ponsel (layar <= 1024px): tombol ikon beranda dan tombol menu laci (*drawer*) kini dibungkus rapi dalam kelompok aksi bersudut membulat modern (38x38px, kontras tinggi, bayangan lembut) di sisi kanan navbar tanpa tumpang-tindih atau menggeser teks logo.
 
 ## [1.9.22] - 2026-09-09
 
