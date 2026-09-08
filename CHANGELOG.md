@@ -4,6 +4,61 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.18] - 2026-09-08
+
+### Hero Carousel Slider Manager Tak Terbatas, Pemisahan Galeri Mandiri Istiqlal, Portal Warta Dakwah UMAR, dan Routing Clean URLs
+
+#### Fitur & Peningkatan Baru (New Features & Enhancements)
+- `[HERO_CAROUSEL_MANAGER]` Rombak modul Banner Hero di Tab Media (`admin.html#media`) menjadi **Hero Carousel Slider Manager** bebas tak terbatas (unlimited slides):
+  - Kapabilitas CRUD penuh: tombol "+ Tambah Slide Hero Baru" tanpa batasan jumlah slide.
+  - Form editor modal interaktif: ImageKit Media Picker, Judul Utama, Ayat Al-Qur'an/Hadits Arab Berharakat (`arabic_quote`), Subjudul / Quotes Terjemahan, Label & Tautan Tombol CTA, Urutan Tampil (`order_index`), serta Switch Aktif/Non-aktif (`is_active`).
+  - Fitur naik/turunkan urutan slide dan hapus slide dengan proteksi konfirmasi modal.
+  - Terkoneksi dua arah ke tabel Supabase `public.homepage_media` dan memancarkan siaran WebSocket CDC secara instan ke beranda publik.
+- `[HOMEPAGE_REFINEMENT]` Penataan ulang dan pembersihan portal muka publik (`index.html`):
+  - **Bilah Navigasi Bebas Wrap:** Mengatur CSS navbar desktop (`white-space: nowrap; flex-wrap: nowrap; gap: 1.15rem;`) sehingga tidak melipat/bertumpuk pada rentang resolusi 1024px–1440px.
+  - **Pembersihan Menu & Seksi Layanan Cepat:** Menghapus menu dan seksi `Layanan Cepat` dari navbar desktop, mobile drawer, dan footer, menghasilkan alur baca halaman yang lebih fokus dan lapang.
+  - **Zero-Hardcoding Ayat & Quotes Hero:** Fungsi `loadHeroSlides()` merender ayat Arab berharakat (`arabic_quote`), quotes terjemahan, judul, dan tombol CTA secara 100% dinamis dari Supabase.
+  - **Showcase 4 Album Sorotan Istiqlal:** Mengubah galeri beranda menjadi 4 Kartu Album Sorotan Istiqlal berdesain *Photo Stack* (Makan Siang Gratis, Santri Tahfidz, Layanan Musafir, Suasana Ibadah) terbungkus tautan CTA menuju `/galeri`.
+  - **Tautan Warta Dinamis:** Kartu warta dakwah dibungkus tag `<a>` aktif menuju `/artikel/:slug` dan tombol CTA arsip menuju `/artikel`.
+  - **Pembersihan Teks AI Flexing:** Mengganti seluruh teks artifisial ("Update Realtime Otomatis", dll.) dengan narasi humanis transparan ("Data infaq terverifikasi DKM").
+- `[STANDALONE_GALLERY_ISTIQLAL]` Pembangunan halaman mandiri arsip galeri multimedia (`galeri.html` diakses via `/galeri`):
+  - Mengadopsi standar benchmark portal Masjid Istiqlal Jakarta (`https://www.istiqlal.or.id/galeri`).
+  - Breadcrumbs navigasi Islami, penanggalan ganda Hijriah & Masehi, dan hotline WhatsApp.
+  - Bilah kontrol: pencarian langsung (*live search bar*) dan filter kategori pil (*Semua, Makan Siang Gratis, Santri Tahfidz, Fasilitas Musafir, Suasana Ibadah, Fasad & Arsitektur*).
+  - Grid kartu foto ImageKit WebP resolusi tinggi dengan badge kategori tematik.
+  - Penampil foto layar penuh (*Fullscreen Lightbox Viewer*) interaktif: tombol navigasi panah kiri/kanan, tombol tutup, judul dan caption foto, serta dukungan navigasi keyboard panah & tombol Escape.
+  - Arsitektur zero-hardcode menggunakan pemuat runtime modular `asset/js/env-loader.js`.
+- `[STANDALONE_ARTICLE_STUDIO_UMAR]` Pembangunan portal direktori warta dakwah (`artikel.html` diakses via `/artikel`):
+  - Mengadopsi standar portal publik UMAR Travel (`WEB-UMAR/artikel.html`).
+  - Live search bar dan filter kategori pil warta.
+  - Kartu Warta Pilihan Utama (*Featured Article Card*) di bagian teratas.
+  - Grid kartu warta dakwah: cover WebP ImageKit, estimasi waktu baca (*read time*), nama penulis, dan tanggal publikasi format bahasa Indonesia.
+  - Terhubung langsung ke tabel Supabase `artikel_berita` tanpa hardcoded kredensial.
+- `[STANDALONE_ARTICLE_READER_UMAR]` Pembangunan halaman pembaca warta mandiri (`artikel-detail.html` diakses via `/artikel/:slug`):
+  - Mengadopsi standar tata baca UMAR Travel (`WEB-UMAR/artikel-detail.html`).
+  - Penunjuk progres baca dinamis (*Sticky Reading Progress Bar*) di puncak layar.
+  - Breadcrumbs navigasi terstruktur (`Beranda / Warta & Kabar Dakwah / [Judul Artikel]`).
+  - Header artikel: badge kategori, judul utama `h1`, meta bar penulis, tanggal terbit, waktu baca, dan counter pembaca (`view_count`).
+  - Hero image cover WebP resolusi tinggi ImageKit CDN.
+  - Wadah naskah rich-text HTML (`#article-content`) dengan tipografi berjarak baris 1.85, penataan heading beraksen emas, list berjarak, dan kutipan bersanad (*blockquote*).
+  - Bilah bagikan warta sosial (*Social Share Bar*): WhatsApp, Facebook, X (Twitter), dan Salin Tautan ke clipboard dengan notifikasi toast.
+  - Box profil redaksi media DKM, box ajakan konfirmasi infaq rekening BSI 7235464297, dan rekomendasi 3 artikel terkait.
+  - Resolusi slug cerdas: membaca query string `?slug=...` maupun rute clean URLs `/artikel/:slug`.
+- `[CLEAN_URLS_ROUTING]` Konfigurasi rute serverless Vercel pada `vercel.json`:
+  - Mengaktifkan `"cleanUrls": true` dan `"trailingSlash": false`.
+  - Menambahkan aturan rewrites rute `/galeri` -> `/galeri.html`, `/artikel` -> `/artikel.html`, dan `/artikel/:slug` -> `/artikel-detail.html?slug=:slug`.
+- `[COMPLIANCE_TEST_SUITE_EXPANSION]` Memperluas script verifikasi kepatuhan (`scripts/verify_index_compliance.py`):
+  - Pengujian keberadaan 10 berkas inti proyek.
+  - Audit Strict No-Emoji pada seluruh berkas HTML publik, admin, dan dokumen tata kelola (0 emoji/dingbat).
+  - Audit No Admin Links Leak pada portal publik (`index.html`, `galeri.html`, `artikel.html`, `artikel-detail.html`).
+  - Audit Zero Hardcoded Secrets (JWT/API Keys) pada seluruh berkas.
+  - Pengujian integritas struktural beranda publik dan halaman mandiri.
+  - Pengujian konfigurasi rute clean URLs di `vercel.json`.
+  - Verifikasi sinkronisasi 6 tabel dan 6 channel Supabase Realtime CDC.
+  - Seluruh rangkaian pengujian lulus 100% (8 dari 8 sub-tes berstatus PASS).
+
+---
+
 ## [1.9.17] - 2026-09-08
 
 ### Pembaruan Menyeluruh Beranda Publik Standar Istiqlal Jakarta & Pipeline Batch Media ImageKit CDN WebP

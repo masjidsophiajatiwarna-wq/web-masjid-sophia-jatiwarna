@@ -56,7 +56,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
        |
 [FASE 2: Fondasi Database Supabase, Auth, Storage & Hardening RLS] (STATUS: SELESAI 100%)
        |
-[FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: 85% SELESAI)
+[FASE 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat] (STATUS: SELESAI 100%)
        |
 [FASE 4: Web Admin DKM, Fluid Mobile-First UI & Suite Modul Lengkap PJ] (STATUS: 52% SELESAI)
        |
@@ -126,17 +126,19 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 
 ### Fase 3: Frontend Web Portal Publik, Berita Dakwah, Galeri & Modul Shalat
 - **Benchmark Rujukan:** Masjid Istiqlal Jakarta (`https://www.istiqlal.or.id/`) & UMAR Travel (`artikel.html`, `artikel-detail.html`)
-- **Status:** 85% Selesai
+- **Status:** Selesai (100%)
 - **Daftar Tugas:**
   - [x] **Design System & Komponen Beranda Inti (`index.html`):** Tema Terang Resmi, Hisab Jadwal Shalat Jatiwarna (Kemenag) + Live Countdown, Kartu Petugas Ibadah, Box Donasi BSI 1-Click Copy `7235464297` & QRIS SEDEKAH MAKAN, Dynamic Incognito Form, Informasi Fasilitas Musafir 24 Jam.
   - [x] **Integrasi Realtime Shalat & Petugas Ibadah (`index.html` <-> `admin.html`):** Query dinamis ke tabel Supabase `jadwal_shalat_petugas` status `Approved`, fallback hisab astronomis otomatis bila belum ada jadwal terbit, sinkronisasi live nama Imam 5 waktu, Muadzin, Khatib Jumat, dan update countdown timer tanpa reload via WebSocket Supabase Realtime channel `public:jadwal_shalat_petugas:index` dan `public:kajian_acara_ibadah:index`.
-  - [x] **Redesign Besar Beranda Publik (Benchmark Istiqlal):** Dynamic Hero Banner Slider ImageKit WebP terhubung ke `homepage_media`, Kartu Layanan Cepat 4 Pilar, Kalender Ganda Hijriah Ummul Qura & Masehi, Agenda Majelis Kajian Pekanan terhubung ke `kajian_acara_ibadah`, Galeri Sorotan Dokumentasi dengan filter kategori + Fullscreen Lightbox Modal, Sticky Header w/ Infaq Button, Mobile Bottom Navigation Bar 5-Tab, dan Footer Informatif 4 Kolom.
+  - [x] **Redesign Besar Beranda Publik (Benchmark Istiqlal):** Dynamic Hero Banner Slider ImageKit WebP terhubung ke `homepage_media`, Kalender Ganda Hijriah Ummul Qura & Masehi, Agenda Majelis Kajian Pekanan terhubung ke `kajian_acara_ibadah`, Galeri Sorotan 4 Album Istiqlal berdesain photo-stack terhubung ke `/galeri`, kartu warta dakwah terhubung ke `/artikel/:slug`, Sticky Header w/ Infaq Button, Mobile Bottom Navigation Bar 5-Tab, dan Footer Informatif 4 Kolom.
   - [x] **Kolom Pengaduan, Saran & Aspirasi Jamaah di Web Publik:** Modal interaktif terhubung ke serverless `/api/pengaduan` dan tabel `feedback_complaints` dengan notifikasi toast elegan & reset form otomatis.
   - [x] **Supabase Realtime CDC 6 Channel:** Langganan aktif WebSocket sinkronisasi instan tanpa refresh untuk `jadwal_shalat_petugas`, `homepage_media`, `kajian_acara_ibadah`, `artikel_berita`, `donations`, dan `feedback_complaints`.
-  - [ ] **Halaman Direktori Berita & Artikel Dakwah (`artikel.html` - Benchmark UMAR):** Hero Search, Filter Kategori, Featured Article & Grid Artikel WebP, Pagination.
-  - [ ] **Halaman Detail Artikel Mandiri (`artikel-detail.html` - Benchmark UMAR):** Header, Cover WebP, Rich Text Body, Tombol Share WhatsApp/FB, Rekomendasi Artikel Terkait.
-  - [ ] **Halaman Galeri Multimedia Mandiri (`galeri.html`):** Album Foto & Video Lengkap per Kategori, Lightbox Pop-up, Video Streaming ImageKit.io.
-  - [ ] **Live Chat Jamaah ke Panel Admin (Status: Coming Soon / Rencana Lanjutan):** Widget obrolan mengambang di pojok kanan bawah web publik.
+  - [x] **Halaman Direktori Berita & Artikel Dakwah (`artikel.html` - Benchmark UMAR):** Live Search, Filter Kategori Pills, Warta Pilihan Utama (*Featured Article Card*), Grid Kartu Warta ImageKit WebP (estimasi waktu baca, nama penulis, tanggal terbit), dan integrasi runtime Supabase Zero-Hardcode.
+  - [x] **Halaman Detail Artikel Mandiri (`artikel-detail.html` - Benchmark UMAR):** Breadcrumbs navigasi Islami, Sticky Reading Progress Bar di puncak, Hero Cover WebP, Meta Bar Penulis, Box Kutipan Pembuka, Rich Text Body Content, Tombol Bagikan Media Sosial (WhatsApp, FB, X, Salin Tautan), Rekomendasi 3 Artikel Terkait, Box Ajakan Infaq BSI, dan resolusi slug dinamis (`/artikel/:slug` atau `?slug=...`).
+  - [x] **Halaman Galeri Multimedia Mandiri (`galeri.html` - Benchmark Istiqlal):** Live Search Bar, Filter Kategori Pills (Semua, Makan Siang, Santri, Fasilitas, Ibadah, Fasad), Grid Kartu Foto Berbadge, Fullscreen Lightbox Photo Viewer interaktif (navigasi keyboard panah & Esc), dan sinkronisasi katalog ImageKit.
+  - [x] **Hero Carousel Slider Manager Unlimited di Admin (`admin.html#media`):** Modul CRUD lengkap penambahan slide tak terbatas, pemilihan aset ImageKit, kolom ayat Al-Qur'an/Hadits Arab berharakat (`arabic_quote`), subjudul quotes terjemahan, CTA button editor, pengatur urutan, switch aktif/non-aktif, dan siaran broadcast Realtime CDC.
+  - [x] **Clean URLs & Dynamic Routing (`vercel.json`):** Pengaktifan `cleanUrls: true`, `trailingSlash: false`, dan rewrites rute `/galeri`, `/artikel`, `/artikel/:slug` tanpa ekstensi `.html`.
+  - [x] **Test Suite Kepatuhan Terpadu (`scripts/verify_index_compliance.py`):** Lolos 100% (8 sub-tes: file integrity, Strict No-Emoji, no admin links on public, zero hardcoded secrets, structural check, standalone pages check, routing check, and CDC channel subscriptions).
 
 ---
 

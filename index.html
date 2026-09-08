@@ -228,18 +228,20 @@
         .nav-menu {
             display: flex;
             align-items: center;
-            gap: 1.25rem;
+            gap: 1.15rem;
             list-style: none;
+            flex-wrap: nowrap;
         }
 
         .nav-link {
             color: var(--color-charcoal);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             font-weight: 600;
             padding: 0.35rem 0;
             position: relative;
             transition: var(--transition);
+            white-space: nowrap;
         }
 
         .nav-link:hover, .nav-link.active {
@@ -727,75 +729,6 @@
         }
 
         /* ==========================================================================
-           QUICK ACCESS SERVICES HUB (STANDAR ISTIQLAL)
-           ========================================================================== */
-        .quick-services-section {
-            padding: 1.75rem 0;
-            background: #FFFFFF;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .quick-services-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.25rem;
-        }
-
-        .quick-card {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.15rem;
-            background: #FAFAF7;
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            text-decoration: none;
-            color: var(--color-charcoal);
-            transition: var(--transition);
-        }
-
-        .quick-card:hover {
-            background: #FFFFFF;
-            border-color: var(--color-gold-deep);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .quick-icon-box {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-md);
-            background: var(--color-gold-light);
-            border: 1px solid var(--color-gold-border);
-            color: var(--color-gold-deep);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            flex-shrink: 0;
-            transition: var(--transition);
-        }
-
-        .quick-card:hover .quick-icon-box {
-            background: var(--color-charcoal);
-            color: var(--color-gold-primary);
-            border-color: var(--color-charcoal);
-        }
-
-        .quick-text h4 {
-            font-size: 0.925rem;
-            font-weight: 800;
-            margin-bottom: 0.15rem;
-            line-height: 1.3;
-        }
-
-        .quick-text p {
-            font-size: 0.75rem;
-            color: var(--color-charcoal-muted);
-            line-height: 1.4;
-        }
-
-        /* ==========================================================================
            SECTIONS COMMON STYLING
            ========================================================================== */
         .section-padding {
@@ -1099,6 +1032,101 @@
             background: var(--color-charcoal);
             color: var(--color-gold-primary);
             border-color: var(--color-charcoal);
+        }
+
+        /* Istiqlal Photo Stack Showcase */
+        .album-stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .album-stack-card {
+            background: var(--color-bg-white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            overflow: hidden;
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .album-stack-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-gold-deep);
+        }
+
+        .album-cover-wrap {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background: #E5E7EB center / cover no-repeat;
+        }
+
+        .album-badge-count {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(29, 29, 27, 0.85);
+            backdrop-filter: blur(4px);
+            color: #FFFFFF;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.65rem;
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border: 1px solid rgba(227, 196, 102, 0.4);
+        }
+
+        .album-card-body {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .album-category-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--color-gold-deep);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.35rem;
+        }
+
+        .album-card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--color-charcoal);
+            line-height: 1.35;
+            margin-bottom: 0.45rem;
+        }
+
+        .album-card-desc {
+            font-size: 0.82rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .album-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--color-gold-deep);
+            font-weight: 700;
+            border-top: 1px solid #F3F4F6;
+            padding-top: 0.75rem;
         }
 
         .gallery-grid {
@@ -1817,9 +1845,6 @@
             .officers-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .quick-services-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
             .gallery-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -1865,9 +1890,6 @@
             }
             .hero-slide-content {
                 padding: 1.5rem;
-            }
-            .quick-services-grid {
-                grid-template-columns: 1fr;
             }
             .prayer-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1946,13 +1968,12 @@
 
             <ul class="nav-menu">
                 <li><a href="#beranda" class="nav-link active">Beranda</a></li>
-                <li><a href="#layanan-cepat" class="nav-link">Layanan Cepat</a></li>
                 <li><a href="#jadwal-shalat" class="nav-link">Jadwal Shalat</a></li>
                 <li><a href="#agenda-kajian" class="nav-link">Majelis Kajian</a></li>
                 <li><a href="#program-filantropi" class="nav-link">Sedekah Makan</a></li>
                 <li><a href="#layanan-musafir" class="nav-link">Fasilitas 24 Jam</a></li>
-                <li><a href="#galeri-dokumentasi" class="nav-link">Galeri</a></li>
-                <li><a href="#warta-berita" class="nav-link">Warta Masjid</a></li>
+                <li><a href="/galeri" class="nav-link">Galeri</a></li>
+                <li><a href="/artikel" class="nav-link">Warta Masjid</a></li>
             </ul>
 
             <div class="nav-actions">
@@ -1980,14 +2001,13 @@
         </div>
         <ul class="drawer-links">
             <li><a href="#beranda" onclick="closeMobileDrawer()"><i class="fa-solid fa-house"></i> Beranda</a></li>
-            <li><a href="#layanan-cepat" onclick="closeMobileDrawer()"><i class="fa-solid fa-bolt"></i> Layanan Cepat</a></li>
             <li><a href="#jadwal-shalat" onclick="closeMobileDrawer()"><i class="fa-solid fa-clock"></i> Jadwal Shalat Presisi</a></li>
             <li><a href="#agenda-kajian" onclick="closeMobileDrawer()"><i class="fa-solid fa-book-open-reader"></i> Majelis Kajian</a></li>
             <li><a href="#program-filantropi" onclick="closeMobileDrawer()"><i class="fa-solid fa-bowl-food"></i> Sedekah Makan Dzuhur</a></li>
             <li><a href="#layanan-musafir" onclick="closeMobileDrawer()"><i class="fa-solid fa-person-shelter"></i> Fasilitas 24 Jam</a></li>
-            <li><a href="#galeri-dokumentasi" onclick="closeMobileDrawer()"><i class="fa-solid fa-images"></i> Galeri Dokumentasi</a></li>
-            <li><a href="#warta-berita" onclick="closeMobileDrawer()"><i class="fa-solid fa-newspaper"></i> Warta Dakwah</a></li>
-            <li><a href="javascript:void(0)" onclick="closeMobileDrawer(); openComplaintModal()"><i class="fa-solid fa-bullhorn"></i> Pengaduan & Aspirasi</a></li>
+            <li><a href="/galeri" onclick="closeMobileDrawer()"><i class="fa-solid fa-images"></i> Galeri Dokumentasi</a></li>
+            <li><a href="/artikel" onclick="closeMobileDrawer()"><i class="fa-solid fa-newspaper"></i> Warta Dakwah</a></li>
+            <li><a href="javascript:void(0)" onclick="closeMobileDrawer(); openComplaintModal()"><i class="fa-solid fa-bullhorn"></i> Pengaduan &amp; Aspirasi</a></li>
         </ul>
         <div style="padding-top: 1rem; border-top: 1px solid var(--color-border); margin-top: auto;">
             <a href="https://wa.me/6285188352432" target="_blank" class="btn-hero-primary" style="width: 100%;">
@@ -2053,7 +2073,7 @@
                     </div>
 
                     <!-- Slide 3: Santri Tahfidz -->
-                    <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al_Quran_Bersama_Ustadz_01.webp');">
+                    <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al-Quran_Bersama_Ustadz_01.webp');">
                         <div class="hero-slide-overlay"></div>
                         <div class="hero-slide-content">
                             <span class="badge-hero"><i class="fa-solid fa-book-quran"></i> Pendidikan & Dakwah</span>
@@ -2164,56 +2184,7 @@
         </div>
     </section>
 
-    <!-- ==========================================================================
-       QUICK ACCESS SERVICES HUB (STANDAR MASJID ISTIQLAL)
-       ========================================================================== -->
-    <section class="quick-services-section" id="layanan-cepat">
-        <div class="container">
-            <div class="quick-services-grid">
-                
-                <a href="#layanan-musafir" class="quick-card">
-                    <div class="quick-icon-box">
-                        <i class="fa-solid fa-person-shelter"></i>
-                    </div>
-                    <div class="quick-text">
-                        <h4>Layanan Musafir 24 Jam</h4>
-                        <p>Kamar mandi bersih, istirahat nyaman & dispenser air gratis.</p>
-                    </div>
-                </a>
 
-                <a href="#program-filantropi" class="quick-card">
-                    <div class="quick-icon-box">
-                        <i class="fa-solid fa-bowl-food"></i>
-                    </div>
-                    <div class="quick-text">
-                        <h4>Sedekah Makan Dzuhur</h4>
-                        <p>70+ porsi hidangan bergizi gratis dibagikan setiap hari.</p>
-                    </div>
-                </a>
-
-                <a href="#jadwal-shalat" class="quick-card">
-                    <div class="quick-icon-box">
-                        <i class="fa-solid fa-compass"></i>
-                    </div>
-                    <div class="quick-text">
-                        <h4>Jadwal Shalat & Kiblat</h4>
-                        <p>Hisab astronomis presisi Kementerian Agama RI.</p>
-                    </div>
-                </a>
-
-                <a href="javascript:void(0)" onclick="openComplaintModal()" class="quick-card">
-                    <div class="quick-icon-box">
-                        <i class="fa-solid fa-bullhorn"></i>
-                    </div>
-                    <div class="quick-text">
-                        <h4>Pengaduan & Aspirasi</h4>
-                        <p>Kotak saran fasilitas, respon cepat langsung ke DKM.</p>
-                    </div>
-                </a>
-
-            </div>
-        </div>
-    </section>
 
     <!-- ==========================================================================
        JADWAL SHALAT PRESISI JATIWARNA & PETUGAS IBADAH
@@ -2390,43 +2361,92 @@
     </section>
 
     <!-- ==========================================================================
-       GALERI SOROTAN MULTIMEDIA BERBASIS KATEGORI (IMAGEKIT CDN)
+       SOROTAN DOKUMENTASI KEGIATAN MASJID (STANDAR MASJID ISTIQLAL)
        ========================================================================== -->
     <section class="section-padding" id="galeri-dokumentasi">
         <div class="container">
             <div class="section-header-center">
-                <span class="section-tag"><i class="fa-solid fa-images"></i> Transparansi Dokumentasi</span>
-                <h2 class="section-title">Galeri Dokumentasi Kegiatan Riil</h2>
+                <span class="section-tag"><i class="fa-solid fa-images"></i> Sorotan Dokumentasi</span>
+                <h2 class="section-title">Dokumentasi Khidmat Masjid</h2>
                 <p class="section-subtitle">
-                    Potret nyata khidmat pelayanan musafir, penyaluran makan siang gratis, kegiatan santri tahfidz, dan ibadah di Masjid Sophia Jatiwarna.
+                    Potret nyata pelayanan musafir, penyaluran makan siang gratis, kegiatan santri tahfidz, dan suasana ibadah di Masjid Musafir Sophia Jatiwarna.
                 </p>
             </div>
 
-            <!-- Filter Buttons -->
-            <div class="gallery-filter-bar">
-                <button class="gallery-filter-btn active" onclick="filterGallery('ALL', this)">Semua Dokumentasi</button>
-                <button class="gallery-filter-btn" onclick="filterGallery('MAKAN_SIANG_GRATIS', this)">Makan Siang Gratis</button>
-                <button class="gallery-filter-btn" onclick="filterGallery('SANTRI_TAHFIDZ', this)">Santri Tahfidz</button>
-                <button class="gallery-filter-btn" onclick="filterGallery('FASILITAS_MUSAFIR', this)">Layanan Musafir</button>
-                <button class="gallery-filter-btn" onclick="filterGallery('SUASANA_IBADAH', this)">Suasana Ibadah</button>
-                <button class="gallery-filter-btn" onclick="filterGallery('FASAD_MASJID', this)">Fasad &amp; Arsitektur</button>
+            <!-- Istiqlal Album Showcase Grid -->
+            <div class="album-stack-grid">
+                <!-- Album 1: Makan Siang Gratis -->
+                <a href="/galeri?kategori=MAKAN_SIANG_GRATIS" class="album-stack-card">
+                    <div class="album-cover-wrap" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp');">
+                        <span class="album-badge-count"><i class="fa-solid fa-camera"></i> +18 Foto</span>
+                    </div>
+                    <div class="album-card-body">
+                        <span class="album-category-pill">Program Sosial</span>
+                        <h3 class="album-card-title">Makan Siang Gratis Ba'da Dzuhur</h3>
+                        <p class="album-card-desc">Penyediaan 70+ porsi makan siang bergizi cuma-cuma setiap hari bagi musafir dan pejuang nafkah jalanan.</p>
+                        <div class="album-card-footer">
+                            <span>Buka Album</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Album 2: Santri Tahfidz -->
+                <a href="/galeri?kategori=SANTRI_TAHFIDZ" class="album-stack-card">
+                    <div class="album-cover-wrap" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al-Quran_Bersama_Ustadz_01.webp');">
+                        <span class="album-badge-count"><i class="fa-solid fa-camera"></i> +24 Foto</span>
+                    </div>
+                    <div class="album-card-body">
+                        <span class="album-category-pill">Pendidikan Qur'an</span>
+                        <h3 class="album-card-title">Pembibitan Santri Tahfidz 30 Juz</h3>
+                        <p class="album-card-desc">Aktivitas halaqah hafalan, mutaba'ah bersanad, dan pembinaan adab santri mukim di asrama masjid.</p>
+                        <div class="album-card-footer">
+                            <span>Buka Album</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Album 3: Fasilitas Musafir -->
+                <a href="/galeri?kategori=FASILITAS_MUSAFIR" class="album-stack-card">
+                    <div class="album-cover-wrap" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/fasilitas/Kamar_Mandi_Wudhu_Pria_01.webp');">
+                        <span class="album-badge-count"><i class="fa-solid fa-camera"></i> +16 Foto</span>
+                    </div>
+                    <div class="album-card-body">
+                        <span class="album-category-pill">Layanan Musafir</span>
+                        <h3 class="album-card-title">Fasilitas Ramah Musafir 24 Jam</h3>
+                        <p class="album-card-desc">Sanitasi wudhu dan toilet bersih, ruang rehat sejuk ber-AC, dan air minum gratis untuk musafir yang singgah.</p>
+                        <div class="album-card-footer">
+                            <span>Buka Album</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Album 4: Fasad & Ibadah -->
+                <a href="/galeri?kategori=FASAD_MASJID" class="album-stack-card">
+                    <div class="album-cover-wrap" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/ibadah/Ruang_Shalat_Utama_Mihrab_10.webp');">
+                        <span class="album-badge-count"><i class="fa-solid fa-camera"></i> +32 Foto</span>
+                    </div>
+                    <div class="album-card-body">
+                        <span class="album-category-pill">Arsitektur &amp; Ibadah</span>
+                        <h3 class="album-card-title">Kekhusyukan Ruang Shalat &amp; Fasad</h3>
+                        <p class="album-card-desc">Kenyamanan mihrab shalat berjamaah, pencahayaan alami nan teduh, dan fasad megah arsitektur modern.</p>
+                        <div class="album-card-footer">
+                            <span>Buka Album</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </a>
             </div>
 
-            <!-- Gallery Grid -->
-            <div class="gallery-grid" id="gallery-container">
-                <!-- Populated dynamically from Supabase / ImageKit Manifest -->
+            <div style="text-align: center; margin-top: 2.25rem;">
+                <a href="/galeri" class="btn-hero-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; padding: 0.85rem 1.75rem;">
+                    <i class="fa-solid fa-images"></i> Buka Seluruh Galeri Foto &amp; Video Masjid Sophia &rarr;
+                </a>
             </div>
         </div>
     </section>
-
-    <!-- Lightbox Popup Modal -->
-    <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox(event)">
-        <div class="lightbox-content">
-            <button class="lightbox-close" onclick="closeLightboxDirect()">&times;</button>
-            <img id="lightbox-img" src="" alt="Pratinjau Foto Dokumentasi">
-            <div class="lightbox-caption" id="lightbox-caption"></div>
-        </div>
-    </div>
 
     <!-- ==========================================================================
        PROGRAM SOSIAL & DONASI REALTIME
@@ -2496,7 +2516,7 @@
                             <div class="progress-bar-fill" id="live-progress-fill" style="width: 100%;"></div>
                         </div>
                         <div style="font-size: 0.725rem; color: #9CA3AF; text-align: right;">
-                            <i class="fa-solid fa-bolt" style="color: var(--color-gold-primary);"></i> Update Realtime Otomatis
+                            <i class="fa-solid fa-circle-check" style="color: var(--color-gold-primary);"></i> Data infaq terverifikasi DKM
                         </div>
                     </div>
                 </div>
@@ -2634,6 +2654,12 @@
             <div class="news-grid" id="news-container">
                 <!-- Populated dynamically from Supabase (artikel_berita) -->
             </div>
+
+            <div style="text-align: center; margin-top: 2.25rem;">
+                <a href="/artikel" class="btn-hero-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; padding: 0.85rem 1.75rem;">
+                    <i class="fa-solid fa-newspaper"></i> Lihat Seluruh Arsip Warta &amp; Panduan Ibadah &rarr;
+                </a>
+            </div>
         </div>
     </section>
 
@@ -2691,6 +2717,21 @@
     </div>
 
     <!-- ==========================================================================
+       LIGHTBOX MODAL VIEWER DOKUMENTASI
+       ========================================================================== -->
+    <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox(event)">
+        <div class="lightbox-box">
+            <button class="lightbox-close-btn" onclick="closeLightboxDirect()" aria-label="Tutup Pratinjau">&times;</button>
+            <div class="lightbox-img-wrap">
+                <img id="lightbox-img" src="" alt="Pratinjau Foto Dokumentasi">
+            </div>
+            <div class="lightbox-caption-box">
+                <p id="lightbox-caption" style="font-size: 0.9rem; font-weight: 600; color: var(--color-charcoal);"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
        MOBILE BOTTOM NAVIGATION BAR (KHUSUS SMARTPHONE < 768px)
        ========================================================================== -->
     <nav class="mobile-bottom-nav" aria-label="Navigasi Bawah Ponsel">
@@ -2734,12 +2775,12 @@
                     <h4>Tautan Navigasi</h4>
                     <ul class="footer-links">
                         <li><a href="#beranda">Beranda Utama</a></li>
-                        <li><a href="#layanan-cepat">Layanan Cepat</a></li>
                         <li><a href="#jadwal-shalat">Jadwal Shalat Kemenag</a></li>
                         <li><a href="#agenda-kajian">Agenda Majelis Ilmu</a></li>
                         <li><a href="#program-filantropi">Makan Siang Gratis</a></li>
                         <li><a href="#layanan-musafir">Fasilitas Musafir 24 Jam</a></li>
-                        <li><a href="#galeri-dokumentasi">Galeri Dokumentasi</a></li>
+                        <li><a href="/galeri">Galeri Dokumentasi</a></li>
+                        <li><a href="/artikel">Warta &amp; Kabar Dakwah</a></li>
                     </ul>
                 </div>
 
@@ -3082,13 +3123,11 @@
                             <div class="hero-slide-content">
                                 <span class="badge-hero"><i class="fa-solid fa-mosque"></i> Masjid Musafir Sophia</span>
                                 <h2 class="hero-title">${item.judul}</h2>
-                                <div class="hero-arabic-box">
-                                    وَأَطْعِمُوا الطَّعَامَ وَصِلُوا الْأَرْحَامَ وَصَلُّوا بِاللَّيْلِ وَالنَّاسُ نِيَامٌ تَدْخُلُوا الْجَنَّةَ بِسَلَامٍ
-                                </div>
+                                ${item.arabic_quote ? `<div class="hero-arabic-box">${item.arabic_quote}</div>` : ''}
                                 <p class="hero-subtitle">${item.subjudul || 'Pusat ibadah dan pelayanan ramah musafir 24 jam penuh di Jatiwarna, Kota Bekasi.'}</p>
                                 <div class="hero-actions">
                                     <a href="${item.action_link || '#program-filantropi'}" class="btn-hero-primary">
-                                        <i class="fa-solid fa-bowl-food"></i> ${item.action_label || 'Infaq Makan Siang'}
+                                        <i class="fa-solid fa-hand-holding-heart"></i> ${item.action_label || 'Infaq Makan Siang'}
                                     </a>
                                     <a href="#jadwal-shalat" class="btn-hero-secondary">
                                         <i class="fa-solid fa-clock"></i> Jadwal Shalat Kemenag
@@ -3357,7 +3396,7 @@
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Malam_01.webp', judul: 'Fasad Masjid Malam', subjudul: 'FASAD_MASJID' },
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp', judul: 'Hidangan Siap Saji', subjudul: 'MAKAN_SIANG_GRATIS' },
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Suasana_Makan_Bersama_01.webp', judul: 'Suasana Makan Bersama', subjudul: 'MAKAN_SIANG_GRATIS' },
-                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al_Quran_Bersama_Ustadz_01.webp', judul: 'Halaqah Santri Tahfidz', subjudul: 'SANTRI_TAHFIDZ' },
+                { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al-Quran_Bersama_Ustadz_01.webp', judul: 'Halaqah Santri Tahfidz', subjudul: 'SANTRI_TAHFIDZ' },
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/ibadah/Ruang_Shalat_Utama_Mihrab_01.webp', judul: 'Ruang Shalat Utama', subjudul: 'SUASANA_IBADAH' },
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasilitas/Area_Wudhu_Kamar_Mandi_01.webp', judul: 'Area Wudhu Bersih 24 Jam', subjudul: 'FASILITAS_MUSAFIR' },
                 { media_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasilitas/Dispenser_Air_Minum_Gratis_01.webp', judul: 'Dispenser Air Minum Gratis', subjudul: 'FASILITAS_MUSAFIR' }
@@ -3448,7 +3487,7 @@
                             const excerpt = item.excerpt || 'Klik untuk membaca selengkapnya kabar Masjid Sophia Jatiwarna.';
                             
                             return `
-                                <div class="news-card">
+                                <a href="/artikel/${item.slug || ''}" class="news-card" style="text-decoration: none; color: inherit; display: flex; flex-direction: column;">
                                     <div class="news-placeholder" style="background-image: url('${coverImg}');">
                                     </div>
                                     <div class="news-body">
@@ -3459,7 +3498,7 @@
                                             <i class="fa-solid fa-clock" style="color: var(--color-gold-deep);"></i> ${readTime} • Oleh ${item.author_name || 'DKM Sophia'}
                                         </small>
                                     </div>
-                                </div>
+                                </a>
                             `;
                         }).join('');
                         return;

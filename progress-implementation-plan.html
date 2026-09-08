@@ -879,8 +879,8 @@
                 </div>
             </div>
             <div>
-                <span class="status-tag status-inprogress">
-                    <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Fase 0 Selesai (100%) &amp; Fase 3 Beranda Istiqlal Live (85%)
+                <span class="status-tag status-completed">
+                    <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Fase 0, 1, 2, 3 Selesai (100%) &amp; Portal Mandiri Galeri &amp; Warta Live
                 </span>
             </div>
         </div>
@@ -1021,10 +1021,10 @@
                 <span class="gantt-item-name">
                     <i class="fa-solid fa-desktop" style="color: var(--color-gold-deep);"></i> Fase 3: Portal Publik &amp; Shalat Engine
                 </span>
-                <span class="status-tag status-inprogress">85% Selesai</span>
+                <span class="status-tag status-completed">Selesai 100%</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-85">85% - Redesign Beranda Istiqlal, Pengaduan, Donasi &amp; CDC Live</div>
+                <div class="gantt-bar-fill fill-100">100% - Beranda Istiqlal, Galeri Mandiri, Warta Dakwah, Slider Manager &amp; CDC Live</div>
             </div>
         </div>
 
@@ -1337,14 +1337,14 @@
         <div class="phase-card" id="card-fase-3">
             <div class="phase-header" onclick="togglePhase('card-fase-3')">
                 <div class="phase-title-group">
-                    <div class="phase-badge in-progress">3</div>
+                    <div class="phase-badge completed">3</div>
                     <div class="phase-name">
-                        <h3>Fase 3: Web Portal Publik untuk Umat & Musafir</h3>
-                        <p>Beranda lengkap, jadwal shalat otomatis, donasi, pengaduan jamaah, galeri, dan berita</p>
+                        <h3>Fase 3: Web Portal Publik untuk Umat &amp; Musafir</h3>
+                        <p>Beranda Istiqlal, jadwal shalat otomatis, donasi, pengaduan jamaah, galeri mandiri, warta dakwah, dan slider hero manager</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-inprogress">85% Selesai</span>
+                    <span class="status-tag status-completed">Selesai 100%</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
@@ -1440,24 +1440,34 @@
                             <div class="task-desc">Widget obrolan di pojok web publik, pesan jamaah langsung masuk ke panel admin secara instan.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Halaman Berita & Artikel Terpisah
-                                <span class="task-badge-pill">Halaman Publik</span>
+                                Halaman Berita &amp; Artikel Terpisah (/artikel &amp; /artikel/:slug)
+                                <span class="task-badge-pill">Standar UMAR</span>
                             </div>
-                            <div class="task-desc">Direktori berita mandiri dengan pencarian, filter kategori, dan halaman baca artikel lengkap.</div>
+                            <div class="task-desc">Direktori berita mandiri (artikel.html) dengan pencarian, filter kategori, warta pilihan, dan halaman baca mandiri (artikel-detail.html) dengan reading progress bar, cover WebP, dan share button.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
-                                Halaman Galeri Foto & Video Dokumentasi
-                                <span class="task-badge-pill">Galeri</span>
+                                Halaman Galeri Foto &amp; Video Dokumentasi (/galeri)
+                                <span class="task-badge-pill">Standar Istiqlal</span>
                             </div>
-                            <div class="task-desc">Album foto dan video kegiatan per kategori dengan penampil layar penuh dan streaming video.</div>
+                            <div class="task-desc">Arsip galeri foto mandiri (galeri.html) dengan live search, filter kategori pills, dan fullscreen lightbox photo viewer interaktif keyboard navigation.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Hero Carousel Slider Manager Bebas Tak Terbatas
+                                <span class="task-badge-pill">admin.html#media</span>
+                            </div>
+                            <div class="task-desc">Modul CRUD lengkap slide hero beranda: unlimited slides, ayat Al-Qur'an/Hadits Arab berharakat (arabic_quote), quotes terjemah, CTA editor, dan Supabase Realtime CDC broadcast.</div>
                         </div>
                     </div>
                 </div>

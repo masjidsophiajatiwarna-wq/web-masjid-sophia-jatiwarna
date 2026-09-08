@@ -1,4 +1,6 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "redirects": [
     {
       "source": "/",
@@ -45,12 +47,24 @@
       "destination": "/admin.html"
     },
     {
+      "source": "/galeri",
+      "destination": "/galeri.html"
+    },
+    {
+      "source": "/artikel",
+      "destination": "/artikel.html"
+    },
+    {
       "source": "/berita",
       "destination": "/artikel.html"
     },
     {
       "source": "/berita.html",
       "destination": "/artikel.html"
+    },
+    {
+      "source": "/artikel/:slug",
+      "destination": "/artikel-detail.html?slug=:slug"
     },
     {
       "source": "/admin",

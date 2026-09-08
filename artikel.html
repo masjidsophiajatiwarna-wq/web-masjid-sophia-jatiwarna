@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Warta &amp; Kabar Dakwah - Masjid Musafir Sophia Jatiwarna</title>
+    
+    <!-- Meta Tags SEO & OpenGraph -->
+    <meta name="description" content="Kumpulan berita resmi, dokumentasi penyaluran sedekah makan siang gratis, kabar santri tahfidz 30 Juz, jadwal majelis kajian, dan artikel tausiyah Masjid Sophia Jatiwarna.">
+    <meta name="keywords" content="Warta Masjid Sophia, Berita Masjid Bekasi, Tausiyah Masjid Sophia, Panduan Musafir, Artikel Dakwah">
+    <meta name="author" content="Redaksi Media DKM Masjid Sophia Jatiwarna">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://masjidsophia.com/artikel">
+
+    <!-- OpenGraph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://masjidsophia.com/artikel">
+    <meta property="og:title" content="Warta &amp; Catatan Dakwah - Masjid Musafir Sophia Jatiwarna">
+    <meta property="og:description" content="Dokumentasi penyaluran donasi makan siang gratis, perkembangan santri tahfidz, dan panduan ibadah terkini.">
+    <meta property="og:image" content="https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp">
+
+    <!-- Google Fonts: Plus Jakarta Sans & Amiri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 (Strict No-Emoji Standard) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Favicon Packages -->
+    <link rel="icon" type="image/x-icon" href="asset/favicon/logo-black/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="asset/favicon/logo-black/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="asset/favicon/logo-black/favicon-32x32.png">
+
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/config.local.js" onerror="this.remove()"></script>
+    <script src="/asset/js/env-loader.js"></script>
+
+    <style>
+        :root {
+            --color-gold-primary: #E3C466;
+            --color-gold-deep: #C9A84C;
+            --color-gold-light: #FAF6E8;
+            --color-gold-border: #E8D8A0;
+            --color-charcoal: #1D1D1B;
+            --color-charcoal-muted: #4B5563;
+            --color-charcoal-light: #6B7280;
+            --color-bg-sand: #F8F6F0;
+            --color-bg-white: #FFFFFF;
+            --color-border: #E5E7EB;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07);
+            --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.08);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-full: 9999px;
+            --transition: all 0.25s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--color-bg-sand);
+            color: var(--color-charcoal);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--color-charcoal);
+            color: #E5E7EB;
+            font-size: 0.8rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(227, 196, 102, 0.3);
+        }
+
+        .top-bar-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+        }
+
+        .top-bar-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #D1D5DB;
+        }
+
+        .top-bar-item i {
+            color: var(--color-gold-primary);
+        }
+
+        .top-bar-link {
+            color: #D1D5DB;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .top-bar-link:hover {
+            color: var(--color-gold-primary);
+        }
+
+        /* Header Navigation */
+        .main-header {
+            background: var(--color-bg-white);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 76px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--color-charcoal);
+        }
+
+        .brand-logo-img {
+            height: 44px;
+            width: auto;
+            display: block;
+        }
+
+        .brand-logo-text h1 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--color-charcoal);
+            letter-spacing: -0.3px;
+        }
+
+        .brand-logo-text p {
+            font-size: 0.72rem;
+            color: var(--color-charcoal-muted);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.15rem;
+            list-style: none;
+            flex-wrap: nowrap;
+        }
+
+        .nav-link {
+            color: var(--color-charcoal);
+            text-decoration: none;
+            font-size: 0.84rem;
+            font-weight: 600;
+            padding: 0.35rem 0;
+            position: relative;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--color-gold-deep);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--color-gold-primary);
+            border-radius: var(--radius-full);
+        }
+
+        .btn-cta-donasi {
+            background: linear-gradient(135deg, var(--color-gold-primary), var(--color-gold-deep));
+            color: var(--color-charcoal);
+            font-size: 0.825rem;
+            font-weight: 700;
+            padding: 0.55rem 1.15rem;
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            transition: var(--transition);
+            border: 1px solid rgba(201, 168, 76, 0.4);
+            white-space: nowrap;
+        }
+
+        .btn-cta-donasi:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(227, 196, 102, 0.35);
+        }
+
+        /* Page Hero */
+        .page-hero {
+            background: linear-gradient(135deg, #1D1D1B 0%, #2A2A28 100%);
+            color: #FFFFFF;
+            padding: 3rem 0 2.5rem;
+            border-bottom: 3px solid var(--color-gold-primary);
+        }
+
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: #9CA3AF;
+            margin-bottom: 0.85rem;
+        }
+
+        .breadcrumbs a {
+            color: #D1D5DB;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--color-gold-primary);
+        }
+
+        .breadcrumbs span {
+            color: var(--color-gold-primary);
+        }
+
+        .page-title {
+            font-size: 2.15rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .page-subtitle {
+            font-size: 0.95rem;
+            color: #D1D5DB;
+            max-width: 720px;
+            line-height: 1.6;
+        }
+
+        /* Controls: Search & Category Filter */
+        .article-controls-bar {
+            background: var(--color-bg-white);
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 76px;
+            z-index: 900;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .article-controls-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 280px;
+            flex: 1;
+            max-width: 380px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-charcoal-light);
+            font-size: 0.85rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.65rem 1rem 0.65rem 2.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-family: inherit;
+            font-size: 0.85rem;
+            background: #F9FAFB;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            background: #FFFFFF;
+            border-color: var(--color-gold-deep);
+            box-shadow: 0 0 0 3px rgba(227, 196, 102, 0.2);
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            scrollbar-width: none;
+        }
+
+        .filter-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-pill {
+            background: #F3F4F6;
+            color: var(--color-charcoal-muted);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        .filter-pill:hover, .filter-pill.active {
+            background: var(--color-charcoal);
+            color: var(--color-gold-primary);
+            border-color: var(--color-charcoal);
+        }
+
+        /* Featured Article Card (WEB-UMAR Standard) */
+        .featured-section {
+            padding: 2.5rem 0 1.5rem;
+        }
+
+        .featured-card {
+            background: var(--color-bg-white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-gold-border);
+        }
+
+        .featured-img-wrap {
+            height: 100%;
+            min-height: 280px;
+            background: #E5E7EB center / cover no-repeat;
+            position: relative;
+        }
+
+        .featured-content {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: var(--color-gold-light);
+            color: var(--color-gold-deep);
+            border: 1px solid var(--color-gold-border);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: fit-content;
+            margin-bottom: 0.75rem;
+        }
+
+        .featured-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            line-height: 1.3;
+            margin-bottom: 0.75rem;
+        }
+
+        .featured-excerpt {
+            font-size: 0.9rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .featured-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            font-size: 0.8rem;
+            color: var(--color-charcoal-light);
+        }
+
+        .featured-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        /* Articles Grid */
+        .articles-section {
+            padding: 1rem 0 4rem;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .article-card {
+            background: var(--color-bg-white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-sm);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-gold-border);
+        }
+
+        .article-card-cover {
+            aspect-ratio: 16/9;
+            background: #E5E7EB center / cover no-repeat;
+            position: relative;
+        }
+
+        .article-card-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(29, 29, 27, 0.85);
+            backdrop-filter: blur(4px);
+            color: var(--color-gold-primary);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.65rem;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(227, 196, 102, 0.4);
+        }
+
+        .article-card-body {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .article-card-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--color-charcoal);
+            line-height: 1.35;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-card-excerpt {
+            font-size: 0.85rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.55;
+            margin-bottom: 1.25rem;
+            flex: 1;
+        }
+
+        .article-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--color-charcoal-muted);
+            padding-top: 0.75rem;
+            border-top: 1px solid #F3F4F6;
+        }
+
+        /* Footer */
+        .footer-section {
+            background: var(--color-charcoal);
+            color: #D1D5DB;
+            padding: 4rem 0 2rem;
+            border-top: 3px solid var(--color-gold-primary);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #9CA3AF;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--color-gold-primary);
+            padding-left: 4px;
+        }
+
+        .footer-bottom {
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.775rem;
+            color: #9CA3AF;
+        }
+
+        @media (max-width: 1024px) {
+            .nav-menu {
+                display: none;
+            }
+            .featured-card {
+                grid-template-columns: 1fr;
+            }
+            .featured-img-wrap {
+                min-height: 220px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Utility Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-inner">
+                <div class="top-bar-item">
+                    <i class="fa-solid fa-moon"></i>
+                    <span id="top-hijri-date">Bulan Hijriah 1448 H</span>
+                </div>
+                <div style="display: flex; gap: 1.25rem;">
+                    <div class="top-bar-item">
+                        <i class="fa-solid fa-person-shelter"></i>
+                        <span>Rumah Singgah Musafir 24 Jam Penuh</span>
+                    </div>
+                    <div class="top-bar-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <a href="https://wa.me/6285188352432" target="_blank" class="top-bar-link">Hotline DKM: 0851-8835-2432</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="/" class="brand-logo">
+                    <img src="asset/logo/svg/logo_masjid_black.svg" alt="Logo Masjid Sophia" class="brand-logo-img">
+                    <div class="brand-logo-text">
+                        <h1>Masjid Sophia</h1>
+                        <p>Masjid Musafir Sophia Jatiwarna</p>
+                    </div>
+                </a>
+
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Beranda</a></li>
+                    <li><a href="/#jadwal-shalat" class="nav-link">Jadwal Shalat</a></li>
+                    <li><a href="/#agenda-kajian" class="nav-link">Majelis Kajian</a></li>
+                    <li><a href="/#program-filantropi" class="nav-link">Sedekah Makan</a></li>
+                    <li><a href="/#layanan-musafir" class="nav-link">Fasilitas 24 Jam</a></li>
+                    <li><a href="/galeri" class="nav-link">Galeri</a></li>
+                    <li><a href="/artikel" class="nav-link active">Warta Masjid</a></li>
+                </ul>
+
+                <a href="/#program-filantropi" class="btn-cta-donasi">
+                    <i class="fa-solid fa-hand-holding-heart"></i> Infaq Donasi
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Hero Banner -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="breadcrumbs">
+                <a href="/"><i class="fa-solid fa-house"></i> Beranda</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+                <span>Warta &amp; Catatan Dakwah</span>
+            </div>
+            <h2 class="page-title">Warta Masjid &amp; Panduan Ibadah</h2>
+            <p class="page-subtitle">
+                Dokumentasi penyaluran sedekah makan, perkembangan hafalan santri tahfidz 30 Juz, agenda kajian sunnah, dan panduan ibadah bagi musafir di Jatiwarna.
+            </p>
+        </div>
+    </section>
+
+    <!-- Search & Filter Bar -->
+    <div class="article-controls-bar">
+        <div class="container">
+            <div class="article-controls-inner">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="article-search-input" class="search-input" placeholder="Cari warta dakwah..." oninput="handleArticleSearch()">
+                </div>
+
+                <div class="filter-pills">
+                    <button class="filter-pill active" onclick="setArticleCategory('ALL', this)">Semua Warta</button>
+                    <button class="filter-pill" onclick="setArticleCategory('Layanan Musafir', this)">Layanan Musafir</button>
+                    <button class="filter-pill" onclick="setArticleCategory('Sedekah Makan', this)">Sedekah Makan</button>
+                    <button class="filter-pill" onclick="setArticleCategory('Santri Tahfidz', this)">Santri Tahfidz</button>
+                    <button class="filter-pill" onclick="setArticleCategory('Kajian & Acara', this)">Kajian &amp; Acara</button>
+                    <button class="filter-pill" onclick="setArticleCategory('Panduan Ibadah', this)">Panduan Ibadah</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Article Highlight -->
+    <section class="featured-section" id="featured-article-container">
+        <!-- Injected dynamically -->
+    </section>
+
+    <!-- Articles Grid Section -->
+    <section class="articles-section">
+        <div class="container">
+            <div class="articles-grid" id="articles-items-grid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--color-charcoal-muted);">
+                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; color: var(--color-gold-deep); margin-bottom: 0.75rem;"></i>
+                    <p style="font-weight: 600;">Memuat warta &amp; catatan dakwah...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4 style="color: #FFFFFF; font-size: 1.05rem; font-weight: 800; margin-bottom: 0.75rem;">Masjid Musafir Sophia</h4>
+                    <p style="font-size: 0.825rem; line-height: 1.6; color: #9CA3AF; margin-bottom: 0.85rem;">
+                        Rumah singgah ibadah 24 jam di Jatiwarna, Kota Bekasi. Pusat sujud, perlindungan musafir, dan simpul kepedulian sosial umat.
+                    </p>
+                    <div style="font-size: 0.775rem; color: #9CA3AF;">
+                        Titik Koordinat: <strong>-6.310391, 106.921264 (WIB)</strong>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="color: #FFFFFF; margin-bottom: 0.75rem;">Tautan Cepat</h4>
+                    <ul class="footer-links">
+                        <li><a href="/">Beranda Utama</a></li>
+                        <li><a href="/#jadwal-shalat">Jadwal Shalat Kemenag</a></li>
+                        <li><a href="/#agenda-kajian">Agenda Majelis Kajian</a></li>
+                        <li><a href="/#program-filantropi">Sedekah Makan Dzuhur</a></li>
+                        <li><a href="/#layanan-musafir">Layanan Musafir 24 Jam</a></li>
+                        <li><a href="/galeri">Galeri Dokumentasi</a></li>
+                        <li><a href="/artikel">Warta Dakwah</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 style="color: #FFFFFF; margin-bottom: 0.75rem;">Program Khidmat</h4>
+                    <ul class="footer-links">
+                        <li><a href="/#program-filantropi">Makan Gratis 70+ Porsi/Hari</a></li>
+                        <li><a href="/#program-filantropi">Beasiswa Santri 30 Juz</a></li>
+                        <li><a href="/#program-filantropi">BSI: 7235464297</a></li>
+                        <li><a href="/#program-filantropi">QRIS Sedekah Makan</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 style="color: #FFFFFF; margin-bottom: 0.75rem;">Alamat &amp; Kontak</h4>
+                    <p style="font-size: 0.825rem; color: #9CA3AF; margin-bottom: 0.5rem;">
+                        Jl. Raya Hankam, RT.001/RW.011, Jatiwarna, Kec. Pondok Melati, Kota Bekasi 17415 (Samping UMAR Travel)
+                    </p>
+                    <p style="font-size: 0.825rem; color: #9CA3AF;">
+                        WhatsApp: <strong>0851-8835-2432</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                &copy; 2026 Masjid Musafir Sophia Jatiwarna. Seluruh hak cipta dilindungi. Khidmat ibadah 24 jam.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase Dynamic Client & Article Engine -->
+    <script>
+        let sbClient = null;
+        async function getSupabaseClient() {
+            if (sbClient) return sbClient;
+            try {
+                if (window.MasjidConfig && typeof window.MasjidConfig.initSupabaseClient === 'function') {
+                    sbClient = await window.MasjidConfig.initSupabaseClient();
+                    return sbClient;
+                }
+            } catch (e) {
+                console.warn('[Articles] Dynamic init notice:', e);
+            }
+            return null;
+        }
+
+        let allArticles = [];
+        let currentCategory = 'ALL';
+        let searchQuery = '';
+
+        async function initArticles() {
+            try {
+                const client = await getSupabaseClient();
+                if (client) {
+                    const { data, error } = await client
+                        .from('artikel_berita')
+                        .select('*')
+                        .eq('is_published', true)
+                        .order('published_at', { ascending: false });
+
+                    if (!error && Array.isArray(data) && data.length > 0) {
+                        allArticles = data;
+                        renderArticles();
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.warn('[Articles] Load exception:', e);
+            }
+
+            // Fallback default articles
+            allArticles = [
+                {
+                    slug: 'panduan-singgah-24-jam-musafir-jatiwarna',
+                    title: 'Panduan Singgah 24 Jam & Kenyamanan Ibadah Musafir di Jatiwarna',
+                    category: 'Layanan Musafir',
+                    thumbnail_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp',
+                    author_name: 'PJ Pelayanan Musafir',
+                    read_time: '4 Menit',
+                    excerpt: 'Informasi lengkap fasilitas kamar mandi bersih, pendingin ruangan shalat, air minum gratis, dan titik lokasi strategis di jalur tol Jatiwarna.',
+                    published_at: new Date().toISOString()
+                },
+                {
+                    slug: 'mutabaah-hafalan-santri-tahfidz-masjid-sophia',
+                    title: 'Mutabaah & Ujian Setoran Hafalan Santri Tahfidz Masjid Sophia',
+                    category: 'Santri Tahfidz',
+                    thumbnail_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al-Quran_Bersama_Ustadz_01.webp',
+                    author_name: 'PJ Pendidikan Qur\'an',
+                    read_time: '3 Menit',
+                    excerpt: 'Proses pembinaan santri mukim penghafal 30 Juz Al-Qur\'an, metode tasmi\' bersanad, dan laporan perkembangan santri binaan DKM.',
+                    published_at: new Date().toISOString()
+                },
+                {
+                    slug: 'dokumentasi-penyaluran-sedekah-makan-dzuhur',
+                    title: 'Dokumentasi Penyaluran Sedekah Makan Dzuhur Jamaah & Musafir',
+                    category: 'Sedekah Makan',
+                    thumbnail_url: 'https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp',
+                    author_name: 'Tim Relawan Dapur',
+                    read_time: '3 Menit',
+                    excerpt: 'Laporan harian pembagian 70+ porsi makan siang bergizi ba\'da Dzuhur bagi para musafir, kurir, ojek online, dan pejuang nafkah keluarga.',
+                    published_at: new Date().toISOString()
+                }
+            ];
+
+            renderArticles();
+        }
+
+        function setArticleCategory(category, btn) {
+            currentCategory = category;
+            document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderArticles();
+        }
+
+        function handleArticleSearch() {
+            searchQuery = document.getElementById('article-search-input').value.toLowerCase().trim();
+            renderArticles();
+        }
+
+        function renderArticles() {
+            const featuredContainer = document.getElementById('featured-article-container');
+            const gridContainer = document.getElementById('articles-items-grid');
+
+            const filtered = allArticles.filter(item => {
+                const matchCat = (currentCategory === 'ALL') || (item.category === currentCategory);
+                const matchSearch = !searchQuery || item.title.toLowerCase().includes(searchQuery) || (item.excerpt && item.excerpt.toLowerCase().includes(searchQuery));
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                if (featuredContainer) featuredContainer.innerHTML = '';
+                gridContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--color-charcoal-muted); background: var(--color-bg-white); border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+                        <i class="fa-solid fa-newspaper" style="font-size: 2.5rem; color: #D1D5DB; margin-bottom: 0.75rem;"></i>
+                        <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--color-charcoal); margin-bottom: 0.25rem;">Tidak Ada Warta yang Sesuai</h4>
+                        <p style="font-size: 0.85rem;">Coba gunakan kata kunci lain atau pilih kategori warta yang berbeda.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Featured Article (The First Item when viewing ALL and no search)
+            if (currentCategory === 'ALL' && !searchQuery && filtered.length > 0) {
+                const feat = filtered[0];
+                const dateStr = formatDateIndo(feat.published_at);
+                featuredContainer.innerHTML = `
+                    <div class="container">
+                        <a href="/artikel/${feat.slug}" class="featured-card">
+                            <div class="featured-img-wrap" style="background-image: url('${feat.thumbnail_url || 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp'}');"></div>
+                            <div class="featured-content">
+                                <span class="featured-badge"><i class="fa-solid fa-star"></i> Warta Pilihan Utama</span>
+                                <h3 class="featured-title">${feat.title}</h3>
+                                <p class="featured-excerpt">${feat.excerpt || 'Baca selengkapnya artikel dan warta dakwah khidmat Masjid Sophia Jatiwarna.'}</p>
+                                <div class="featured-meta">
+                                    <span><i class="fa-solid fa-clock"></i> ${feat.read_time || '3 Menit'}</span>
+                                    <span><i class="fa-solid fa-user"></i> ${feat.author_name || 'Tim Media DKM'}</span>
+                                    <span><i class="fa-solid fa-calendar"></i> ${dateStr}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                `;
+            } else {
+                if (featuredContainer) featuredContainer.innerHTML = '';
+            }
+
+            // Remaining items in grid
+            const itemsToShow = (currentCategory === 'ALL' && !searchQuery) ? filtered.slice(1) : filtered;
+
+            if (itemsToShow.length === 0) {
+                gridContainer.innerHTML = '';
+                return;
+            }
+
+            gridContainer.innerHTML = itemsToShow.map(item => {
+                const dateStr = formatDateIndo(item.published_at);
+                const cover = item.thumbnail_url || 'https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp';
+                return `
+                    <a href="/artikel/${item.slug}" class="article-card">
+                        <div class="article-card-cover" style="background-image: url('${cover}');">
+                            <span class="article-card-badge">${item.category || 'Warta'}</span>
+                        </div>
+                        <div class="article-card-body">
+                            <h3 class="article-card-title">${item.title}</h3>
+                            <p class="article-card-excerpt">${item.excerpt || 'Klik untuk membaca selengkapnya artikel dakwah Masjid Sophia.'}</p>
+                            <div class="article-card-footer">
+                                <span><i class="fa-solid fa-clock" style="color: var(--color-gold-deep);"></i> ${item.read_time || '3 Menit'} • ${dateStr}</span>
+                                <span style="font-weight: 700; color: var(--color-gold-deep);"><i class="fa-solid fa-arrow-right"></i> Baca</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        function formatDateIndo(dateStr) {
+            if (!dateStr) return 'Hari ini';
+            try {
+                const d = new Date(dateStr);
+                return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+            } catch (e) {
+                return 'Hari ini';
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', initArticles);
+    </script>
+</body>
+</html>

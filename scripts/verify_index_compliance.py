@@ -129,22 +129,131 @@ def test_admin_index_sync():
         all_ok = False
     return all_ok
 
-if __name__ == '__main__':
-    print("=== MASJID SOPHIA JATIWARNA COMPLIANCE & INTEGRITY TEST ===")
-    target_docs = [
+def test_files_existence():
+    required_files = [
         'index.html',
+        'admin.html',
+        'galeri.html',
+        'artikel.html',
+        'artikel-detail.html',
+        'vercel.json',
+        'asset/js/env-loader.js',
         'implementation-plan.md',
         'progress-implementation-plan.html',
         'CHANGELOG.md'
     ]
+    all_ok = True
+    for rf in required_files:
+        if Path(rf).exists():
+            print(f"[PASS] File exists: {rf}")
+        else:
+            print(f"[FAIL] Missing file: {rf}")
+            all_ok = False
+    return all_ok
+
+def test_no_admin_links_in_public_portals():
+    public_files = ['index.html', 'galeri.html', 'artikel.html', 'artikel-detail.html']
+    admin_pattern = re.compile(r'href=[\"\'][^\"\']*admin[^\"\']*[\"\']', re.IGNORECASE)
+    all_ok = True
+    for pf in public_files:
+        p = Path(pf)
+        if not p.exists():
+            continue
+        content = p.read_text(encoding='utf-8')
+        matches = admin_pattern.findall(content)
+        if matches:
+            print(f"[FAIL] Direct admin links found in {pf}: {matches}")
+            all_ok = False
+        else:
+            print(f"[PASS] Public portal {pf} is free of admin navigation links.")
+    return all_ok
+
+def test_standalone_pages_structure():
+    pages_checks = {
+        'galeri.html': [
+            ('id="gallery-search-input"', 'Gallery search input'),
+            ('id="gallery-items-grid"', 'Gallery items grid'),
+            ('id="gallery-lightbox"', 'Gallery fullscreen lightbox viewer'),
+            ('class="filter-pills"', 'Gallery category filter pills'),
+            ('ik.imagekit.io/masjidsophia', 'ImageKit CDN reference')
+        ],
+        'artikel.html': [
+            ('id="article-search-input"', 'Article search input'),
+            ('id="featured-article-container"', 'Featured article showcase'),
+            ('id="articles-items-grid"', 'Articles archive grid'),
+            ('class="filter-pills"', 'Article category filter pills')
+        ],
+        'artikel-detail.html': [
+            ('id="reading-progress-bar"', 'Sticky reading progress bar'),
+            ('id="article-wrapper"', 'Article main wrapper'),
+            ('id="article-content"', 'Rich-text article content container'),
+            ('id="related-articles-grid"', 'Related articles grid'),
+            ('id="share-wa"', 'WhatsApp share button'),
+            ('id="share-fb"', 'Facebook share button'),
+            ('id="share-tw"', 'X share button')
+        ]
+    }
+    all_ok = True
+    for filename, checks in pages_checks.items():
+        p = Path(filename)
+        if not p.exists():
+            print(f"[FAIL] File not found: {filename}")
+            all_ok = False
+            continue
+        content = p.read_text(encoding='utf-8')
+        for needle, desc in checks:
+            if needle in content:
+                print(f"[PASS] [{filename}] Found: {desc}")
+            else:
+                print(f"[FAIL] [{filename}] Missing: {desc}")
+                all_ok = False
+    return all_ok
+
+def test_vercel_routing():
+    p = Path('vercel.json')
+    if not p.exists():
+        print("[FAIL] vercel.json not found")
+        return False
+    content = p.read_text(encoding='utf-8')
+    checks = [
+        ('"cleanUrls": true', 'Clean URLs enabled'),
+        ('"trailingSlash": false', 'Trailing slash normalized'),
+        ('"/galeri"', 'Galeri routing rewrite'),
+        ('"/artikel"', 'Artikel routing rewrite'),
+        ('"/artikel/:slug"', 'Artikel detail dynamic slug rewrite')
+    ]
+    all_ok = True
+    for needle, desc in checks:
+        if needle in content:
+            print(f"[PASS] [vercel.json] Found: {desc}")
+        else:
+            print(f"[FAIL] [vercel.json] Missing: {desc}")
+            all_ok = False
+    return all_ok
+
+if __name__ == '__main__':
+    print("=== MASJID SOPHIA JATIWARNA COMPLIANCE & INTEGRITY TEST ===")
+    target_docs = [
+        'index.html',
+        'galeri.html',
+        'artikel.html',
+        'artikel-detail.html',
+        'admin.html',
+        'implementation-plan.md',
+        'progress-implementation-plan.html',
+        'CHANGELOG.md'
+    ]
+    r0 = test_files_existence()
     r1 = test_no_emojis(target_docs)
-    r2 = test_no_admin_links_in_index()
+    r2 = test_no_admin_links_in_public_portals()
     r3 = test_no_hardcoded_secrets(target_docs + ['scripts/batch_image_optimizer_imagekit.py', 'scripts/sync_manifest_to_supabase.py'])
     r4 = test_index_structure()
-    r5 = test_admin_index_sync()
+    r5 = test_standalone_pages_structure()
+    r6 = test_vercel_routing()
+    r7 = test_admin_index_sync()
     
-    if r1 and r2 and r3 and r4 and r5:
-        print("\n=== ALL COMPLIANCE & INTEGRITY TESTS PASSED ===")
+    if r0 and r1 and r2 and r3 and r4 and r5 and r6 and r7:
+        print("\n=== ALL COMPLIANCE & INTEGRITY TESTS PASSED (100%) ===")
         sys.exit(0)
     else:
         print("\n=== SOME TESTS FAILED ===")
