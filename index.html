@@ -2379,59 +2379,15 @@
             </div>
 
             <div class="kajian-grid" id="kajian-container">
-                <!-- Populated dynamically from Supabase (kajian_acara_ibadah) -->
-                <div class="kajian-card">
-                    <div class="kajian-header">
-                        <span class="kajian-date-pill"><i class="fa-solid fa-calendar-day"></i> Ahad Pagi</span>
-                        <span style="font-size: 0.775rem; color: #D1D5DB;">Ba'da Subuh - Syuruq</span>
+                <!-- Dimuat secara dinamis dari tabel Supabase (kajian_acara_ibadah) -->
+                <div class="kajian-empty-card" style="grid-column: 1 / -1; background: #FFFFFF; border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 3rem 1.5rem; text-align: center; max-width: 650px; margin: 0 auto; width: 100%;">
+                    <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                        <i class="fa-solid fa-book-open-reader"></i>
                     </div>
-                    <div class="kajian-body">
-                        <div class="kajian-speaker"><i class="fa-solid fa-user-tie"></i> Ustadz Dr. H. Abdurrahman</div>
-                        <h3 class="kajian-title">Tafsir Tematik: Adab Musafir &amp; Keutamaan Shalat Berjamaah</h3>
-                        <p class="kajian-desc">
-                            Mengkaji hak-hak musafir dalam syariat Islam serta keutamaan menghidupkan masjid sebagai rumah perlindungan umat.
-                        </p>
-                        <div class="kajian-meta">
-                            <span><i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep);"></i> Ruang Shalat Utama</span>
-                            <span style="font-weight: 700; color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Terbuka Umum</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="kajian-card">
-                    <div class="kajian-header">
-                        <span class="kajian-date-pill"><i class="fa-solid fa-calendar-day"></i> Sabtu Malam</span>
-                        <span style="font-size: 0.775rem; color: #D1D5DB;">Ba'da Maghrib - Isya</span>
-                    </div>
-                    <div class="kajian-body">
-                        <div class="kajian-speaker"><i class="fa-solid fa-user-tie"></i> Ustadz Ahmad Fauzi, Lc.</div>
-                        <h3 class="kajian-title">Fiqih Muamalah: Zakat, Infaq &amp; Sedekah di Era Digital</h3>
-                        <p class="kajian-desc">
-                            Panduan praktis pengelolaan harta, urgensi transparansi donasi umat, dan pemanfaatan teknologi untuk dakwah sosial.
-                        </p>
-                        <div class="kajian-meta">
-                            <span><i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep);"></i> Ruang Shalat Utama</span>
-                            <span style="font-weight: 700; color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Terbuka Umum</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="kajian-card">
-                    <div class="kajian-header">
-                        <span class="kajian-date-pill"><i class="fa-solid fa-calendar-day"></i> Setiap Hari</span>
-                        <span style="font-size: 0.775rem; color: #D1D5DB;">Ba'da Ashar</span>
-                    </div>
-                    <div class="kajian-body">
-                        <div class="kajian-speaker"><i class="fa-solid fa-user-tie"></i> Asatidz Pembina Tahfidz</div>
-                        <h3 class="kajian-title">Halaqah Qur'an Santri &amp; Ujian Tasmi' Mutaba'ah</h3>
-                        <p class="kajian-desc">
-                            Simakan hafalan santri tahfidz 30 juz binaan Masjid Sophia yang terbuka bagi jamaah yang ingin ikut bertadarus bersama.
-                        </p>
-                        <div class="kajian-meta">
-                            <span><i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep);"></i> Selasar Tahfidz</span>
-                            <span style="font-weight: 700; color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Terbuka Umum</span>
-                        </div>
-                    </div>
+                    <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--color-charcoal); margin-bottom: 0.5rem;">Agenda Kajian Segera Hadir</h3>
+                    <p style="font-size: 0.875rem; color: var(--color-charcoal-muted); line-height: 1.6; margin: 0;">
+                        Belum ada agenda kajian khusus dalam waktu dekat. Seluruh aktivitas ibadah dan shalat fardhu 5 waktu tetap terselenggara berjamaah.
+                    </p>
                 </div>
             </div>
         </div>
@@ -3413,27 +3369,50 @@
             if (!sbClientIndex) return;
 
             try {
+                const todayIso = new Date().toISOString().split('T')[0];
                 const { data, error } = await sbClientIndex
                     .from('kajian_acara_ibadah')
                     .select('*')
+                    .eq('status_approval', 'Approved')
                     .order('tanggal', { ascending: true })
                     .limit(6);
 
-                if (!error && Array.isArray(data) && data.length > 0) {
+                if (!error && Array.isArray(data)) {
+                    if (data.length === 0) {
+                        container.innerHTML = `
+                            <div class="kajian-empty-card" style="grid-column: 1 / -1; background: #FFFFFF; border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: 3rem 1.5rem; text-align: center; max-width: 650px; margin: 0 auto; width: 100%;">
+                                <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                                    <i class="fa-solid fa-book-open-reader"></i>
+                                </div>
+                                <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--color-charcoal); margin-bottom: 0.5rem;">Agenda Kajian Segera Hadir</h3>
+                                <p style="font-size: 0.875rem; color: var(--color-charcoal-muted); line-height: 1.6; margin: 0;">
+                                    Belum ada agenda kajian khusus dalam waktu dekat. Seluruh aktivitas ibadah dan shalat fardhu 5 waktu tetap terselenggara berjamaah.
+                                </p>
+                            </div>
+                        `;
+                        return;
+                    }
+
                     container.innerHTML = data.map(k => {
                         const dateStr = k.tanggal ? new Date(k.tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' }) : 'Jadwal Rutin';
+                        const jamMulai = k.waktu_mulai || '18:30';
+                        const jamSelesai = k.waktu_selesai ? (' - ' + k.waktu_selesai + ' WIB') : ' WIB';
+                        const pemateri = k.penceramah || k.pemateri || 'Asatidz Pembina';
+                        const lokasi = k.tempat_lokasi || k.lokasi || 'Ruang Shalat Utama';
+                        const desc = k.deskripsi || 'Kajian rutin terbuka untuk umum dan musafir di Masjid Sophia Jatiwarna.';
+
                         return `
                             <div class="kajian-card">
                                 <div class="kajian-header">
                                     <span class="kajian-date-pill"><i class="fa-solid fa-calendar-day"></i> ${dateStr}</span>
-                                    <span style="font-size: 0.775rem; color: #D1D5DB;">Pukul ${k.waktu_mulai || '18:30'} WIB</span>
+                                    <span style="font-size: 0.775rem; color: #D1D5DB;">Pukul ${jamMulai}${jamSelesai}</span>
                                 </div>
                                 <div class="kajian-body">
-                                    <div class="kajian-speaker"><i class="fa-solid fa-user-tie"></i> ${k.penceramah || 'Asatidz Pembina'}</div>
+                                    <div class="kajian-speaker"><i class="fa-solid fa-user-tie"></i> ${pemateri}</div>
                                     <h3 class="kajian-title">${k.judul_kajian}</h3>
-                                    <p class="kajian-desc">${k.deskripsi || 'Kajian rutin terbuka untuk umum dan musafir di Masjid Sophia Jatiwarna.'}</p>
+                                    <p class="kajian-desc">${desc}</p>
                                     <div class="kajian-meta">
-                                        <span><i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep);"></i> ${k.tempat_lokasi || 'Ruang Shalat Utama'}</span>
+                                        <span><i class="fa-solid fa-location-dot" style="color: var(--color-gold-deep);"></i> ${lokasi}</span>
                                         <span style="font-weight: 700; color: var(--color-success);"><i class="fa-solid fa-circle-check"></i> Terbuka Umum</span>
                                     </div>
                                 </div>
@@ -3741,21 +3720,30 @@
 
         // Peta antara kunci config (dari admin.html) ke ID seksi di index.html
         const SECTION_VISIBILITY_MAP = {
-            showSectionKajian:  ['section-kajian',  'kajian-section'],
-            showSectionGallery: ['section-gallery', 'gallery-section'],
-            showSectionNews:    ['section-news',    'news-section'],
-            showSectionDonate:  ['section-donate',  'donate-section'],
-            showSectionAbout:   ['section-about',   'about-section'],
-            showSectionPrayer:  ['section-prayer',  'prayer-section'],
-            showSectionHero:    ['section-hero',    'hero-section'],
+            prayer:             ['jadwal-shalat', 'section-prayer'],
+            showSectionPrayer:  ['jadwal-shalat', 'section-prayer'],
+            officers:           ['petugas-ibadah'],
+            showSectionOfficers:['petugas-ibadah'],
+            philanthropy:       ['program-filantropi', 'section-donate'],
+            showSectionDonate:  ['program-filantropi', 'section-donate'],
+            musafir:            ['layanan-musafir', 'section-about'],
+            showSectionAbout:   ['layanan-musafir', 'section-about'],
+            news:               ['warta-berita', 'section-news'],
+            showSectionNews:    ['warta-berita', 'section-news'],
+            kajian:             ['agenda-kajian', 'section-kajian'],
+            showSectionKajian:  ['agenda-kajian', 'section-kajian'],
+            gallery:            ['galeri-dokumentasi', 'section-gallery'],
+            showSectionGallery: ['galeri-dokumentasi', 'section-gallery'],
+            hero:               ['beranda', 'section-hero'],
+            showSectionHero:    ['beranda', 'section-hero']
         };
 
         function _applySectionVisibilityFromConfig(cfg) {
             if (!cfg || typeof cfg !== 'object') return;
+            const merged = Object.assign({}, cfg, cfg.sections || {});
             Object.entries(SECTION_VISIBILITY_MAP).forEach(([key, ids]) => {
-                // Jika key tidak ada di config, biarkan tampil (default: visible)
-                if (!(key in cfg)) return;
-                const shouldShow = cfg[key] !== false && cfg[key] !== 'false';
+                if (!(key in merged)) return;
+                const shouldShow = merged[key] !== false && merged[key] !== 'false';
                 ids.forEach(id => {
                     const el = document.getElementById(id);
                     if (!el) return;
@@ -3776,14 +3764,19 @@
             try {
                 const { data, error } = await sbClientIndex
                     .from('homepage_media')
-                    .select('meta_json')
+                    .select('*')
                     .eq('kategori', 'HOMEPAGE_CONFIG_MASTER')
-                    .single();
-                if (!error && data && data.meta_json) {
-                    const cfg = typeof data.meta_json === 'string'
-                        ? JSON.parse(data.meta_json)
-                        : data.meta_json;
-                    _applySectionVisibilityFromConfig(cfg);
+                    .limit(1);
+
+                if (!error && data && data.length > 0) {
+                    const row = data[0];
+                    let cfg = null;
+                    if (row.meta_json) {
+                        cfg = typeof row.meta_json === 'string' ? JSON.parse(row.meta_json) : row.meta_json;
+                    } else if (row.action_link && row.action_link.startsWith('{')) {
+                        try { cfg = JSON.parse(row.action_link); } catch (err) {}
+                    }
+                    if (cfg) _applySectionVisibilityFromConfig(cfg);
                 }
             } catch (e) {
                 console.debug('[SectionVisibility] Config load notice:', e);

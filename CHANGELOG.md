@@ -4,6 +4,49 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.25] - 2026-09-09
+
+### Resolusi Tuntas 14 Temuan Bug Journal Operasional, Single Source of Truth Kajian, Auto-Jurnal Donasi & SOP Dinamis
+
+#### Perbaikan Anti-Crash Form & Stabilitas Modal (Bug 7 & 8)
+- `[JOURNAL_MODAL_ANTI_CRASH]` Menambahkan elemen `<input type="hidden" id="journal-form-kode">` pada modal transaksi jurnal kas (`#form-journal-entry`). Mengeliminasi permanen `TypeError: Cannot read properties of null (reading 'value')` saat membuka atau menyimpan kas baru.
+- `[BUDGET_MODAL_ANTI_CRASH]` Menambahkan elemen `<input type="hidden" id="budget-form-kode">` pada modal pengajuan anggaran (`#form-budget-entry`). Mengeliminasi permanen `TypeError: Cannot set properties of null (setting 'value')` saat pengurus mengklik tombol "+ Buat Pengajuan Baru".
+
+#### Sinkronisasi Kajian Ibadah & Eliminasi Dummy Statis Beranda (Bug 1, 2, 3, 4)
+- `[KAJIAN_PUBLIC_DYNAMIC_SYNC]` Menghapus kartu kajian HTML hardcoded/dummy di `#kajian-container` pada `index.html`. Menggantinya dengan pemanggil data dinamis `loadKajianEvents()` yang menarik agenda dari tabel Supabase `kajian_acara_ibadah` berstatus `Approved` dan tanggal aktif, dilengkapi *empty state* santun dan informatif bila jadwal belum tersedia.
+- `[KAJIAN_SCHEMA_ALIGNMENT]` Menyelaraskan atribut payload pada `handleIbadahKajianSubmit` di `admin.html` agar 100% presisi dengan skema Supabase (`penceramah`, `tanggal`, `tempat_lokasi`, `kategori`, `waktu_mulai`, `waktu_selesai`). Mengeliminasi kegagalan insert senyap (*silent fail*) yang sebelumnya menyebabkan data hanya tersimpan di cache lokal PJ Ibadah dan tidak muncul di Super Admin.
+- `[KAJIAN_REALTIME_CDC]` Menghubungkan listener WebSocket Supabase Realtime CDC (`KAJIAN_SYNC`) sehingga setiap persetujuan (*approval*) atau pembaruan kajian di portal admin langsung tercermin seketika di beranda publik tanpa perlu penyegaran manual (*zero-refresh*).
+
+#### Tata Kelola Donasi Masuk & Otomasi Pembukuan Kas (Bug 5 & 6)
+- `[DONATION_VERIFICATION_FLOW]` Melengkapi tabel donasi masuk (`#subview-keu-donasi`) di `admin.html` dengan kolom Aksi, tombol Verifikasi per transaksi, seleksi multi-checkbox, dan tombol Batch Approval "Verifikasi Terpilih".
+- `[AUTO_JOURNAL_INTEGRATION]` Mengimplementasikan fungsi `createAutoJournalForDonation(donation)`. Setiap donasi yang diverifikasi oleh Bendahara/DKM secara otomatis membukukan transaksi Kas Masuk baru pada tabel `financial_journals` dengan kode auto-generate (`KM-...`), nominal terverifikasi, dan keterangan donatur, lengkap dengan siaran CDC kas masuk.
+
+#### Modul Keamanan: SOP Dinamis & Perbaikan false-positive KPI (Bug 9, 10, 11)
+- `[SECURITY_DYNAMIC_SOP]` Mengonversi kartu "Panduan Shift & Titik Pos Patroli 24 Jam" dari HTML statis menjadi komponen dinamis berbasis konfigurasi Supabase `homepage_media` (kategori: `SECURITY_SOP_CONFIG`). Menyediakan modal `#modal-security-sop` bagi DKM untuk mengubah jadwal dan deskripsi SOP, serta membersihkan istilah lama menjadi "Makan Berjamaah Gratis".
+- `[SECURITY_WASPADA_BADGE]` Menambahkan badge status khusus berwarna oranye/kuning (`kondisi-perhatian`) untuk kondisi `WASPADA` dan `PERHATIAN_KHUSUS` pada tabel log ronda (`renderSecurityTable`) dan tabel insiden (`renderInsidenTable`). Menyelaraskan opsi filter kondisi keamanan.
+- `[SECURITY_KPI_ACCURACY]` Menyempurnakan logika perhitungan KPI `updateSecurityKpiStats()`. Insiden yang telah diselesaikan (`status_tindak_lanjut === 'SELESAI'`) tidak lagi dihitung sebagai insiden aktif, sehingga persentase Kondusif mencerminkan kondisi lapangan riil (mencapai 100% saat seluruh laporan tertangani dan 0 kasus aktif butuh tindak lanjut).
+
+#### Modul Kebersihan: Stok Sanitasi & Alur Pengajuan Anggaran (Bug 12 & 13)
+- `[CLEANING_STOCK_CONTROLS]` Menambahkan tombol "+ Catat Kebutuhan Stok", kotak pencarian kata kunci (`#kebersihan-stok-search`), dan filter zona lokasi (`#kebersihan-stok-zona-filter`) pada sub-tab Log Kebutuhan Stok Sabun & Alat (`#subview-kebersihan-stok`).
+- `[STOCK_TO_BUDGET_DISPATCH]` Mengimplementasikan tombol "Ajukan Anggaran" pada baris kebutuhan stok (`forwardCleaningStockToBudget`). Membuka modal pengajuan anggaran (`#modal-budget-entry`) dengan divisi terisi otomatis "Kebersihan & Sanitasi", judul, dan rincian kebutuhan dari catatan petugas kebersihan, menyederhanakan alur birokrasi lintas divisi.
+
+#### Visual Web Builder & Skema Database (Bug 14)
+- `[BUILDER_SCHEMA_MIGRATION]` Menyediakan berkas migrasi SQL `database/migration_20260909_bugjournal_fixes.sql` untuk memperluas kolom `homepage_media.action_link` menjadi `TEXT` dan menambahkan kolom `meta_json JSONB` idempotensial.
+- `[BUILDER_PAYLOAD_OPTIMIZATION]` Memperbaiki fungsi `saveHomepageConfig()` dan `toggleHomepageSection()` di `admin.html` agar menyimpan konfigurasi visibilitas seksi ke kolom `meta_json` tanpa memicu error HTTP 400 Bad Request (*value too long for type character varying(255)*).
+
+---
+
+## [1.9.24] - 2026-09-09
+
+### Rekonsiliasi Audit Tata Kelola v5.9: Anti-Crash 6 Modal, RBAC Ibadah & Real-Time Section Visibility
+
+- `[AUDIT_MODAL_RESTORE]` Restorasi 6 modal dialog sistem yang hilang pada versi sebelumnya (`#modal-hero-slide`, `#modal-cover-preview`, `#modal-dapur-entry`, `#modal-asset-entry`, `#modal-santri-entry`, `#modal-mutabaah-entry`).
+- `[MOCK_SEED_PURGE]` Pembersihan seluruh skrip mock/dummy hardcoded pada inisialisasi aplikasi admin, memastikan ketaatan pada Supabase Single Source of Truth.
+- `[SANTRI_DISTINCT_JUZ]` Implementasi kalkulasi distinct juz pada mutaba'ah santri tahfidz untuk menghitung capaian hafalan riil santri secara akurat.
+- `[SECTION_VISIBILITY_CDC]` Implementasi sinkronisasi realtime toggle visibilitas seksi beranda publik dari Visual Web Builder admin.
+
+---
+
 ## [1.9.23] - 2026-09-09
 
 ### Resolusi Tuntas Routing 404 Detail Warta & Kepatuhan Penuh Benchmark UMAR Travel

@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v5.8 (Penyelesaian Komprehensif 21 Poin Perbaikan Tata Kelola Modal, Sesi Antar-Role, Realtime CDC, Standarisasi Nomenklatur, dan Mobile Layout)  
+**Versi Rencana Induk:** v6.0 (Stabilisasi Penuh 14 Temuan Bug Journal, Single Source of Truth Kajian, Auto-Jurnal Donasi & SOP Keamanan/Sanitasi Dinamis)  
 **Terakhir Diperbarui:** 2026-09-09  
 
 ---
@@ -413,3 +413,23 @@ Berikut adalah modul coaching langkah-demi-langkah yang akan dipandu secara inte
 | 20 | Tombol Registrasi Santri Baru & Edit Profil | `admin.html` (`openSantriModal`) | **SELESAI** — Modal data santri aktif penuh dengan validasi form. |
 | 21 | Tombol Input Setoran Hafalan & +Setor Khatam | `admin.html` (`openMutabaahModal`) | **SELESAI** — Modal pencatatan mutaba'ah hafalan aktif dan tersinkronisasi ke DB. |
 
+---
+
+## 7. Matriks Verifikasi 14 Poin Bug Journal Operasional (v6.0 - Status: 100% Selesai)
+
+| No | Poin Bug / Temuan Lapangan | Berkas & Komponen | Resolusi Teknis & Status |
+| :---: | :--- | :--- | :--- |
+| 1 | Kartu Kajian Statis & Dummy di Beranda Publik | `index.html` (`#kajian-container`) | **SELESAI** — Menghapus kartu hardcoded, mengganti dengan pemanggil dinamis `loadKajianEvents()` dari Supabase status Approved, serta empty state informatif jika kosong. |
+| 2 | Inkonsistensi Data Kajian (Supabase vs Lokal) | `index.html`, `admin.html` | **SELESAI** — Integrasi single source of truth ke tabel `kajian_acara_ibadah` dengan siaran WebSocket CDC Realtime. |
+| 3 | Data Kajian Muncul di PJ Ibadah tapi Kosong di Superadmin | `admin.html` (`loadIbadahKajian`, `renderIbadahKajianTable`) | **SELESAI** — Menghapus fallback cache usang saat Supabase kosong, menyelaraskan pembacaan atribut kolom database. |
+| 4 | Validasi Payload Submit Kajian Ibadah | `admin.html` (`handleIbadahKajianSubmit`) | **SELESAI** — Menyelaraskan nama atribut payload (`penceramah`, `tanggal`, `tempat_lokasi`, `kategori`, `waktu_mulai`, `waktu_selesai`) persis dengan skema Supabase. |
+| 5 | Tabel Donasi Masuk Tidak Ada Aksi Verifikasi | `admin.html` (`#subview-keu-donasi`) | **SELESAI** — Menambahkan kolom Aksi dengan tombol Verifikasi, multi-checkbox seleksi, dan tombol Batch Approval "Verifikasi Terpilih". |
+| 6 | Alur Otomatis Donasi Masuk ke Jurnal Kas | `admin.html` (`createAutoJournalForDonation`) | **SELESAI** — Donasi terverifikasi secara instan otomatis membukukan transaksi Kas Masuk pada tabel `financial_journals` dan realtime broadcast. |
+| 7 | Crash Form Jurnal Transaksi Baru (TypeError: Cannot read properties of null) | `admin.html` (`#form-journal-entry`) | **SELESAI** — Menambahkan input hidden `#journal-form-kode` pada form modal jurnal kas. |
+| 8 | Crash Tombol Buat Pengajuan Baru (TypeError: Cannot set properties of null) | `admin.html` (`#form-budget-entry`) | **SELESAI** — Menambahkan input hidden `#budget-form-kode` pada form modal pengajuan anggaran. |
+| 9 | Panduan Shift Keamanan Hardcoded & Istilah Usang | `admin.html` (`#subview-keamanan-jadwal`, `#modal-security-sop`) | **SELESAI** — Kartu shift dinamis dengan modal konfigurasi SOP, tersimpan ke Supabase `homepage_media` (kategori: `SECURITY_SOP_CONFIG`), dan pembersihan istilah menjadi 'Makan Berjamaah Gratis'. |
+| 10 | Status Keamanan WASPADA Muncul Sebagai KONDUSIF | `admin.html` (`renderSecurityTable`, `renderInsidenTable`) | **SELESAI** — Menambahkan badge status khusus untuk WASPADA / PERHATIAN_KHUSUS dan penyelarasan filter. |
+| 11 | Persentase Kondusif Nyangkut 50% pada KPI Keamanan | `admin.html` (`updateSecurityKpiStats`) | **SELESAI** — Kasus yang telah berstatus tindak lanjut SELESAI tidak lagi dihitung sebagai insiden aktif, metrik kondusif mencapai 100% saat tidak ada kasus aktif. |
+| 12 | Sub-tab Stok Kebersihan Pasif Tanpa Opsi Tambah/Filter | `admin.html` (`#subview-kebersihan-stok`) | **SELESAI** — Menambahkan tombol '+ Catat Kebutuhan Stok', search input, dan filter zona lokasi. |
+| 13 | Alur Pengajuan Anggaran untuk Kebutuhan Stok Sanitasi | `admin.html` (`forwardCleaningStockToBudget`) | **SELESAI** — Tombol 'Ajukan Anggaran' pada baris stok yang langsung membuka modal anggaran dengan divisi 'Kebersihan & Sanitasi', judul, dan rincian terisi otomatis. |
+| 14 | Error HTTP 400 Bad Request pada Visual Web Builder | `admin.html` (`saveHomepageConfig`), `database/migration_20260909_bugjournal_fixes.sql` | **SELESAI** — Perluasan kolom database `action_link` ke `TEXT`, penambahan kolom `meta_json JSONB`, dan optimasi penyimpanan payload builder. |

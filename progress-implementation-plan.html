@@ -864,7 +864,7 @@
                 </div>
                 <div class="header-titles">
                     <h1>Masjid Musafir Sophia Jatiwarna</h1>
-                    <p>Dashboard Pemantauan Progres & Master Roadmap Web Portal</p>
+                    <p>Dashboard Pemantauan Progres &amp; Master Roadmap Web Portal (v6.0)</p>
                     <div class="header-meta-tags">
                         <span class="meta-pill active">
                             <i class="fa-solid fa-location-dot"></i> Jatiwarna, Bekasi (WIB)
@@ -875,12 +875,15 @@
                         <span class="meta-pill">
                             <i class="fa-solid fa-globe"></i> masjidsophiajatiwarna.com
                         </span>
+                        <span class="meta-pill" style="background: var(--color-success-bg); border-color: #A7F3D0; color: #065F46;">
+                            <i class="fa-solid fa-shield-check"></i> v6.0 Bug Journal 14 Poin Tuntas
+                        </span>
                     </div>
                 </div>
             </div>
             <div>
                 <span class="status-tag status-completed">
-                    <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Fase 0, 1, 2, 3 Selesai (100%) &amp; Portal Mandiri Galeri &amp; Warta Live
+                    <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Fase 0 - 5 Selesai (100%) &amp; Portal Live Stabil
                 </span>
             </div>
         </div>
@@ -2040,14 +2043,14 @@
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-pending">Menunggu Fase 3 &amp; 4</span>
+                    <span class="status-tag status-completed">100% Selesai</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
             <div class="phase-body">
                 <div class="task-list">
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Validasi Akurasi Hisab Shalat vs Jadwal Kemenag Kota Bekasi
@@ -2056,14 +2059,24 @@
                             <div class="task-desc">Verifikasi kesesuaian waktu hisab astronomis lokal dengan kalender resmi Kemenag.</div>
                         </div>
                     </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
                         <div class="task-content">
                             <div class="task-title">
                                 Audit Keamanan Form &amp; Row Level Security (RLS)
                                 <span class="task-badge-pill">Security</span>
                             </div>
                             <div class="task-desc">Pencegahan SQLi, pembersihan payload XSS, dan proteksi honeypot anti-spam.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Resolusi Tuntas 14 Temuan Bug Journal Operasional (v6.0)
+                                <span class="task-badge-pill">Bug Fixes</span>
+                            </div>
+                            <div class="task-desc">Eliminasi crash modal (journal/budget), perbaikan single source of truth kajian ibadah, integrasi auto-jurnal donasi masuk, SOP keamanan dinamis &amp; perbaikan false-positive KPI, alur pengajuan anggaran stok sanitasi, serta migrasi skema TEXT/meta_json untuk visual web builder.</div>
                         </div>
                     </div>
                 </div>

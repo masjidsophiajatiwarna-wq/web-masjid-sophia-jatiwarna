@@ -4321,18 +4321,29 @@
                 <!-- SUBVIEW 3: RIWAYAT DONASI & INFAQ PUBLIK (BSI / QRIS) -->
                 <div id="subview-keu-donasi" class="keuangan-subview-pane" style="display: none;">
                     <div class="section-panel">
-                        <div class="panel-header">
+                        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
                             <div>
                                 <div class="panel-title"><i class="fa-solid fa-hand-holding-dollar" style="color: var(--color-gold-deep);"></i> Log Infaq &amp; Donasi Publik (Website &amp; QRIS)</div>
                                 <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
                                     Rekapitulasi donatur transfer Bank BSI (7235464297) dan QRIS Masjid Sophia Jatiwarna
                                 </p>
                             </div>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <button type="button" class="btn btn-outline" id="btn-batch-approve-donations" style="font-size: 0.78rem; padding: 0.4rem 0.85rem; display: none; background: #ECFDF5; color: #065F46; border-color: #A7F3D0;" onclick="handleBatchApproveDonations()">
+                                    <i class="fa-solid fa-check-double"></i> Verifikasi Terpilih (<span id="batch-donation-count">0</span>)
+                                </button>
+                                <button type="button" class="btn-action-gold" onclick="loadKeuanganData(true)" style="font-size: 0.78rem; padding: 0.4rem 0.85rem;">
+                                    <i class="fa-solid fa-arrows-rotate"></i> Refresh Donasi
+                                </button>
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <table class="admin-table">
                                 <thead>
                                     <tr>
+                                        <th style="width: 38px; text-align: center;">
+                                            <input type="checkbox" id="check-all-donations" onchange="toggleSelectAllDonations(this.checked)" title="Pilih Semua">
+                                        </th>
                                         <th>Waktu</th>
                                         <th>Donatur</th>
                                         <th>WhatsApp / Email</th>
@@ -4340,6 +4351,7 @@
                                         <th>Total Transfer (Kode Unik)</th>
                                         <th>Doa / Catatan</th>
                                         <th>Status</th>
+                                        <th style="text-align: right;">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="all-donations-tbody">
@@ -6403,48 +6415,22 @@
                 <!-- SUBVIEW 3: JADWAL SHIFT & POS PATROLI 24 JAM -->
                 <div id="subview-keamanan-jadwal" class="keamanan-subview-pane" style="display: none;">
                     <div class="section-panel" style="margin-bottom: 2rem;">
-                        <div class="panel-header">
+                        <div class="panel-header" style="flex-wrap: wrap; gap: 0.75rem;">
                             <div>
                                 <div class="panel-title"><i class="fa-solid fa-calendar-week" style="color: var(--color-gold-deep);"></i> Panduan Shift &amp; Titik Pos Patroli 24 Jam</div>
                                 <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
                                     Prosedur Operasional Standar (SOP) ronda berkala dan rotasi shift keamanan Masjid Sophia
                                 </p>
                             </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button type="button" class="btn btn-outline" style="font-size: 0.8rem; padding: 0.45rem 0.9rem;" onclick="openEditSecuritySopModal()">
+                                    <i class="fa-solid fa-pen-to-square"></i> Edit Panduan &amp; SOP
+                                </button>
+                            </div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
-                            <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem;">
-                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                                    <span class="shift-badge-pagi"><i class="fa-solid fa-sun"></i> Shift Pagi</span>
-                                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">06:00 - 14:00 WIB</span>
-                                </div>
-                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 0.5rem;">
-                                    Pengawasan aktivitas shalat Dhuha &amp; Dzuhur, pembukaan gerbang utama, ketertiban parkiran motor/mobil jamaah &amp; musafir, serta persiapan program sedekah makan siang.
-                                </p>
-                                <div style="font-size: 0.72rem; font-weight: 700; color: var(--color-gold-deep);"><i class="fa-solid fa-check"></i> Patroli Rutin: Setiap 2 Jam Sekali</div>
-                            </div>
-
-                            <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem;">
-                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                                    <span class="shift-badge-siang"><i class="fa-solid fa-cloud-sun"></i> Shift Siang</span>
-                                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">14:00 - 22:00 WIB</span>
-                                </div>
-                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 0.5rem;">
-                                    Pengawasan waktu shalat Ashar, Maghrib, Isya, penerangan lampu teras/halaman, ketertiban santri tahfidz, dan pengawasan loker penitipan barang musafir.
-                                </p>
-                                <div style="font-size: 0.72rem; font-weight: 700; color: var(--color-gold-deep);"><i class="fa-solid fa-check"></i> Patroli Rutin: Setiap 1.5 Jam Sekali</div>
-                            </div>
-
-                            <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem;">
-                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                                    <span class="shift-badge-malam"><i class="fa-solid fa-moon"></i> Shift Malam</span>
-                                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">22:00 - 06:00 WIB</span>
-                                </div>
-                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 0.5rem;">
-                                    Pengawasan transit tamu menginap 24 jam, penguncian gerbang samping, ronda keliling area belakang &amp; dapur, persiapan shalat Tahajud &amp; Subuh berjamaah.
-                                </p>
-                                <div style="font-size: 0.72rem; font-weight: 700; color: var(--color-gold-deep);"><i class="fa-solid fa-check"></i> Ronda Siaga 24 Jam Non-Stop</div>
-                            </div>
+                        <div id="container-security-shift-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+                            <!-- Dynamic Shift Cards -->
                         </div>
                     </div>
                 </div>
@@ -6614,13 +6600,36 @@
                 <!-- SUBVIEW 3: LOG KEBUTUHAN STOK SABUN & ALAT -->
                 <div id="subview-kebersihan-stok" class="kebersihan-subview-pane" style="display: none;">
                     <div class="section-panel" style="margin-bottom: 2rem;">
-                        <div class="panel-header">
+                        <div class="panel-header" style="flex-wrap: wrap; gap: 0.75rem;">
                             <div>
                                 <div class="panel-title"><i class="fa-solid fa-soap" style="color: var(--color-gold-deep);"></i> Log Kebutuhan Stok Sabun, Pewangi &amp; Alat Sanitasi</div>
                                 <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
-                                    Permintaan pengisian ulang cairan pembersih lantai, sabun cuci tangan, tisu, dan pewangi karpet untuk diajukan ke logistik
+                                    Permintaan pengisian ulang cairan pembersih lantai, sabun cuci tangan, tisu, dan pewangi karpet untuk diteruskan ke Pengajuan Anggaran / Logistik
                                 </p>
                             </div>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <button type="button" class="btn btn-auth-primary" style="width: auto; padding: 0.45rem 1rem; font-size: 0.8rem;" onclick="openAddCleaningStockModal()">
+                                    <i class="fa-solid fa-plus"></i> Catat Kebutuhan Stok
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Filter Controls -->
+                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <div class="search-box" style="flex: 1; min-width: 200px;">
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                <input type="text" id="kebersihan-stok-search" class="search-input" placeholder="Cari kebutuhan stok, zona, atau pelapor..." oninput="filterCleaningStokTable()">
+                            </div>
+                            <select id="kebersihan-stok-zona-filter" class="form-select" onchange="filterCleaningStokTable()">
+                                <option value="ALL">Semua Zona Lokasi</option>
+                                <option value="Tempat Wudhu Ikhwan">Tempat Wudhu Ikhwan</option>
+                                <option value="Tempat Wudhu Akhwat">Tempat Wudhu Akhwat</option>
+                                <option value="Toilet Ikhwan">Toilet Ikhwan</option>
+                                <option value="Toilet Akhwat">Toilet Akhwat</option>
+                                <option value="Ruang Shalat Utama">Ruang Shalat Utama</option>
+                                <option value="Serambi & Halaman">Serambi &amp; Halaman</option>
+                                <option value="Dapur">Dapur</option>
+                            </select>
                         </div>
 
                         <div class="table-responsive">
@@ -6631,7 +6640,7 @@
                                         <th style="min-width: 160px;">Zona Terkait</th>
                                         <th style="min-width: 150px;">Petugas Pelapor</th>
                                         <th style="min-width: 280px;">Rincian Kebutuhan Stok / Penggantian Alat</th>
-                                        <th style="text-align: right; min-width: 90px;">Aksi</th>
+                                        <th style="text-align: right; min-width: 180px;">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-cleaning-stok-list">
@@ -8993,6 +9002,7 @@
             <div class="modal-body" style="padding: 1.25rem;">
                 <form id="form-journal-entry" onsubmit="handleJournalFormSubmit(event)">
                     <input type="hidden" id="journal-entry-id" value="">
+                    <input type="hidden" id="journal-form-kode" value="">
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
                         <div class="form-group" style="margin-bottom: 0;">
@@ -9076,6 +9086,7 @@
             <div class="modal-body" style="padding: 1.25rem;">
                 <form id="form-budget-entry" onsubmit="handleBudgetFormSubmit(event)">
                     <input type="hidden" id="budget-entry-id" value="">
+                    <input type="hidden" id="budget-form-kode" value="">
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
                         <div class="form-group" style="margin-bottom: 0;">
@@ -9301,6 +9312,78 @@
                         <button type="button" class="btn btn-outline" onclick="closeModal('modal-security-entry')">Batal</button>
                         <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
                             <i class="fa-solid fa-floppy-disk"></i> Simpan Laporan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: EDIT PANDUAN SHIFT & SOP PATROLI KEAMANAN
+         ========================================================================= -->
+    <div class="modal-overlay" id="modal-security-sop" style="display: none;">
+        <div class="modal-box modal-box-md" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h4 style="margin: 0; font-size: 1.05rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-pen-to-square" style="color: var(--color-gold-deep);"></i> Edit Panduan Shift &amp; SOP Patroli Keamanan
+                </h4>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modal-security-sop')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 1.25rem;">
+                <form id="form-security-sop" onsubmit="handleSecuritySopFormSubmit(event)">
+                    <!-- Shift Pagi -->
+                    <div style="background: #F9FAFB; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span class="shift-badge-pagi"><i class="fa-solid fa-sun"></i> Shift Pagi</span>
+                            <input type="text" id="sop-pagi-time" class="form-input" style="width: 140px; padding: 0.3rem 0.5rem; font-size: 0.775rem;" placeholder="06:00 - 14:00 WIB" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0.5rem;">
+                            <label class="form-label" style="font-size: 0.75rem; font-weight: 600;">Deskripsi SOP Shift Pagi</label>
+                            <textarea id="sop-pagi-desc" class="form-input" rows="2" style="font-size: 0.775rem;" required></textarea>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-size: 0.75rem; font-weight: 600;">Frekuensi Patroli</label>
+                            <input type="text" id="sop-pagi-patroli" class="form-input" style="font-size: 0.775rem;" placeholder="Patroli Rutin: Setiap 2 Jam Sekali" required>
+                        </div>
+                    </div>
+
+                    <!-- Shift Siang -->
+                    <div style="background: #F9FAFB; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span class="shift-badge-siang"><i class="fa-solid fa-cloud-sun"></i> Shift Siang</span>
+                            <input type="text" id="sop-siang-time" class="form-input" style="width: 140px; padding: 0.3rem 0.5rem; font-size: 0.775rem;" placeholder="14:00 - 22:00 WIB" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0.5rem;">
+                            <label class="form-label" style="font-size: 0.75rem; font-weight: 600;">Deskripsi SOP Shift Siang</label>
+                            <textarea id="sop-siang-desc" class="form-input" rows="2" style="font-size: 0.775rem;" required></textarea>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-size: 0.75rem; font-weight: 600;">Frekuensi Patroli</label>
+                            <input type="text" id="sop-siang-patroli" class="form-input" style="font-size: 0.775rem;" placeholder="Patroli Rutin: Setiap 1.5 Jam Sekali" required>
+                        </div>
+                    </div>
+
+                    <!-- Shift Malam -->
+                    <div style="background: #F9FAFB; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span class="shift-badge-malam"><i class="fa-solid fa-moon"></i> Shift Malam</span>
+                            <input type="text" id="sop-malam-time" class="form-input" style="width: 140px; padding: 0.3rem 0.5rem; font-size: 0.775rem;" placeholder="22:00 - 06:00 WIB" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0.5rem;">
+                            <label class="form-label" style="font-size: 0.75rem; font-weight: 600;">Deskripsi SOP Shift Malam</label>
+                            <textarea id="sop-malam-desc" class="form-input" rows="2" style="font-size: 0.775rem;" required></textarea>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="font-size: 0.75rem; font-weight: 600;">Frekuensi Patroli</label>
+                            <input type="text" id="sop-malam-patroli" class="form-input" style="font-size: 0.775rem;" placeholder="Ronda Siaga 24 Jam Non-Stop" required>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('modal-security-sop')">Batal</button>
+                        <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Panduan &amp; SOP
                         </button>
                     </div>
                 </form>
@@ -14211,60 +14294,260 @@
         }
 
         function closeTaskDetailModal() {
-            document.getElementById('task-detail-modal').style.display = 'none';
-            const anyOpen = Array.from(document.querySelectorAll('.modal-overlay')).some(m => m.style.display === 'flex');
-            if (!anyOpen) document.body.style.overflow = '';
+            const modal = document.getElementById('task-detail-modal');
+            if (modal) modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
         // ==========================================================================
-        // OTHER TABS & UTILITY FUNCTIONS
+        // OTHER TABS & UTILITY FUNCTIONS (DONASI & ASPIRASI)
         // ==========================================================================
+        let globalDonationsList = [];
+        let selectedDonationIds = new Set();
+
+        async function loadDonationsData(forceRefresh = false) {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('donations')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (!error && Array.isArray(data)) {
+                        globalDonationsList = data;
+                        renderDonations(data);
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('[Donations] Supabase load notice:', e);
+                }
+            }
+            renderDonations(globalDonationsList);
+        }
+
+        function renderDonationsTable(list = null) {
+            if (list && Array.isArray(list)) {
+                globalDonationsList = list;
+            }
+            renderDonations(globalDonationsList);
+        }
+
         function renderDonations(list) {
+            globalDonationsList = list || [];
             const overviewTbody = document.getElementById('overview-donations-tbody');
             const allTbody = document.getElementById('all-donations-tbody');
 
             let totalAmount = 0;
-            list.forEach(d => {
+            globalDonationsList.forEach(d => {
                 totalAmount += Number(d.total_amount || d.amount || 0);
             });
 
             const kpiDonasi = document.getElementById('kpi-total-donasi');
             if (kpiDonasi) kpiDonasi.textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalAmount);
             const kpiCount = document.getElementById('kpi-donasi-count');
-            if (kpiCount) kpiCount.textContent = `${list.length} Transaksi Terdata`;
+            if (kpiCount) kpiCount.textContent = `${globalDonationsList.length} Transaksi Terdata`;
 
-            if (list.length === 0) {
+            if (globalDonationsList.length === 0) {
                 if (overviewTbody) overviewTbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada data donasi masuk.</td></tr>`;
-                if (allTbody) allTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada data donasi masuk.</td></tr>`;
+                if (allTbody) allTbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">Belum ada data donasi masuk dari website atau QRIS.</td></tr>`;
+                updateBatchDonationsToolbar();
                 return;
             }
 
             if (overviewTbody) {
-                overviewTbody.innerHTML = list.slice(0, 5).map(d => `
+                overviewTbody.innerHTML = globalDonationsList.slice(0, 5).map(d => `
                     <tr>
                         <td>${new Date(d.created_at).toLocaleDateString('id-ID')}</td>
-                        <td><strong>${d.donor_name}</strong></td>
-                        <td>${d.program_category}</td>
-                        <td><strong>Rp ${Number(d.total_amount || d.amount).toLocaleString('id-ID')}</strong></td>
-                        <td><span class="status-badge" style="background: #F3F4F6;">${d.payment_method}</span></td>
+                        <td><strong>${escapeHtml(d.donor_name || 'Hamba Allah')}</strong></td>
+                        <td>${escapeHtml(d.program_category || 'Makan Berjamaah Gratis')}</td>
+                        <td><strong>Rp ${Number(d.total_amount || d.amount || 0).toLocaleString('id-ID')}</strong></td>
+                        <td><span class="status-badge" style="background: #F3F4F6;">${escapeHtml(d.payment_method || 'QRIS')}</span></td>
                         <td><span class="status-badge ${d.payment_status === 'VERIFIED' ? 'verified' : 'pending'}">${d.payment_status}</span></td>
                     </tr>
                 `).join('');
             }
 
             if (allTbody) {
-                allTbody.innerHTML = list.map(d => `
-                    <tr>
-                        <td>${new Date(d.created_at).toLocaleString('id-ID')}</td>
-                        <td><strong>${d.donor_name}</strong></td>
-                        <td>${d.phone_number || '-'}</td>
-                        <td>${d.program_category}</td>
-                        <td><strong>Rp ${Number(d.total_amount || d.amount).toLocaleString('id-ID')}</strong></td>
-                        <td>${d.prayer_notes || '-'}</td>
-                        <td><span class="status-badge ${d.payment_status === 'VERIFIED' ? 'verified' : 'pending'}">${d.payment_status}</span></td>
-                    </tr>
-                `).join('');
+                allTbody.innerHTML = globalDonationsList.map(d => {
+                    const isVerified = d.payment_status === 'VERIFIED';
+                    const isChecked = selectedDonationIds.has(d.id);
+                    const chkHtml = isVerified
+                        ? `<span style="color: #9CA3AF; font-size: 0.8rem;"><i class="fa-solid fa-check"></i></span>`
+                        : `<input type="checkbox" class="donation-checkbox" value="${d.id}" ${isChecked ? 'checked' : ''} onchange="handleDonationCheckboxChange('${d.id}', this.checked)">`;
+
+                    const actionBtn = isVerified
+                        ? `<span style="font-size: 0.72rem; color: #059669; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Terverifikasi</span>`
+                        : `<button type="button" class="btn-action edit" style="color: #059669; font-size: 0.75rem; padding: 0.3rem 0.65rem; border: 1px solid #A7F3D0; background: #ECFDF5; border-radius: 4px;" onclick="handleApproveSingleDonation('${escapeHtml(d.id)}')" title="Verifikasi & Otomatis Catat Kas Masuk"><i class="fa-solid fa-check"></i> Verifikasi</button>`;
+
+                    return `
+                        <tr>
+                            <td style="text-align: center;">${chkHtml}</td>
+                            <td><div style="font-weight: 600; font-size: 0.8rem; color: var(--color-charcoal);">${new Date(d.created_at).toLocaleDateString('id-ID')}</div></td>
+                            <td><strong>${escapeHtml(d.donor_name || 'Hamba Allah')}</strong></td>
+                            <td>${escapeHtml(d.phone_number || '-')}</td>
+                            <td><span class="badge-leave-type badge-leave-operasional" style="font-size: 0.7rem;">${escapeHtml(d.program_category || 'Makan Berjamaah Gratis')}</span></td>
+                            <td><strong>Rp ${Number(d.total_amount || d.amount || 0).toLocaleString('id-ID')}</strong></td>
+                            <td><div style="font-size: 0.75rem; color: var(--color-charcoal-muted); max-width: 200px;">${escapeHtml(d.prayer_notes || '-')}</div></td>
+                            <td><span class="status-badge ${isVerified ? 'verified' : 'pending'}">${d.payment_status}</span></td>
+                            <td style="text-align: right; white-space: nowrap;">${actionBtn}</td>
+                        </tr>
+                    `;
+                }).join('');
             }
+            updateBatchDonationsToolbar();
+        }
+
+        function toggleSelectAllDonations(checked) {
+            if (checked) {
+                globalDonationsList.forEach(d => {
+                    if (d.payment_status !== 'VERIFIED') selectedDonationIds.add(d.id);
+                });
+            } else {
+                selectedDonationIds.clear();
+            }
+            renderDonations(globalDonationsList);
+        }
+
+        function handleDonationCheckboxChange(id, checked) {
+            if (checked) selectedDonationIds.add(id);
+            else selectedDonationIds.delete(id);
+            updateBatchDonationsToolbar();
+        }
+
+        function updateBatchDonationsToolbar() {
+            const btn = document.getElementById('btn-batch-approve-donations');
+            const cnt = document.getElementById('batch-donation-count');
+            const checkAll = document.getElementById('check-all-donations');
+            const count = selectedDonationIds.size;
+            if (cnt) cnt.textContent = count;
+            if (btn) btn.style.display = count > 0 ? 'inline-flex' : 'none';
+
+            const unverifiedTotal = globalDonationsList.filter(d => d.payment_status !== 'VERIFIED').length;
+            if (checkAll) {
+                checkAll.checked = unverifiedTotal > 0 && count === unverifiedTotal;
+            }
+        }
+
+        async function createAutoJournalForDonation(donation) {
+            const nominal = Number(donation.total_amount || donation.amount || 0);
+            const program = donation.program_category || 'Infaq & Sedekah';
+            let kategoriKas = 'Infaq Donatur BSI';
+            if (program.toLowerCase().includes('makan')) kategoriKas = 'QRIS Sedekah Makan';
+            else if (donation.payment_method === 'TUNAI') kategoriKas = 'Infaq Kotak Tunai';
+
+            let metodeKas = 'TRANSFER_BSI';
+            if (donation.payment_method === 'QRIS') metodeKas = 'QRIS';
+            else if (donation.payment_method === 'TUNAI') metodeKas = 'TUNAI';
+
+            const journalCode = typeof generateJournalCode === 'function' ? generateJournalCode('KAS_MASUK') : ('TRX-IN-' + String(Date.now()).slice(-4));
+            const journalRecord = {
+                id: typeof generateUUID === 'function' ? generateUUID() : ('j1000000-0000-4000-8000-' + String(Date.now()).slice(-12).padStart(12, '0')),
+                kode_transaksi: journalCode,
+                tanggal: new Date().toISOString().split('T')[0],
+                tipe_transaksi: 'KAS_MASUK',
+                kategori: kategoriKas,
+                nominal: nominal,
+                metode_pembayaran: metodeKas,
+                deskripsi: `Infaq ${program} dari ${donation.donor_name || 'Hamba Allah'} via ${donation.payment_method || 'Online'} (Ref ID: ${donation.id.slice(0, 8)})`,
+                bukti_transaksi_url: donation.proof_url || '',
+                pj_input: (typeof getUserDisplayName === 'function' ? getUserDisplayName(currentUser) : 'Bendahara DKM') + ' (Verifikasi Donasi)',
+                pj_input_email: (currentUser && currentUser.email) ? currentUser.email : '',
+                is_verified: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+
+            financialJournalsList.unshift(journalRecord);
+            localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    await sbClient.from('financial_journals').upsert([journalRecord], { onConflict: 'id' });
+                } catch (e) {
+                    console.warn('[Donations] Auto journal sync notice:', e);
+                }
+            }
+
+            if (typeof broadcastEvent === 'function') {
+                broadcastEvent('JOURNAL_SYNC', { action: 'upsert', record: journalRecord });
+            }
+        }
+
+        async function handleApproveSingleDonation(id) {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_KEUANGAN'].includes(role)) {
+                alert('Akses Ditolak: Hanya Bendahara atau Pimpinan DKM yang berwenang memverifikasi donasi.');
+                return;
+            }
+
+            const donation = globalDonationsList.find(d => d.id === id);
+            if (!donation) return;
+
+            donation.payment_status = 'VERIFIED';
+            donation.updated_at = new Date().toISOString();
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { error } = await sbClient
+                        .from('donations')
+                        .update({ payment_status: 'VERIFIED', updated_at: donation.updated_at })
+                        .eq('id', id);
+                    if (error) {
+                        alert('Peringatan: Gagal memperbarui status donasi di Supabase: ' + error.message);
+                    }
+                } catch (e) {
+                    console.warn('[Donations] Supabase verify exception:', e);
+                }
+            }
+
+            await createAutoJournalForDonation(donation);
+            selectedDonationIds.delete(id);
+
+            renderDonations(globalDonationsList);
+            if (typeof renderJournalsTable === 'function') renderJournalsTable();
+            if (typeof updateJournalsKpiStats === 'function') updateJournalsKpiStats();
+
+            alert(`Donasi dari ${donation.donor_name} sebesar Rp ${Number(donation.total_amount || donation.amount).toLocaleString('id-ID')} berhasil diverifikasi dan otomatis tercatat ke Jurnal Kas Masuk!`);
+        }
+
+        async function handleBatchApproveDonations() {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_KEUANGAN'].includes(role)) {
+                alert('Akses Ditolak: Hanya Bendahara atau Pimpinan DKM yang berwenang memverifikasi donasi.');
+                return;
+            }
+
+            if (selectedDonationIds.size === 0) {
+                alert('Peringatan: Silakan pilih minimal satu donasi yang ingin diverifikasi.');
+                return;
+            }
+
+            const idsToApprove = Array.from(selectedDonationIds);
+            if (!confirm(`Konfirmasi: Apakah Anda yakin ingin memverifikasi ${idsToApprove.length} transaksi donasi sekaligus dan mencatatnya ke Jurnal Kas Masuk?`)) {
+                return;
+            }
+
+            for (const id of idsToApprove) {
+                const donation = globalDonationsList.find(d => d.id === id);
+                if (donation && donation.payment_status !== 'VERIFIED') {
+                    donation.payment_status = 'VERIFIED';
+                    donation.updated_at = new Date().toISOString();
+
+                    if (typeof sbClient !== 'undefined' && sbClient) {
+                        try {
+                            await sbClient.from('donations').update({ payment_status: 'VERIFIED', updated_at: donation.updated_at }).eq('id', id);
+                        } catch (e) {}
+                    }
+                    await createAutoJournalForDonation(donation);
+                }
+            }
+
+            selectedDonationIds.clear();
+            renderDonations(globalDonationsList);
+            if (typeof renderJournalsTable === 'function') renderJournalsTable();
+            if (typeof updateJournalsKpiStats === 'function') updateJournalsKpiStats();
+
+            alert(`Sukses: ${idsToApprove.length} transaksi donasi berhasil diverifikasi dan masuk ke Jurnal Pembukuan Kas!`);
         }
 
         function renderFeedback(list) {
@@ -16793,7 +17076,7 @@
                         .select('*')
                         .order('tanggal', { ascending: true });
 
-                    if (!error && Array.isArray(data) && data.length > 0) {
+                    if (!error && Array.isArray(data)) {
                         ibadahKajianList = data;
                         localStorage.setItem('masjid_sophia_ibadah_kajian_master', JSON.stringify(data));
                         renderIbadahKajianTable();
@@ -16805,14 +17088,10 @@
                 console.debug('[Ibadah] Load kajian Supabase notice:', err);
             }
 
-            // Local fallback — hanya dari cache localStorage, tidak pernah dari seed mock
+            // Local fallback — hanya jika offline / network notice
             try {
                 const cached = localStorage.getItem('masjid_sophia_ibadah_kajian_master');
-                if (cached) {
-                    ibadahKajianList = JSON.parse(cached);
-                } else {
-                    ibadahKajianList = [];
-                }
+                ibadahKajianList = cached ? JSON.parse(cached) : [];
             } catch (e) {
                 ibadahKajianList = [];
             }
@@ -17131,21 +17410,25 @@
             let html = '';
             ibadahKajianList.forEach(k => {
                 const canApprove = ['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER'].includes(getUserRole());
+                const pemateri = k.penceramah || k.pemateri || '-';
+                const tanggal = k.tanggal || k.tanggal_pelaksanaan || '-';
+                const kategori = k.kategori || k.tema_kategori || 'Kajian Rutin';
+                const lokasi = k.tempat_lokasi || k.lokasi || 'Ruang Shalat Utama';
                 html += `
                     <tr>
                         <td>
                             <div style="font-weight: 800; color: var(--color-charcoal); font-size: 0.85rem;">${escapeHtml(k.judul_kajian)}</div>
-                            <span class="badge-leave-type badge-leave-operasional" style="font-size: 0.7rem;">${escapeHtml(k.tema_kategori || 'Kajian')}</span>
+                            <span class="badge-leave-type badge-leave-operasional" style="font-size: 0.7rem;">${escapeHtml(kategori)}</span>
                         </td>
                         <td>
-                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">${escapeHtml(k.pemateri)}</div>
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">${escapeHtml(pemateri)}</div>
                         </td>
                         <td>
-                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">${escapeHtml(k.tanggal_pelaksanaan)}</div>
-                            <div style="font-size: 0.74rem; color: var(--color-charcoal-muted);">${escapeHtml(k.waktu_mulai)} - ${escapeHtml(k.waktu_selesai)} WIB</div>
+                            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">${escapeHtml(tanggal)}</div>
+                            <div style="font-size: 0.74rem; color: var(--color-charcoal-muted);">${escapeHtml(k.waktu_mulai || '05:30')} - ${escapeHtml(k.waktu_selesai || '07:00')} WIB</div>
                         </td>
                         <td>
-                            <div style="font-size: 0.78rem; color: var(--color-charcoal);">${escapeHtml(k.lokasi || 'Ruang Shalat Utama')}</div>
+                            <div style="font-size: 0.78rem; color: var(--color-charcoal);">${escapeHtml(lokasi)}</div>
                         </td>
                         <td>
                             ${getApprovalBadgeHtml(k.status_approval)}
@@ -17640,23 +17923,44 @@
             const record = {
                 id: typeof generateUUID === 'function' ? generateUUID() : ('c1000000-0000-4000-8000-' + String(Date.now()).slice(-12).padStart(12, '0')),
                 judul_kajian: judul,
-                pemateri: pemateri,
-                tema_kategori: kategori,
-                tanggal_pelaksanaan: tanggal,
+                penceramah: pemateri,
+                kategori: kategori,
+                tanggal: tanggal,
                 waktu_mulai: mulai,
                 waktu_selesai: selesai,
-                lokasi: lokasi,
-                target_jamaah: 'Umum & Musafir',
+                tempat_lokasi: lokasi,
                 deskripsi: deskripsi,
                 status_approval: statusTarget,
                 submitted_by: getUserDisplayName(currentUser),
                 submitted_by_email: currentUser ? (currentUser.email || '') : '',
-                created_at: new Date().toISOString()
+                created_at: new Date().toISOString(),
+                // Properti kompatibilitas lokal:
+                pemateri: pemateri,
+                tema_kategori: kategori,
+                tanggal_pelaksanaan: tanggal,
+                lokasi: lokasi
             };
 
             if (sbClient) {
                 try {
-                    await sbClient.from('kajian_acara_ibadah').insert(record);
+                    const { error } = await sbClient.from('kajian_acara_ibadah').insert([{
+                        id: record.id,
+                        judul_kajian: record.judul_kajian,
+                        penceramah: record.penceramah,
+                        kategori: record.kategori,
+                        tanggal: record.tanggal,
+                        waktu_mulai: record.waktu_mulai,
+                        waktu_selesai: record.waktu_selesai,
+                        tempat_lokasi: record.tempat_lokasi,
+                        deskripsi: record.deskripsi,
+                        status_approval: record.status_approval,
+                        submitted_by: record.submitted_by,
+                        submitted_by_email: record.submitted_by_email,
+                        created_at: record.created_at
+                    }]);
+                    if (error) {
+                        console.error('[Ibadah] Supabase kajian insert error:', error);
+                    }
                 } catch (e) {
                     console.warn('[Ibadah] Supabase kajian insert notice:', e);
                 }
@@ -17664,6 +17968,7 @@
 
             ibadahKajianList.unshift(record);
             localStorage.setItem('masjid_sophia_ibadah_kajian_master', JSON.stringify(ibadahKajianList));
+            broadcastEvent('KAJIAN_SYNC', { action: 'insert', record });
             renderIbadahKajianTable();
             updateIbadahKpiStats();
 
@@ -19537,40 +19842,46 @@
 
         function toggleHomepageSection(secId) {
             renderHomepageLivePreview();
-            // Auto-save ke Supabase agar perubahan visibilitas langsung real-time ke index.html
+            // Auto-save senyap ke Supabase agar perubahan visibilitas langsung real-time ke index.html
             if (typeof saveHomepageConfig === 'function') {
-                saveHomepageConfig();
+                saveHomepageConfig(true);
             }
         }
 
         function setBuilderDevice(device) {
             const screen = document.getElementById('builder-preview-screen');
             document.querySelectorAll('.builder-device-btn').forEach(b => b.classList.remove('active'));
-
-            const targetBtn = document.getElementById('btn-device-' + device);
-            if (targetBtn) targetBtn.classList.add('active');
-
-            if (screen) {
-                screen.className = 'builder-preview-screen ' + (device === 'tablet' ? 'tablet-view' : (device === 'mobile' ? 'mobile-view' : ''));
+            if (device === 'mobile') {
+                screen.style.maxWidth = '375px';
+                screen.style.height = '620px';
+                document.getElementById('btn-device-mobile').classList.add('active');
+            } else if (device === 'tablet') {
+                screen.style.maxWidth = '768px';
+                screen.style.height = '650px';
+                document.getElementById('btn-device-tablet').classList.add('active');
+            } else {
+                screen.style.maxWidth = '100%';
+                screen.style.height = '680px';
+                document.getElementById('btn-device-desktop').classList.add('active');
             }
         }
 
-        async function saveHomepageConfig() {
+        async function saveHomepageConfig(silent = false) {
             const config = {
-                heroBadge: document.getElementById('builder-hero-badge')?.value || '',
                 heroTitle: document.getElementById('builder-hero-title')?.value || '',
-                heroArabic: document.getElementById('builder-hero-arabic')?.value || '',
                 heroSubtitle: document.getElementById('builder-hero-subtitle')?.value || '',
-                heroCta1Text: document.getElementById('builder-hero-cta1-text')?.value || '',
-                heroCta1Url: document.getElementById('builder-hero-cta1-url')?.value || '',
-                heroCta2Text: document.getElementById('builder-hero-cta2-text')?.value || '',
-                heroCta2Url: document.getElementById('builder-hero-cta2-url')?.value || '',
                 stat1Val: document.getElementById('builder-stat1-val')?.value || '',
                 stat1Lbl: document.getElementById('builder-stat1-lbl')?.value || '',
                 stat2Val: document.getElementById('builder-stat2-val')?.value || '',
                 stat2Lbl: document.getElementById('builder-stat2-lbl')?.value || '',
                 stat3Val: document.getElementById('builder-stat3-val')?.value || '',
                 stat3Lbl: document.getElementById('builder-stat3-lbl')?.value || '',
+                heroBadge: document.getElementById('builder-hero-badge')?.value || '',
+                heroArabic: document.getElementById('builder-hero-arabic')?.value || '',
+                heroCta1Text: document.getElementById('builder-hero-cta1-text')?.value || '',
+                heroCta1Url: document.getElementById('builder-hero-cta1-url')?.value || '',
+                heroCta2Text: document.getElementById('builder-hero-cta2-text')?.value || '',
+                heroCta2Url: document.getElementById('builder-hero-cta2-url')?.value || '',
                 sections: {
                     prayer: !!document.getElementById('toggle-sec-prayer')?.checked,
                     officers: !!document.getElementById('toggle-sec-officers')?.checked,
@@ -19585,24 +19896,33 @@
 
             if (typeof sbClient !== 'undefined' && sbClient) {
                 try {
-                    await sbClient.from('homepage_media').upsert([{
+                    const upsertData = {
                         id: '00000000-0000-0000-0000-000000000001',
                         judul: 'HOMEPAGE_CONFIG_MASTER',
-                        subjudul: config.heroTitle,
-                        kategori: 'HOMEPAGE_CONFIG',
+                        subjudul: (config.heroTitle || 'Masjid Sophia Jatiwarna').slice(0, 250),
+                        kategori: 'HOMEPAGE_CONFIG_MASTER',
                         media_url: 'config',
                         media_type: 'CONFIG_JSON',
-                        action_link: JSON.stringify(config),
+                        action_link: '#',
+                        meta_json: config,
                         is_active: true,
                         status_review: 'APPROVED',
                         reviewer_name: typeof getUserDisplayName === 'function' ? getUserDisplayName(currentUser) : 'Pengurus DKM'
-                    }], { onConflict: 'id' });
+                    };
+
+                    const { error } = await sbClient.from('homepage_media').upsert([upsertData], { onConflict: 'id' });
+                    if (error) {
+                        delete upsertData.meta_json;
+                        await sbClient.from('homepage_media').upsert([upsertData], { onConflict: 'id' });
+                    }
                 } catch (e) {
-                    console.warn('Supabase homepage config save exception:', e);
+                    console.warn('Supabase homepage config save notice:', e);
                 }
             }
 
-            alert('Konfigurasi visual web builder beranda berhasil disimpan dan disinkronisasikan!');
+            if (!silent) {
+                alert('Konfigurasi visual web builder beranda berhasil disimpan dan disinkronisasikan!');
+            }
         }
 
         function resetHomepageToDefault() {
@@ -21200,6 +21520,7 @@
         async function loadKeuanganData(forceRefresh = false) {
             await loadFinancialJournals();
             await loadBudgetRequests();
+            await loadDonationsData(forceRefresh);
             const savedSubView = localStorage.getItem('masjid_sophia_keuangan_subview') || 'jurnal';
             switchKeuanganSubView(savedSubView);
         }
@@ -22398,8 +22719,39 @@
 
         
         // ==========================================================================
+        // ==========================================================================
         // MODUL 6a: PJ KEAMANAN & KETERTIBAN JAVASCRIPT ENGINE
         // ==========================================================================
+        const DEFAULT_SECURITY_SOP = [
+            {
+                id: 'shift-pagi',
+                title: 'Shift Pagi',
+                time: '06:00 - 14:00 WIB',
+                badgeClass: 'shift-badge-pagi',
+                icon: 'fa-sun',
+                desc: 'Pengawasan aktivitas shalat Dhuha & Dzuhur, pembukaan gerbang utama, ketertiban parkiran motor/mobil jamaah & musafir, serta persiapan program Makan Berjamaah Gratis.',
+                patroli: 'Patroli Rutin: Setiap 2 Jam Sekali'
+            },
+            {
+                id: 'shift-siang',
+                title: 'Shift Siang',
+                time: '14:00 - 22:00 WIB',
+                badgeClass: 'shift-badge-siang',
+                icon: 'fa-cloud-sun',
+                desc: 'Pengawasan waktu shalat Ashar, Maghrib, Isya, penerangan lampu teras/halaman, ketertiban santri tahfidz, dan pengawasan loker penitipan barang musafir.',
+                patroli: 'Patroli Rutin: Setiap 1.5 Jam Sekali'
+            },
+            {
+                id: 'shift-malam',
+                title: 'Shift Malam',
+                time: '22:00 - 06:00 WIB',
+                badgeClass: 'shift-badge-malam',
+                icon: 'fa-moon',
+                desc: 'Pengawasan transit tamu menginap 24 jam, penguncian gerbang samping, ronda keliling area belakang & dapur, persiapan shalat Tahajud & Subuh berjamaah.',
+                patroli: 'Ronda Siaga 24 Jam Non-Stop'
+            }
+        ];
+        let securitySopConfig = JSON.parse(JSON.stringify(DEFAULT_SECURITY_SOP));
         let securityReportsList = [];
         let currentKeamananSubView = 'log';
 
@@ -22422,10 +22774,160 @@
                 renderSecurityTable();
             } else if (subView === 'insiden') {
                 renderInsidenTable();
+            } else if (subView === 'jadwal') {
+                renderSecurityShiftCards();
             }
         }
 
+        async function loadSecuritySopData() {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('homepage_media')
+                        .select('*')
+                        .eq('kategori', 'SECURITY_SOP_CONFIG')
+                        .maybeSingle();
+                    if (!error && data) {
+                        let parsed = null;
+                        if (data.meta_json && Array.isArray(data.meta_json)) {
+                            parsed = data.meta_json;
+                        } else if (data.action_link) {
+                            try { parsed = JSON.parse(data.action_link); } catch(e) {}
+                        } else if (data.media_url) {
+                            try { parsed = JSON.parse(data.media_url); } catch(e) {}
+                        }
+                        if (parsed && Array.isArray(parsed) && parsed.length > 0) {
+                            securitySopConfig = parsed;
+                            localStorage.setItem('masjid_sophia_security_sop_config', JSON.stringify(parsed));
+                            renderSecurityShiftCards();
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('[Security] Supabase fetch SOP notice:', e);
+                }
+            }
+
+            try {
+                const saved = localStorage.getItem('masjid_sophia_security_sop_config');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        securitySopConfig = parsed;
+                    }
+                }
+            } catch (e) {}
+            renderSecurityShiftCards();
+        }
+
+        function renderSecurityShiftCards() {
+            const container = document.getElementById('container-security-shift-cards');
+            if (!container) return;
+
+            container.innerHTML = securitySopConfig.map(s => {
+                return '<div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem;">' +
+                    '<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">' +
+                        '<span class="' + (s.badgeClass || 'shift-badge-pagi') + '"><i class="fa-solid ' + (s.icon || 'fa-shield-halved') + '"></i> ' + escapeHtml(s.title) + '</span>' +
+                        '<span style="font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal);">' + escapeHtml(s.time) + '</span>' +
+                    '</div>' +
+                    '<p style="font-size: 0.775rem; color: var(--color-charcoal-muted); line-height: 1.5; margin-bottom: 0.75rem;">' +
+                        escapeHtml(s.desc) +
+                    '</p>' +
+                    '<div style="font-size: 0.72rem; font-weight: 700; color: var(--color-gold-deep);"><i class="fa-solid fa-circle-check"></i> ' + escapeHtml(s.patroli) + '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function openEditSecuritySopModal() {
+            const pagi = securitySopConfig.find(s => s.id === 'shift-pagi') || DEFAULT_SECURITY_SOP[0];
+            const siang = securitySopConfig.find(s => s.id === 'shift-siang') || DEFAULT_SECURITY_SOP[1];
+            const malam = securitySopConfig.find(s => s.id === 'shift-malam') || DEFAULT_SECURITY_SOP[2];
+
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.value = val || '';
+            };
+
+            setVal('sop-pagi-time', pagi.time);
+            setVal('sop-pagi-desc', pagi.desc);
+            setVal('sop-pagi-patroli', pagi.patroli);
+
+            setVal('sop-siang-time', siang.time);
+            setVal('sop-siang-desc', siang.desc);
+            setVal('sop-siang-patroli', siang.patroli);
+
+            setVal('sop-malam-time', malam.time);
+            setVal('sop-malam-desc', malam.desc);
+            setVal('sop-malam-patroli', malam.patroli);
+
+            openModal('modal-security-sop');
+        }
+
+        async function handleSecuritySopFormSubmit(e) {
+            e.preventDefault();
+
+            const getVal = (id) => document.getElementById(id)?.value?.trim() || '';
+
+            const updatedConfig = [
+                {
+                    id: 'shift-pagi',
+                    title: 'Shift Pagi',
+                    time: getVal('sop-pagi-time') || '06:00 - 14:00 WIB',
+                    badgeClass: 'shift-badge-pagi',
+                    icon: 'fa-sun',
+                    desc: getVal('sop-pagi-desc'),
+                    patroli: getVal('sop-pagi-patroli') || 'Patroli Rutin: Setiap 2 Jam Sekali'
+                },
+                {
+                    id: 'shift-siang',
+                    title: 'Shift Siang',
+                    time: getVal('sop-siang-time') || '14:00 - 22:00 WIB',
+                    badgeClass: 'shift-badge-siang',
+                    icon: 'fa-cloud-sun',
+                    desc: getVal('sop-siang-desc'),
+                    patroli: getVal('sop-siang-patroli') || 'Patroli Rutin: Setiap 1.5 Jam Sekali'
+                },
+                {
+                    id: 'shift-malam',
+                    title: 'Shift Malam',
+                    time: getVal('sop-malam-time') || '22:00 - 06:00 WIB',
+                    badgeClass: 'shift-badge-malam',
+                    icon: 'fa-moon',
+                    desc: getVal('sop-malam-desc'),
+                    patroli: getVal('sop-malam-patroli') || 'Ronda Siaga 24 Jam Non-Stop'
+                }
+            ];
+
+            securitySopConfig = updatedConfig;
+            localStorage.setItem('masjid_sophia_security_sop_config', JSON.stringify(updatedConfig));
+
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const payload = {
+                        kategori: 'SECURITY_SOP_CONFIG',
+                        judul: 'Panduan Shift & Titik Pos Patroli 24 Jam',
+                        deskripsi: 'Prosedur Operasional Standar (SOP) ronda berkala dan rotasi shift keamanan',
+                        action_link: JSON.stringify(updatedConfig),
+                        meta_json: updatedConfig,
+                        updated_at: new Date().toISOString()
+                    };
+                    const { error } = await sbClient.from('homepage_media').upsert([payload], { onConflict: 'kategori' });
+                    if (error) {
+                        console.warn('[Security] Upsert SOP to Supabase warning:', error);
+                    }
+                } catch (err) {
+                    console.warn('[Security] Error saving SOP to Supabase:', err);
+                }
+            }
+
+            renderSecurityShiftCards();
+            closeModal('modal-security-sop');
+            alert('Panduan Shift & SOP Patroli berhasil diperbarui!');
+        }
+
         async function loadSecurityList() {
+            loadSecuritySopData();
+
             if (typeof sbClient !== 'undefined' && sbClient) {
                 try {
                     const { data, error } = await sbClient
@@ -22478,13 +22980,21 @@
                 else if (item.shift_piket === 'MALAM') shiftBadge = '<span class="shift-badge-malam"><i class="fa-solid fa-moon"></i> Malam</span>';
 
                 let kondisiBadge = '<span class="kondisi-aman"><i class="fa-solid fa-circle-check"></i> Kondusif</span>';
-                if (item.kondisi_keamanan === 'PERHATIAN_KHUSUS') kondisiBadge = '<span class="kondisi-perhatian"><i class="fa-solid fa-triangle-exclamation"></i> Perhatian Khusus</span>';
-                else if (item.kondisi_keamanan === 'INSIDEN_DARURAT') kondisiBadge = '<span class="kondisi-darurat"><i class="fa-solid fa-circle-exclamation"></i> Insiden Darurat</span>';
+                if (item.kondisi_keamanan === 'WASPADA' || item.kondisi_keamanan === 'PERHATIAN_KHUSUS') {
+                    kondisiBadge = '<span class="kondisi-perhatian"><i class="fa-solid fa-triangle-exclamation"></i> Waspada</span>';
+                } else if (item.kondisi_keamanan === 'INSIDEN' || item.kondisi_keamanan === 'INSIDEN_DARURAT') {
+                    kondisiBadge = '<span class="kondisi-darurat"><i class="fa-solid fa-circle-exclamation"></i> Insiden Darurat</span>';
+                }
 
                 let statusBadgeClass = 'status-tindak-selesai';
                 let statusLabel = 'Selesai';
-                if (item.status_tindak_lanjut === 'DALAM_PENANGANAN') { statusBadgeClass = 'status-tindak-proses'; statusLabel = 'Dalam Penanganan'; }
-                else if (item.status_tindak_lanjut === 'ESKALASI_DKM') { statusBadgeClass = 'status-tindak-eskalasi'; statusLabel = 'Eskalasi DKM'; }
+                if (item.status_tindak_lanjut === 'DALAM_PENANGANAN' || item.status_tindak_lanjut === 'DALAM_PROSES') { 
+                    statusBadgeClass = 'status-tindak-proses'; 
+                    statusLabel = 'Dalam Penanganan'; 
+                } else if (item.status_tindak_lanjut === 'ESKALASI_DKM') { 
+                    statusBadgeClass = 'status-tindak-eskalasi'; 
+                    statusLabel = 'Eskalasi DKM'; 
+                }
 
                 const photoUrl = item.bukti_media_url || '';
                 const photoThumb = photoUrl
@@ -22529,7 +23039,13 @@
                 list = list.filter(r => r.shift_piket === shift);
             }
             if (kondisi !== 'ALL') {
-                list = list.filter(r => r.kondisi_keamanan === kondisi);
+                if (kondisi === 'WASPADA' || kondisi === 'PERHATIAN_KHUSUS') {
+                    list = list.filter(r => r.kondisi_keamanan === 'WASPADA' || r.kondisi_keamanan === 'PERHATIAN_KHUSUS');
+                } else if (kondisi === 'INSIDEN_DARURAT' || kondisi === 'INSIDEN') {
+                    list = list.filter(r => r.kondisi_keamanan === 'INSIDEN_DARURAT' || r.kondisi_keamanan === 'INSIDEN');
+                } else {
+                    list = list.filter(r => r.kondisi_keamanan === kondisi);
+                }
             }
 
             renderSecurityTable(list);
@@ -22539,7 +23055,12 @@
             const tbody = document.getElementById('tbody-security-insiden-list');
             if (!tbody) return;
 
-            const list = securityReportsList.filter(r => r.kondisi_keamanan !== 'KONDUSIF' || r.status_tindak_lanjut === 'ESKALASI_DKM' || r.status_tindak_lanjut === 'DALAM_PENANGANAN');
+            const list = securityReportsList.filter(r => 
+                (r.kondisi_keamanan !== 'KONDUSIF' && r.kondisi_keamanan !== 'AMAN') || 
+                r.status_tindak_lanjut === 'ESKALASI_DKM' || 
+                r.status_tindak_lanjut === 'DALAM_PENANGANAN' ||
+                r.status_tindak_lanjut === 'DALAM_PROSES'
+            );
 
             if (list.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--color-charcoal-muted); padding: 2.5rem 1.5rem;"><div style="font-weight: 700; font-size: 0.9rem; color: #059669; margin-bottom: 0.25rem;"><i class="fa-solid fa-circle-check"></i> Lingkungan Masjid Aman &amp; Terkendali</div><p style="font-size: 0.775rem; margin: 0;">Tidak ada insiden darurat atau eskalasi masalah aktif saat ini.</p></td></tr>';
@@ -22547,13 +23068,20 @@
             }
 
             tbody.innerHTML = list.map(item => {
-                let kondisiBadge = '<span class="kondisi-perhatian"><i class="fa-solid fa-triangle-exclamation"></i> Perhatian Khusus</span>';
-                if (item.kondisi_keamanan === 'INSIDEN_DARURAT') kondisiBadge = '<span class="kondisi-darurat"><i class="fa-solid fa-circle-exclamation"></i> Insiden Darurat</span>';
+                let kondisiBadge = '<span class="kondisi-perhatian"><i class="fa-solid fa-triangle-exclamation"></i> Waspada</span>';
+                if (item.kondisi_keamanan === 'INSIDEN' || item.kondisi_keamanan === 'INSIDEN_DARURAT') {
+                    kondisiBadge = '<span class="kondisi-darurat"><i class="fa-solid fa-circle-exclamation"></i> Insiden Darurat</span>';
+                }
 
                 let statusBadgeClass = 'status-tindak-selesai';
                 let statusLabel = 'Selesai';
-                if (item.status_tindak_lanjut === 'DALAM_PENANGANAN') { statusBadgeClass = 'status-tindak-proses'; statusLabel = 'Dalam Penanganan'; }
-                else if (item.status_tindak_lanjut === 'ESKALASI_DKM') { statusBadgeClass = 'status-tindak-eskalasi'; statusLabel = 'Eskalasi DKM'; }
+                if (item.status_tindak_lanjut === 'DALAM_PENANGANAN' || item.status_tindak_lanjut === 'DALAM_PROSES') { 
+                    statusBadgeClass = 'status-tindak-proses'; 
+                    statusLabel = 'Dalam Penanganan'; 
+                } else if (item.status_tindak_lanjut === 'ESKALASI_DKM') { 
+                    statusBadgeClass = 'status-tindak-eskalasi'; 
+                    statusLabel = 'Eskalasi DKM'; 
+                }
 
                 const photoUrl = item.bukti_media_url || '';
                 const photoThumb = photoUrl
@@ -22589,26 +23117,35 @@
             const todayStr = new Date().toISOString().split('T')[0];
 
             let todayCount = 0;
-            let kondusifCount = 0;
-            let insidenCount = 0;
+            let unresolvedCount = 0;
 
             securityReportsList.forEach(r => {
                 if (r.tanggal === todayStr) todayCount++;
-                if (r.kondisi_keamanan === 'KONDUSIF') kondusifCount++;
-                else insidenCount++;
+                const isSelesai = (r.status_tindak_lanjut === 'SELESAI');
+                const isKondusif = (r.kondisi_keamanan === 'KONDUSIF' || r.kondisi_keamanan === 'AMAN');
+                if (!isKondusif && !isSelesai) {
+                    unresolvedCount++;
+                }
             });
 
             const statTotal = document.getElementById('stat-keamanan-total');
             if (statTotal) statTotal.textContent = total + ' Laporan';
 
             const statKondusif = document.getElementById('stat-keamanan-kondusif');
-            if (statKondusif) statKondusif.textContent = total > 0 ? Math.round((kondusifCount / total) * 100) + '%' : '100%';
+            if (statKondusif) {
+                if (total === 0) {
+                    statKondusif.textContent = '100%';
+                } else {
+                    const resolvedRate = Math.round(((total - unresolvedCount) / total) * 100);
+                    statKondusif.textContent = resolvedRate + '%';
+                }
+            }
 
             const statToday = document.getElementById('stat-keamanan-today');
             if (statToday) statToday.textContent = todayCount + ' Laporan';
 
             const statInsiden = document.getElementById('stat-keamanan-insiden');
-            if (statInsiden) statInsiden.textContent = insidenCount + ' Kasus';
+            if (statInsiden) statInsiden.textContent = unresolvedCount + ' Kasus';
         }
 
         function openAddSecurityModal() {
@@ -22672,7 +23209,7 @@
                 };
                 reader.readAsDataURL(compressed.blob);
             } catch (err) {
-                alert('Gagal memproses foto dokumentasi: ' + err.message);
+                alert('Gagal memproses foto bukti: ' + err.message);
             }
         }
 
@@ -22940,11 +23477,11 @@
             }).join('');
         }
 
-        function renderStokTable() {
+        function renderStokTable(data = null) {
             const tbody = document.getElementById('tbody-cleaning-stok-list');
             if (!tbody) return;
 
-            const list = cleaningReportsList.filter(c => c.kebutuhan_stok_sabun_alat && c.kebutuhan_stok_sabun_alat.trim().length > 0);
+            const list = data || cleaningReportsList.filter(c => c.kebutuhan_stok_sabun_alat && c.kebutuhan_stok_sabun_alat.trim().length > 0);
 
             if (list.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--color-charcoal-muted); padding: 2.5rem 1.5rem;"><div style="font-weight: 700; font-size: 0.9rem; color: #059669; margin-bottom: 0.25rem;"><i class="fa-solid fa-box-check"></i> Seluruh Stok Sabun &amp; Alat Terpenuhi</div><p style="font-size: 0.775rem; margin: 0;">Tidak ada catatan kekurangan sabun atau kebutuhan alat baru.</p></td></tr>';
@@ -22958,12 +23495,74 @@
                     '<td><div style="font-size: 0.8rem; color: var(--color-charcoal);">' + escapeHtml(item.petugas_kebersihan) + '</div></td>' +
                     '<td><div style="font-size: 0.8rem; color: #B45309; font-weight: 600; line-height: 1.3;"><i class="fa-solid fa-soap" style="margin-right: 4px;"></i> ' + escapeHtml(item.kebutuhan_stok_sabun_alat) + '</div></td>' +
                     '<td style="text-align: right;">' +
-                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                        '<div style="display: flex; gap: 0.4rem; justify-content: flex-end; align-items: center;">' +
+                            '<button type="button" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; color: var(--color-gold-deep); border-color: var(--color-gold-deep);" onclick="forwardCleaningStockToBudget(\'' + item.id + '\')" title="Teruskan ke Pengajuan Anggaran"><i class="fa-solid fa-file-invoice-dollar"></i> Ajukan Anggaran</button>' +
                             '<button type="button" class="btn-action edit" onclick="openEditCleaningModal(\'' + item.id + '\')" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>' +
                         '</div>' +
                     '</td>' +
                 '</tr>';
             }).join('');
+        }
+
+        function filterCleaningStokTable() {
+            const query = (document.getElementById('kebersihan-stok-search')?.value || '').toLowerCase().trim();
+            const zona = document.getElementById('kebersihan-stok-zona-filter')?.value || 'ALL';
+
+            let list = cleaningReportsList.filter(c => c.kebutuhan_stok_sabun_alat && c.kebutuhan_stok_sabun_alat.trim().length > 0);
+
+            if (query) {
+                list = list.filter(c => 
+                    (c.kebutuhan_stok_sabun_alat || '').toLowerCase().includes(query) ||
+                    (c.zona_lokasi || '').toLowerCase().includes(query) ||
+                    (c.petugas_kebersihan || '').toLowerCase().includes(query)
+                );
+            }
+            if (zona !== 'ALL') {
+                list = list.filter(c => c.zona_lokasi === zona);
+            }
+
+            renderStokTable(list);
+        }
+
+        function forwardCleaningStockToBudget(id) {
+            const item = cleaningReportsList.find(c => c.id === id);
+            if (!item) return;
+
+            openAddBudgetModal();
+
+            const divisiSelect = document.getElementById('budget-form-divisi');
+            if (divisiSelect) {
+                for (let i = 0; i < divisiSelect.options.length; i++) {
+                    if (divisiSelect.options[i].value.includes('Kebersihan') || divisiSelect.options[i].text.includes('Kebersihan')) {
+                        divisiSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            const judulInput = document.getElementById('budget-form-judul');
+            if (judulInput) {
+                judulInput.value = 'Pengadaan Stok Sanitasi: ' + (item.kebutuhan_stok_sabun_alat || '').substring(0, 60);
+            }
+
+            const rincianInput = document.getElementById('budget-form-rincian');
+            if (rincianInput) {
+                rincianInput.value = 'Permintaan pengadaan/restok dari zona: ' + item.zona_lokasi + '\nPelapor: ' + item.petugas_kebersihan + ' (Tanggal: ' + item.tanggal + ')\nRincian kebutuhan: ' + item.kebutuhan_stok_sabun_alat;
+            }
+
+            const nominalInput = document.getElementById('budget-form-nominal');
+            if (nominalInput) {
+                nominalInput.focus();
+            }
+        }
+
+        function openAddCleaningStockModal() {
+            openAddCleaningModal();
+            document.getElementById('modal-cleaning-title').innerHTML = '<i class="fa-solid fa-soap" style="color: var(--color-gold-deep);"></i> Catat Kebutuhan Stok &amp; Alat Sanitasi';
+            const stokInput = document.getElementById('cleaning-form-stok');
+            if (stokInput) {
+                stokInput.focus();
+            }
         }
 
         function updateCleaningKpiStats() {
