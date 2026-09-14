@@ -178,14 +178,14 @@
         }
 
         .admin-sidebar {
-            width: 260px;
+            width: 275px;
             background: var(--color-charcoal);
             color: #FFFFFF;
             position: fixed;
             top: 0;
             left: 0;
             bottom: 0;
-            padding: 1.5rem 1rem;
+            padding: 1.5rem 0.85rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -238,9 +238,9 @@
         .nav-item-btn > span:not(.mention-count-badge) {
             flex: 1;
             min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            white-space: normal;
+            line-height: 1.35;
+            word-break: break-word;
         }
 
         .nav-item-btn i:first-child {
@@ -365,21 +365,22 @@
             justify-content: space-between;
             width: 100%;
             padding: 0.35rem 0.5rem;
-            font-size: 0.67rem;
+            font-size: 0.68rem;
             font-weight: 800;
-            color: #9CA3AF;
+            color: var(--color-gold-primary);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             background: transparent;
             border: none;
             cursor: pointer;
             border-radius: var(--radius-sm);
             transition: var(--transition);
             user-select: none;
+            margin-top: 0.4rem;
         }
 
         .sidebar-group-header:hover {
-            color: var(--color-gold-primary);
+            color: #FFFFFF;
             background: rgba(255, 255, 255, 0.05);
         }
 
@@ -387,22 +388,14 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .sidebar-group-header .group-title-box i {
-            font-size: 0.72rem;
-            color: var(--color-gold-primary);
-            width: 14px;
-            text-align: center;
+            white-space: normal;
+            line-height: 1.3;
         }
 
         .sidebar-group-header .group-chevron {
             font-size: 0.62rem;
             transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            color: #6B7280;
+            color: #9CA3AF;
         }
 
         .sidebar-accordion-group.collapsed .sidebar-group-header .group-chevron {
@@ -413,8 +406,9 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 0.2rem;
-            margin-top: 0.2rem;
+            gap: 0.35rem;
+            margin-top: 0.35rem;
+            margin-bottom: 0.6rem;
             padding: 0;
             transition: all 0.2s ease-in-out;
         }
@@ -453,7 +447,7 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.65rem 0.85rem;
+            padding: 0.6rem 0.75rem;
             border-radius: var(--radius-sm);
             color: #D1D5DB;
             text-decoration: none;
@@ -465,7 +459,6 @@
             width: 100%;
             text-align: left;
             transition: var(--transition);
-            white-space: nowrap;
         }
 
         .nav-item-btn:hover, .nav-item-btn.active {
@@ -612,7 +605,7 @@
 
         /* Admin Main Content */
         .admin-main {
-            margin-left: 260px;
+            margin-left: 275px;
             padding: 2rem;
             min-height: 100vh;
             transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -4148,7 +4141,7 @@
                                 <button type="button" class="btn btn-outline" onclick="exportFinancialJournalsToCSV()">
                                     <i class="fa-solid fa-file-csv"></i> Unduh CSV Jurnal
                                 </button>
-                                <button type="button" class="btn btn-primary" onclick="openAddJournalModal()">
+                                <button type="button" class="btn btn-primary" id="btn-add-journal-action" onclick="openAddJournalModal()">
                                     <i class="fa-solid fa-plus"></i> Catat Transaksi Baru
                                 </button>
                             </div>
@@ -4256,7 +4249,7 @@
                     <div class="section-panel" style="margin-bottom: 2rem;">
                         <div class="panel-header">
                             <div>
-                                <div class="panel-title"><i class="fa-solid fa-file-invoice-dollar" style="color: var(--color-gold-deep);"></i> Alur Pengajuan Anggaran (*Budget Request*) &amp; Klaim Nota Bon</div>
+                                <div class="panel-title"><i class="fa-solid fa-file-invoice-dollar" style="color: var(--color-gold-deep);"></i> Alur Pengajuan Anggaran &amp; Klaim Nota Bon</div>
                                 <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
                                     Permohonan dana kegiatan divisi, pengadaan barang, atau klaim penggantian nota belanja dengan persetujuan terpusat Pimpinan DKM
                                 </p>
@@ -6448,8 +6441,8 @@
                         <button type="button" class="btn-subview-kebersihan" id="btn-subview-kebersihan-wudhu" onclick="switchKebersihanSubView('wudhu')">
                             <i class="fa-solid fa-faucet-drip"></i> Area Wudhu &amp; Toilet 24 Jam
                         </button>
-                        <button type="button" class="btn-subview-kebersihan" id="btn-subview-kebersihan-stok" onclick="switchKebersihanSubView('stok')">
-                            <i class="fa-solid fa-soap"></i> Kebutuhan Stok Sabun &amp; Alat
+                        <button type="button" class="btn-subview-kebersihan" style="color: var(--color-gold-deep); border-color: rgba(227, 196, 102, 0.4);" onclick="openAddCleaningStockToBudgetModal()" title="Ajukan permohonan pengadaan cairan pembersih, sabun, dan alat sanitasi ke DKM">
+                            <i class="fa-solid fa-file-invoice-dollar"></i> Ajukan Anggaran Stok
                         </button>
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
@@ -6595,61 +6588,6 @@
                             </table>
                         </div>
                     </div>
-                </div>
-
-                <!-- SUBVIEW 3: LOG KEBUTUHAN STOK SABUN & ALAT -->
-                <div id="subview-kebersihan-stok" class="kebersihan-subview-pane" style="display: none;">
-                    <div class="section-panel" style="margin-bottom: 2rem;">
-                        <div class="panel-header" style="flex-wrap: wrap; gap: 0.75rem;">
-                            <div>
-                                <div class="panel-title"><i class="fa-solid fa-soap" style="color: var(--color-gold-deep);"></i> Log Kebutuhan Stok Sabun, Pewangi &amp; Alat Sanitasi</div>
-                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
-                                    Permintaan pengisian ulang cairan pembersih lantai, sabun cuci tangan, tisu, dan pewangi karpet untuk diteruskan ke Pengajuan Anggaran / Logistik
-                                </p>
-                            </div>
-                            <div style="display: flex; gap: 0.5rem; align-items: center;">
-                                <button type="button" class="btn btn-auth-primary" style="width: auto; padding: 0.45rem 1rem; font-size: 0.8rem;" onclick="openAddCleaningStockModal()">
-                                    <i class="fa-solid fa-plus"></i> Catat Kebutuhan Stok
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Filter Controls -->
-                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap;">
-                            <div class="search-box" style="flex: 1; min-width: 200px;">
-                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                                <input type="text" id="kebersihan-stok-search" class="search-input" placeholder="Cari kebutuhan stok, zona, atau pelapor..." oninput="filterCleaningStokTable()">
-                            </div>
-                            <select id="kebersihan-stok-zona-filter" class="form-select" onchange="filterCleaningStokTable()">
-                                <option value="ALL">Semua Zona Lokasi</option>
-                                <option value="Tempat Wudhu Ikhwan">Tempat Wudhu Ikhwan</option>
-                                <option value="Tempat Wudhu Akhwat">Tempat Wudhu Akhwat</option>
-                                <option value="Toilet Ikhwan">Toilet Ikhwan</option>
-                                <option value="Toilet Akhwat">Toilet Akhwat</option>
-                                <option value="Ruang Shalat Utama">Ruang Shalat Utama</option>
-                                <option value="Serambi & Halaman">Serambi &amp; Halaman</option>
-                                <option value="Dapur">Dapur</option>
-                            </select>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table class="admin-table">
-                                <thead>
-                                    <tr>
-                                        <th style="min-width: 120px;">Tanggal Catat</th>
-                                        <th style="min-width: 160px;">Zona Terkait</th>
-                                        <th style="min-width: 150px;">Petugas Pelapor</th>
-                                        <th style="min-width: 280px;">Rincian Kebutuhan Stok / Penggantian Alat</th>
-                                        <th style="text-align: right; min-width: 180px;">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody-cleaning-stok-list">
-                                    <!-- Dynamic Rows -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div id="tab-logistik" class="tab-content-panel" style="display: none;">
@@ -9007,7 +8945,7 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
                         <div class="form-group" style="margin-bottom: 0;">
                             <label class="form-label" style="font-weight: 600;">Tipe Transaksi</label>
-                            <select id="journal-form-tipe" class="form-input" required>
+                            <select id="journal-form-tipe" class="form-input" onchange="handleJournalTypeChange(this.value)" required>
                                 <option value="KAS_MASUK">Kas Masuk (Pemasukan)</option>
                                 <option value="KAS_KELUAR">Kas Keluar (Pengeluaran)</option>
                             </select>
@@ -9139,6 +9077,28 @@
                         </div>
                     </div>
 
+                    <!-- Approval Box (Only visible when editing and user is approver) -->
+                    <div id="budget-form-approver-box" style="display: none; background: rgba(227, 196, 102, 0.08); border: 1px solid var(--color-gold-deep); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem;">
+                        <h5 style="margin: 0 0 0.6rem 0; font-size: 0.85rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.4rem;">
+                            <i class="fa-solid fa-stamp" style="color: var(--color-gold-deep);"></i> Keputusan DKM / Evaluasi Anggaran
+                        </h5>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 0.6rem;">
+                            <div>
+                                <label class="form-label" style="font-weight: 600; font-size: 0.8rem;">Status Persetujuan</label>
+                                <select id="budget-form-status" class="form-input">
+                                    <option value="PENDING">Menunggu Persetujuan / Review</option>
+                                    <option value="APPROVED_DKM">Disetujui DKM</option>
+                                    <option value="REJECTED">Ditolak</option>
+                                    <option value="DISBURSED">Sudah Dicairkan oleh Bendahara</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label" style="font-weight: 600; font-size: 0.8rem;">Catatan Evaluasi / Alasan Penolakan</label>
+                                <textarea id="budget-form-catatan" class="form-input" rows="2" placeholder="Tuliskan catatan evaluasi atau alasan jika pengajuan ditolak..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
                         <button type="button" class="btn btn-outline" onclick="closeModal('modal-budget-entry')">Batal</button>
                         <button type="submit" class="btn btn-auth-primary" style="width: auto; padding: 0.6rem 1.35rem;">
@@ -9167,6 +9127,8 @@
 
                     <div style="background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem;">
                         <div style="display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 1rem; font-size: 0.85rem;">
+                            <span style="font-weight: 600; color: var(--color-charcoal-muted);">Kode:</span>
+                            <span id="review-budget-kode" style="color: var(--color-charcoal); font-weight: 700; font-family: monospace;">-</span>
                             <span style="font-weight: 600; color: var(--color-charcoal-muted);">Tipe:</span>
                             <span id="review-budget-tipe" style="color: var(--color-charcoal);">-</span>
                             <span style="font-weight: 600; color: var(--color-charcoal-muted);">Pemohon:</span>
@@ -10349,7 +10311,6 @@
             {
                 id: 'ruang_kerja_tugas',
                 title: 'RUANG KERJA & TUGAS',
-                icon: 'fa-solid fa-layer-group',
                 items: [
                     {
                         id: 'overview',
@@ -10359,27 +10320,27 @@
                     },
                     {
                         id: 'tasks',
-                        label: 'Tugas & Task Health',
+                        label: 'Tugas & Koordinasi',
                         icon: 'fa-solid fa-list-check',
                         roles: ['*']
                     },
                     {
                         id: 'chat',
-                        label: 'Chat Koordinasi DKM',
+                        label: 'Chat Koordinasi',
                         icon: 'fa-solid fa-comments',
                         badgeId: 'badge-sidebar-chat-mentions',
                         roles: ['*']
                     },
                     {
                         id: 'leave_requests',
-                        label: 'Izin & Cuti Pengurus',
+                        label: 'Izin & Cuti',
                         icon: 'fa-solid fa-calendar-day',
                         badgeId: 'badge-sidebar-leave-pending',
                         roles: ['*']
                     },
                     {
                         id: 'feedback',
-                        label: 'Kotak Saran Jamaah',
+                        label: 'Kotak Saran',
                         icon: 'fa-solid fa-envelope-open-text',
                         roles: ['*']
                     },
@@ -10394,24 +10355,23 @@
             {
                 id: 'pelayanan_pendidikan',
                 title: 'PELAYANAN & PENDIDIKAN',
-                icon: 'fa-solid fa-hand-holding-heart',
                 items: [
                     {
                         id: 'ibadah',
-                        label: 'Layanan & Petugas Ibadah',
+                        label: 'Layanan & Ibadah',
                         icon: 'fa-solid fa-kaaba',
                         badgeId: 'badge-sidebar-ibadah-pending',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_IBADAH']
                     },
                     {
                         id: 'musafir',
-                        label: 'Buku Tamu & Musafir 24 Jam',
+                        label: 'Buku Tamu & Musafir',
                         icon: 'fa-solid fa-person-walking-luggage',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MUSAFIR']
                     },
                     {
                         id: 'santri',
-                        label: 'Santri & Mutaba\'ah Tahfidz',
+                        label: 'Santri & Tahfidz',
                         icon: 'fa-solid fa-graduation-cap',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_SANTRI']
                     }
@@ -10420,23 +10380,22 @@
             {
                 id: 'operasional_fasilitas',
                 title: 'OPERASIONAL & FASILITAS',
-                icon: 'fa-solid fa-building-circle-check',
                 items: [
                     {
                         id: 'logistik',
-                        label: 'Dapur & Inventaris Aset',
+                        label: 'Dapur & Aset',
                         icon: 'fa-solid fa-boxes-stacked',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_LOGISTIK']
                     },
                     {
                         id: 'keamanan',
-                        label: 'Piket Ronda & Keamanan 24 Jam',
+                        label: 'Ronda & Keamanan',
                         icon: 'fa-solid fa-shield-halved',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEAMANAN']
                     },
                     {
                         id: 'kebersihan',
-                        label: 'Checklist Sanitasi & Wudhu',
+                        label: 'Sanitasi & Kebersihan',
                         icon: 'fa-solid fa-broom',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEBERSIHAN']
                     }
@@ -10444,18 +10403,17 @@
             },
             {
                 id: 'media_keuangan',
-                title: 'MEDIA & KEUANGAN',
-                icon: 'fa-solid fa-bullhorn',
+                title: 'MEDIA & WARTA MASJID',
                 items: [
                     {
                         id: 'articles',
-                        label: 'Warta & Artikel (CMS)',
+                        label: 'Warta & Artikel',
                         icon: 'fa-solid fa-newspaper',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA']
                     },
                     {
                         id: 'media',
-                        label: 'Visual Builder & Beranda',
+                        label: 'Visual Web Builder',
                         icon: 'fa-solid fa-laptop-code',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA']
                     },
@@ -10469,24 +10427,23 @@
                         id: 'donations',
                         label: 'Kas Masjid & Infaq',
                         icon: 'fa-solid fa-hand-holding-dollar',
-                        roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEUANGAN']
+                        roles: ['*']
                     }
                 ]
             },
             {
                 id: 'pengaturan_sistem',
                 title: 'PENGATURAN & SISTEM',
-                icon: 'fa-solid fa-sliders',
                 items: [
                     {
                         id: 'accounts',
-                        label: 'Manajemen Pengguna DKM',
+                        label: 'Direktori Pengguna',
                         icon: 'fa-solid fa-users-gear',
                         roles: ['SUPER_ADMIN', 'KETUA_DKM']
                     },
                     {
                         id: 'health',
-                        label: 'Cloud Monitor (7 Pilar)',
+                        label: 'Cloud Monitor',
                         icon: 'fa-solid fa-server',
                         roles: ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM']
                     }
@@ -10520,7 +10477,6 @@
                     <div class="sidebar-accordion-group ${isCollapsed ? 'collapsed' : ''}" id="sidebar-group-${group.id}">
                         <button type="button" class="sidebar-group-header" onclick="toggleSidebarGroup('${group.id}')" title="${escapeHtml(group.title)}" aria-expanded="${isCollapsed ? 'false' : 'true'}" aria-controls="sidebar-group-body-${group.id}">
                             <div class="group-title-box">
-                                <i class="${escapeHtml(group.icon)}" aria-hidden="true"></i>
                                 <span class="group-title-text">${escapeHtml(group.title)}</span>
                             </div>
                             <i class="fa-solid fa-chevron-down group-chevron" aria-hidden="true"></i>
@@ -20807,6 +20763,12 @@
             const tbody = document.getElementById('tbody-journals-list');
             if (!tbody) return;
 
+            const isApprover = ['SUPER_ADMIN', 'KETUA_DKM', 'PJ_KEUANGAN'].includes(getUserRole());
+            const addBtn = document.getElementById('btn-add-journal-action');
+            if (addBtn) {
+                addBtn.style.display = isApprover ? 'inline-flex' : 'none';
+            }
+
             const list = data || financialJournalsList;
 
             if (list.length === 0) {
@@ -20834,6 +20796,13 @@
                     ? '<div style="width: 36px; height: 36px; border-radius: 6px; overflow: hidden; background: #F3F4F6; margin: 0 auto; cursor: pointer; border: 1px solid var(--color-border);" onclick="openCoverPreviewUrl(\'' + photoUrl + '\')"><img src="' + photoUrl + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'"></div>'
                     : '<span style="font-size: 0.72rem; color: #9CA3AF;">-</span>';
 
+                const actionBtns = isApprover
+                    ? '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
+                        '<button type="button" class="btn-action edit" onclick="openEditJournalModal(\'' + item.id + '\')" title="Edit Transaksi"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                        '<button type="button" class="btn-action delete" onclick="deleteJournalEntry(\'' + item.id + '\')" title="Hapus Transaksi"><i class="fa-solid fa-trash"></i></button>' +
+                      '</div>'
+                    : '<span style="font-size: 0.72rem; color: #9CA3AF;"><i class="fa-solid fa-lock"></i> Hanya Pimpinan</span>';
+
                 return '<tr>' +
                     '<td>' +
                         '<div style="font-weight: 800; font-family: monospace; font-size: 0.825rem; color: var(--color-charcoal);">' + item.kode_transaksi + '</div>' +
@@ -20850,12 +20819,7 @@
                     '<td><div style="font-size: 0.775rem; color: var(--color-charcoal); line-height: 1.3; max-width: 260px;">' + escapeHtml(item.deskripsi) + '</div></td>' +
                     '<td style="text-align: center;">' + photoThumb + '</td>' +
                     '<td><div style="font-size: 0.75rem; color: var(--color-charcoal); font-weight: 600;"><i class="fa-solid fa-user-pen" style="color: #9CA3AF; margin-right: 3px;"></i> ' + (item.pj_input || 'Bendahara') + '</div></td>' +
-                    '<td style="text-align: right;">' +
-                        '<div style="display: flex; gap: 0.35rem; justify-content: flex-end;">' +
-                            '<button type="button" class="btn-action edit" onclick="openEditJournalModal(\'' + item.id + '\')" title="Edit Transaksi"><i class="fa-solid fa-pen-to-square"></i></button>' +
-                            '<button type="button" class="btn-action delete" onclick="deleteJournalEntry(\'' + item.id + '\')" title="Hapus Transaksi"><i class="fa-solid fa-trash"></i></button>' +
-                        '</div>' +
-                    '</td>' +
+                    '<td style="text-align: right;">' + actionBtns + '</td>' +
                 '</tr>';
             }).join('');
         }
@@ -21284,6 +21248,9 @@
                 }
             }
 
+            const approverBox = document.getElementById('budget-form-approver-box');
+            if (approverBox) approverBox.style.display = 'none';
+
             document.getElementById('budget-form-preview-box').style.display = 'none';
             openModal('modal-budget-entry');
         }
@@ -21311,6 +21278,19 @@
                 previewBox.style.display = 'block';
             } else {
                 previewBox.style.display = 'none';
+            }
+
+            // Approver controls inside edit modal
+            const isApprover = ['SUPER_ADMIN', 'KETUA_DKM', 'PJ_KEUANGAN'].includes(getUserRole());
+            const approverBox = document.getElementById('budget-form-approver-box');
+            if (approverBox) {
+                if (isApprover) {
+                    approverBox.style.display = 'block';
+                    document.getElementById('budget-form-status').value = item.status_pengajuan || 'PENDING';
+                    document.getElementById('budget-form-catatan').value = item.catatan_evaluasi || '';
+                } else {
+                    approverBox.style.display = 'none';
+                }
             }
 
             openModal('modal-budget-entry');
@@ -21351,26 +21331,70 @@
 
             const existing = budgetRequestsList.find(b => b.id === id);
 
+            const isApprover = ['SUPER_ADMIN', 'KETUA_DKM', 'PJ_KEUANGAN'].includes(getUserRole());
+            const approverBox = document.getElementById('budget-form-approver-box');
+            let updatedStatus = existing ? existing.status_pengajuan : 'PENDING';
+            let updatedCatatan = existing ? (existing.catatan_evaluasi || '') : '';
+            let isNewlyDisbursed = false;
+
+            if (isApprover && approverBox && approverBox.style.display !== 'none') {
+                const selStatus = document.getElementById('budget-form-status').value;
+                const noteVal = document.getElementById('budget-form-catatan').value.trim();
+                if (selStatus !== updatedStatus && selStatus === 'DISBURSED') {
+                    isNewlyDisbursed = true;
+                }
+                updatedStatus = selStatus;
+                updatedCatatan = noteVal;
+            }
+
             const record = {
                 id: id,
                 kode_pengajuan: kode,
                 tanggal_pengajuan: tanggal,
                 divisi_pengaju: divisi,
-                nama_pengaju: getUserDisplayName(currentUser),
-                email_pengaju: (currentUser && currentUser.email) ? currentUser.email : '',
+                nama_pengaju: existing ? existing.nama_pengaju : getUserDisplayName(currentUser),
+                email_pengaju: existing ? existing.email_pengaju : ((currentUser && currentUser.email) ? currentUser.email : ''),
                 tipe_pengajuan: tipe,
                 judul_keperluan: judul,
                 rincian_keperluan: rincian,
                 nominal_diajukan: nominal,
                 lampiran_nota_url: fotoUrl,
-                status_pengajuan: existing ? existing.status_pengajuan : 'PENDING',
-                catatan_evaluasi: existing ? existing.catatan_evaluasi : '',
-                reviewed_by: existing ? existing.reviewed_by : '',
-                reviewed_by_email: existing ? existing.reviewed_by_email : '',
-                reviewed_at: existing ? existing.reviewed_at : null,
-                disbursed_at: existing ? existing.disbursed_at : null,
+                status_pengajuan: updatedStatus,
+                catatan_evaluasi: updatedCatatan,
+                reviewed_by: (updatedStatus !== 'PENDING') ? (existing?.reviewed_by || getUserDisplayName(currentUser)) : '',
+                reviewed_by_email: (updatedStatus !== 'PENDING') ? (existing?.reviewed_by_email || ((currentUser && currentUser.email) ? currentUser.email : '')) : '',
+                reviewed_at: (updatedStatus !== 'PENDING') ? (existing?.reviewed_at || new Date().toISOString()) : null,
+                disbursed_at: (updatedStatus === 'DISBURSED') ? (existing?.disbursed_at || new Date().toISOString()) : null,
                 updated_at: new Date().toISOString()
             };
+
+            if (isNewlyDisbursed) {
+                const journalRecord = {
+                    id: generateUUID(),
+                    kode_transaksi: generateJournalCode('KAS_KELUAR'),
+                    tanggal: new Date().toISOString().split('T')[0],
+                    tipe_transaksi: 'KAS_KELUAR',
+                    kategori: record.divisi_pengaju.includes('Logistik') ? 'Operasional Dapur' : 'Sarpras & Perbaikan',
+                    nominal: record.nominal_diajukan,
+                    metode_pembayaran: 'TRANSFER_BSI',
+                    deskripsi: 'Pencairan dana: ' + record.judul_keperluan + ' (' + record.kode_pengajuan + ')',
+                    bukti_transaksi_url: record.lampiran_nota_url || '',
+                    pj_input: getUserDisplayName(currentUser) + ' (Pencairan Otomatis)',
+                    pj_input_email: (currentUser && currentUser.email) ? currentUser.email : '',
+                    is_verified: true,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString()
+                };
+                financialJournalsList.unshift(journalRecord);
+                localStorage.setItem('masjid_sophia_financial_journals', JSON.stringify(financialJournalsList));
+                if (typeof sbClient !== 'undefined' && sbClient) {
+                    sbClient.from('financial_journals').insert([journalRecord]).then(({ error }) => {
+                        if (error) console.error('[Budget to Journal Auto-Insert Error]', error);
+                    });
+                }
+                renderFinancialJournalTable();
+                updateFinancialKpiStats();
+            }
 
             const existingIdx = budgetRequestsList.findIndex(b => b.id === id);
             if (existingIdx !== -1) {
@@ -23557,11 +23581,28 @@
         }
 
         function openAddCleaningStockModal() {
-            openAddCleaningModal();
-            document.getElementById('modal-cleaning-title').innerHTML = '<i class="fa-solid fa-soap" style="color: var(--color-gold-deep);"></i> Catat Kebutuhan Stok &amp; Alat Sanitasi';
-            const stokInput = document.getElementById('cleaning-form-stok');
-            if (stokInput) {
-                stokInput.focus();
+            openAddCleaningStockToBudgetModal();
+        }
+
+        function openAddCleaningStockToBudgetModal() {
+            openAddBudgetModal();
+            const divisiSelect = document.getElementById('budget-form-divisi');
+            if (divisiSelect) {
+                for (let i = 0; i < divisiSelect.options.length; i++) {
+                    if (divisiSelect.options[i].value.includes('Kebersihan') || divisiSelect.options[i].text.includes('Kebersihan')) {
+                        divisiSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            const judulInput = document.getElementById('budget-form-judul');
+            if (judulInput) {
+                judulInput.value = 'Pengadaan Stok Sanitasi & Alat Kebersihan';
+            }
+            const rincianInput = document.getElementById('budget-form-rincian');
+            if (rincianInput) {
+                rincianInput.value = 'Permintaan pengadaan / restok sabun cuci tangan, pembersih lantai, pewangi, tisu, atau perlengkapan kebersihan.';
+                rincianInput.focus();
             }
         }
 

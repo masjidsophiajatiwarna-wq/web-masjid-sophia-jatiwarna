@@ -7,8 +7,8 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v6.0 (Stabilisasi Penuh 14 Temuan Bug Journal, Single Source of Truth Kajian, Auto-Jurnal Donasi & SOP Keamanan/Sanitasi Dinamis)  
-**Terakhir Diperbarui:** 2026-09-09  
+**Versi Rencana Induk:** v6.1 (Bug Journal v2, Akses Budget Request Multi-PJ, Redesain Sidebar Bersih ERP Umar & Fullscreen Hero Banner Istiqlal)  
+**Terakhir Diperbarui:** 2026-09-14  
 
 ---
 
@@ -433,3 +433,22 @@ Berikut adalah modul coaching langkah-demi-langkah yang akan dipandu secara inte
 | 12 | Sub-tab Stok Kebersihan Pasif Tanpa Opsi Tambah/Filter | `admin.html` (`#subview-kebersihan-stok`) | **SELESAI** — Menambahkan tombol '+ Catat Kebutuhan Stok', search input, dan filter zona lokasi. |
 | 13 | Alur Pengajuan Anggaran untuk Kebutuhan Stok Sanitasi | `admin.html` (`forwardCleaningStockToBudget`) | **SELESAI** — Tombol 'Ajukan Anggaran' pada baris stok yang langsung membuka modal anggaran dengan divisi 'Kebersihan & Sanitasi', judul, dan rincian terisi otomatis. |
 | 14 | Error HTTP 400 Bad Request pada Visual Web Builder | `admin.html` (`saveHomepageConfig`), `database/migration_20260909_bugjournal_fixes.sql` | **SELESAI** — Perluasan kolom database `action_link` ke `TEXT`, penambahan kolom `meta_json JSONB`, dan optimasi penyimpanan payload builder. |
+
+---
+
+## 8. Matriks Verifikasi 10 Poin Bug Journal Operasional v2 & Redesain UI (v6.1 - Status: 100% Selesai)
+
+| No | Poin Masalah / Perbaikan | Berkas & Komponen | Resolusi Teknis & Status |
+| :---: | :--- | :--- | :--- |
+| 1 | Sinkronisasi tipe transaksi kas masuk/keluar tidak otomatis | `admin.html` (`#journal-form-tipe`) | **SELESAI** — Menambahkan handler `onchange="handleJournalTypeChange(this.value)"` pada elemen select. Kategori transaksi otomatis berpindah dan sinkron seketika saat tipe berubah. |
+| 2 | Error referensi kode pengajuan di modal review anggaran | `admin.html` (`#modal-budget-review`) | **SELESAI** — Menambahkan elemen `<span id="review-budget-kode">` di dalam modal review sehingga kode pengajuan ditampilkan dengan jelas tanpa error referensi DOM. |
+| 3 | Evaluasi persetujuan dan pencairan anggaran hanya di modal review | `admin.html` (`#modal-budget-entry`, `handleBudgetEntrySubmit`) | **SELESAI** — Menambahkan blok `#budget-form-approver-box` pada formulir edit pengajuan bagi Approver (`SUPER_ADMIN`, `KETUA_DKM`, `PJ_KEUANGAN`) dan mengintegrasikan auto-disbursement kas keluar ke `financial_journals` saat dicairkan. |
+| 4 | Subview stok kebersihan terpisah dan redundan | `admin.html` (`#subview-kebersihan-stok`) | **SELESAI** — Menghapus tab dan pane subview stok kebersihan yang redundan untuk menyederhanakan antarmuka modul Sanitasi Kebersihan. |
+| 5 | Tombol pengajuan anggaran stok kebersihan tidak langsung | `admin.html` (`openAddCleaningStockToBudgetModal`) | **SELESAI** — Menambahkan tombol langsung "Ajukan Anggaran Stok" yang membuka modal pengajuan anggaran dengan divisi default 'Kebersihan & Sanitasi' dan rincian terformat. |
+| 6 | Label panel Kas Masjid memuat teks redundan | `admin.html` (`#tab-donations` header) | **SELESAI** — Menghapus teks `(*Budget Request*)` pada header panel Kas Masjid & Infaq agar judul bersih dan rapi. |
+| 7 | Ikon kategori pada grup sidebar membuat visual padat | `admin.html` (`SIDEBAR_MENU_GROUPS`) | **SELESAI** — Menghapus ikon kategori dari header grup menu di seluruh konfigurasi sidebar untuk menciptakan tampilan yang tenang dan profesional. |
+| 8 | Label grup media dan cloud monitor kurang selaras | `admin.html` (`SIDEBAR_MENU_GROUPS`) | **SELESAI** — Mengubah grup `MEDIA & KEUANGAN` menjadi `MEDIA & WARTA MASJID`, serta membersihkan teks `(7 Pilar)` pada menu Cloud Monitor. |
+| 9 | PJ divisi lain tidak memiliki akses menu pengajuan anggaran | `admin.html` (`SIDEBAR_MENU_GROUPS`, `renderJournalsTable`) | **SELESAI** — Mengubah hak akses menu Kas Masjid & Infaq menjadi `roles: ['*']` agar seluruh PJ divisi dapat mengajukan anggaran secara mandiri, dengan proteksi ketat tombol pencatatan dan aksi edit/hapus kas hanya bagi Approver keuangan. |
+| 10 | Sidebar desktop 100% terpotong dan sesak (Benchmark ERP Umar) | `admin.html` (CSS `.admin-sidebar`, `.nav-item-btn`, layout) | **SELESAI** — Memperlebar sidebar ke 275px (`admin-main` margin 275px), menghapus `white-space: nowrap` dan text truncation `...`, menambah `line-height: 1.35`, menyederhanakan nama menu panjang, dan memperluas vertical gap agar rapi dan mudah dibaca setara ERP Umar. |
+| 11 | Hero slider kartu box beranda kurang megah (Benchmark Masjid Istiqlal) | `index.html` (CSS & HTML `#beranda`, `loadHeroSlides`) | **SELESAI** — Merombak Hero Banner menjadi 100vw edge-to-edge fullscreen slider dengan Ken Burns zoom effect, gradien gelap berlapis, floating prayer dock bar (frosted glass) untuk countdown dan petugas shalat, serta sinkronisasi dinamis ke Supabase `homepage_media`. |
+

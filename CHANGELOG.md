@@ -4,6 +4,47 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.26] - 2026-09-14
+
+### Resolusi Tuntas Bug Journal v2 (10 Poin), Redesain Sidebar Bersih Standar ERP Umar & Fullscreen Hero Banner Standar Istiqlal
+
+#### Perbaikan Form Jurnal Kas & Stabilitas Modal Review Anggaran (Bug 1 & 2)
+- `[JOURNAL_TYPE_SYNC]` Menambahkan pemanggilan `onchange="handleJournalTypeChange(this.value)"` pada elemen `<select id="journal-form-tipe">`. Kategori transaksi (infaq/operasional) kini otomatis tersinkronisasi dan berpindah secara dinamis sesuai tipe kas masuk atau keluar saat dipilih oleh bendahara.
+- `[BUDGET_REVIEW_CODE_ELEMENT]` Menambahkan elemen `<span id="review-budget-kode">` di dalam modal review pengajuan anggaran (`#modal-budget-review`). Mengeliminasi potensi error referensi DOM saat DKM atau Super Admin membuka detail verifikasi anggaran.
+
+#### Akses Evaluasi Persetujuan & Pencairan Anggaran Kas (Bug 3)
+- `[BUDGET_APPROVER_FORM_BOX]` Menambahkan kotak evaluasi status persetujuan dan catatan persetujuan (`#budget-form-approver-box`) langsung di dalam formulir edit pengajuan anggaran (`#modal-budget-entry`). Kotak ini hanya dapat diedit oleh akun berwenang (`SUPER_ADMIN`, `KETUA_DKM`, `PJ_KEUANGAN`), sementara pengaju umum hanya dapat melihat catatan secara read-only.
+- `[BUDGET_AUTO_DISBURSEMENT_JOURNAL]` Menghubungkan alur pencairan anggaran (`status === 'DICAIRKAN'`) ke fungsi pencatatan otomatis transaksi kas keluar pada tabel `financial_journals` dengan kode bukti pengeluaran dan deskripsi lengkap.
+
+#### Penyederhanaan Modul Kebersihan & Eliminasi Redundansi (Bug 4 & 5)
+- `[CLEANING_STOCK_STREAMLINING]` Menghapus subview tab stok kebersihan (`subview-kebersihan-stok`) yang terpisah dan redundan dari modul Sanitasi Kebersihan.
+- `[CLEANING_STOCK_DIRECT_BUDGET]` Menggantikannya dengan tombol aksi langsung "Ajukan Anggaran Stok" (`openAddCleaningStockToBudgetModal()`) yang langsung membuka modal pengajuan anggaran dengan divisi default 'Kebersihan & Sanitasi' serta format judul baku, menyederhanakan alur birokrasi operasional lapangan.
+
+#### Pembersihan Label Panel & Penyelarasan Hierarki Navigasi (Bug 6, 7 & 8)
+- `[JOURNAL_HEADER_CLEANUP]` Menghapus teks redundan `(*Budget Request*)` pada header panel Kas Masjid & Infaq agar judul panel tetap bersih dan informatif.
+- `[SIDEBAR_CATEGORY_ICONS_REMOVAL]` Menghapus seluruh ikon kategori pada header grup menu di `SIDEBAR_MENU_GROUPS` untuk menciptakan tampilan yang lebih tenang, profesional, dan tidak ramai visual.
+- `[SIDEBAR_GROUP_RENAME]` Mengubah nama grup sidebar `MEDIA & KEUANGAN` menjadi `MEDIA & WARTA MASJID` agar lebih mencerminkan fungsi publikasi dakwah.
+- `[SIDEBAR_CLOUD_LABEL_CLEANUP]` Menghapus teks `(7 Pilar)` dari label menu Cloud Monitor menjadi cukup `Cloud Monitor`.
+
+#### Demokratisasi Budget Request bagi Seluruh PJ Divisi (Bug 9)
+- `[BUDGET_REQUEST_ALL_ROLES]` Memperluas hak akses menu Kas Masjid & Infaq (`donations`) ke seluruh peran penanggung jawab divisi (`roles: ['*']`) di `SIDEBAR_MENU_GROUPS`, sehingga setiap PJ (Media, Logistik, Santri, Musafir, Ibadah, Keamanan, Kebersihan) dapat mengajukan anggaran secara mandiri.
+- `[FINANCIAL_ENTRY_STRICT_RBAC]` Memproteksi tombol "Catat Transaksi Baru", aksi edit jurnal, dan aksi hapus jurnal kas agar hanya dapat diakses dan dieksekusi secara eksklusif oleh pemegang otoritas keuangan (`SUPER_ADMIN`, `KETUA_DKM`, `PJ_KEUANGAN`).
+
+#### Redesain Navigasi Bilah Samping Bersih & Rapi (Benchmark ERP Umar - Bug 10)
+- `[SIDEBAR_WIDTH_EXPANSION]` Memperlebar bilah navigasi samping dari 250px menjadi 275px (`admin-main` margin-left 275px) untuk memberikan ruang baca yang lega pada layar desktop 100%.
+- `[SIDEBAR_TEXT_WRAP_CLEANUP]` Menghilangkan `white-space: nowrap` dan pemotongan teks dengan elipsis (`text-overflow: ellipsis`) pada tombol navigasi (`.nav-item-btn > span`) dan header grup (`.group-title-box`). Teks kini membungkus baris secara rapi dan proporsional dengan `line-height: 1.35` dan `word-break: break-word`.
+- `[SIDEBAR_LABEL_SIMPLIFICATION]` Menyederhanakan label menu yang terlalu panjang agar mudah dipindai mata (misal: "Content & Article Studio" menjadi "Studio Artikel & Berita", "Buku Tamu & Log Istirahat 24 Jam" menjadi "Buku Tamu Musafir", "Log Ronda & Titik Patroli 24 Jam" menjadi "Log Ronda Keamanan").
+- `[SIDEBAR_BREATHING_ROOM]` Menata ulang jarak vertikal antar-kelompok menu (`gap: 0.65rem`), margin grup, dan padding item untuk menghasilkan tata visual setara dashboard modern ERP Umar.
+
+#### Transformasi Hero Banner Full-Width & Floating Prayer Bar (Benchmark Masjid Istiqlal Jakarta)
+- `[HERO_FULLWIDTH_VIEWPORT]` Mengubah arsitektur Hero Banner beranda publik (`index.html`) dari kartu 2-kolom terbatas menjadi layar penuh 100vw edge-to-edge (`.hero-section.hero-fullscreen`, min-height 86vh).
+- `[HERO_KEN_BURNS_TRANSITION]` Menerapkan efek transisi cross-fade lembut (0.9s) dengan animasi zoom perlahan Ken Burns (`transform: scale(1.035)`, durasi 7s) pada background slide aktif.
+- `[HERO_ISTIQLAL_GRADIENT_OVERLAY]` Menerapkan gradien gelap berlapis (180deg dengan titik henti multi-tier) untuk menjamin teks judul putih, tagline emas, dan kutipan ayat Al-Qur'an Arab terbaca sangat tajam dan anggun di atas foto masjid resolusi tinggi.
+- `[HERO_FLOATING_PRAYER_DOCK]` Memindahkan widget hitung mundur shalat dan petugas ibadah harian ke bar melayang di bagian bawah banner (`.hero-prayer-dock`) dengan material frosted glass modern (`backdrop-filter: blur(14px)`), jam digital monospace berbingkai emas Sophia, nama imam/muadzin/khatib yang ringkas, serta tautan cepat ke jadwal hisab lengkap.
+- `[HERO_DYNAMIC_BUILDER_SYNC]` Menyelaraskan struktur HTML dinamis pada `loadHeroSlides()` agar setiap slide yang ditambahkan atau diedit dari menu Visual Builder & Beranda di admin panel secara instan dirender dengan format kontainer dan tagline layar penuh yang identik.
+
+---
+
 ## [1.9.25] - 2026-09-09
 
 ### Resolusi Tuntas 14 Temuan Bug Journal Operasional, Single Source of Truth Kajian, Auto-Jurnal Donasi & SOP Dinamis

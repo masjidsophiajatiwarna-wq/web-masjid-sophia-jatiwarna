@@ -405,31 +405,17 @@
         /* ==========================================================================
            HERO BANNER SLIDER & LIVE PRAYER COUNTDOWN (STANDAR MASJID ISTIQLAL)
            ========================================================================== */
-        .hero-section {
-            padding: 2.25rem 0 2.5rem 0;
-            background: radial-gradient(circle at 80% 20%, rgba(227, 196, 102, 0.12) 0%, transparent 60%),
-                        radial-gradient(circle at 10% 80%, rgba(201, 168, 76, 0.08) 0%, transparent 50%),
-                        var(--color-bg-sand);
+        /* ==========================================================================
+           HERO BANNER SLIDER FULL-WIDTH (STANDAR MASJID ISTIQLAL JAKARTA)
+           ========================================================================== */
+        .hero-section.hero-fullscreen {
             position: relative;
+            width: 100%;
+            min-height: 86vh;
+            min-height: 86dvh;
             overflow: hidden;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.35fr 0.85fr;
-            gap: 2rem;
-            align-items: stretch;
-        }
-
-        /* Hero Slider Carousel Container */
-        .hero-slider-card {
-            background: var(--color-charcoal);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            position: relative;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid rgba(227, 196, 102, 0.25);
-            min-height: 480px;
+            background-color: var(--color-charcoal);
+            padding: 0;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -437,69 +423,88 @@
 
         .hero-slides-wrapper {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
+            z-index: 1;
         }
 
         .hero-slide {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
-            background-size: cover;
-            background-position: center;
+            transform: scale(1);
+            transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+                        visibility 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 7s ease-out;
+            display: flex;
+            align-items: center;
         }
 
         .hero-slide.active {
             opacity: 1;
             visibility: visible;
+            transform: scale(1.035);
         }
 
+        /* Gradien Overlay Berlapis Standar Masjid Istiqlal */
         .hero-slide-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(18, 18, 16, 0.72) 0%,
+                rgba(18, 18, 16, 0.38) 32%,
+                rgba(18, 18, 16, 0.76) 74%,
+                rgba(18, 18, 16, 0.96) 100%
+            );
+            z-index: 2;
+        }
+
+        .hero-slide-container {
+            position: relative;
+            z-index: 10;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, rgba(29, 29, 27, 0.35) 0%, rgba(29, 29, 27, 0.82) 65%, rgba(29, 29, 27, 0.96) 100%);
+            padding-top: 5.5rem;
+            padding-bottom: 6.5rem;
         }
 
         .hero-slide-content {
-            position: relative;
-            z-index: 10;
-            padding: 2.25rem 2.5rem;
+            max-width: 820px;
             color: #FFFFFF;
         }
 
-        .badge-hero {
+        .hero-tagline {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            padding: 0.3rem 0.85rem;
-            background: rgba(227, 196, 102, 0.2);
-            border: 1px solid var(--color-gold-primary);
-            border-radius: var(--radius-full);
+            gap: 0.65rem;
             color: var(--color-gold-primary);
-            font-size: 0.75rem;
+            font-size: 0.825rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             margin-bottom: 0.85rem;
-            backdrop-filter: blur(4px);
+        }
+
+        .hero-tagline-line {
+            width: 32px;
+            height: 2px;
+            background: var(--color-gold-primary);
+            display: inline-block;
         }
 
         .hero-title {
-            font-size: 2.15rem;
+            font-size: clamp(2.2rem, 5.2vw, 3.6rem);
             font-weight: 800;
-            line-height: 1.25;
+            line-height: 1.18;
             color: #FFFFFF;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.85rem;
             letter-spacing: -0.5px;
         }
 
@@ -509,30 +514,35 @@
 
         .hero-arabic-box {
             font-family: 'Amiri', serif;
-            font-size: 1.15rem;
+            font-size: clamp(1.2rem, 2.5vw, 1.55rem);
             line-height: 1.8;
-            color: var(--color-gold-light);
-            margin-bottom: 0.75rem;
+            color: #FAF6E8;
+            margin-bottom: 1rem;
             direction: rtl;
             text-align: right;
             border-right: 3px solid var(--color-gold-primary);
-            padding-right: 0.85rem;
+            padding-right: 1rem;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            display: inline-block;
+            backdrop-filter: blur(4px);
         }
 
         .hero-subtitle {
-            font-size: 0.925rem;
+            font-size: 1.05rem;
+            line-height: 1.65;
             color: #E5E7EB;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            max-width: 600px;
+            margin-bottom: 1.75rem;
+            max-width: 680px;
         }
 
         .hero-actions {
             display: flex;
             align-items: center;
-            gap: 0.85rem;
+            gap: 1rem;
             flex-wrap: wrap;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .btn-hero-primary {
@@ -540,21 +550,22 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            padding: 0.75rem 1.45rem;
+            padding: 0.85rem 1.75rem;
             background: var(--color-gold-primary);
             color: var(--color-charcoal);
             border-radius: var(--radius-full);
-            font-size: 0.875rem;
+            font-size: 0.925rem;
             font-weight: 800;
             text-decoration: none;
             transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(227, 196, 102, 0.35);
+            box-shadow: 0 4px 16px rgba(227, 196, 102, 0.4);
         }
 
         .btn-hero-primary:hover {
             background: #FFFFFF;
             color: var(--color-charcoal);
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35);
         }
 
         .btn-hero-secondary {
@@ -562,16 +573,16 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            padding: 0.75rem 1.35rem;
+            padding: 0.85rem 1.65rem;
             background: rgba(255, 255, 255, 0.12);
             color: #FFFFFF;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             border-radius: var(--radius-full);
-            font-size: 0.875rem;
+            font-size: 0.925rem;
             font-weight: 700;
             text-decoration: none;
             transition: var(--transition);
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(8px);
         }
 
         .btn-hero-secondary:hover {
@@ -581,160 +592,180 @@
         }
 
         /* Slider Controls */
-        .hero-slider-nav {
+        .hero-nav-arrow {
             position: absolute;
-            bottom: 1.5rem;
-            right: 2rem;
-            z-index: 20;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .slider-btn {
-            width: 36px;
-            height: 36px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 25;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
-            background: rgba(29, 29, 27, 0.65);
-            border: 1px solid rgba(227, 196, 102, 0.4);
+            background: rgba(18, 18, 16, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             color: #FFFFFF;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            font-size: 0.85rem;
+            backdrop-filter: blur(6px);
+            font-size: 1rem;
         }
 
-        .slider-btn:hover {
-            background: var(--color-gold-deep);
-            color: #FFFFFF;
-            border-color: var(--color-gold-deep);
+        .hero-nav-arrow:hover {
+            background: var(--color-gold-primary);
+            color: var(--color-charcoal);
+            border-color: var(--color-gold-primary);
+        }
+
+        .hero-arrow-prev { left: 1.5rem; }
+        .hero-arrow-next { right: 1.5rem; }
+
+        .hero-slider-nav {
+            position: absolute;
+            bottom: 4.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 25;
+            display: flex;
+            align-items: center;
         }
 
         .slider-dots {
             display: flex;
             align-items: center;
-            gap: 0.4rem;
-            margin-right: 0.5rem;
+            gap: 0.5rem;
         }
 
         .slider-dot {
-            width: 9px;
-            height: 9px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.4);
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .slider-dot.active {
-            width: 24px;
-            border-radius: 10px;
+            width: 28px;
+            border-radius: 9999px;
             background: var(--color-gold-primary);
+            box-shadow: 0 0 10px rgba(227, 196, 102, 0.6);
         }
 
-        /* Hero Right Box: Live Prayer Countdown */
-        .hero-prayer-box {
-            background: var(--color-bg-white);
-            border-radius: var(--radius-lg);
-            padding: 1.75rem;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--color-border);
+        /* Floating Prayer Dock Bar (Standar Istiqlal) */
+        .hero-prayer-dock {
+            position: relative;
+            z-index: 20;
+            width: 100%;
+            background: rgba(24, 24, 22, 0.94);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-top: 1px solid rgba(227, 196, 102, 0.35);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            padding: 0.85rem 0;
+        }
+
+        .hero-prayer-dock-inner {
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
 
-        .hero-prayer-top {
+        .prayer-dock-countdown {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding-bottom: 0.85rem;
-            border-bottom: 1px solid var(--color-border);
-            margin-bottom: 1rem;
+            gap: 0.85rem;
+            flex-wrap: wrap;
         }
 
-        .badge-live-kemenag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            padding: 0.2rem 0.55rem;
-            background: var(--color-success-bg);
-            border: 1px solid rgba(0, 166, 81, 0.3);
-            border-radius: var(--radius-full);
-            font-size: 0.725rem;
-            font-weight: 700;
-            color: var(--color-success);
+        .prayer-dock-label {
+            font-size: 0.82rem;
+            color: #D1D5DB;
         }
 
-        .countdown-card {
-            background: #FAFAF7;
-            border: 1px solid var(--color-gold-border);
-            border-radius: var(--radius-md);
-            padding: 1.25rem 1rem;
-            text-align: center;
-            margin-bottom: 1rem;
+        .prayer-dock-label strong {
+            color: #FFFFFF;
         }
 
-        .countdown-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            color: var(--color-charcoal-muted);
-        }
-
-        .countdown-name {
-            font-size: 1.65rem;
+        .prayer-dock-clock {
+            font-size: 1.35rem;
             font-weight: 800;
-            color: var(--color-charcoal);
-            margin: 0.2rem 0;
-            letter-spacing: -0.3px;
-        }
-
-        .countdown-clock {
-            font-size: 1.65rem;
-            font-weight: 800;
-            color: var(--color-gold-deep);
             font-family: monospace;
-            letter-spacing: 2px;
+            color: var(--color-gold-primary);
+            letter-spacing: 1.5px;
+            background: rgba(227, 196, 102, 0.12);
+            padding: 0.15rem 0.55rem;
+            border-radius: 4px;
+            border: 1px solid rgba(227, 196, 102, 0.25);
         }
 
-        .countdown-sub {
+        .prayer-dock-time {
             font-size: 0.75rem;
-            color: var(--color-charcoal-muted);
-            margin-top: 0.25rem;
+            color: #9CA3AF;
         }
 
-        .officer-brief-box {
-            background: #FAF8F2;
-            border-radius: var(--radius-md);
-            padding: 1rem;
-            border: 1px solid var(--color-border);
+        .prayer-dock-divider {
+            width: 1px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .prayer-dock-officers {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex: 1;
+            min-width: 280px;
+            flex-wrap: wrap;
             font-size: 0.8rem;
         }
 
-        .officer-brief-header {
+        .dock-officer-title {
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            color: var(--color-charcoal-muted);
-            margin-bottom: 0.45rem;
-            display: flex;
+            color: var(--color-gold-primary);
+        }
+
+        .dock-officer-item {
+            color: #E5E7EB;
+        }
+
+        .dock-officer-item span {
+            color: #9CA3AF;
+            margin-right: 3px;
+        }
+
+        .dock-officer-item strong {
+            color: #FFFFFF;
+        }
+
+        .btn-dock-prayer {
+            display: inline-flex;
             align-items: center;
             gap: 0.4rem;
+            padding: 0.45rem 1rem;
+            background: rgba(227, 196, 102, 0.15);
+            border: 1px solid var(--color-gold-primary);
+            border-radius: var(--radius-full);
+            color: var(--color-gold-primary);
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
         }
 
-        .officer-brief-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.2rem 0;
-            border-bottom: 1px dashed rgba(0,0,0,0.06);
+        .btn-dock-prayer:hover {
+            background: var(--color-gold-primary);
+            color: var(--color-charcoal);
         }
 
-        .officer-brief-row:last-child {
-            border-bottom: none;
+        @media (max-width: 992px) {
+            .hero-nav-arrow { display: none; }
+            .prayer-dock-divider { display: none; }
+            .hero-slide-container { padding-top: 4rem; padding-bottom: 5.5rem; }
+            .hero-slider-nav { bottom: 6.5rem; }
         }
 
         /* ==========================================================================
@@ -2096,168 +2127,166 @@
     <!-- ==========================================================================
        HERO BANNER SLIDER & LIVE PRAYER COUNTDOWN (STANDAR MASJID ISTIQLAL)
        ========================================================================== -->
-    <section class="hero-section" id="beranda">
-        <div class="container hero-grid">
+    <section class="hero-section hero-fullscreen" id="beranda">
+        <!-- Hero Carousel Slider -->
+        <div class="hero-slides-wrapper" id="hero-slides-wrapper">
             
-            <!-- Hero Carousel Slider Card -->
-            <div class="hero-slider-card" id="hero-slider-container">
-                <div class="hero-slides-wrapper" id="hero-slides-wrapper">
-                    
-                    <!-- Slide 1: Fasad Masjid -->
-                    <div class="hero-slide active" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp');">
-                        <div class="hero-slide-overlay"></div>
-                        <div class="hero-slide-content">
-                            <span class="badge-hero"><i class="fa-solid fa-mosque"></i> Rumah Singgah Ibadah 24 Jam</span>
-                            <h2 class="hero-title">Pusat Sujud & Perlindungan <span>Musafir</span></h2>
-                            <div class="hero-arabic-box">
-                                وَأَطْعِمُوا الطَّعَامَ وَصِلُوا الْأَرْحَامَ وَصَلُّوا بِاللَّيْلِ وَالنَّاسُ نِيَامٌ تَدْخُلُوا الْجَنَّةَ بِسَلَامٍ
-                            </div>
-                            <p class="hero-subtitle">
-                                Menyediakan kenyamanan ibadah, ketenangan hati, serta perlindungan 24 jam bagi musafir dan warga sekitar di Jatiwarna, Kota Bekasi.
-                            </p>
-                            <div class="hero-actions">
-                                <a href="#program-filantropi" class="btn-hero-primary">
-                                    <i class="fa-solid fa-bowl-food"></i> Infaq Makan Siang Gratis
-                                </a>
-                                <a href="#jadwal-shalat" class="btn-hero-secondary">
-                                    <i class="fa-solid fa-clock"></i> Jadwal Shalat Kemenag
-                                </a>
-                            </div>
+            <!-- Slide 1: Fasad Masjid -->
+            <div class="hero-slide active" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/fasad/Foto_Fasad_Masjid_Siang_01.webp');">
+                <div class="hero-slide-overlay"></div>
+                <div class="hero-slide-container container">
+                    <div class="hero-slide-content">
+                        <div class="hero-tagline">
+                            <span class="hero-tagline-line"></span>
+                            <span><i class="fa-solid fa-mosque"></i> Rumah Singgah Ibadah 24 Jam</span>
+                        </div>
+                        <h2 class="hero-title">Pusat Sujud & Perlindungan <span>Musafir</span></h2>
+                        <div class="hero-arabic-box">
+                            وَأَطْعِمُوا الطَّعَامَ وَصِلُوا الْأَرْحَامَ وَصَلُّوا بِاللَّيْلِ وَالنَّاسُ نِيَامٌ تَدْخُلُوا الْجَنَّةَ بِسَلَامٍ
+                        </div>
+                        <p class="hero-subtitle">
+                            Menyediakan kenyamanan ibadah, ketenangan hati, serta perlindungan 24 jam bagi musafir dan warga sekitar di Jatiwarna, Kota Bekasi.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="#program-filantropi" class="btn-hero-primary">
+                                <i class="fa-solid fa-bowl-food"></i> Infaq Makan Siang Gratis
+                            </a>
+                            <a href="#jadwal-shalat" class="btn-hero-secondary">
+                                <i class="fa-solid fa-clock"></i> Jadwal Shalat Kemenag
+                            </a>
                         </div>
                     </div>
-
-                    <!-- Slide 2: Makan Gratis -->
-                    <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp');">
-                        <div class="hero-slide-overlay"></div>
-                        <div class="hero-slide-content">
-                            <span class="badge-hero"><i class="fa-solid fa-utensils"></i> Program Filantropi Harian</span>
-                            <h2 class="hero-title">70+ Porsi Makan Siang <span>Gratis Setiap Hari</span></h2>
-                            <div class="hero-arabic-box">
-                                وَيُطْعِمُونَ الطَّعَامَ عَلَىٰ حُبِّهِ مِسْكِينًا وَيَتِيمًا وَأَسِيرًا
-                            </div>
-                            <p class="hero-subtitle">
-                                Memuliakan musafir, dhuafa, dan pejuang nafkah jalanan dengan hidangan sehat bergizi ba'da Shalat Dzuhur.
-                            </p>
-                            <div class="hero-actions">
-                                <a href="#program-filantropi" class="btn-hero-primary">
-                                    <i class="fa-solid fa-hand-holding-dollar"></i> Salurkan Sedekah Makan
-                                </a>
-                                <a href="#layanan-musafir" class="btn-hero-secondary">
-                                    <i class="fa-solid fa-door-open"></i> Fasilitas 24 Jam
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 3: Santri Tahfidz -->
-                    <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al-Quran_Bersama_Ustadz_01.webp');">
-                        <div class="hero-slide-overlay"></div>
-                        <div class="hero-slide-content">
-                            <span class="badge-hero"><i class="fa-solid fa-book-quran"></i> Pendidikan & Dakwah</span>
-                            <h2 class="hero-title">Mencetak Generasi Qur'ani <span>30 Juz Bersanad</span></h2>
-                            <div class="hero-arabic-box">
-                                خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ
-                            </div>
-                            <p class="hero-subtitle">
-                                Pembinaan intensif santri tahfidz Al-Qur'an, adab islami, dan bahasa Arab dengan dukungan beasiswa donatur umat.
-                            </p>
-                            <div class="hero-actions">
-                                <a href="#program-filantropi" class="btn-hero-primary">
-                                    <i class="fa-solid fa-graduation-cap"></i> Beasiswa Santri Tahfidz
-                                </a>
-                                <a href="#agenda-kajian" class="btn-hero-secondary">
-                                    <i class="fa-solid fa-book-open-reader"></i> Agenda Majelis Ilmu
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 4: Ruang Shalat -->
-                    <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/ibadah/Ruang_Shalat_Utama_Mihrab_01.webp');">
-                        <div class="hero-slide-overlay"></div>
-                        <div class="hero-slide-content">
-                            <span class="badge-hero"><i class="fa-solid fa-kaaba"></i> Fasilitas Ibadah</span>
-                            <h2 class="hero-title">Ruang Shalat Sejuk, <span>Bersih & Khusyuk</span></h2>
-                            <div class="hero-arabic-box">
-                                فِي بُيُوتٍ أَذِنَ اللَّهُ أَن تُرْفَعَ وَيُذْكَرَ فِيهَا اسْمُهُ
-                            </div>
-                            <p class="hero-subtitle">
-                                Karpet tebal bersih, pendingin udara optimal, dan mihrab asri untuk ketenangan shalat berjamaah 5 waktu.
-                            </p>
-                            <div class="hero-actions">
-                                <a href="#jadwal-shalat" class="btn-hero-primary">
-                                    <i class="fa-solid fa-clock"></i> Lihat Waktu Shalat
-                                </a>
-                                <a href="#galeri-dokumentasi" class="btn-hero-secondary">
-                                    <i class="fa-solid fa-images"></i> Galeri Dokumentasi
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Slider Controls -->
-                <div class="hero-slider-nav">
-                    <div class="slider-dots" id="hero-slider-dots">
-                        <span class="slider-dot active" onclick="goToSlide(0)"></span>
-                        <span class="slider-dot" onclick="goToSlide(1)"></span>
-                        <span class="slider-dot" onclick="goToSlide(2)"></span>
-                        <span class="slider-dot" onclick="goToSlide(3)"></span>
-                    </div>
-                    <button class="slider-btn" onclick="prevSlide()" aria-label="Slide Sebelumnya">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <button class="slider-btn" onclick="nextSlide()" aria-label="Slide Berikutnya">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
                 </div>
             </div>
 
-            <!-- Hero Right Card: Live Prayer Countdown & Officers -->
-            <div class="hero-prayer-box">
-                <div class="hero-prayer-top">
-                    <div>
-                        <strong style="font-size: 0.95rem; color: var(--color-charcoal); display: block;">Jadwal Shalat Presisi</strong>
-                        <span style="font-size: 0.75rem; color: var(--color-charcoal-muted);">Koordinat Jatiwarna, Kota Bekasi (WIB)</span>
-                    </div>
-                    <span class="badge-live-kemenag">
-                        <i class="fa-solid fa-satellite-dish"></i> Hisab Kemenag
-                    </span>
-                </div>
-
-                <div class="countdown-card">
-                    <div class="countdown-label">Menuju Waktu Shalat</div>
-                    <div class="countdown-name" id="hero-next-prayer-name">DZUHUR</div>
-                    <div class="countdown-clock" id="hero-countdown-timer">00:00:00</div>
-                    <div class="countdown-sub" id="hero-next-prayer-time">Waktu masuk pukul 12:04 WIB</div>
-                </div>
-
-                <div class="officer-brief-box">
-                    <div class="officer-brief-header">
-                        <i class="fa-solid fa-user-check" style="color: var(--color-gold-deep);"></i> Petugas Ibadah Hari Ini
-                    </div>
-                    <div class="officer-brief-row">
-                        <span style="color: var(--color-charcoal-muted);">Imam Rawatib:</span>
-                        <strong id="officer-brief-imam">Ustadz Farhan Al-Hafidz</strong>
-                    </div>
-                    <div class="officer-brief-row">
-                        <span style="color: var(--color-charcoal-muted);">Muadzin:</span>
-                        <strong id="officer-brief-muadzin">Akhi Salman</strong>
-                    </div>
-                    <div class="officer-brief-row">
-                        <span style="color: var(--color-charcoal-muted);">Khatib Jumat:</span>
-                        <strong id="officer-brief-khatib">Ustadz Dr. H. Rahmatullah</strong>
+            <!-- Slide 2: Makan Gratis -->
+            <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/makan-siang/Hidangan_Siap_Saji_01.webp');">
+                <div class="hero-slide-overlay"></div>
+                <div class="hero-slide-container container">
+                    <div class="hero-slide-content">
+                        <div class="hero-tagline">
+                            <span class="hero-tagline-line"></span>
+                            <span><i class="fa-solid fa-utensils"></i> Program Filantropi Harian</span>
+                        </div>
+                        <h2 class="hero-title">70+ Porsi Makan Siang <span>Gratis Setiap Hari</span></h2>
+                        <div class="hero-arabic-box">
+                            وَيُطْعِمُونَ الطَّعَامَ عَلَىٰ حُبِّهِ مِسْكِينًا وَيَتِيمًا وَأَسِيرًا
+                        </div>
+                        <p class="hero-subtitle">
+                            Memuliakan musafir, dhuafa, dan pejuang nafkah jalanan dengan hidangan sehat bergizi ba'da Shalat Dzuhur.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="#program-filantropi" class="btn-hero-primary">
+                                <i class="fa-solid fa-hand-holding-dollar"></i> Salurkan Sedekah Makan
+                            </a>
+                            <a href="#layanan-musafir" class="btn-hero-secondary">
+                                <i class="fa-solid fa-door-open"></i> Fasilitas 24 Jam
+                            </a>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div style="margin-top: 0.85rem; text-align: center;">
-                    <a href="#jadwal-shalat" style="font-size: 0.775rem; font-weight: 700; color: var(--color-gold-deep); text-decoration: none;">
-                        Lihat Seluruh Waktu & Menit Ikhtiyat <i class="fa-solid fa-arrow-right"></i>
+            <!-- Slide 3: Santri Tahfidz -->
+            <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/santri/Halaqah_Al-Quran_Bersama_Ustadz_01.webp');">
+                <div class="hero-slide-overlay"></div>
+                <div class="hero-slide-container container">
+                    <div class="hero-slide-content">
+                        <div class="hero-tagline">
+                            <span class="hero-tagline-line"></span>
+                            <span><i class="fa-solid fa-book-quran"></i> Pendidikan & Dakwah</span>
+                        </div>
+                        <h2 class="hero-title">Mencetak Generasi Qur'ani <span>30 Juz Bersanad</span></h2>
+                        <div class="hero-arabic-box">
+                            خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ
+                        </div>
+                        <p class="hero-subtitle">
+                            Pembinaan intensif santri tahfidz Al-Qur'an, adab islami, dan bahasa Arab dengan dukungan beasiswa donatur umat.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="#program-filantropi" class="btn-hero-primary">
+                                <i class="fa-solid fa-graduation-cap"></i> Beasiswa Santri Tahfidz
+                            </a>
+                            <a href="#agenda-kajian" class="btn-hero-secondary">
+                                <i class="fa-solid fa-book-open-reader"></i> Agenda Majelis Ilmu
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Ruang Shalat -->
+            <div class="hero-slide" style="background-image: url('https://ik.imagekit.io/masjidsophia/masjid-sophia/ibadah/Ruang_Shalat_Utama_Mihrab_01.webp');">
+                <div class="hero-slide-overlay"></div>
+                <div class="hero-slide-container container">
+                    <div class="hero-slide-content">
+                        <div class="hero-tagline">
+                            <span class="hero-tagline-line"></span>
+                            <span><i class="fa-solid fa-kaaba"></i> Fasilitas Ibadah</span>
+                        </div>
+                        <h2 class="hero-title">Ruang Shalat Sejuk, <span>Bersih & Khusyuk</span></h2>
+                        <div class="hero-arabic-box">
+                            فِي بُيُوتٍ أَذِنَ اللَّهُ أَن تُرْفَعَ وَيُذْكَرَ فِيهَا اسْمُهُ
+                        </div>
+                        <p class="hero-subtitle">
+                            Karpet tebal bersih, pendingin udara optimal, dan mihrab asri untuk ketenangan shalat berjamaah 5 waktu.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="#jadwal-shalat" class="btn-hero-primary">
+                                <i class="fa-solid fa-clock"></i> Lihat Waktu Shalat
+                            </a>
+                            <a href="#galeri-dokumentasi" class="btn-hero-secondary">
+                                <i class="fa-solid fa-images"></i> Galeri Dokumentasi
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Slider Arrow Navigation Controls -->
+        <button class="hero-nav-arrow hero-arrow-prev" onclick="prevSlide()" aria-label="Slide Sebelumnya">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="hero-nav-arrow hero-arrow-next" onclick="nextSlide()" aria-label="Slide Berikutnya">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <!-- Slider Dots -->
+        <div class="hero-slider-nav">
+            <div class="slider-dots" id="hero-slider-dots">
+                <span class="slider-dot active" onclick="goToSlide(0)"></span>
+                <span class="slider-dot" onclick="goToSlide(1)"></span>
+                <span class="slider-dot" onclick="goToSlide(2)"></span>
+                <span class="slider-dot" onclick="goToSlide(3)"></span>
+            </div>
+        </div>
+
+        <!-- Floating Prayer Dock Bar (Standar Istiqlal) -->
+        <div class="hero-prayer-dock">
+            <div class="container hero-prayer-dock-inner">
+                <div class="prayer-dock-countdown">
+                    <div class="prayer-dock-label">Menuju Waktu <strong id="hero-next-prayer-name">DZUHUR</strong></div>
+                    <div class="prayer-dock-clock" id="hero-countdown-timer">00:00:00</div>
+                    <div class="prayer-dock-time" id="hero-next-prayer-time">Waktu masuk pukul 12:04 WIB</div>
+                </div>
+
+                <div class="prayer-dock-divider"></div>
+
+                <div class="prayer-dock-officers">
+                    <span class="dock-officer-title"><i class="fa-solid fa-user-check"></i> Petugas Hari Ini:</span>
+                    <div class="dock-officer-item"><span>Imam:</span> <strong id="officer-brief-imam">Ustadz Farhan Al-Hafidz</strong></div>
+                    <div class="dock-officer-item"><span>Muadzin:</span> <strong id="officer-brief-muadzin">Akhi Salman</strong></div>
+                    <div class="dock-officer-item"><span>Khatib:</span> <strong id="officer-brief-khatib">Ustadz Dr. H. Rahmatullah</strong></div>
+                </div>
+
+                <div class="prayer-dock-action">
+                    <a href="#jadwal-shalat" class="btn-dock-prayer">
+                        <i class="fa-solid fa-compass"></i> Jadwal Lengkap Hisab
                     </a>
                 </div>
             </div>
-
         </div>
     </section>
 
@@ -3161,18 +3190,23 @@
                     wrapper.innerHTML = data.map((item, i) => `
                         <div class="hero-slide ${i === 0 ? 'active' : ''}" style="background-image: url('${item.media_url}');">
                             <div class="hero-slide-overlay"></div>
-                            <div class="hero-slide-content">
-                                <span class="badge-hero"><i class="fa-solid fa-mosque"></i> Masjid Musafir Sophia</span>
-                                <h2 class="hero-title">${item.judul}</h2>
-                                ${item.arabic_quote ? `<div class="hero-arabic-box">${item.arabic_quote}</div>` : ''}
-                                <p class="hero-subtitle">${item.subjudul || 'Pusat ibadah dan pelayanan ramah musafir 24 jam penuh di Jatiwarna, Kota Bekasi.'}</p>
-                                <div class="hero-actions">
-                                    <a href="${item.action_link || '#program-filantropi'}" class="btn-hero-primary">
-                                        <i class="fa-solid fa-hand-holding-heart"></i> ${item.action_label || 'Infaq Makan Siang'}
-                                    </a>
-                                    <a href="#jadwal-shalat" class="btn-hero-secondary">
-                                        <i class="fa-solid fa-clock"></i> Jadwal Shalat Kemenag
-                                    </a>
+                            <div class="hero-slide-container container">
+                                <div class="hero-slide-content">
+                                    <div class="hero-tagline">
+                                        <span class="hero-tagline-line"></span>
+                                        <span><i class="fa-solid fa-mosque"></i> ${item.badge || 'Rumah Singgah Ibadah 24 Jam'}</span>
+                                    </div>
+                                    <h2 class="hero-title">${item.judul}</h2>
+                                    ${item.arabic_quote ? `<div class="hero-arabic-box">${item.arabic_quote}</div>` : ''}
+                                    <p class="hero-subtitle">${item.subjudul || 'Pusat ibadah dan pelayanan ramah musafir 24 jam penuh di Jatiwarna, Kota Bekasi.'}</p>
+                                    <div class="hero-actions">
+                                        <a href="${item.action_link || '#program-filantropi'}" class="btn-hero-primary">
+                                            <i class="fa-solid fa-hand-holding-dollar"></i> ${item.action_label || 'Salurkan Infaq'}
+                                        </a>
+                                        <a href="#jadwal-shalat" class="btn-hero-secondary">
+                                            <i class="fa-solid fa-clock"></i> Jadwal Shalat Kemenag
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
