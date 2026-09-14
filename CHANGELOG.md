@@ -4,6 +4,23 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.27] - 2026-09-14
+
+### Pemisahan Alur Persetujuan DKM vs Pencairan Kasir/Accounting & Proteksi Idempotensi Jurnal Kas
+
+#### Pemisahan Siklus Hidup Anggaran & Eliminasi Kas Keluar Prematur
+- `[BUDGET_APPROVAL_LIFECYCLE]` Memisahkan tahapan persetujuan pimpinan DKM dari tahapan pencairan uang kas masjid. Status `APPROVED_DKM` ("Disetujui DKM") murni menandakan persetujuan prinsip rencana kebutuhan, dan tidak lagi mengurangi saldo kas masjid maupun mencatat transaksi kas keluar.
+- `[BUDGET_REVIEW_CLEANUP]` Menghapus opsi pencairan langsung ("Sudah Dicairkan") dari modal evaluasi DKM (`#modal-budget-review`). Form evaluasi DKM kini murni berfokus pada pertimbangan pimpinan: `APPROVED_DKM`, `REJECTED`, atau `PENDING`.
+- `[BUDGET_FORM_EDIT_CLEANUP]` Menghapus logika pencatatan otomatis kas keluar dari form edit umum (`handleBudgetFormSubmit`), mencegah tercatatnya kas keluar ganda secara tidak sengaja saat pengurus hanya memperbarui teks rincian pengajuan.
+
+#### Modal & Alur Pencairan Kasir Khusus Tim Keuangan
+- `[DISBURSEMENT_DEDICATED_MODAL]` Menambahkan modal baru `#modal-budget-disburse` ("Pencairan Dana Kas Masjid") khusus untuk Bendahara / Tim Keuangan (`PJ_KEUANGAN`, `SUPER_ADMIN`, `SUPER_USER`). Modal ini memuat ringkasan data pengajuan yang disetujui, input tanggal realisasi pengeluaran, nominal realisasi, metode pembayaran (Transfer BSI / Kas Tunai / QRIS), kategori akun pembukuan, nomor referensi bukti transfer/kwitansi, dan catatan kasir.
+- `[BUDGET_TABLE_DISBURSE_ACTION]` Menambahkan tombol aksi hijau **"Cairkan Kas"** pada tabel pengajuan anggaran untuk baris yang telah disetujui DKM (`APPROVED_DKM`), lengkap dengan subteks status *"Siap Dicairkan Kasir"*. Baris yang telah dicairkan (`DISBURSED`) menampilkan lencana *"Dana Dicairkan"* dan riwayat tanggal kas keluar.
+
+#### Proteksi Anti-Duplikasi (*Idempotency Protection*) & Pembersihan Data
+- `[DISBURSEMENT_STRICT_IDEMPOTENCY]` Menerapkan validasi ganda sebelum pencatatan kas keluar: memeriksa status `DISBURSED` dan memindai `financialJournalsList` berdasarkan `budget_request_id` dan `kode_pengajuan`. Mencegah pencatatan berulang jika formulir pencairan dikirim ulang.
+- `[SUPABASE_DATA_CLEANUP]` Membersihkan data uji duplikat `TRX-OUT-001` dan `TRX-OUT-002` dari tabel `financial_journals` di Supabase, mengembalikan status `REQ-2026-002` ke `APPROVED_DKM` dengan `disbursed_at: null`, sehingga saldo kas masuk (Rp 800.000) dan kas keluar (Rp 0) kembali akurat dan siap diuji secara end-to-end.
+
 ## [1.9.26] - 2026-09-14
 
 ### Resolusi Tuntas Bug Journal v2 (10 Poin), Redesain Sidebar Bersih Standar ERP Umar & Fullscreen Hero Banner Standar Istiqlal

@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v6.1 (Bug Journal v2, Akses Budget Request Multi-PJ, Redesain Sidebar Bersih ERP Umar & Fullscreen Hero Banner Istiqlal)  
+**Versi Rencana Induk:** v6.2 (Pemisahan Persetujuan DKM vs Pencairan Kasir Keuangan & Proteksi Idempotensi Kas Keluar)  
 **Terakhir Diperbarui:** 2026-09-14  
 
 ---
@@ -451,4 +451,5 @@ Berikut adalah modul coaching langkah-demi-langkah yang akan dipandu secara inte
 | 9 | PJ divisi lain tidak dapat mengakses menu pengajuan anggaran (Alert Akses Ditolak) | `admin.html` (`switchTab`, `loadKeuanganData`, `switchKeuanganSubView`) | **SELESAI** — Menghapus pembatasan peran `switchTab('donations')`, mengunci otomatis seluruh PJ non-keuangan khusus ke subview Pengajuan Anggaran (`budget`) dengan menyembunyikan tab jurnal dan donasi, serta menampilkan label sidebar dinamis "Pengajuan Anggaran". |
 | 10 | Sidebar desktop 100% terpotong dan sesak (Benchmark ERP Umar) | `admin.html` (CSS `.admin-sidebar`, `.nav-item-btn`, layout) | **SELESAI** — Memperlebar sidebar ke 275px (`admin-main` margin 275px), menghapus `white-space: nowrap` dan text truncation `...`, menambah `line-height: 1.35`, menyederhanakan nama menu panjang, dan memperluas vertical gap agar rapi dan mudah dibaca setara ERP Umar. |
 | 11 | Hero slider kartu box beranda & widget dock shalat kurang rapih | `index.html` (CSS `.hero-slider-nav`, `.hero-prayer-dock`, HTML `#beranda`) | **SELESAI** — Mengangkat slider dots ke `bottom: 5.75rem` di dalam kapsul kaca mandiri berbingkai emas, merapikan kartu jam hitung mundur 2-kolom, dan menata petugas ibadah ke dalam badge mini terpisah dengan pemisah visual yang simetris. |
+| 12 | Kas keluar tercatat prematur saat baru disetujui DKM & risiko duplikasi pencatatan | `admin.html` (`handleBudgetReviewSubmit`, `#modal-budget-disburse`, `handleBudgetDisburseSubmit`) | **SELESAI** — Memisahkan alur persetujuan DKM (`APPROVED_DKM`, tanpa mutasi kas keluar) dari alur pencairan uang kasir/accounting (`DISBURSED`), menambahkan modal khusus `#modal-budget-disburse`, tombol aksi "Cairkan Kas", serta proteksi idempotensi ketat anti-duplikasi jurnal kas. |
 
