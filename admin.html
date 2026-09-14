@@ -5035,11 +5035,11 @@
                         <!-- Left Group: Dropdown & Action Buttons -->
                         <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
                             <!-- Status Live / Maintenance Selector (Clean) -->
-                            <div id="site-status-control-box" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: 10px; padding: 0.35rem 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                                <span style="font-size: 0.78rem; font-weight: 700; color: var(--color-charcoal-muted); text-transform: uppercase; letter-spacing: 0.04em;">
-                                    <i class="fa-solid fa-signal" style="margin-right: 0.25rem;"></i> Status Portal:
+                            <div id="site-status-control-box" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: 10px; padding: 0.35rem 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); white-space: nowrap;">
+                                <span style="font-size: 0.78rem; font-weight: 700; color: var(--color-charcoal-muted); text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; flex-shrink: 0;">
+                                    <i class="fa-solid fa-signal" style="margin-right: 0.25rem;"></i> Status Web:
                                 </span>
-                                <select id="builder-site-status" onchange="handleSiteStatusChange(this.value)" class="form-select" style="font-size: 0.82rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 8px; border: 1px solid #D1D5DB; cursor: pointer; outline: none;">
+                                <select id="builder-site-status" onchange="handleSiteStatusChange(this.value)" class="form-select" style="font-size: 0.82rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 8px; border: 1px solid #D1D5DB; cursor: pointer; outline: none; white-space: nowrap;">
                                     <option value="LIVE" style="color: #059669; font-weight: 700;">Live</option>
                                     <option value="MAINTENANCE" style="color: #D97706; font-weight: 700;">Under Maintenance</option>
                                 </select>

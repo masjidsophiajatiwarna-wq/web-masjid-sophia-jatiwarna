@@ -20,6 +20,7 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 
 #### Desain Ulang Ergonomis Toolbar Visual Web Builder (`admin.html`)
 - `[CLEAN_DROPDOWN_OPTIONS]` Menyederhanakan opsi dropdown status portal menjadi `Live` dan `Under Maintenance` (menghapus imbuhan kata verbose `(Publik)`).
+- `[TOOLBAR_SINGLE_LINE_LABEL]` Menyelaraskan teks label selektor menjadi *"Status Web:"* dengan aturan CSS `white-space: nowrap` agar label tetap rapi dalam satu baris horizontal tanpa terpotong ke bawah.
 - `[REDUNDANT_BADGE_REMOVAL]` Menghapus lencana hijau `LIVE` yang menempel di sebelah dropdown untuk menghindari redundansi tampilan.
 - `[FULL_WIDTH_RESPONSIVE_LAYOUT]` Mengubah tata letak toolbar header Visual Web Builder menjadi flexbox lebar penuh yang memanfaatkan seluruh ruang horizontal secara proporsional.
 - `[CORNER_PULSE_INDICATOR]` Menempatkan indikator status mandiri terpisah di pojok kanan bertuliskan *"Status Web : • Live"* dengan bulatan animasi berkedip lembut (*gentle breath*, rentang opacity 0.45 hingga 1.0, tidak pernah padam ke 0%).
