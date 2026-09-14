@@ -520,5 +520,7 @@ Berikut adalah modul coaching langkah-demi-langkah yang akan dipandu secara inte
 | 10 | Tombol Refresh Keamanan hardcoded | `admin.html` (`#tab-keamanan` nav) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-action-gold" onclick="loadKeamananData(true)">` dari subview navigasi Keamanan. |
 | 11 | Tombol Refresh Kebersihan hardcoded | `admin.html` (`#tab-kebersihan` nav) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-action-gold" onclick="loadKebersihanData(true)">` dari subview navigasi Kebersihan. |
 | 12 | Tombol Refresh Logistik hardcoded | `admin.html` (`#tab-logistik` nav) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-action-gold" onclick="loadLogistikData(true)">` dari subview navigasi Logistik. |
+| 13 | Laporan keamanan berstatus 'Kondusif' tapi muncul di Insiden Eskalasi sebagai 'Waspada' | `admin.html` (`renderInsidenTable`) | **SELESAI (100% TERVERIFIKASI)** — Memperbaiki logika if-else badge pada tabel Insiden agar memprioritaskan kondisi `KONDUSIF` sebelum mencetak badge `WASPADA`. |
+| 14 | Logika RBAC (Role-Based Access Control) pada "Status Tindak Lanjut" di modal Keamanan bocor | `admin.html` (`openEditSecurityModal`, `openAddSecurityModal`) | **SELESAI (100% TERVERIFIKASI)** — Menonaktifkan field status dan menyembunyikan "Catatan DKM" untuk PJ Keamanan jika status terkini adalah `ESKALASI_DKM` (Hanya DKM/Admin yang bisa edit). |
 
 

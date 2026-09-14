@@ -9451,7 +9451,7 @@
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
                             <label class="form-label" style="font-weight: 600;">Status Tindak Lanjut</label>
-                            <select id="security-form-status" class="form-input" required>
+                            <select id="security-form-status" class="form-input" required onchange="toggleSecurityCatatan()">
                                 <option value="SELESAI">Selesai</option>
                                 <option value="DALAM_PROSES">Dalam Proses</option>
                                 <option value="ESKALASI_DKM">Eskalasi ke DKM</option>
@@ -9478,9 +9478,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 1rem;">
+                    <div class="form-group" style="margin-bottom: 1rem; display: none;" id="security-form-catatan-container">
                         <label class="form-label" style="font-weight: 600;">Catatan Koordinasi</label>
-                        <textarea id="security-form-catatan" class="form-input" rows="2" placeholder="Hal yang perlu dikomunikasikan ke shift berikutnya atau ke pimpinan..."></textarea>
+                        <textarea id="security-form-catatan" class="form-input" rows="2" placeholder="Catatan/Instruksi dari DKM..."></textarea>
                     </div>
 
                     <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--color-border); padding-top: 1rem;">
@@ -24193,8 +24193,10 @@
             }
 
             tbody.innerHTML = list.map(item => {
-                let kondisiBadge = '<span class="kondisi-perhatian"><i class="fa-solid fa-triangle-exclamation"></i> Waspada</span>';
-                if (item.kondisi_keamanan === 'INSIDEN' || item.kondisi_keamanan === 'INSIDEN_DARURAT') {
+                let kondisiBadge = '<span class="kondisi-aman"><i class="fa-solid fa-circle-check"></i> Kondusif</span>';
+                if (item.kondisi_keamanan === 'WASPADA' || item.kondisi_keamanan === 'PERHATIAN_KHUSUS') {
+                    kondisiBadge = '<span class="kondisi-perhatian"><i class="fa-solid fa-triangle-exclamation"></i> Waspada</span>';
+                } else if (item.kondisi_keamanan === 'INSIDEN' || item.kondisi_keamanan === 'INSIDEN_DARURAT') {
                     kondisiBadge = '<span class="kondisi-darurat"><i class="fa-solid fa-circle-exclamation"></i> Insiden Darurat</span>';
                 }
 
@@ -24273,6 +24275,16 @@
             if (statInsiden) statInsiden.textContent = unresolvedCount + ' Kasus';
         }
 
+        function toggleSecurityCatatan() {
+            const status = document.getElementById('security-form-status').value;
+            const catatanContainer = document.getElementById('security-form-catatan-container');
+            if (status === 'ESKALASI_DKM') {
+                catatanContainer.style.display = 'block';
+            } else {
+                catatanContainer.style.display = 'none';
+            }
+        }
+
         function openAddSecurityModal() {
             document.getElementById('form-security-entry').reset();
             document.getElementById('security-entry-id').value = '';
@@ -24281,9 +24293,17 @@
             document.getElementById('security-form-tanggal').value = new Date().toISOString().split('T')[0];
             document.getElementById('security-form-petugas').value = getUserDisplayName(currentUser);
             document.getElementById('security-form-kondisi').value = 'KONDUSIF';
-            document.getElementById('security-form-status').value = 'SELESAI';
-            document.getElementById('security-form-preview-box').style.display = 'none';
+            
+            const statusSelect = document.getElementById('security-form-status');
+            statusSelect.value = 'SELESAI';
+            statusSelect.disabled = false;
+            
+            const catatanInput = document.getElementById('security-form-catatan');
+            catatanInput.disabled = false;
 
+            document.getElementById('security-form-preview-box').style.display = 'none';
+            
+            toggleSecurityCatatan();
             openModal('modal-security-entry');
         }
 
@@ -24299,11 +24319,27 @@
             document.getElementById('security-form-petugas').value = item.petugas_jaga;
             document.getElementById('security-form-area').value = item.area_patroli;
             document.getElementById('security-form-kondisi').value = item.kondisi_keamanan;
-            document.getElementById('security-form-status').value = item.status_tindak_lanjut || 'SELESAI';
+            
+            const statusSelect = document.getElementById('security-form-status');
+            statusSelect.value = item.status_tindak_lanjut || 'SELESAI';
+            
             document.getElementById('security-form-judul').value = item.judul_laporan;
             document.getElementById('security-form-kronologi').value = item.kronologi_kejadian;
             document.getElementById('security-form-foto-url').value = item.bukti_media_url || '';
-            document.getElementById('security-form-catatan').value = item.catatan_koordinasi || '';
+            
+            const catatanInput = document.getElementById('security-form-catatan');
+            catatanInput.value = item.catatan_koordinasi || '';
+
+            // RBAC Logic: If status is ESKALASI_DKM, only DKM can edit status & catatan
+            const role = getUserRole();
+            const isDKM = ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM'].includes(role);
+            if (item.status_tindak_lanjut === 'ESKALASI_DKM') {
+                statusSelect.disabled = !isDKM;
+                catatanInput.disabled = !isDKM;
+            } else {
+                statusSelect.disabled = false;
+                catatanInput.disabled = false;
+            }
 
             const previewBox = document.getElementById('security-form-preview-box');
             const previewImg = document.getElementById('security-form-preview-img');
@@ -24314,6 +24350,7 @@
                 previewBox.style.display = 'none';
             }
 
+            toggleSecurityCatatan();
             openModal('modal-security-entry');
         }
 

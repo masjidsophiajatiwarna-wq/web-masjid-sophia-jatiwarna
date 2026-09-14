@@ -4,6 +4,17 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.30] - 2026-09-14
+
+### Perbaikan False-Positive Status Insiden & Role-Based Access Control (RBAC) pada Modul Keamanan
+
+#### Resolusi Kesalahan Render Status Kondusif pada Tabel Eskalasi Insiden
+- `[SECURITY_FALSE_POSITIVE_FIX]` Mengoreksi bug pada `renderInsidenTable()` (Tab Insiden & Eskalasi DKM) di `admin.html` di mana laporan keamanan berstatus `KONDUSIF` atau `AMAN` yang tersaring (karena status tindak lanjutnya masih dalam penanganan atau eskalasi) salah dilabeli dengan lencana default kemerahan `WASPADA`. Kondisi ini kini menggunakan logika pewarnaan yang identik dengan `renderSecurityTable()` sehingga mempertahankan lencana hijau `KONDUSIF`.
+
+#### Peningkatan RBAC dan Alur Logika "Catatan Koordinasi DKM"
+- `[SECURITY_CATATAN_TOGGLE]` Menambahkan fungsi `toggleSecurityCatatan()` yang secara dinamis menyembunyikan blok input `Catatan Koordinasi` jika status tindak lanjut bukan `ESKALASI_DKM`.
+- `[SECURITY_RBAC_ESKALASI]` Menerapkan aturan akses baca-saja (*read-only*) yang ketat pada `openEditSecurityModal()`. Jika sebuah laporan keamanan telah berstatus `ESKALASI_DKM`, hanya akun pimpinan dengan peran `SUPER_ADMIN`, `SUPER_USER`, atau `KETUA_DKM` yang memiliki izin untuk memperbarui form *"Status Tindak Lanjut"* dan mengisi *"Catatan Koordinasi"*. PJ Keamanan biasa dapat melihat laporan tersebut namun field akan dinonaktifkan (`disabled`).
+
 ## [1.9.29] - 2026-09-14
 
 ### Resolusi Race Condition Pencairan Anggaran, Standardisasi Status Pengajuan, & Eliminasi Tombol Refresh Hardcoded
