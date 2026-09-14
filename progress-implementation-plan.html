@@ -2068,6 +2068,26 @@
                             <div class="task-desc">Pemisahan tahap persetujuan DKM (APPROVED_DKM tanpa mutasi saldo kas keluar) dari tahap realisasi pencairan dana kasir/accounting (DISBURSED), penambahan modal khusus (#modal-budget-disburse), tombol aksi "Cairkan Kas", serta proteksi idempotensi ketat anti-duplikasi pengeluaran.</div>
                         </div>
                     </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Resolusi Skema Pencairan Kas Masuk/Keluar (Eliminasi Error budget_request_id &amp; Rollback Safeguard)
+                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                            </div>
+                            <div class="task-desc">Eliminasi kolom non-eksisten budget_request_id pada payload financial_journals di Supabase, indeks kode pengajuan aman pada deskripsi dan disbursed_journal_code, transactional rollback safeguard saat insert jurnal gagal, serta pemulihan status REQ-2026-002 ke APPROVED_DKM.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Laporan Laba Rugi (Surplus / Defisit) Interaktif ISAK 35, Visualisasi Chart.js &amp; Ekspor PDF Ber-Kop DKM
+                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                            </div>
+                            <div class="task-desc">Pembangunan Subview 4 (#subview-keu-labarugi) berstandar akuntansi nirlaba (ISAK 35 / PSAK 45), 4 KPI metrik eksekutif, grafik batang komparasi Kas Masuk vs Kas Keluar, grafik donat proporsi sebaran beban operasional via Chart.js, serta fitur Cetak/Ekspor PDF ber-Kop Resmi DKM Masjid Sophia Jatiwarna lengkap dengan blok tanda tangan digital.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -17,6 +17,9 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
+    <!-- Chart.js CDN for Financial Reporting & Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Supabase JS Client v2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Environment Configuration Loader (Strict Zero-Leak Architecture) -->
@@ -4068,6 +4071,9 @@
                         <button type="button" class="btn-subview-keuangan active" id="btn-subview-keu-jurnal" onclick="switchKeuanganSubView('jurnal')">
                             <i class="fa-solid fa-book-journal-whills"></i> Jurnal Kas Masuk &amp; Keluar
                         </button>
+                        <button type="button" class="btn-subview-keuangan" id="btn-subview-keu-labarugi" onclick="switchKeuanganSubView('labarugi')">
+                            <i class="fa-solid fa-chart-pie"></i> Laporan Laba Rugi (Surplus / Defisit)
+                        </button>
                         <button type="button" class="btn-subview-keuangan" id="btn-subview-keu-budget" onclick="switchKeuanganSubView('budget')">
                             <i class="fa-solid fa-file-invoice-dollar"></i> Pengajuan Anggaran &amp; Nota Bon
                         </button>
@@ -4193,6 +4199,154 @@
                                 </thead>
                                 <tbody id="tbody-journals-list">
                                     <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 4: LAPORAN LABA RUGI & ARUS KAS (SURPLUS / DEFISIT) -->
+                <div id="subview-keu-labarugi" class="keuangan-subview-pane" style="display: none;">
+                    <!-- Filter and Action Bar -->
+                    <div class="section-panel" style="margin-bottom: 1.5rem;">
+                        <div class="panel-header" style="flex-wrap: wrap; gap: 1rem;">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-chart-pie" style="color: var(--color-gold-deep);"></i> Laporan Laba Rugi &amp; Surplus/Defisit Kas</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Ikhtisar komprehensif penerimaan infaq/donasi, beban operasional riil, dan posisi surplus/defisit kas berstandar akuntansi nirlaba (ISAK 35 / PSAK 45).
+                                </p>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+                                <div style="display: flex; gap: 0.35rem; align-items: center;">
+                                    <label for="labarugi-filter-tahun" style="font-size: 0.8rem; font-weight: 600; color: var(--color-charcoal);">Tahun:</label>
+                                    <select id="labarugi-filter-tahun" class="form-select" style="padding: 0.4rem 0.65rem; font-size: 0.8rem; width: auto;" onchange="renderLabaRugiReport()">
+                                        <option value="ALL">Semua Tahun</option>
+                                        <option value="2026" selected>2026</option>
+                                        <option value="2025">2025</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; gap: 0.35rem; align-items: center;">
+                                    <label for="labarugi-filter-bulan" style="font-size: 0.8rem; font-weight: 600; color: var(--color-charcoal);">Bulan:</label>
+                                    <select id="labarugi-filter-bulan" class="form-select" style="padding: 0.4rem 0.65rem; font-size: 0.8rem; width: auto;" onchange="renderLabaRugiReport()">
+                                        <option value="ALL">Semua Bulan (YTD)</option>
+                                        <option value="01">Januari</option>
+                                        <option value="02">Februari</option>
+                                        <option value="03">Maret</option>
+                                        <option value="04">April</option>
+                                        <option value="05">Mei</option>
+                                        <option value="06">Juni</option>
+                                        <option value="07">Juli</option>
+                                        <option value="08">Agustus</option>
+                                        <option value="09" selected>September</option>
+                                        <option value="10">Oktober</option>
+                                        <option value="11">November</option>
+                                        <option value="12">Desember</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-outline" onclick="exportLabaRugiToCSV()">
+                                    <i class="fa-solid fa-file-csv"></i> Unduh CSV
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="printLabaRugiReport()">
+                                    <i class="fa-solid fa-file-pdf"></i> Cetak / Ekspor PDF Laba Rugi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KPI Summary Row -->
+                    <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #ECFDF5; color: #059669;">
+                                <i class="fa-solid fa-arrow-down-left"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>TOTAL PENERIMAAN</span>
+                                <h3 id="stat-lr-total-masuk" style="font-size: 1.2rem; color: #059669;">Rp 0</h3>
+                                <div class="kpi-badge" style="color: #059669;"><i class="fa-solid fa-circle-check"></i> Infaq &amp; Donasi Kas</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #FEF2F2; color: #DC2626;">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>TOTAL BEBAN PENGELUARAN</span>
+                                <h3 id="stat-lr-total-keluar" style="font-size: 1.2rem; color: #DC2626;">Rp 0</h3>
+                                <div class="kpi-badge" style="color: #DC2626;"><i class="fa-solid fa-receipt"></i> Beban Operasional</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" id="stat-lr-surplus-iconbox" style="background: var(--color-gold-light); color: var(--color-gold-deep);">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>SURPLUS / (DEFISIT) BERSIH</span>
+                                <h3 id="stat-lr-surplus-bersih" style="font-size: 1.2rem; color: var(--color-gold-deep);">Rp 0</h3>
+                                <div class="kpi-badge" id="stat-lr-surplus-badge" style="color: var(--color-gold-deep);"><i class="fa-solid fa-chart-line"></i> Posisi Kas Periode</div>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon-box" style="background: #EFF6FF; color: #2563EB;">
+                                <i class="fa-solid fa-percent"></i>
+                            </div>
+                            <div class="kpi-details">
+                                <span>RASIO SERAPAN ANGGARAN</span>
+                                <h3 id="stat-lr-rasio" style="font-size: 1.2rem; color: #2563EB;">0%</h3>
+                                <div class="kpi-badge" style="color: #2563EB;"><i class="fa-solid fa-gauge-high"></i> Beban vs Penerimaan</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Analytics Grid (Chart.js) -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+                        <!-- Chart 1: Bar Comparison -->
+                        <div class="section-panel" style="margin-bottom: 0;">
+                            <div class="panel-header" style="border-bottom: 1px solid var(--color-border); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                                <div class="panel-title" style="font-size: 0.95rem;">
+                                    <i class="fa-solid fa-chart-column" style="color: var(--color-gold-deep);"></i> Perbandingan Kas Masuk vs Kas Keluar
+                                </div>
+                            </div>
+                            <div style="position: relative; height: 260px; width: 100%;">
+                                <canvas id="chart-lr-comparison"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Category Breakdown Doughnut -->
+                        <div class="section-panel" style="margin-bottom: 0;">
+                            <div class="panel-header" style="border-bottom: 1px solid var(--color-border); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                                <div class="panel-title" style="font-size: 0.95rem;">
+                                    <i class="fa-solid fa-chart-pie" style="color: var(--color-gold-deep);"></i> Proporsi Beban Pengeluaran per Kategori
+                                </div>
+                            </div>
+                            <div style="position: relative; height: 260px; width: 100%; display: flex; align-items: center; justify-content: center;">
+                                <canvas id="chart-lr-categories"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed ISAK 35 Statement Table -->
+                    <div class="section-panel" style="margin-bottom: 2rem;">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title"><i class="fa-solid fa-file-invoice" style="color: var(--color-gold-deep);"></i> Rincian Laporan Surplus / Defisit (Standar ISAK 35)</div>
+                                <p style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin-top: 2px;">
+                                    Klasifikasi pendapatan tanpa pembatasan dan beban operasional entitas nirlaba keagamaan.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="table-container" style="overflow-x: auto;">
+                            <table class="data-table" style="width: 100%; font-size: 0.85rem;">
+                                <thead>
+                                    <tr style="background: #F8F9FA;">
+                                        <th style="min-width: 260px;">Uraian Akun / Kategori</th>
+                                        <th style="text-align: center; min-width: 110px;">Jumlah Transaksi</th>
+                                        <th style="text-align: right; min-width: 160px;">Nominal (Rp)</th>
+                                        <th style="text-align: right; min-width: 120px;">Kontribusi (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-lr-statement">
+                                    <!-- Dynamic statement rows -->
                                 </tbody>
                             </table>
                         </div>
@@ -20814,6 +20968,8 @@
 
             if (subView === 'jurnal') {
                 if (isFinanceApprover) renderJournalsTable();
+            } else if (subView === 'labarugi') {
+                if (isFinanceApprover) renderLabaRugiReport();
             } else if (subView === 'budget') {
                 renderBudgetTable();
             } else if (subView === 'donasi') {
@@ -21691,8 +21847,8 @@
             }
 
             const existingJournal = financialJournalsList.find(j => 
-                (j.budget_request_id && j.budget_request_id === item.id) ||
-                (j.deskripsi && j.deskripsi.includes(item.kode_pengajuan))
+                (j.deskripsi && j.deskripsi.includes(item.kode_pengajuan)) ||
+                (item.disbursed_journal_code && j.kode_transaksi === item.disbursed_journal_code)
             );
             if (existingJournal) {
                 alert('Peringatan: Transaksi kas keluar untuk pengajuan ' + item.kode_pengajuan + ' sudah tercatat di Jurnal (' + existingJournal.kode_transaksi + '). Tidak dapat mencairkan ulang.');
@@ -21733,7 +21889,6 @@
                 metode_pembayaran: disburseMetode,
                 deskripsi: disburseDeskripsi,
                 bukti_transaksi_url: finalBuktiUrl,
-                budget_request_id: item.id,
                 pj_input: getUserDisplayName(currentUser) + ' (Pencairan Kasir)',
                 pj_input_email: (currentUser && currentUser.email) ? currentUser.email : '',
                 is_verified: true,
@@ -21741,42 +21896,44 @@
                 updated_at: new Date().toISOString()
             };
 
-            // 1. Catat ke daftar jurnal lokal
-            financialJournalsList.unshift(journalRecord);
-            localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
-
-            // 2. Simpan ke Supabase financial_journals
+            // 1. Simpan ke Supabase financial_journals terlebih dahulu (TRANSACTION SAFEGUARD)
             if (typeof sbClient !== 'undefined' && sbClient) {
                 const { error: jrnErr } = await sbClient.from('financial_journals').insert([journalRecord]);
                 if (jrnErr) {
                     console.error('[Disbursement] Journal insert error:', jrnErr);
-                    alert('Peringatan: Gagal mencatat jurnal ke Supabase: ' + (jrnErr.message || JSON.stringify(jrnErr)));
+                    alert('Gagal mencatat kas keluar ke database Supabase:\n' + (jrnErr.message || JSON.stringify(jrnErr)) + '\n\nProses pencairan dana dibatalkan untuk menjaga integritas saldo kas.');
+                    return; // GAGAL: Batalkan transaksi sepenuhnya, status budget_requests TIDAK disentuh
                 }
             }
+
+            // 2. Perbarui status pengajuan anggaran ke DISBURSED di Supabase
+            const disburseTimestamp = new Date().toISOString();
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                const { error: bgtErr } = await sbClient.from('budget_requests').update({
+                    status_pengajuan: 'DISBURSED',
+                    disbursed_at: disburseTimestamp,
+                    lampiran_nota_url: finalBuktiUrl,
+                    updated_at: disburseTimestamp
+                }).eq('id', id);
+                if (bgtErr) console.warn('[Disbursement] Budget update warning:', bgtErr);
+            }
+
+            // 3. Catat ke daftar jurnal lokal
+            financialJournalsList.unshift(journalRecord);
+            localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
             broadcastEvent('JOURNAL_SYNC', { action: 'insert', record: journalRecord });
 
-            // 3. Perbarui status pengajuan anggaran ke DISBURSED
+            // 4. Perbarui status pengajuan anggaran lokal
             item.status_pengajuan = 'DISBURSED';
-            item.disbursed_at = new Date().toISOString();
+            item.disbursed_at = disburseTimestamp;
             item.disbursed_by = getUserDisplayName(currentUser);
             item.disbursed_by_email = (currentUser && currentUser.email) ? currentUser.email : '';
             item.disbursed_nominal = disburseNominal;
             item.disbursed_journal_code = journalCode;
-            if (disburseFotoUrl) item.lampiran_nota_url = disburseFotoUrl;
-            item.updated_at = new Date().toISOString();
+            if (finalBuktiUrl) item.lampiran_nota_url = finalBuktiUrl;
+            item.updated_at = disburseTimestamp;
 
             localStorage.setItem('masjid_sophia_budget_master', JSON.stringify(budgetRequestsList));
-
-            // 4. Simpan status ke Supabase budget_requests
-            if (typeof sbClient !== 'undefined' && sbClient) {
-                const { error: bgtErr } = await sbClient.from('budget_requests').update({
-                    status_pengajuan: 'DISBURSED',
-                    disbursed_at: item.disbursed_at,
-                    lampiran_nota_url: item.lampiran_nota_url || '',
-                    updated_at: item.updated_at
-                }).eq('id', id);
-                if (bgtErr) console.warn('[Disbursement] Budget update error:', bgtErr);
-            }
             broadcastEvent('BUDGET_SYNC', { action: 'update_status', item });
 
             closeModal('modal-budget-disburse');
@@ -21784,6 +21941,9 @@
             updateBudgetKpiStats();
             renderJournalsTable();
             updateJournalsKpiStats();
+            if (typeof renderLabaRugiReport === 'function') {
+                renderLabaRugiReport();
+            }
 
             alert('Dana sebesar ' + formatRupiah(disburseNominal) + ' berhasil dicairkan dan dicatat ke Jurnal Kas Keluar (' + journalCode + ')!');
         }
@@ -21814,6 +21974,572 @@
             updateBudgetKpiStats();
         }
 
+        // --------------------------------------------------------------------------
+        // LAPORAN LABA RUGI & ARUS KAS ENGINE (ISAK 35 STANDAR AKUNTANSI NIRLABA)
+        // --------------------------------------------------------------------------
+        let chartLrComparisonInstance = null;
+        let chartLrCategoriesInstance = null;
+
+        function getFilteredLabaRugiJournals() {
+            const filterTahun = document.getElementById('labarugi-filter-tahun')?.value || '2026';
+            const filterBulan = document.getElementById('labarugi-filter-bulan')?.value || 'ALL';
+
+            return financialJournalsList.filter(j => {
+                if (!j.tanggal) return false;
+                if (filterTahun !== 'ALL' && !j.tanggal.startsWith(filterTahun)) return false;
+                if (filterBulan !== 'ALL' && j.tanggal.substring(5, 7) !== filterBulan) return false;
+                return true;
+            });
+        }
+
+        function getLabaRugiPeriodLabel() {
+            const filterTahun = document.getElementById('labarugi-filter-tahun')?.value || '2026';
+            const filterBulan = document.getElementById('labarugi-filter-bulan')?.value || 'ALL';
+            const bulanMap = {
+                '01': 'Januari', '02': 'Februari', '03': 'Maret', '04': 'April',
+                '05': 'Mei', '06': 'Juni', '07': 'Juli', '08': 'Agustus',
+                '09': 'September', '10': 'Oktober', '11': 'November', '12': 'Desember'
+            };
+
+            if (filterBulan === 'ALL' && filterTahun === 'ALL') {
+                return 'Seluruh Periode Pembukuan';
+            } else if (filterBulan === 'ALL') {
+                return 'Tahun ' + filterTahun + ' (YTD)';
+            } else if (filterTahun === 'ALL') {
+                return 'Bulan ' + (bulanMap[filterBulan] || filterBulan);
+            } else {
+                return (bulanMap[filterBulan] || filterBulan) + ' ' + filterTahun;
+            }
+        }
+
+        function renderLabaRugiReport() {
+            const journals = getFilteredLabaRugiJournals();
+
+            let totalPenerimaan = 0;
+            let totalPengeluaran = 0;
+            const penerimaanByCat = {};
+            const pengeluaranByCat = {};
+
+            // Inisialisasi kategori standar
+            KATEGORI_KAS_MASUK.forEach(cat => { penerimaanByCat[cat] = { count: 0, nominal: 0 }; });
+            KATEGORI_KAS_KELUAR.forEach(cat => { pengeluaranByCat[cat] = { count: 0, nominal: 0 }; });
+
+            journals.forEach(j => {
+                const nom = parseFloat(j.nominal || 0);
+                const cat = j.kategori || 'Lain-lain';
+                if (j.tipe_transaksi === 'KAS_MASUK') {
+                    totalPenerimaan += nom;
+                    if (!penerimaanByCat[cat]) penerimaanByCat[cat] = { count: 0, nominal: 0 };
+                    penerimaanByCat[cat].count++;
+                    penerimaanByCat[cat].nominal += nom;
+                } else if (j.tipe_transaksi === 'KAS_KELUAR') {
+                    totalPengeluaran += nom;
+                    if (!pengeluaranByCat[cat]) pengeluaranByCat[cat] = { count: 0, nominal: 0 };
+                    pengeluaranByCat[cat].count++;
+                    pengeluaranByCat[cat].nominal += nom;
+                }
+            });
+
+            const surplusBersih = totalPenerimaan - totalPengeluaran;
+            const rasioSerapan = totalPenerimaan > 0 
+                ? ((totalPengeluaran / totalPenerimaan) * 100).toFixed(1) + '%' 
+                : (totalPengeluaran > 0 ? '100%+' : '0%');
+
+            // 1. Update KPI Card Metrik
+            const elMasuk = document.getElementById('stat-lr-total-masuk');
+            if (elMasuk) elMasuk.textContent = formatRupiah(totalPenerimaan);
+
+            const elKeluar = document.getElementById('stat-lr-total-keluar');
+            if (elKeluar) elKeluar.textContent = formatRupiah(totalPengeluaran);
+
+            const elSurplus = document.getElementById('stat-lr-surplus-bersih');
+            const elBadge = document.getElementById('stat-lr-surplus-badge');
+            const elIconBox = document.getElementById('stat-lr-surplus-iconbox');
+            if (elSurplus) {
+                elSurplus.textContent = formatRupiah(surplusBersih);
+                if (surplusBersih >= 0) {
+                    elSurplus.style.color = '#059669';
+                    if (elBadge) {
+                        elBadge.style.color = '#059669';
+                        elBadge.innerHTML = '<i class="fa-solid fa-arrow-trend-up"></i> Surplus Kas Bersih';
+                    }
+                    if (elIconBox) {
+                        elIconBox.style.background = '#ECFDF5';
+                        elIconBox.style.color = '#059669';
+                    }
+                } else {
+                    elSurplus.style.color = '#DC2626';
+                    if (elBadge) {
+                        elBadge.style.color = '#DC2626';
+                        elBadge.innerHTML = '<i class="fa-solid fa-arrow-trend-down"></i> Defisit Kas Periode';
+                    }
+                    if (elIconBox) {
+                        elIconBox.style.background = '#FEF2F2';
+                        elIconBox.style.color = '#DC2626';
+                    }
+                }
+            }
+
+            const elRasio = document.getElementById('stat-lr-rasio');
+            if (elRasio) elRasio.textContent = rasioSerapan;
+
+            // 2. Render ISAK 35 Statement Table
+            const tbody = document.getElementById('tbody-lr-statement');
+            if (tbody) {
+                let html = '';
+
+                // Header Bagian I
+                html += '<tr style="background: #F3F4F6; font-weight: 800; color: var(--color-charcoal);">' +
+                    '<td colspan="4" style="padding: 0.65rem 0.85rem; font-size: 0.875rem;">' +
+                        '<i class="fa-solid fa-circle-arrow-down" style="color: #059669; margin-right: 6px;"></i> I. PENDAPATAN / PENERIMAAN KAS (INFAQ &amp; DONASI)' +
+                    '</td>' +
+                '</tr>';
+
+                let activeIncomeCats = Object.keys(penerimaanByCat);
+                activeIncomeCats.forEach(cat => {
+                    const data = penerimaanByCat[cat];
+                    const pct = totalPenerimaan > 0 ? ((data.nominal / totalPenerimaan) * 100).toFixed(1) + '%' : '0%';
+                    html += '<tr style="' + (data.nominal > 0 ? 'font-weight: 600;' : 'color: #9CA3AF;') + '">' +
+                        '<td style="padding-left: 2rem;">' + escapeHtml(cat) + '</td>' +
+                        '<td style="text-align: center;">' + data.count + ' trx</td>' +
+                        '<td style="text-align: right; font-family: monospace;">' + formatRupiah(data.nominal) + '</td>' +
+                        '<td style="text-align: right;">' + pct + '</td>' +
+                    '</tr>';
+                });
+
+                // Subtotal Bagian I
+                html += '<tr style="background: #ECFDF5; font-weight: 800; color: #065F46; border-top: 1px solid #A7F3D0; border-bottom: 2px solid #6EE7B7;">' +
+                    '<td style="padding-left: 1.25rem;">TOTAL PENERIMAAN KAS</td>' +
+                    '<td style="text-align: center;">' + journals.filter(j => j.tipe_transaksi === 'KAS_MASUK').length + ' trx</td>' +
+                    '<td style="text-align: right; font-family: monospace; font-size: 0.95rem;">' + formatRupiah(totalPenerimaan) + '</td>' +
+                    '<td style="text-align: right;">100.0%</td>' +
+                '</tr>';
+
+                // Spacing Row
+                html += '<tr style="height: 12px; border: none;"><td colspan="4" style="border: none; background: transparent;"></td></tr>';
+
+                // Header Bagian II
+                html += '<tr style="background: #F3F4F6; font-weight: 800; color: var(--color-charcoal);">' +
+                    '<td colspan="4" style="padding: 0.65rem 0.85rem; font-size: 0.875rem;">' +
+                        '<i class="fa-solid fa-circle-arrow-up" style="color: #DC2626; margin-right: 6px;"></i> II. BEBAN OPERASIONAL &amp; PENGELUARAN MASJID' +
+                    '</td>' +
+                '</tr>';
+
+                let activeExpenseCats = Object.keys(pengeluaranByCat);
+                activeExpenseCats.forEach(cat => {
+                    const data = pengeluaranByCat[cat];
+                    const pct = totalPengeluaran > 0 ? ((data.nominal / totalPengeluaran) * 100).toFixed(1) + '%' : '0%';
+                    html += '<tr style="' + (data.nominal > 0 ? 'font-weight: 600;' : 'color: #9CA3AF;') + '">' +
+                        '<td style="padding-left: 2rem;">' + escapeHtml(cat) + '</td>' +
+                        '<td style="text-align: center;">' + data.count + ' trx</td>' +
+                        '<td style="text-align: right; font-family: monospace;">' + formatRupiah(data.nominal) + '</td>' +
+                        '<td style="text-align: right;">' + pct + '</td>' +
+                    '</tr>';
+                });
+
+                // Subtotal Bagian II
+                html += '<tr style="background: #FEF2F2; font-weight: 800; color: #991B1B; border-top: 1px solid #FECACA; border-bottom: 2px solid #FCA5A5;">' +
+                    '<td style="padding-left: 1.25rem;">TOTAL BEBAN OPERASIONAL</td>' +
+                    '<td style="text-align: center;">' + journals.filter(j => j.tipe_transaksi === 'KAS_KELUAR').length + ' trx</td>' +
+                    '<td style="text-align: right; font-family: monospace; font-size: 0.95rem;">' + formatRupiah(totalPengeluaran) + '</td>' +
+                    '<td style="text-align: right;">100.0%</td>' +
+                '</tr>';
+
+                // Spacing Row
+                html += '<tr style="height: 12px; border: none;"><td colspan="4" style="border: none; background: transparent;"></td></tr>';
+
+                // Ringkasan Akhir: Surplus / Defisit
+                const summaryBg = surplusBersih >= 0 ? '#FAF6E8' : '#FEF2F2';
+                const summaryColor = surplusBersih >= 0 ? '#92400E' : '#991B1B';
+                const summaryBorder = surplusBersih >= 0 ? '2px solid var(--color-gold-deep)' : '2px solid #DC2626';
+
+                html += '<tr style="background: ' + summaryBg + '; font-weight: 800; color: ' + summaryColor + '; border: ' + summaryBorder + '; font-size: 0.95rem;">' +
+                    '<td style="padding: 0.85rem 1.25rem;">' +
+                        '<i class="fa-solid fa-vault" style="margin-right: 8px;"></i> SURPLUS / (DEFISIT) BERSIH PERIODE ' + escapeHtml(getLabaRugiPeriodLabel().toUpperCase()) +
+                    '</td>' +
+                    '<td style="text-align: center;">' + journals.length + ' Total Trx</td>' +
+                    '<td style="text-align: right; font-family: monospace; font-size: 1.05rem;">' + formatRupiah(surplusBersih) + '</td>' +
+                    '<td style="text-align: right;">' + (surplusBersih >= 0 ? 'SURPLUS' : 'DEFISIT') + '</td>' +
+                '</tr>';
+
+                tbody.innerHTML = html;
+            }
+
+            // 3. Render Visual Chart.js
+            renderLabaRugiCharts(totalPenerimaan, totalPengeluaran, pengeluaranByCat);
+        }
+
+        function renderLabaRugiCharts(totalIn, totalOut, expensesByCat) {
+            if (typeof Chart === 'undefined') return;
+
+            // Chart 1: Bar Comparison (Masuk vs Keluar)
+            const ctxComp = document.getElementById('chart-lr-comparison');
+            if (ctxComp) {
+                if (chartLrComparisonInstance) {
+                    chartLrComparisonInstance.destroy();
+                }
+
+                chartLrComparisonInstance = new Chart(ctxComp, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Penerimaan (Kas Masuk)', 'Beban (Kas Keluar)'],
+                        datasets: [{
+                            label: 'Nominal (Rp)',
+                            data: [totalIn, totalOut],
+                            backgroundColor: ['#059669', '#DC2626'],
+                            borderColor: ['#047857', '#B91C1C'],
+                            borderWidth: 1.5,
+                            borderRadius: 6,
+                            maxBarThickness: 60
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ' ' + formatRupiah(context.raw);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        if (value >= 1000000) return (value / 1000000) + ' Jt';
+                                        if (value >= 1000) return (value / 1000) + ' Rb';
+                                        return value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart 2: Doughnut Beban per Kategori
+            const ctxPie = document.getElementById('chart-lr-categories');
+            if (ctxPie) {
+                if (chartLrCategoriesInstance) {
+                    chartLrCategoriesInstance.destroy();
+                }
+
+                const catLabels = [];
+                const catData = [];
+                const colors = ['#C9A84C', '#2563EB', '#D97706', '#059669', '#7C3AED', '#DB2777', '#4B5563', '#0D9488'];
+
+                Object.keys(expensesByCat).forEach(c => {
+                    if (expensesByCat[c].nominal > 0) {
+                        catLabels.push(c);
+                        catData.push(expensesByCat[c].nominal);
+                    }
+                });
+
+                if (catData.length === 0) {
+                    catLabels.push('Belum Ada Pengeluaran');
+                    catData.push(1);
+                }
+
+                chartLrCategoriesInstance = new Chart(ctxPie, {
+                    type: 'doughnut',
+                    data: {
+                        labels: catLabels,
+                        datasets: [{
+                            data: catData,
+                            backgroundColor: (catData.length === 1 && catLabels[0] === 'Belum Ada Pengeluaran') 
+                                ? ['#E5E7EB'] 
+                                : colors.slice(0, catLabels.length),
+                            borderWidth: 2,
+                            borderColor: '#FFFFFF'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    font: { size: 11 }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        if (context.label === 'Belum Ada Pengeluaran') return ' Belum ada data';
+                                        return ' ' + context.label + ': ' + formatRupiah(context.raw);
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '62%'
+                    }
+                });
+            }
+        }
+
+        function exportLabaRugiToCSV() {
+            const journals = getFilteredLabaRugiJournals();
+            if (journals.length === 0) {
+                alert('Belum ada data transaksi pembukuan kas pada periode yang dipilih.');
+                return;
+            }
+
+            const periodLabel = getLabaRugiPeriodLabel();
+            let csv = 'data:text/csv;charset=utf-8,';
+            csv += 'LAPORAN LABA RUGI & SURPLUS DEFISIT KAS MASJID SOPHIA JATIWARNA\r\n';
+            csv += 'Periode: ' + periodLabel + '\r\n';
+            csv += 'Tanggal Ekspor: ' + new Date().toLocaleString('id-ID') + '\r\n\r\n';
+            csv += 'Kode Transaksi,Tanggal,Arus Kas,Kategori,Nominal (Rp),Metode Pembayaran,Deskripsi,PJ Pencatat\r\n';
+
+            journals.forEach(j => {
+                const row = [
+                    '"' + (j.kode_transaksi || '') + '"',
+                    '"' + (j.tanggal || '') + '"',
+                    '"' + (j.tipe_transaksi || '') + '"',
+                    '"' + (j.kategori || '') + '"',
+                    j.nominal || 0,
+                    '"' + (j.metode_pembayaran || '') + '"',
+                    '"' + (j.deskripsi || '').replace(/"/g, '""') + '"',
+                    '"' + (j.pj_input || '') + '"'
+                ];
+                csv += row.join(',') + '\r\n';
+            });
+
+            const encodedUri = encodeURI(csv);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', 'Laporan_Laba_Rugi_Masjid_Sophia_' + periodLabel.replace(/\s+/g, '_') + '.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function printLabaRugiReport() {
+            const journals = getFilteredLabaRugiJournals();
+            const periodLabel = getLabaRugiPeriodLabel();
+
+            let totalPenerimaan = 0;
+            let totalPengeluaran = 0;
+            const penerimaanByCat = {};
+            const pengeluaranByCat = {};
+
+            KATEGORI_KAS_MASUK.forEach(cat => { penerimaanByCat[cat] = { count: 0, nominal: 0 }; });
+            KATEGORI_KAS_KELUAR.forEach(cat => { pengeluaranByCat[cat] = { count: 0, nominal: 0 }; });
+
+            journals.forEach(j => {
+                const nom = parseFloat(j.nominal || 0);
+                const cat = j.kategori || 'Lain-lain';
+                if (j.tipe_transaksi === 'KAS_MASUK') {
+                    totalPenerimaan += nom;
+                    if (!penerimaanByCat[cat]) penerimaanByCat[cat] = { count: 0, nominal: 0 };
+                    penerimaanByCat[cat].count++;
+                    penerimaanByCat[cat].nominal += nom;
+                } else if (j.tipe_transaksi === 'KAS_KELUAR') {
+                    totalPengeluaran += nom;
+                    if (!pengeluaranByCat[cat]) pengeluaranByCat[cat] = { count: 0, nominal: 0 };
+                    pengeluaranByCat[cat].count++;
+                    pengeluaranByCat[cat].nominal += nom;
+                }
+            });
+
+            const surplusBersih = totalPenerimaan - totalPengeluaran;
+            const statusLabel = surplusBersih >= 0 ? 'SURPLUS BERSIH' : 'DEFISIT BERSIH';
+            const statusColor = surplusBersih >= 0 ? '#047857' : '#B91C1C';
+            const statusBg = surplusBersih >= 0 ? '#ECFDF5' : '#FEF2F2';
+
+            const printDateStr = new Date().toLocaleDateString('id-ID', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            });
+
+            let printWindow = window.open('', '_blank', 'width=900,height=750');
+            if (!printWindow) {
+                alert('Popup browser diblokir. Harap izinkan popup untuk mencetak laporan PDF.');
+                return;
+            }
+
+            let htmlDoc = '<!DOCTYPE html>' +
+            '<html lang="id">' +
+            '<head>' +
+                '<meta charset="UTF-8">' +
+                '<title>Laporan Laba Rugi Kas - Masjid Sophia Jatiwarna (' + periodLabel + ')</title>' +
+                '<style>' +
+                    '@page { size: A4 portrait; margin: 12mm 15mm; }' +
+                    '* { box-sizing: border-box; font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }' +
+                    'body { color: #1D1D1B; background: #fff; margin: 0; padding: 20px; font-size: 11pt; line-height: 1.4; }' +
+                    '.kop-container { display: flex; align-items: center; justify-content: space-between; border-bottom: 2.5px solid #C9A84C; padding-bottom: 12px; margin-bottom: 16px; }' +
+                    '.kop-left { display: flex; align-items: center; gap: 14px; }' +
+                    '.kop-title { margin: 0; font-size: 15pt; font-weight: 800; color: #1D1D1B; letter-spacing: 0.5px; }' +
+                    '.kop-sub { margin: 2px 0 0; font-size: 8.5pt; color: #4B5563; line-height: 1.3; }' +
+                    '.doc-badge { display: inline-block; padding: 4px 10px; background: #FAF6E8; border: 1px solid #E8D8A0; color: #92400E; font-size: 8pt; font-weight: 800; border-radius: 4px; text-align: center; }' +
+                    '.report-header { text-align: center; margin: 16px 0 20px; }' +
+                    '.report-title { font-size: 13pt; font-weight: 800; color: #1D1D1B; text-transform: uppercase; margin: 0; letter-spacing: 0.5px; }' +
+                    '.report-period { font-size: 10pt; color: #C9A84C; font-weight: 700; margin-top: 4px; }' +
+                    '.report-meta { font-size: 8pt; color: #6B7280; margin-top: 2px; }' +
+                    '.kpi-strip { display: flex; gap: 10px; margin-bottom: 20px; }' +
+                    '.kpi-box { flex: 1; padding: 10px 14px; border-radius: 6px; border: 1px solid #E5E7EB; background: #F9FAFB; }' +
+                    '.kpi-label { font-size: 7.5pt; font-weight: 700; color: #6B7280; text-transform: uppercase; margin-bottom: 3px; }' +
+                    '.kpi-val { font-size: 13pt; font-weight: 800; font-family: monospace; }' +
+                    '.table-print { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 9pt; }' +
+                    '.table-print th { background: #F3F4F6; padding: 7px 10px; text-align: left; font-weight: 700; border-top: 1px solid #E5E7EB; border-bottom: 1px solid #E5E7EB; color: #374151; }' +
+                    '.table-print td { padding: 6px 10px; border-bottom: 1px solid #F3F4F6; }' +
+                    '.section-head { background: #F9FAFB; font-weight: 800; font-size: 9pt; color: #1D1D1B; }' +
+                    '.subtotal-row { font-weight: 800; font-size: 9.5pt; border-top: 1px solid #D1D5DB; }' +
+                    '.grand-total-row { font-weight: 800; font-size: 10.5pt; border: 2px solid ' + statusColor + '; background: ' + statusBg + '; color: ' + statusColor + '; }' +
+                    '.signatures { display: flex; justify-content: space-between; margin-top: 36px; page-break-inside: avoid; }' +
+                    '.sig-box { width: 220px; text-align: center; }' +
+                    '.sig-title { font-size: 8.5pt; color: #4B5563; margin-bottom: 60px; font-weight: 600; }' +
+                    '.sig-name { font-size: 9.5pt; font-weight: 800; text-decoration: underline; color: #1D1D1B; }' +
+                    '.sig-role { font-size: 8pt; color: #6B7280; margin-top: 2px; }' +
+                    '.footer-note { margin-top: 28px; padding-top: 10px; border-top: 1px dashed #D1D5DB; font-size: 7.5pt; color: #9CA3AF; text-align: center; }' +
+                    '@media print { body { padding: 0; } .no-print { display: none; } }' +
+                '</style>' +
+            '</head>' +
+            '<body>' +
+                '<div class="no-print" style="background: #FAF6E8; border: 1px solid #E8D8A0; padding: 10px 16px; border-radius: 6px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">' +
+                    '<span style="font-size: 9pt; color: #92400E; font-weight: 600;">Pratinjau Cetak Laporan Keuangan (ISAK 35). Klik tombol di samping untuk menyimpan PDF atau mencetak dokumen.</span>' +
+                    '<button onclick="window.print()" style="padding: 6px 16px; background: #C9A84C; color: #fff; font-weight: 700; border: none; border-radius: 4px; cursor: pointer;">Cetak / Simpan PDF</button>' +
+                '</div>' +
+
+                '<div class="kop-container">' +
+                    '<div class="kop-left">' +
+                        '<img src="asset/logo/masjidsophialogo.png" style="height: 48px;" onerror="this.style.display=\'none\'">' +
+                        '<div>' +
+                            '<h1 class="kop-title">DEWAN KEMAKMURAN MASJID MUSAFIR SOPHIA</h1>' +
+                            '<p class="kop-sub">' +
+                                'Jl. Raya Jatiwarna No. 1, Pondok Melati, Kota Bekasi, Jawa Barat 17415<br>' +
+                                'Email: dkm@masjidsophiajatiwarna.com | Web: masjidsophiajatiwarna.com' +
+                            '</p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div>' +
+                        '<span class="doc-badge">DOKUMEN KEUANGAN RESMI<br>DKM SOPHIA JATIWARNA</span>' +
+                    '</div>' +
+                '</div>' +
+
+                '<div class="report-header">' +
+                    '<h2 class="report-title">LAPORAN SURPLUS / DEFISIT (LABA RUGI) KAS MASJID</h2>' +
+                    '<div class="report-period">PERIODE: ' + escapeHtml(periodLabel.toUpperCase()) + '</div>' +
+                    '<div class="report-meta">Dicetak pada: ' + printDateStr + ' | Petugas: ' + escapeHtml(getUserDisplayName(currentUser)) + '</div>' +
+                '</div>' +
+
+                '<div class="kpi-strip">' +
+                    '<div class="kpi-box" style="border-left: 4px solid #059669;">' +
+                        '<div class="kpi-label">Total Penerimaan (Kas Masuk)</div>' +
+                        '<div class="kpi-val" style="color: #059669;">' + formatRupiah(totalPenerimaan) + '</div>' +
+                    '</div>' +
+                    '<div class="kpi-box" style="border-left: 4px solid #DC2626;">' +
+                        '<div class="kpi-label">Total Beban (Kas Keluar)</div>' +
+                        '<div class="kpi-val" style="color: #DC2626;">' + formatRupiah(totalPengeluaran) + '</div>' +
+                    '</div>' +
+                    '<div class="kpi-box" style="border-left: 4px solid ' + statusColor + '; background: ' + statusBg + ';">' +
+                        '<div class="kpi-label" style="color: ' + statusColor + ';">' + statusLabel + '</div>' +
+                        '<div class="kpi-val" style="color: ' + statusColor + ';">' + formatRupiah(surplusBersih) + '</div>' +
+                    '</div>' +
+                '</div>' +
+
+                '<table class="table-print">' +
+                    '<thead>' +
+                        '<tr>' +
+                            '<th style="width: 50%;">Uraian Akun / Kategori Pembukuan</th>' +
+                            '<th style="width: 15%; text-align: center;">Frekuensi</th>' +
+                            '<th style="width: 20%; text-align: right;">Jumlah (Rp)</th>' +
+                            '<th style="width: 15%; text-align: right;">Proporsi</th>' +
+                        '</tr>' +
+                    '</thead>' +
+                    '<tbody>' +
+                        '<tr class="section-head">' +
+                            '<td colspan="4" style="color: #065F46;">I. PENDAPATAN / PENERIMAAN KAS (INFAQ, SEDEKAH &amp; DONASI)</td>' +
+                        '</tr>';
+
+            Object.keys(penerimaanByCat).forEach(cat => {
+                const data = penerimaanByCat[cat];
+                const pct = totalPenerimaan > 0 ? ((data.nominal / totalPenerimaan) * 100).toFixed(1) + '%' : '0%';
+                htmlDoc += '<tr>' +
+                    '<td style="padding-left: 18px;">' + escapeHtml(cat) + '</td>' +
+                    '<td style="text-align: center;">' + data.count + '</td>' +
+                    '<td style="text-align: right; font-family: monospace;">' + formatRupiah(data.nominal) + '</td>' +
+                    '<td style="text-align: right;">' + pct + '</td>' +
+                '</tr>';
+            });
+
+            htmlDoc += '<tr class="subtotal-row" style="background: #ECFDF5; color: #065F46;">' +
+                '<td>SUBTOTAL PENERIMAAN KAS</td>' +
+                '<td style="text-align: center;">' + journals.filter(j => j.tipe_transaksi === 'KAS_MASUK').length + '</td>' +
+                '<td style="text-align: right; font-family: monospace;">' + formatRupiah(totalPenerimaan) + '</td>' +
+                '<td style="text-align: right;">100.0%</td>' +
+            '</tr>' +
+
+            '<tr style="height: 10px;"><td colspan="4" style="border: none;"></td></tr>' +
+
+            '<tr class="section-head">' +
+                '<td colspan="4" style="color: #991B1B;">II. BEBAN OPERASIONAL &amp; PENGELUARAN KEGIATAN MASJID</td>' +
+            '</tr>';
+
+            Object.keys(pengeluaranByCat).forEach(cat => {
+                const data = pengeluaranByCat[cat];
+                const pct = totalPengeluaran > 0 ? ((data.nominal / totalPengeluaran) * 100).toFixed(1) + '%' : '0%';
+                htmlDoc += '<tr>' +
+                    '<td style="padding-left: 18px;">' + escapeHtml(cat) + '</td>' +
+                    '<td style="text-align: center;">' + data.count + '</td>' +
+                    '<td style="text-align: right; font-family: monospace;">' + formatRupiah(data.nominal) + '</td>' +
+                    '<td style="text-align: right;">' + pct + '</td>' +
+                '</tr>';
+            });
+
+            htmlDoc += '<tr class="subtotal-row" style="background: #FEF2F2; color: #991B1B;">' +
+                '<td>SUBTOTAL BEBAN OPERASIONAL</td>' +
+                '<td style="text-align: center;">' + journals.filter(j => j.tipe_transaksi === 'KAS_KELUAR').length + '</td>' +
+                '<td style="text-align: right; font-family: monospace;">' + formatRupiah(totalPengeluaran) + '</td>' +
+                '<td style="text-align: right;">100.0%</td>' +
+            '</tr>' +
+
+            '<tr style="height: 10px;"><td colspan="4" style="border: none;"></td></tr>' +
+
+            '<tr class="grand-total-row">' +
+                '<td style="padding: 10px 14px;">SURPLUS / (DEFISIT) BERSIH PERIODE BERJALAN</td>' +
+                '<td style="text-align: center;">' + journals.length + ' Trx</td>' +
+                '<td style="text-align: right; font-family: monospace;">' + formatRupiah(surplusBersih) + '</td>' +
+                '<td style="text-align: right;">' + (surplusBersih >= 0 ? 'SURPLUS' : 'DEFISIT') + '</td>' +
+            '</tr>' +
+            '</tbody>' +
+            '</table>' +
+
+            '<div class="signatures">' +
+                '<div class="sig-box">' +
+                    '<div class="sig-title">Mengetahui,<br>Ketua DKM Masjid Sophia Jatiwarna</div>' +
+                    '<div class="sig-name">Dr. H. Pembina Sophia</div>' +
+                    '<div class="sig-role">Ketua Dewan Kemakmuran Masjid</div>' +
+                '</div>' +
+                '<div class="sig-box">' +
+                    '<div class="sig-title">Bekasi, ' + printDateStr + '<br>Dibuat Oleh, Bendahara DKM Sophia</div>' +
+                    '<div class="sig-name">' + escapeHtml(getUserDisplayName(currentUser)) + '</div>' +
+                    '<div class="sig-role">Bendahara &amp; Akuntansi Kasir DKM</div>' +
+                '</div>' +
+            '</div>' +
+
+            '<div class="footer-note">' +
+                'Laporan ini disajikan sesuai Interpretasi Standar Akuntansi Keuangan (ISAK 35) untuk Entitas Berorientasi Nonlaba.<br>' +
+                'Dicetak otomatis secara sah melalui Portal DKM Masjid Sophia Jatiwarna (Keamanan Terverifikasi).' +
+            '</div>' +
+
+            '</body>' +
+            '</html>';
+
+            printWindow.document.open();
+            printWindow.document.write(htmlDoc);
+            printWindow.document.close();
+            setTimeout(() => {
+                printWindow.print();
+            }, 600);
+        }
+
         // Master Loader for Modul 3
         async function loadKeuanganData(forceRefresh = false) {
             const role = getUserRole();
@@ -21824,17 +22550,20 @@
             }
             await loadBudgetRequests();
 
-            // Sembunyikan tombol subview jurnal dan donasi untuk non-approver agar hanya fokus ke pengajuan anggaran
+            // Sembunyikan tombol subview jurnal, labarugi dan donasi untuk non-approver agar hanya fokus ke pengajuan anggaran
             const btnJurnal = document.getElementById('btn-subview-keu-jurnal');
+            const btnLabarugi = document.getElementById('btn-subview-keu-labarugi');
             const btnDonasi = document.getElementById('btn-subview-keu-donasi');
             const btnBudget = document.getElementById('btn-subview-keu-budget');
             if (!isFinanceApprover) {
                 if (btnJurnal) btnJurnal.style.display = 'none';
+                if (btnLabarugi) btnLabarugi.style.display = 'none';
                 if (btnDonasi) btnDonasi.style.display = 'none';
                 if (btnBudget) btnBudget.style.display = 'inline-flex';
                 switchKeuanganSubView('budget');
             } else {
                 if (btnJurnal) btnJurnal.style.display = 'inline-flex';
+                if (btnLabarugi) btnLabarugi.style.display = 'inline-flex';
                 if (btnDonasi) btnDonasi.style.display = 'inline-flex';
                 if (btnBudget) btnBudget.style.display = 'inline-flex';
                 const savedSubView = localStorage.getItem('masjid_sophia_keuangan_subview') || 'jurnal';

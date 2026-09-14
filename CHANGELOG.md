@@ -4,6 +4,25 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.28] - 2026-09-14
+
+### Resolusi Skema Pencairan Kas Masuk/Keluar & Modul Laporan Laba Rugi (Surplus / Defisit) Standar ISAK 35
+
+#### Perbaikan Skema & Integritas Transaksional Pencairan Kas Keluar
+- `[DISBURSEMENT_SCHEMA_FIX]` Menghapus properti `budget_request_id` dari payload penyisipan tabel `financial_journals` di Supabase. Kolom ini tidak ada pada skema PostgreSQL, sehingga sebelumnya memicu penolakan skema PostgREST (error 400). Referensi pengajuan anggaran kini terindeks secara konsisten melalui kolom `deskripsi` dan `disbursed_journal_code`.
+- `[DISBURSEMENT_TRANSACTION_SAFEGUARD]` Menerapkan proteksi integritas transaksional dua arah: pencatatan kas keluar ke `financial_journals` dieksekusi terlebih dahulu. Jika terjadi penolakan database, proses langsung dibatalkan (*strict abort*), status pengajuan di `budget_requests` dipertahankan dan tidak diubah menjadi `DISBURSED`, serta pesan kegagalan spesifik ditampilkan kepada kasir.
+- `[SUPABASE_STALLED_RECORD_RESET]` Mereset data `REQ-2026-002` di database Supabase dari status macet `DISBURSED` kembali ke `APPROVED_DKM` dengan `disbursed_at: null`. Tombol aksi "Cairkan Kas" kini aktif dan siap dieksekusi secara mulus.
+
+#### Modul Laporan Laba Rugi (Surplus / Defisit) Interaktif Berstandar ISAK 35
+- `[LABA_RUGI_SUBVIEW]` Menambahkan subview navigasi baru `#btn-subview-keu-labarugi` ("Laporan Laba Rugi (Surplus / Defisit)") dan panel `#subview-keu-labarugi` pada tab Kas Masjid & Infaq (`#tab-donations`), khusus bagi akun berwenang (`SUPER_ADMIN`, `SUPER_USER`, `KETUA_DKM`, `PJ_KEUANGAN`).
+- `[LABA_RUGI_KPI_CARDS]` Menampilkan 4 kartu ringkasan eksekutif: Total Penerimaan (Infaq & Donasi), Total Beban Pengeluaran (Operasional Masjid), Surplus / (Defisit) Bersih Kas dengan lencana status adaptif (hijau untuk surplus, merah untuk defisit), serta Rasio Serapan Anggaran Operasional.
+- `[CHARTJS_VISUAL_ANALYTICS]` Mengintegrasikan library Chart.js CDN untuk menghadirkan visualisasi grafis real-time:
+  - Grafik batang perbandingan Kas Masuk vs Kas Keluar dengan format mata uang Rupiah.
+  - Grafik donat proporsi sebaran pengeluaran per kategori beban operasional (Dapur, Sarpras, Listrik, Kafalah, Sanitasi, Santunan, dll).
+- `[ISAK35_FINANCIAL_STATEMENT]` Menyajikan tabel rincian pembukuan komprehensif berstandar pelaporan entitas nirlaba (ISAK 35 / PSAK 45) dengan subtotal penerimaan, subtotal beban operasional, dan kesimpulan posisi surplus/defisit berjalan.
+- `[EXPORT_PDF_LABA_RUGI]` Menyediakan fitur Cetak & Ekspor PDF resmi berformat kertas A4 lengkap dengan Kop Surat DKM Masjid Musafir Sophia Jatiwarna, ringkasan KPI, tabel laporan ISAK 35, catatan kepatuhan akuntansi, serta kolom tanda tangan digital sah Ketua DKM dan Bendahara Keuangan.
+- `[EXPORT_CSV_LABA_RUGI]` Menyediakan fitur unduh laporan rekapitulasi pembukuan kas periode terpilih dalam format berkas CSV.
+
 ## [1.9.27] - 2026-09-14
 
 ### Pemisahan Alur Persetujuan DKM vs Pencairan Kasir/Accounting & Proteksi Idempotensi Jurnal Kas
