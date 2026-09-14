@@ -5015,7 +5015,21 @@
                                 Kustomisasi teks sambutan hero, ayat Al-Qur'an, tombol aksi CTA, susunan section, dan pratinjau live sebelum dipublikasikan ke jamaah.
                             </p>
                         </div>
-                        <div style="display: flex; gap: 0.5rem;">
+                        <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+                            <!-- Status Live / Maintenance Selector -->
+                            <div id="site-status-control-box" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: 10px; padding: 0.35rem 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                                <span style="font-size: 0.78rem; font-weight: 700; color: var(--color-charcoal-muted); text-transform: uppercase; letter-spacing: 0.04em;">
+                                    <i class="fa-solid fa-signal" style="margin-right: 0.25rem;"></i> Status Portal:
+                                </span>
+                                <select id="builder-site-status" onchange="handleSiteStatusChange(this.value)" class="form-select" style="font-size: 0.82rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 8px; border: 1px solid #D1D5DB; cursor: pointer; outline: none;">
+                                    <option value="LIVE" style="color: #059669; font-weight: 700;">Live (Publik)</option>
+                                    <option value="MAINTENANCE" style="color: #D97706; font-weight: 700;">Under Maintenance</option>
+                                </select>
+                                <span id="site-status-live-badge" class="status-badge" style="background: #ECFDF5; color: #059669; font-size: 0.74rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 6px;">
+                                    <i class="fa-solid fa-circle-check" style="font-size: 0.7rem;"></i> LIVE
+                                </span>
+                            </div>
+
                             <button type="button" class="btn btn-outline" onclick="resetHomepageToDefault()">
                                 <i class="fa-solid fa-rotate-left"></i> Reset Standar
                             </button>
@@ -11033,6 +11047,7 @@
                 loadArticlesTable();
             } else if (tabId === 'media') {
                 initHomepageBuilder();
+                loadHomepageConfigFromSupabase();
             } else if (tabId === 'gallery') {
                 renderMediaGallery();
             } else if (tabId === 'ibadah') {
@@ -19870,6 +19885,8 @@
 
         // 9. Homepage Visual Builder Engine
         const DEFAULT_HOMEPAGE_CONFIG = {
+            site_status: 'LIVE',
+            is_maintenance: false,
             heroBadge: 'Rumah Singgah Ibadah, Ladang Amal Kebaikan',
             heroTitle: 'Pusat Ibadah, Perlindungan Musafir & Kepedulian Umat',
             heroArabic: 'وَأَطْعِمُوا الطَّعَامَ وَصِلُوا الْأَرْحَامَ وَصَلُّوا بِاللَّيْلِ وَالنَّاسُ نِيَامٌ تَدْخُلُوا الْجَنَّةَ بِسَلَامٍ',
@@ -19903,10 +19920,74 @@
             return DEFAULT_HOMEPAGE_CONFIG;
         }
 
+        function handleSiteStatusChange(newVal) {
+            updateSiteStatusBadge(newVal);
+            saveHomepageConfig(true);
+        }
+
+        function updateSiteStatusBadge(status) {
+            const badge = document.getElementById('site-status-live-badge');
+            if (!badge) return;
+            if (status === 'MAINTENANCE') {
+                badge.style.background = '#FEF3C7';
+                badge.style.color = '#B45309';
+                badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="font-size: 0.7rem;"></i> MAINTENANCE';
+            } else {
+                badge.style.background = '#ECFDF5';
+                badge.style.color = '#059669';
+                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="font-size: 0.7rem;"></i> LIVE';
+            }
+        }
+
+        async function loadHomepageConfigFromSupabase() {
+            if (typeof sbClient !== 'undefined' && sbClient) {
+                try {
+                    const { data, error } = await sbClient
+                        .from('homepage_media')
+                        .select('*')
+                        .eq('kategori', 'HOMEPAGE_CONFIG_MASTER')
+                        .limit(1);
+
+                    if (!error && data && data.length > 0) {
+                        const row = data[0];
+                        let cfg = row.meta_json;
+                        if (typeof cfg === 'string') {
+                            try { cfg = JSON.parse(cfg); } catch (e) {}
+                        }
+                        if (cfg) {
+                            const merged = { ...getHomepageConfig(), ...cfg };
+                            localStorage.setItem('masjid_sophia_homepage_builder_config', JSON.stringify(merged));
+                            const siteStatus = merged.site_status || (merged.is_maintenance ? 'MAINTENANCE' : 'LIVE');
+                            const elSiteStatus = document.getElementById('builder-site-status');
+                            if (elSiteStatus) {
+                                elSiteStatus.value = siteStatus;
+                                updateSiteStatusBadge(siteStatus);
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.debug('[Builder Config Remote Load Notice]', err);
+                }
+            }
+        }
+
         function initHomepageBuilder() {
             const config = getHomepageConfig();
 
             // Populate form fields
+            const siteStatus = config.site_status || (config.is_maintenance ? 'MAINTENANCE' : 'LIVE');
+            const elSiteStatus = document.getElementById('builder-site-status');
+            if (elSiteStatus) {
+                elSiteStatus.value = siteStatus;
+                updateSiteStatusBadge(siteStatus);
+
+                const userRole = typeof getUserRole === 'function' ? getUserRole() : '';
+                const canManageSiteStatus = ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_MEDIA'].includes(userRole);
+                elSiteStatus.disabled = !canManageSiteStatus;
+                if (!canManageSiteStatus) {
+                    elSiteStatus.title = 'Hanya Pimpinan DKM & PJ Media yang berwenang mengubah status live portal';
+                }
+            }
             if (document.getElementById('builder-hero-badge')) document.getElementById('builder-hero-badge').value = config.heroBadge;
             if (document.getElementById('builder-hero-title')) document.getElementById('builder-hero-title').value = config.heroTitle;
             if (document.getElementById('builder-hero-arabic')) document.getElementById('builder-hero-arabic').value = config.heroArabic;
@@ -20070,7 +20151,10 @@
         }
 
         async function saveHomepageConfig(silent = false) {
+            const siteStatus = document.getElementById('builder-site-status')?.value || 'LIVE';
             const config = {
+                site_status: siteStatus,
+                is_maintenance: siteStatus === 'MAINTENANCE',
                 heroTitle: document.getElementById('builder-hero-title')?.value || '',
                 heroSubtitle: document.getElementById('builder-hero-subtitle')?.value || '',
                 stat1Val: document.getElementById('builder-stat1-val')?.value || '',

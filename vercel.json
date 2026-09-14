@@ -81,6 +81,10 @@
       "destination": "/artikel-detail.html"
     },
     {
+      "source": "/maintenance",
+      "destination": "/maintenance.html"
+    },
+    {
       "source": "/admin",
       "destination": "/admin.html"
     },

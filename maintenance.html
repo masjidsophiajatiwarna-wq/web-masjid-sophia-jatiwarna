@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemeliharaan Sistem — Masjid Musafir Sophia Jatiwarna</title>
+    <!-- SEO Guard: Cegah mesin pencari mengindeks halaman maintenance -->
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://masjidsophiajatiwarna.com/">
+
+    <!-- Favicon SVG Resmi Bebas Emoji -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230D4A3E'><path d='M12 2L9 5h6l-3-3zM4 10v11h16V10l-8-5-8 5zm7 9H7v-4h4v4zm6 0h-4v-4h4v4z'/></svg>">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="asset/js/env-loader.js"></script>
+
+    <style>
+        :root {
+            --color-emerald-deep: #0D4A3E;
+            --color-emerald-medium: #156353;
+            --color-emerald-light: #E8F3F1;
+            --color-gold-deep: #785800;
+            --color-gold-metallic: #B8860B;
+            --color-gold-light: #FAF6E8;
+            --color-charcoal-deep: #1A202C;
+            --color-charcoal-muted: #4A5568;
+            --color-charcoal-subtle: #718096;
+            --color-bg-light: #F7FAFC;
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --font-arabic: 'Amiri', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, #F0F7F5 0%, #FFFFFF 50%, #FAF6E8 100%);
+            color: var(--color-charcoal-deep);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.25rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle Geometric Background Pattern */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(var(--color-emerald-deep) 0.75px, transparent 0.75px);
+            background-size: 28px 28px;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .maintenance-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px -15px rgba(13, 74, 62, 0.08), 0 0 1px 1px rgba(13, 74, 62, 0.05);
+            max-width: 640px;
+            width: 100%;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border-top: 5px solid var(--color-gold-metallic);
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--color-emerald-light) 0%, #FFFFFF 100%);
+            border: 2px solid var(--color-emerald-deep);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            color: var(--color-emerald-deep);
+            font-size: 2.2rem;
+            box-shadow: 0 10px 25px -5px rgba(13, 74, 62, 0.15);
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--color-gold-light);
+            color: var(--color-gold-deep);
+            padding: 0.4rem 1.1rem;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+            border: 1px solid rgba(184, 134, 11, 0.25);
+        }
+
+        .status-pill-pulse {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-gold-metallic);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-dot 1.8s infinite ease-in-out;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.3); }
+        }
+
+        .arabic-verse {
+            font-family: var(--font-arabic);
+            font-size: 1.65rem;
+            line-height: 2.2;
+            color: var(--color-emerald-deep);
+            margin-bottom: 0.75rem;
+            direction: rtl;
+        }
+
+        .verse-translation {
+            font-size: 0.86rem;
+            color: var(--color-charcoal-subtle);
+            font-style: italic;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--color-emerald-deep);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        p.main-description {
+            font-size: 0.98rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .contact-box {
+            background: #F8FAF9;
+            border: 1px dashed rgba(13, 74, 62, 0.2);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .contact-box h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--color-emerald-deep);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-box p {
+            font-size: 0.84rem;
+            color: var(--color-charcoal-muted);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .actions-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.85rem;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--color-emerald-deep);
+            color: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(13, 74, 62, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-emerald-medium);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #FFFFFF;
+            color: var(--color-emerald-deep);
+            border: 1px solid var(--color-emerald-deep);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-emerald-light);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+        }
+
+        .btn-whatsapp:hover {
+            background: #20BA5A;
+            transform: translateY(-1px);
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--color-charcoal-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .status-check-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.76rem;
+            color: var(--color-emerald-medium);
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .maintenance-card {
+                padding: 2.25rem 1.5rem;
+                border-radius: 20px;
+            }
+            h1 {
+                font-size: 1.45rem;
+            }
+            .arabic-verse {
+                font-size: 1.4rem;
+            }
+            .actions-group {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="maintenance-card">
+        <!-- Logo Header -->
+        <div class="logo-badge">
+            <i class="fa-solid fa-mosque"></i>
+        </div>
+
+        <!-- Status Pill -->
+        <div>
+            <span class="status-pill">
+                <span class="status-pill-pulse"></span>
+                Pemeliharaan Sistem Terjadwal
+            </span>
+        </div>
+
+        <!-- Ayat Al-Qur'an Penyejuk -->
+        <div class="arabic-verse">
+            وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَىٰ
+        </div>
+        <div class="verse-translation">
+            "Dan tolong-menolonglah kamu dalam mengerjakan kebajikan dan takwa..." (QS. Al-Ma'idah: 2)
+        </div>
+
+        <!-- Headline & Penjelasan -->
+        <h1>Portal Sedang Ditingkatkan</h1>
+        <p class="main-description">
+            Assalamu'alaikum Warahmatullahi Wabarakatuh. Jamaah dan musafir yang dimuliakan Allah, saat ini tim Pengurus DKM Masjid Musafir Sophia Jatiwarna sedang melakukan pembaruan berkala pada jadwal petugas ibadah, sistem transparansi donasi, dan penyempurnaan fasilitas demi kenyamanan ibadah Anda.
+        </p>
+
+        <!-- Kotak Bantuan & Kontak Layanan Musafir -->
+        <div class="contact-box">
+            <h3>
+                <i class="fa-solid fa-circle-info"></i>
+                Layanan Musafir &amp; Ibadah Tetap Buka 24 Jam
+            </h3>
+            <p>
+                Aktivitas shalat berjamaah 5 waktu, fasilitas istirahat musafir, air minum gratis, dan layanan keamanan fisik di Masjid Sophia Jatiwarna tetap beroperasi penuh tanpa henti. Jika Anda membutuhkan bantuan mendesak, silakan hubungi pengurus piket:
+            </p>
+            <div class="actions-group">
+                <a href="https://wa.me/628128362678?text=Assalamu%27alaikum%20Pengurus%20Masjid%20Sophia%2C%20saya%20ingin%20bertanya%20mengenai..." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> Hubungi Pengurus DKM
+                </a>
+                <a href="mailto:info@masjidsophiajatiwarna.com" class="btn btn-secondary">
+                    <i class="fa-solid fa-envelope"></i> Kirim Surel
+                </a>
+            </div>
+        </div>
+
+        <!-- Tombol Coba Muat Ulang -->
+        <div>
+            <button type="button" class="btn btn-primary" onclick="checkStatusAndReload()">
+                <i class="fa-solid fa-rotate-right" id="reload-icon"></i> Periksa Status &amp; Muat Ulang
+            </button>
+        </div>
+
+        <!-- Status Check Indicator -->
+        <div class="status-check-indicator" id="auto-check-status">
+            <i class="fa-solid fa-circle-notch fa-spin"></i> Memantau status pembaruan secara langsung...
+        </div>
+
+        <div class="footer-note">
+            <span>Masjid Musafir Sophia Jatiwarna &copy; 2026</span>
+        </div>
+    </main>
+
+    <script>
+        // Inisialisasi Supabase Client untuk Pemantauan Realtime Status Situs
+        let sbClient = null;
+
+        async function initClient() {
+            if (window.MasjidConfig && typeof window.MasjidConfig.initSupabaseClient === 'function') {
+                sbClient = await window.MasjidConfig.initSupabaseClient();
+            } else if (typeof window.getSupabaseClient === 'function') {
+                sbClient = await window.getSupabaseClient();
+            }
+            listenToRealtimeConfig();
+        }
+
+        async function checkStatusAndReload() {
+            const icon = document.getElementById('reload-icon');
+            if (icon) icon.classList.add('fa-spin');
+            
+            try {
+                if (!sbClient) await initClient();
+                if (sbClient) {
+                    const { data, error } = await sbClient
+                        .from('homepage_media')
+                        .select('meta_json')
+                        .eq('kategori', 'HOMEPAGE_CONFIG_MASTER')
+                        .limit(1);
+
+                    if (!error && data && data.length > 0) {
+                        const row = data[0];
+                        let cfg = row.meta_json;
+                        if (typeof cfg === 'string') {
+                            try { cfg = JSON.parse(cfg); } catch (e) {}
+                        }
+                        
+                        // Jika status LIVE, alihkan kembali ke beranda
+                        if (cfg && (cfg.site_status === 'LIVE' || cfg.is_maintenance === false)) {
+                            window.location.replace('/');
+                            return;
+                        }
+                    }
+                }
+            } catch (err) {
+                console.debug('[Maintenance Check Error]', err);
+            } finally {
+                setTimeout(() => {
+                    if (icon) icon.classList.remove('fa-spin');
+                }, 800);
+            }
+        }
+
+        function listenToRealtimeConfig() {
+            if (!sbClient) return;
+            try {
+                sbClient
+                    .channel('maintenance-mode-sync')
+                    .on('postgres_changes', {
+                        event: '*',
+                        schema: 'public',
+                        table: 'homepage_media',
+                        filter: 'kategori=eq.HOMEPAGE_CONFIG_MASTER'
+                    }, payload => {
+                        if (payload && payload.new) {
+                            let cfg = payload.new.meta_json;
+                            if (typeof cfg === 'string') {
+                                try { cfg = JSON.parse(cfg); } catch (e) {}
+                            }
+                            if (cfg && (cfg.site_status === 'LIVE' || cfg.is_maintenance === false)) {
+                                const statusInd = document.getElementById('auto-check-status');
+                                if (statusInd) {
+                                    statusInd.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #10B981;"></i> Pembaruan selesai! Mengalihkan ke beranda...';
+                                }
+                                setTimeout(() => {
+                                    window.location.replace('/');
+                                }, 1200);
+                            }
+                        }
+                    })
+                    .subscribe();
+            } catch (e) {}
+        }
+
+        // Polling berkala setiap 15 detik sebagai fallback
+        setInterval(checkStatusAndReload, 15000);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initClient();
+        });
+    </script>
+</body>
+</html>

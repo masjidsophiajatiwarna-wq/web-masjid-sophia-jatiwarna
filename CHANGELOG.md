@@ -4,6 +4,26 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.31] - 2026-09-14
+
+### Fitur Sakelar Status Live / Under Maintenance Terpadu & Halaman Pemeliharaan Kustom
+
+#### Sakelar Status Live Portal Berbasis RBAC di Visual Web Builder
+- `[MAINTENANCE_MODE_TOGGLE]` Menambahkan kontrol selektor status portal (`LIVE` vs `MAINTENANCE`) pada bar aksi Visual Web Builder Beranda (`admin.html`) dengan lencana indikator status adaptif (hijau untuk Live, amber untuk Under Maintenance).
+- `[MAINTENANCE_RBAC_GUARD]` Menegakkan aturan akses ketat: hanya akun dengan peran `SUPER_ADMIN`, `SUPER_USER`, `KETUA_DKM`, dan `PJ_MEDIA` yang dapat mengubah status publikasi website. Peran lainnya dinonaktifkan secara otomatis (*disabled*).
+- `[MAINTENANCE_REALTIME_SYNC]` Menyimpan status publikasi ke record master Supabase `homepage_media` (`HOMEPAGE_CONFIG_MASTER`), mendistribusikan perubahan status secara instan ke seluruh peramban pengunjung melalui WebSocket Realtime CDC.
+
+#### Halaman Pemeliharaan Kustom Resmi (`maintenance.html`)
+- `[MAINTENANCE_CUSTOM_PAGE]` Membangun halaman dedikasi pemeliharaan bertema islami elegan sesuai identitas visual resmi Masjid Sophia (nuansa zamrud dan emas lembut, bebas emoji, ayat Al-Qur'an QS. Al-Ma'idah: 2, maklumat santun permohonan maaf, serta penegasan bahwa operasional fisik masjid tetap buka 24 jam).
+- `[MAINTENANCE_CONTACT_PORTAL]` Menyediakan tombol kontak langsung WhatsApp Pengurus DKM dan surel resmi untuk mengakomodasi kebutuhan darurat musafir.
+- `[MAINTENANCE_AUTO_RELOAD]` Mengintegrasikan pemantau status realtime Supabase CDC dan polling berkala (15 detik) pada `maintenance.html` yang secara otomatis mengalihkan pengunjung kembali ke beranda saat status diubah kembali menjadi `LIVE`.
+- `[MAINTENANCE_SEO_SHIELD]` Memasang tag `<meta name="robots" content="noindex, nofollow">` dan kanonikal resmi guna melindungi reputasi indeks mesin pencari (SEO Google).
+
+#### Mesin Intersepsi Universal & Pratinjau Pengurus (`asset/js/env-loader.js`)
+- `[MAINTENANCE_UNIVERSAL_INTERCEPTOR]` Mengintegrasikan fungsi `checkMaintenanceGuard()` ke dalam `env-loader.js` yang melindungi seluruh halaman publik (`index.html`, `galeri.html`, `artikel.html`, dan `artikel-detail.html`) dari penampilan konten draf/uji coba saat mode pemeliharaan aktif.
+- `[MAINTENANCE_ADMIN_BYPASS]` Pengurus DKM yang memiliki sesi aktif atau membuka parameter `?preview=dkm` tetap dapat melihat halaman publik secara normal dengan penanda pita mengambang (*floating pill*): *"Mode Pemeliharaan Aktif (Pratinjau Pengurus DKM)"*.
+- `[ADMIN_PORTAL_ISOLATION]` Halaman `admin.html` (dan subdomain admin) sepenuhnya dikecualikan dari intersepsi untuk menjamin pengurus bebas dari risiko terkunci (*zero lockout*).
+
 ## [1.9.30] - 2026-09-14
 
 ### Perbaikan False-Positive Status Insiden & Role-Based Access Control (RBAC) pada Modul Keamanan
