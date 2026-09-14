@@ -9246,6 +9246,15 @@
                         <input type="text" id="disburse-budget-ref" class="form-input" placeholder="Contoh: No. Ref BSI: 83920193 / Kwitansi #012">
                     </div>
 
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label" style="font-weight: 600;">Lampiran Bukti Transfer / Kwitansi Kasir (Opsional)</label>
+                        <input type="file" accept="image/*,application/pdf" class="form-input" style="padding: 0.4rem;" onchange="handleDisbursePhotoUpload(event)">
+                        <input type="hidden" id="disburse-budget-foto-url" value="">
+                        <div id="disburse-budget-preview-box" style="display: none; margin-top: 0.5rem; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-border);">
+                            <img id="disburse-budget-preview-img" src="" alt="Preview Bukti Transfer" style="width: 100%; max-height: 140px; object-fit: cover;">
+                        </div>
+                    </div>
+
                     <div class="form-group" style="margin-bottom: 1rem;">
                         <label class="form-label" style="font-weight: 600;">Catatan Pencairan Tim Keuangan</label>
                         <textarea id="disburse-budget-catatan" class="form-input" rows="2" placeholder="Catatan bukti transfer atau nama penerima uang fisik..."></textarea>
@@ -21640,8 +21649,32 @@
 
             document.getElementById('disburse-budget-ref').value = '';
             document.getElementById('disburse-budget-catatan').value = '';
+            document.getElementById('disburse-budget-foto-url').value = '';
+            const disbursePreviewBox = document.getElementById('disburse-budget-preview-box');
+            if (disbursePreviewBox) disbursePreviewBox.style.display = 'none';
 
             openModal('modal-budget-disburse');
+        }
+
+        async function handleDisbursePhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const compressed = await compressImageToWebP(file, 1000, 0.8);
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    document.getElementById('disburse-budget-foto-url').value = dataUrl;
+                    const previewBox = document.getElementById('disburse-budget-preview-box');
+                    const previewImg = document.getElementById('disburse-budget-preview-img');
+                    if (previewImg) previewImg.src = dataUrl;
+                    if (previewBox) previewBox.style.display = 'block';
+                };
+                reader.readAsDataURL(compressed.blob);
+            } catch (err) {
+                alert('Gagal memproses lampiran bukti: ' + err.message);
+            }
         }
 
         async function handleBudgetDisburseSubmit(e) {
@@ -21675,9 +21708,20 @@
             const disburseKategori = document.getElementById('disburse-budget-kategori').value;
             const disburseRef = document.getElementById('disburse-budget-ref').value.trim();
             const disburseCatatan = document.getElementById('disburse-budget-catatan').value.trim();
+            const disburseFotoUrl = document.getElementById('disburse-budget-foto-url')?.value.trim() || '';
+
+            // Validasi audit trail: jika nominal realisasi berbeda dari persetujuan DKM, wajib menyertakan catatan alasan
+            if (disburseNominal !== item.nominal_diajukan && !disburseCatatan) {
+                alert('Perhatian: Nominal pencairan (' + formatRupiah(disburseNominal) + ') berbeda dari nominal disetujui DKM (' + formatRupiah(item.nominal_diajukan) + ').\nHarap sertakan penjelasan alasan perbedaan pada kolom "Catatan Pencairan Tim Keuangan".');
+                const catInput = document.getElementById('disburse-budget-catatan');
+                if (catInput) catInput.focus();
+                return;
+            }
 
             const journalCode = generateJournalCode('KAS_KELUAR');
             const disburseDeskripsi = 'Pencairan dana: ' + item.judul_keperluan + ' (' + item.kode_pengajuan + ')' + (disburseRef ? ' [Ref: ' + disburseRef + ']' : '') + (disburseCatatan ? ' - ' + disburseCatatan : '');
+
+            const finalBuktiUrl = disburseFotoUrl || item.lampiran_nota_url || '';
 
             const journalRecord = {
                 id: generateUUID(),
@@ -21688,7 +21732,7 @@
                 nominal: disburseNominal,
                 metode_pembayaran: disburseMetode,
                 deskripsi: disburseDeskripsi,
-                bukti_transaksi_url: item.lampiran_nota_url || '',
+                bukti_transaksi_url: finalBuktiUrl,
                 budget_request_id: item.id,
                 pj_input: getUserDisplayName(currentUser) + ' (Pencairan Kasir)',
                 pj_input_email: (currentUser && currentUser.email) ? currentUser.email : '',
@@ -21718,6 +21762,7 @@
             item.disbursed_by_email = (currentUser && currentUser.email) ? currentUser.email : '';
             item.disbursed_nominal = disburseNominal;
             item.disbursed_journal_code = journalCode;
+            if (disburseFotoUrl) item.lampiran_nota_url = disburseFotoUrl;
             item.updated_at = new Date().toISOString();
 
             localStorage.setItem('masjid_sophia_budget_master', JSON.stringify(budgetRequestsList));
@@ -21727,6 +21772,7 @@
                 const { error: bgtErr } = await sbClient.from('budget_requests').update({
                     status_pengajuan: 'DISBURSED',
                     disbursed_at: item.disbursed_at,
+                    lampiran_nota_url: item.lampiran_nota_url || '',
                     updated_at: item.updated_at
                 }).eq('id', id);
                 if (bgtErr) console.warn('[Disbursement] Budget update error:', bgtErr);
