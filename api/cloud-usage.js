@@ -67,12 +67,13 @@ export default async function handler(req, res) {
             imagekit: {
                 name: "ImageKit.io",
                 status: "SAFE",
-                bandwidth_used_gb: 1.2,
-                bandwidth_limit_gb: 25,
-                transformations_used: 420,
+                bandwidth_used_mb: 121.46,
+                bandwidth_used_gb: 0.12,
+                bandwidth_limit_gb: 20,
+                transformations_used: 716,
                 transformations_limit: 20000,
-                storage_used_gb: 2.1,
-                storage_limit_gb: 20,
+                storage_used_mb: 34.40,
+                storage_limit_gb: 3,
                 cdn_endpoint: "ik.imagekit.io/masjidsophia"
             },
             github: {

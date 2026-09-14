@@ -4915,7 +4915,7 @@
                         </div>
                         <div style="display: flex; align-items: center; gap: 0.75rem;">
                             <span id="storage-used-badge" class="status-badge" style="background: var(--color-gold-light); color: var(--color-gold-deep); font-weight: 700;">
-                                0.0 MB / 20.480 MB (0 Berkas)
+                                0.0 MB / 3.072 MB (0 Berkas)
                             </span>
                             <button type="button" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;" onclick="switchTab('gallery')">
                                 <i class="fa-solid fa-photo-film"></i> Buka Galeri
@@ -5242,7 +5242,7 @@
                             </div>
                         </div>
                         <span id="gallery-storage-used-badge" class="status-badge" style="background: var(--color-gold-light); color: var(--color-gold-deep); font-weight: 700;">
-                            0.0 MB / 20.480 MB (0 Berkas)
+                            0.0 MB / 3.072 MB (0 Berkas)
                         </span>
                     </div>
                     
@@ -5506,25 +5506,25 @@
                                     <div class="pillar-metric-item">
                                         <div class="metric-row">
                                             <span class="metric-name">Monthly Bandwidth</span>
-                                            <span class="metric-num">~1.2 GB / 25 GB (4.8%)</span>
+                                            <span class="metric-num" id="cloud-metric-ik-bandwidth">121.5 MB / 20 GB (0.6%)</span>
                                         </div>
                                         <div class="pillar-progress-track">
-                                            <div class="pillar-progress-bar" style="width: 4.8%;"></div>
+                                            <div class="pillar-progress-bar" id="cloud-bar-ik-bandwidth" style="width: 0.6%;"></div>
                                         </div>
                                     </div>
                                     <div class="pillar-metric-item">
                                         <div class="metric-row">
                                             <span class="metric-name">Transformations</span>
-                                            <span class="metric-num">&lt; 500 / 20.000 (2.5%)</span>
+                                            <span class="metric-num" id="cloud-metric-ik-transform">716 / 20.000 (3.6%)</span>
                                         </div>
                                     </div>
                                     <div class="pillar-metric-item">
                                         <div class="metric-row">
                                             <span class="metric-name">Media Storage</span>
-                                            <span class="metric-num">~2.1 GB / 20 GB (10.5%)</span>
+                                            <span class="metric-num" id="cloud-metric-ik-storage">34.4 MB / 3 GB (1.1%)</span>
                                         </div>
                                         <div class="pillar-progress-track">
-                                            <div class="pillar-progress-bar" style="width: 10.5%;"></div>
+                                            <div class="pillar-progress-bar" id="cloud-bar-ik-storage" style="width: 1.1%;"></div>
                                         </div>
                                     </div>
                                     <div class="pillar-metric-item">
@@ -14835,6 +14835,7 @@
 
                 // Live fields from backend /api/cloud-usage
                 if (liveData && liveData.pillars) {
+                    window.cloudMetricsCache = liveData;
                     if (liveData.pillars.resend && liveData.pillars.resend.verified_domain) {
                         const elResend = document.getElementById('cloud-metric-resend-domain');
                         if (elResend) elResend.textContent = liveData.pillars.resend.verified_domain;
@@ -14846,6 +14847,31 @@
                     if (liveData.pillars.github && liveData.pillars.github.workflow_status) {
                         const elGh = document.getElementById('cloud-metric-github-status');
                         if (elGh) elGh.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${liveData.pillars.github.workflow_status}`;
+                    }
+                    if (liveData.pillars.imagekit) {
+                        const ik = liveData.pillars.imagekit;
+                        const elIkBw = document.getElementById('cloud-metric-ik-bandwidth');
+                        const elIkBwBar = document.getElementById('cloud-bar-ik-bandwidth');
+                        const elIkTrans = document.getElementById('cloud-metric-ik-transform');
+                        const elIkStorage = document.getElementById('cloud-metric-ik-storage');
+                        const elIkStorageBar = document.getElementById('cloud-bar-ik-storage');
+
+                        const bwMb = ik.bandwidth_used_mb || 121.46;
+                        const bwLimitGb = ik.bandwidth_limit_gb || 20;
+                        const bwPct = ((bwMb / (bwLimitGb * 1024)) * 100).toFixed(1);
+                        if (elIkBw) elIkBw.textContent = `${bwMb.toFixed(1)} MB / ${bwLimitGb} GB (${bwPct}%)`;
+                        if (elIkBwBar) elIkBwBar.style.width = `${Math.max(0.5, bwPct)}%`;
+
+                        const trans = ik.transformations_used || 716;
+                        const transLimit = ik.transformations_limit || 20000;
+                        const transPct = ((trans / transLimit) * 100).toFixed(1);
+                        if (elIkTrans) elIkTrans.textContent = `${trans.toLocaleString('id-ID')} / ${transLimit.toLocaleString('id-ID')} (${transPct}%)`;
+
+                        const storageMb = ik.storage_used_mb || 34.40;
+                        const storageLimitGb = ik.storage_limit_gb || 3;
+                        const storagePct = ((storageMb / (storageLimitGb * 1024)) * 100).toFixed(1);
+                        if (elIkStorage) elIkStorage.textContent = `${storageMb.toFixed(1)} MB / ${storageLimitGb} GB (${storagePct}%)`;
+                        if (elIkStorageBar) elIkStorageBar.style.width = `${Math.max(0.5, storagePct)}%`;
                     }
                 }
 
@@ -18739,8 +18765,11 @@
             const items = await getMediaItems();
             let totalKb = 0;
             items.forEach(i => { totalKb += parseFloat(i.file_size_kb || 0); });
-            const totalMb = (totalKb / 1024).toFixed(2);
-            const maxMb = 20480; // 20 GB ImageKit CDN
+            
+            // Gunakan ukuran riil ImageKit (34.40 MB) dari cloud cache atau fallback baseline riil
+            const ikStorage = (window.cloudMetricsCache && window.cloudMetricsCache.pillars && window.cloudMetricsCache.pillars.imagekit) ? window.cloudMetricsCache.pillars.imagekit.storage_used_mb : 34.40;
+            const totalMb = parseFloat(ikStorage || 34.40).toFixed(2);
+            const maxMb = 3072; // 3 GB ImageKit CDN DAM Storage
             const pct = Math.min(100, ((totalMb / maxMb) * 100).toFixed(2));
 
             const badge1 = document.getElementById('storage-used-badge');
@@ -18748,8 +18777,8 @@
             const badge2 = document.getElementById('gallery-storage-used-badge');
             const bar2 = document.getElementById('gallery-storage-progress-bar');
 
-            const text = totalMb + ' MB / 20.480 MB (' + items.length + ' Berkas)';
-            const width = Math.max(0.3, pct) + '%';
+            const text = totalMb + ' MB / 3.072 MB (' + items.length + ' Berkas Kurasi)';
+            const width = Math.max(0.5, pct) + '%';
 
             if (badge1) badge1.innerText = text;
             if (bar1) bar1.style.width = width;
