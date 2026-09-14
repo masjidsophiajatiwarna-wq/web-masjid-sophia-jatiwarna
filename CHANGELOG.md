@@ -4,6 +4,26 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.32] - 2026-09-14
+
+### Penyempurnaan Single Source of Truth Supabase & Fitur Pratinjau Tim Mandiri (?preview=[role])
+
+#### Eliminasi Tuntas Ketergantungan LocalStorage (Supabase SSOT)
+- `[SUPABASE_SSOT_ENFORCEMENT]` Menghapus pengalihan agresif berbasis cache `localStorage` pada `asset/js/env-loader.js`, memastikan Supabase bertindak sebagai satu-satunya penentu status portal (*Single Source of Truth*).
+- `[FAIL_OPEN_RESILIENCE]` Menerapkan kebijakan *Fail-Open* yang memastikan pengunjung tidak pernah terblokir di halaman pemeliharaan akibat gangguan jaringan lokal atau keterlambatan respon Supabase.
+- `[INSTANT_MAINTENANCE_UNBLOCK]` Menambahkan validasi instan pada event `DOMContentLoaded` di `maintenance.html` dan mempercepat frekuensi polling menjadi 10 detik, sehingga halaman pemeliharaan seketika mengalihkan pengunjung kembali ke beranda saat status di Supabase aktif `LIVE`.
+
+#### Fitur Pratinjau Khusus Tim Mandiri pada Tombol "Buka Web Publik"
+- `[DYNAMIC_TEAM_PREVIEW]` Memperbarui tombol *"Buka Web Publik"* di panel admin agar secara dinamis membuka URL dengan parameter query peran aktif (`?preview=[role]`, contoh: `/?preview=pj_media`).
+- `[SESSION_STORAGE_RETENTION]` Mengintegrasikan penyimpanan sesi pratinjau ke dalam `sessionStorage` pada peramban publik, sehingga pengurus dapat meninjau galeri, artikel, dan fasilitas masjid tanpa terlempar ke `maintenance.html` selama tab pratinjau aktif.
+- `[ROLE_AWARE_PREVIEW_BANNER]` Menampilkan floating banner informatif bertuliskan nama peran peninjau (*Mode Pemeliharaan Aktif: Pratinjau [ROLE]*).
+
+#### Desain Ulang Ergonomis Toolbar Visual Web Builder (`admin.html`)
+- `[CLEAN_DROPDOWN_OPTIONS]` Menyederhanakan opsi dropdown status portal menjadi `Live` dan `Under Maintenance` (menghapus imbuhan kata verbose `(Publik)`).
+- `[REDUNDANT_BADGE_REMOVAL]` Menghapus lencana hijau `LIVE` yang menempel di sebelah dropdown untuk menghindari redundansi tampilan.
+- `[FULL_WIDTH_RESPONSIVE_LAYOUT]` Mengubah tata letak toolbar header Visual Web Builder menjadi flexbox lebar penuh yang memanfaatkan seluruh ruang horizontal secara proporsional.
+- `[CORNER_PULSE_INDICATOR]` Menempatkan indikator status mandiri terpisah di pojok kanan bertuliskan *"Status Web : • Live"* dengan bulatan animasi berkedip lembut (*gentle breath*, rentang opacity 0.45 hingga 1.0, tidak pernah padam ke 0%).
+
 ## [1.9.31] - 2026-09-14
 
 ### Fitur Sakelar Status Live / Under Maintenance Terpadu & Halaman Pemeliharaan Kustom

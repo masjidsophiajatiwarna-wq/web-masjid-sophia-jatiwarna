@@ -357,6 +357,20 @@
             border-radius: 4px;
         }
 
+        @keyframes gentle-dot-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.45; transform: scale(0.92); }
+        }
+        .status-dot-pulse {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            display: inline-block;
+            background-color: #10B981;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+            animation: gentle-dot-pulse 2s infinite ease-in-out;
+        }
+
         .sidebar-accordion-group {
             display: flex;
             flex-direction: column;
@@ -5006,28 +5020,29 @@
             <div id="tab-media" class="tab-content-panel" style="display: none;">
                 <!-- Builder Header Banner -->
                 <div class="section-panel" style="margin-bottom: 1.5rem; padding: 1.25rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                        <div>
-                            <div class="panel-title" style="font-size: 1.1rem;">
-                                <i class="fa-solid fa-sliders" style="color: var(--color-gold-deep);"></i> Visual Web Builder &amp; Manajemen Beranda (index.html)
-                            </div>
-                            <p style="font-size: 0.82rem; color: var(--color-charcoal-muted); margin: 0.25rem 0 0 0;">
-                                Kustomisasi teks sambutan hero, ayat Al-Qur'an, tombol aksi CTA, susunan section, dan pratinjau live sebelum dipublikasikan ke jamaah.
-                            </p>
+                    <!-- Top Row: Title & Description -->
+                    <div style="margin-bottom: 1rem;">
+                        <div class="panel-title" style="font-size: 1.1rem;">
+                            <i class="fa-solid fa-sliders" style="color: var(--color-gold-deep);"></i> Visual Web Builder &amp; Manajemen Beranda (index.html)
                         </div>
-                        <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
-                            <!-- Status Live / Maintenance Selector -->
+                        <p style="font-size: 0.82rem; color: var(--color-charcoal-muted); margin: 0.25rem 0 0 0;">
+                            Kustomisasi teks sambutan hero, ayat Al-Qur'an, tombol aksi CTA, susunan section, dan pratinjau live sebelum dipublikasikan ke jamaah.
+                        </p>
+                    </div>
+
+                    <!-- Bottom Row: Full-width Toolbar with Left Controls and Right Status Indicator -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; width: 100%; border-top: 1px solid var(--color-border); padding-top: 0.85rem;">
+                        <!-- Left Group: Dropdown & Action Buttons -->
+                        <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                            <!-- Status Live / Maintenance Selector (Clean) -->
                             <div id="site-status-control-box" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: 10px; padding: 0.35rem 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                                 <span style="font-size: 0.78rem; font-weight: 700; color: var(--color-charcoal-muted); text-transform: uppercase; letter-spacing: 0.04em;">
                                     <i class="fa-solid fa-signal" style="margin-right: 0.25rem;"></i> Status Portal:
                                 </span>
                                 <select id="builder-site-status" onchange="handleSiteStatusChange(this.value)" class="form-select" style="font-size: 0.82rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 8px; border: 1px solid #D1D5DB; cursor: pointer; outline: none;">
-                                    <option value="LIVE" style="color: #059669; font-weight: 700;">Live (Publik)</option>
+                                    <option value="LIVE" style="color: #059669; font-weight: 700;">Live</option>
                                     <option value="MAINTENANCE" style="color: #D97706; font-weight: 700;">Under Maintenance</option>
                                 </select>
-                                <span id="site-status-live-badge" class="status-badge" style="background: #ECFDF5; color: #059669; font-size: 0.74rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 6px;">
-                                    <i class="fa-solid fa-circle-check" style="font-size: 0.7rem;"></i> LIVE
-                                </span>
                             </div>
 
                             <button type="button" class="btn btn-outline" onclick="resetHomepageToDefault()">
@@ -5036,9 +5051,17 @@
                             <button type="button" class="btn btn-primary" onclick="saveHomepageConfig()">
                                 <i class="fa-solid fa-floppy-disk"></i> Simpan &amp; Publikasikan ke Beranda
                             </button>
-                            <a href="index.html" target="_blank" class="btn btn-outline" style="text-decoration: none;">
+                            <!-- Dynamic Preview Button with ?preview=[role] -->
+                            <button type="button" class="btn btn-outline" onclick="openPublicWebPreview()" style="cursor: pointer;">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Web Publik
-                            </a>
+                            </button>
+                        </div>
+
+                        <!-- Right Group: Isolated Live Web Status Indicator (Pojok Kanan) -->
+                        <div id="site-status-indicator-corner" style="display: inline-flex; align-items: center; gap: 0.55rem; background: #F8FAF9; border: 1px solid var(--color-border); border-radius: 9999px; padding: 0.4rem 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+                            <span style="font-size: 0.78rem; font-weight: 700; color: var(--color-charcoal-muted); text-transform: uppercase; letter-spacing: 0.04em;">Status Web :</span>
+                            <span id="site-status-pulse-dot" class="status-dot-pulse"></span>
+                            <span id="site-status-text" style="font-size: 0.82rem; font-weight: 700; color: #059669;">Live</span>
                         </div>
                     </div>
                 </div>
@@ -19926,17 +19949,44 @@
         }
 
         function updateSiteStatusBadge(status) {
-            const badge = document.getElementById('site-status-live-badge');
-            if (!badge) return;
+            const dot = document.getElementById('site-status-pulse-dot');
+            const txt = document.getElementById('site-status-text');
+            if (!dot || !txt) return;
+
             if (status === 'MAINTENANCE') {
-                badge.style.background = '#FEF3C7';
-                badge.style.color = '#B45309';
-                badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="font-size: 0.7rem;"></i> MAINTENANCE';
+                dot.style.backgroundColor = '#F59E0B';
+                dot.style.boxShadow = '0 0 6px rgba(245, 158, 11, 0.4)';
+                txt.style.color = '#D97706';
+                txt.textContent = 'Under Maintenance';
             } else {
-                badge.style.background = '#ECFDF5';
-                badge.style.color = '#059669';
-                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="font-size: 0.7rem;"></i> LIVE';
+                dot.style.backgroundColor = '#10B981';
+                dot.style.boxShadow = '0 0 6px rgba(16, 185, 129, 0.4)';
+                txt.style.color = '#059669';
+                txt.textContent = 'Live';
             }
+        }
+
+        function openPublicWebPreview() {
+            let roleStr = 'dkm';
+            try {
+                if (typeof currentUser !== 'undefined' && currentUser && currentUser.role) {
+                    roleStr = String(currentUser.role).toLowerCase();
+                } else {
+                    const savedUser = localStorage.getItem('masjid_sophia_current_user');
+                    if (savedUser) {
+                        const parsed = JSON.parse(savedUser);
+                        if (parsed && parsed.role) roleStr = String(parsed.role).toLowerCase();
+                    }
+                }
+            } catch (e) {}
+
+            const roleParam = encodeURIComponent(roleStr);
+            let baseUrl = '/';
+            if (window.location.hostname.includes('admin.masjidsophiajatiwarna.com') || window.location.hostname.startsWith('admin.')) {
+                baseUrl = 'https://masjidsophiajatiwarna.com/';
+            }
+            const targetUrl = baseUrl + '?preview=' + roleParam;
+            window.open(targetUrl, '_blank');
         }
 
         async function loadHomepageConfigFromSupabase() {

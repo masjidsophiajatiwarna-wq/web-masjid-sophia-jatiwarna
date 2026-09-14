@@ -349,7 +349,19 @@
     </main>
 
     <script>
-        // Inisialisasi Supabase Client untuk Pemantauan Realtime Status Situs
+        // Deteksi apakah pengunjung memiliki parameter pratinjau tim (?preview=[role])
+        (function checkTeamPreviewEarly() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const previewRole = urlParams.get('preview') || sessionStorage.getItem('masjid_sophia_preview_role');
+                if (previewRole) {
+                    sessionStorage.setItem('masjid_sophia_preview_role', previewRole);
+                    window.location.replace('/?preview=' + encodeURIComponent(previewRole));
+                }
+            } catch (e) {}
+        })();
+
+        // Inisialisasi Supabase Client untuk Pemantauan Realtime Status Situs (SSOT)
         let sbClient = null;
 
         async function initClient() {
@@ -359,6 +371,7 @@
                 sbClient = await window.getSupabaseClient();
             }
             listenToRealtimeConfig();
+            await checkStatusAndReload();
         }
 
         async function checkStatusAndReload() {
@@ -381,7 +394,7 @@
                             try { cfg = JSON.parse(cfg); } catch (e) {}
                         }
                         
-                        // Jika status LIVE, alihkan kembali ke beranda
+                        // Jika status LIVE, alihkan kembali ke beranda seketika
                         if (cfg && (cfg.site_status === 'LIVE' || cfg.is_maintenance === false)) {
                             window.location.replace('/');
                             return;
@@ -420,7 +433,7 @@
                                 }
                                 setTimeout(() => {
                                     window.location.replace('/');
-                                }, 1200);
+                                }, 800);
                             }
                         }
                     })
@@ -428,8 +441,8 @@
             } catch (e) {}
         }
 
-        // Polling berkala setiap 15 detik sebagai fallback
-        setInterval(checkStatusAndReload, 15000);
+        // Polling berkala setiap 10 detik sebagai fallback
+        setInterval(checkStatusAndReload, 10000);
 
         document.addEventListener('DOMContentLoaded', () => {
             initClient();

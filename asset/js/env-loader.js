@@ -103,18 +103,35 @@
         }
 
         const urlParams = new URLSearchParams(window.location.search);
-        const isPreviewQuery = urlParams.get('preview') === 'dkm' || urlParams.get('preview') === 'true';
+        const previewQuery = urlParams.get('preview');
+        
+        // Simpan parameter preview ke sessionStorage agar sesi pratinjau tim bertahan saat berpindah halaman dalam tab yang sama
+        if (previewQuery) {
+            try {
+                sessionStorage.setItem('masjid_sophia_preview_role', previewQuery);
+            } catch (e) {}
+        }
+
+        let previewRole = previewQuery;
+        if (!previewRole) {
+            try {
+                previewRole = sessionStorage.getItem('masjid_sophia_preview_role');
+            } catch (e) {}
+        }
+
+        const hasPreviewAccess = !!previewRole;
         let hasAdminSession = false;
         try {
             hasAdminSession = !!(localStorage.getItem('masjid_sophia_auth_session') || localStorage.getItem('masjid_sophia_current_user') || localStorage.getItem('sb-vwhphwhkclnuzrghyffg-auth-token'));
         } catch (e) {}
 
-        function showAdminPreviewBanner() {
+        function showAdminPreviewBanner(roleName) {
             if (document.getElementById('dkm-maintenance-preview-banner')) return;
+            const displayRole = roleName ? roleName.toUpperCase() : 'PENGURUS DKM';
             const banner = document.createElement('div');
             banner.id = 'dkm-maintenance-preview-banner';
             banner.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; z-index: 999999; background: #FEF3C7; color: #92400E; font-size: 0.82rem; font-weight: 700; padding: 0.45rem 1rem; text-align: center; border-bottom: 2px solid #F59E0B; display: flex; align-items: center; justify-content: center; gap: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-family: system-ui, sans-serif;';
-            banner.innerHTML = '<span><i class="fa-solid fa-triangle-exclamation" style="color: #D97706; margin-right: 0.35rem;"></i><strong>Mode Pemeliharaan Aktif:</strong> Pengunjung umum dialihkan ke maintenance.html. Anda melihat halaman ini sebagai Pratinjau Pengurus DKM.</span><a href="/admin.html" style="background: #D97706; color: #FFFFFF; text-decoration: none; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.74rem; font-weight: 700;">Kelola di Admin</a>';
+            banner.innerHTML = `<span><i class="fa-solid fa-triangle-exclamation" style="color: #D97706; margin-right: 0.35rem;"></i><strong>Mode Pemeliharaan Aktif (Pratinjau ${displayRole}):</strong> Pengunjung umum dialihkan ke maintenance.html. Anda melihat halaman ini sebagai Pratinjau Pengurus DKM.</span><a href="https://admin.masjidsophiajatiwarna.com/admin#media" style="background: #D97706; color: #FFFFFF; text-decoration: none; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.74rem; font-weight: 700;">Kelola di Admin</a>`;
             if (document.body) {
                 document.body.appendChild(banner);
                 document.body.style.paddingTop = (parseInt(document.body.style.paddingTop || '0') + 36) + 'px';
@@ -127,23 +144,7 @@
         }
 
         try {
-            // 1. Cek cache cepat di localStorage
-            let cachedCfg = null;
-            try {
-                const saved = localStorage.getItem('masjid_sophia_homepage_builder_config');
-                if (saved) cachedCfg = JSON.parse(saved);
-            } catch (e) {}
-
-            if (cachedCfg && (cachedCfg.site_status === 'MAINTENANCE' || cachedCfg.is_maintenance === true)) {
-                if (isPreviewQuery || hasAdminSession) {
-                    showAdminPreviewBanner();
-                } else {
-                    window.location.replace('/maintenance.html');
-                    return;
-                }
-            }
-
-            // 2. Kueri remote Supabase
+            // SUPABASE SSOT (Single Source of Truth) - Kueri langsung remote Supabase
             const sb = await initSupabaseClient();
             if (sb) {
                 const { data, error } = await sb
@@ -158,14 +159,10 @@
                         try { cfg = JSON.parse(cfg); } catch (e) {}
                     }
                     if (cfg) {
-                        try {
-                            localStorage.setItem('masjid_sophia_homepage_builder_config', JSON.stringify(cfg));
-                        } catch (e) {}
-
                         const isMaint = cfg.site_status === 'MAINTENANCE' || cfg.is_maintenance === true;
                         if (isMaint) {
-                            if (isPreviewQuery || hasAdminSession) {
-                                showAdminPreviewBanner();
+                            if (hasPreviewAccess || hasAdminSession) {
+                                showAdminPreviewBanner(previewRole);
                             } else {
                                 window.location.replace('/maintenance.html');
                                 return;
@@ -177,7 +174,7 @@
                     }
                 }
 
-                // 3. Listener Realtime CDC
+                // Listener Realtime CDC
                 sb.channel('global-maintenance-sync')
                     .on('postgres_changes', {
                         event: '*',
@@ -193,8 +190,8 @@
                             if (cfg) {
                                 const isMaint = cfg.site_status === 'MAINTENANCE' || cfg.is_maintenance === true;
                                 if (isMaint) {
-                                    if (isPreviewQuery || hasAdminSession) {
-                                        showAdminPreviewBanner();
+                                    if (hasPreviewAccess || hasAdminSession) {
+                                        showAdminPreviewBanner(previewRole);
                                     } else {
                                         window.location.replace('/maintenance.html');
                                     }
