@@ -10485,6 +10485,10 @@
                 `;
 
                 visibleItems.forEach(item => {
+                    let displayLabel = item.label;
+                    if (item.id === 'donations' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEUANGAN'].includes(role)) {
+                        displayLabel = 'Pengajuan Anggaran';
+                    }
                     const isActive = (item.id === currentTab) ? 'active' : '';
                     const badgeHtml = item.badgeId 
                         ? `<span id="${escapeHtml(item.badgeId)}" class="mention-count-badge" style="display: none; margin-left: auto;">0</span>`
@@ -10492,9 +10496,9 @@
 
                     html += `
                         <li id="sidebar-nav-item-${escapeHtml(item.id)}">
-                            <button class="nav-item-btn ${isActive}" onclick="switchTab('${escapeHtml(item.id)}', this)" title="${escapeHtml(item.label)}">
+                            <button class="nav-item-btn ${isActive}" onclick="switchTab('${escapeHtml(item.id)}', this)" title="${escapeHtml(displayLabel)}">
                                 <i class="${escapeHtml(item.icon)}" aria-hidden="true"></i>
-                                <span>${escapeHtml(item.label)}</span>
+                                <span>${escapeHtml(displayLabel)}</span>
                                 ${badgeHtml}
                             </button>
                         </li>
@@ -10703,11 +10707,8 @@
                 switchTab('overview');
                 return;
             }
-            if (tabId === 'donations' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEUANGAN'].includes(role)) {
-                alert('Akses Ditolak: Modul Donasi & Infaq hanya dapat diakses oleh Bendahara / PJ Keuangan dan Pimpinan DKM.');
-                switchTab('overview');
-                return;
-            }
+            // Catatan: Modul donations (Kas & Pengajuan Anggaran) terbuka untuk seluruh peran pengurus DKM,
+            // di mana non-approver otomatis diarahkan ke subview Pengajuan Anggaran (budget) saja.
             if (tabId === 'ibadah' && !['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_IBADAH'].includes(role)) {
                 alert('Akses Ditolak: Modul Peribadatan hanya dapat diakses oleh PJ Ibadah dan Pimpinan DKM.');
                 switchTab('overview');
@@ -20699,6 +20700,12 @@
         ];
 
         function switchKeuanganSubView(subView) {
+            const role = getUserRole();
+            const isFinanceApprover = ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEUANGAN'].includes(role);
+            if (!isFinanceApprover && subView !== 'budget') {
+                subView = 'budget';
+            }
+
             currentKeuanganSubView = subView;
             try {
                 localStorage.setItem('masjid_sophia_keuangan_subview', subView);
@@ -20714,11 +20721,11 @@
             if (pane) pane.style.display = 'block';
 
             if (subView === 'jurnal') {
-                renderJournalsTable();
+                if (isFinanceApprover) renderJournalsTable();
             } else if (subView === 'budget') {
                 renderBudgetTable();
             } else if (subView === 'donasi') {
-                renderDonationsTable();
+                if (isFinanceApprover) renderDonationsTable();
             }
         }
 
@@ -21525,6 +21532,16 @@
         }
 
         async function deleteBudgetEntry(id) {
+            const role = getUserRole();
+            const isApprover = ['SUPER_ADMIN', 'KETUA_DKM', 'PJ_KEUANGAN'].includes(role);
+            const item = budgetRequestsList.find(b => b.id === id);
+            if (!item) return;
+
+            if (!isApprover && item.status_pengajuan !== 'PENDING') {
+                alert('Akses Ditolak: Pengajuan yang sudah disetujui atau dicairkan oleh DKM tidak dapat dihapus.');
+                return;
+            }
+
             if (!confirm('Apakah Anda yakin ingin menghapus permohonan pengajuan anggaran ini?')) return;
 
             budgetRequestsList = budgetRequestsList.filter(b => b.id !== id);
@@ -21542,11 +21559,30 @@
 
         // Master Loader for Modul 3
         async function loadKeuanganData(forceRefresh = false) {
-            await loadFinancialJournals();
+            const role = getUserRole();
+            const isFinanceApprover = ['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEUANGAN'].includes(role);
+            if (isFinanceApprover) {
+                await loadFinancialJournals();
+                await loadDonationsData(forceRefresh);
+            }
             await loadBudgetRequests();
-            await loadDonationsData(forceRefresh);
-            const savedSubView = localStorage.getItem('masjid_sophia_keuangan_subview') || 'jurnal';
-            switchKeuanganSubView(savedSubView);
+
+            // Sembunyikan tombol subview jurnal dan donasi untuk non-approver agar hanya fokus ke pengajuan anggaran
+            const btnJurnal = document.getElementById('btn-subview-keu-jurnal');
+            const btnDonasi = document.getElementById('btn-subview-keu-donasi');
+            const btnBudget = document.getElementById('btn-subview-keu-budget');
+            if (!isFinanceApprover) {
+                if (btnJurnal) btnJurnal.style.display = 'none';
+                if (btnDonasi) btnDonasi.style.display = 'none';
+                if (btnBudget) btnBudget.style.display = 'inline-flex';
+                switchKeuanganSubView('budget');
+            } else {
+                if (btnJurnal) btnJurnal.style.display = 'inline-flex';
+                if (btnDonasi) btnDonasi.style.display = 'inline-flex';
+                if (btnBudget) btnBudget.style.display = 'inline-flex';
+                const savedSubView = localStorage.getItem('masjid_sophia_keuangan_subview') || 'jurnal';
+                switchKeuanganSubView(savedSubView);
+            }
         }
 
         

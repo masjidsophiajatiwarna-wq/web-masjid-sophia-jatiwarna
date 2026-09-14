@@ -28,6 +28,8 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 
 #### Demokratisasi Budget Request bagi Seluruh PJ Divisi (Bug 9)
 - `[BUDGET_REQUEST_ALL_ROLES]` Memperluas hak akses menu Kas Masjid & Infaq (`donations`) ke seluruh peran penanggung jawab divisi (`roles: ['*']`) di `SIDEBAR_MENU_GROUPS`, sehingga setiap PJ (Media, Logistik, Santri, Musafir, Ibadah, Keamanan, Kebersihan) dapat mengajukan anggaran secara mandiri.
+- `[BUDGET_ROLE_GATE_FIX]` Menghapus pembatasan peran pada `switchTab('donations')` dan `switchKeuanganSubView`. Seluruh pengurus kini dapat membuka tab tanpa alert penolakan akses, di mana akun non-keuangan secara otomatis dikunci khusus ke subview Pengajuan Anggaran (`budget`) dengan tombol subview jurnal dan donasi disembunyikan agar tidak dapat berpindah ke ranah pembukuan kas.
+- `[BUDGET_SIDEBAR_DYNAMIC_LABEL]` Menampilkan label menu navigasi samping secara dinamis: *"Pengajuan Anggaran"* bagi seluruh PJ operasional, dan *"Kas Masjid & Infaq"* khusus bagi Bendahara, Super Admin, dan Ketua DKM.
 - `[FINANCIAL_ENTRY_STRICT_RBAC]` Memproteksi tombol "Catat Transaksi Baru", aksi edit jurnal, dan aksi hapus jurnal kas agar hanya dapat diakses dan dieksekusi secara eksklusif oleh pemegang otoritas keuangan (`SUPER_ADMIN`, `KETUA_DKM`, `PJ_KEUANGAN`).
 
 #### Redesain Navigasi Bilah Samping Bersih & Rapi (Benchmark ERP Umar - Bug 10)
@@ -36,11 +38,12 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 - `[SIDEBAR_LABEL_SIMPLIFICATION]` Menyederhanakan label menu yang terlalu panjang agar mudah dipindai mata (misal: "Content & Article Studio" menjadi "Studio Artikel & Berita", "Buku Tamu & Log Istirahat 24 Jam" menjadi "Buku Tamu Musafir", "Log Ronda & Titik Patroli 24 Jam" menjadi "Log Ronda Keamanan").
 - `[SIDEBAR_BREATHING_ROOM]` Menata ulang jarak vertikal antar-kelompok menu (`gap: 0.65rem`), margin grup, dan padding item untuk menghasilkan tata visual setara dashboard modern ERP Umar.
 
-#### Transformasi Hero Banner Full-Width & Floating Prayer Bar (Benchmark Masjid Istiqlal Jakarta)
+#### Transformasi Hero Banner Full-Width & Pemolesan Widget Dock Shalat (Benchmark Masjid Istiqlal)
 - `[HERO_FULLWIDTH_VIEWPORT]` Mengubah arsitektur Hero Banner beranda publik (`index.html`) dari kartu 2-kolom terbatas menjadi layar penuh 100vw edge-to-edge (`.hero-section.hero-fullscreen`, min-height 86vh).
 - `[HERO_KEN_BURNS_TRANSITION]` Menerapkan efek transisi cross-fade lembut (0.9s) dengan animasi zoom perlahan Ken Burns (`transform: scale(1.035)`, durasi 7s) pada background slide aktif.
 - `[HERO_ISTIQLAL_GRADIENT_OVERLAY]` Menerapkan gradien gelap berlapis (180deg dengan titik henti multi-tier) untuk menjamin teks judul putih, tagline emas, dan kutipan ayat Al-Qur'an Arab terbaca sangat tajam dan anggun di atas foto masjid resolusi tinggi.
-- `[HERO_FLOATING_PRAYER_DOCK]` Memindahkan widget hitung mundur shalat dan petugas ibadah harian ke bar melayang di bagian bawah banner (`.hero-prayer-dock`) dengan material frosted glass modern (`backdrop-filter: blur(14px)`), jam digital monospace berbingkai emas Sophia, nama imam/muadzin/khatib yang ringkas, serta tautan cepat ke jadwal hisab lengkap.
+- `[HERO_SLIDER_DOTS_ELEVATION]` Mengangkat bilah kontrol slider dots ke `bottom: 5.75rem` di dalam kapsul kaca (*frosted glass capsule*) mandiri berbingkai emas Sophia, menjamin jarak bebas di atas dock shalat dan mengeliminasi tabrakan visual dengan garis batas maupun teks petugas.
+- `[HERO_PRAYER_DOCK_RESTRUCTURE]` Merapikan tata letak bar shalat melayang: kartu jam hitung mundur 2-kolom yang ringkas di sisi kiri, lencana mini petugas ibadah (Imam, Muadzin, Khatib) yang simetris di tengah, serta tombol jadwal hisab lengkap di sisi kanan dengan ketinggian yang selaras.
 - `[HERO_DYNAMIC_BUILDER_SYNC]` Menyelaraskan struktur HTML dinamis pada `loadHeroSlides()` agar setiap slide yang ditambahkan atau diedit dari menu Visual Builder & Beranda di admin panel secara instan dirender dengan format kontainer dan tagline layar penuh yang identik.
 
 ---
