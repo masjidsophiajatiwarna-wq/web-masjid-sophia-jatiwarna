@@ -2088,6 +2088,36 @@
                             <div class="task-desc">Pembangunan Subview 4 (#subview-keu-labarugi) berstandar akuntansi nirlaba (ISAK 35 / PSAK 45), 4 KPI metrik eksekutif, grafik batang komparasi Kas Masuk vs Kas Keluar, grafik donat proporsi sebaran beban operasional via Chart.js, serta fitur Cetak/Ekspor PDF ber-Kop Resmi DKM Masjid Sophia Jatiwarna lengkap dengan blok tanda tangan digital.</div>
                         </div>
                     </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Resolusi Race Condition Duplikasi Kas Keluar &amp; Idempotensi In-Memory Sentral (upsertJournalInMemory)
+                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                            </div>
+                            <div class="task-desc">Pencegahan pencatatan ganda kas keluar saat pencairan anggaran melalui fungsi sentral upsertJournalInMemory, deduplikasi berbasis ID/kode transaksi pada loadFinancialJournals, renderJournalsTable, dan updateJournalsKpiStats untuk mengeliminasi benturan race condition antara Supabase Realtime CDC dan mutasi lokal.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Standardisasi Status Pengajuan Anggaran (Ditunda / POSTPONED, Menunggu Approval &amp; Eliminasi Tanda Kurung)
+                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                            </div>
+                            <div class="task-desc">Pemisahan kode status POSTPONED dengan badge Ditunda dan subteks Perlu dikaji lebih lanjut, pembaruan badge Menunggu Approval, pembersihan tanda kurung pada seluruh opsi modal evaluasi DKM dan dropdown filter status, serta pengalihan otomatis opsi Dana Telah Dicairkan ke modal pencairan kas.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Eliminasi Seluruh Tombol Refresh Hardcoded di Seluruh Modul PJ Pengurus
+                                <span class="task-badge-pill" style="background: var(--color-success-bg); color: var(--color-success);">SELESAI</span>
+                            </div>
+                            <div class="task-desc">Pembersihan 8 tombol refresh buatan pada modul Keuangan, Donasi, Direktori Pengurus DKM, Santri, Musafir, Keamanan, Kebersihan, dan Logistik untuk mengembalikan kebiasaan refresh murni ke browser (F5 / Ctrl+R) didukung sinkronisasi otomatis Supabase Realtime WebSocket (CDC).</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

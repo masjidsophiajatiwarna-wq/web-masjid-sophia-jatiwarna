@@ -3655,6 +3655,7 @@
         .status-trx-keluar { background: #FEF2F2; color: #DC2626; border-color: #FECACA; }
 
         .status-budget-pending { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+        .status-budget-postponed { background: #FFFBEB; color: #B45309; border-color: #FCD34D; }
         .status-budget-approved { background: #DBEAFE; color: #1E40AF; border-color: #BFDBFE; }
         .status-budget-disbursed { background: #ECFDF5; color: #059669; border-color: #A7F3D0; }
         .status-budget-rejected { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
@@ -4081,11 +4082,6 @@
                             <i class="fa-solid fa-hand-holding-dollar"></i> Infaq &amp; Donasi Masuk (QRIS/BSI)
                         </button>
                     </div>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button type="button" class="btn-action-gold" onclick="loadKeuanganData(true)">
-                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Keuangan
-                        </button>
-                    </div>
                 </div>
 
                 <!-- SUBVIEW 1: JURNAL PEMBUKUAN KAS MASUK & KAS KELUAR -->
@@ -4431,9 +4427,10 @@
                             </select>
                             <select id="budget-status-filter" class="form-select" onchange="filterBudgetTable()">
                                 <option value="ALL">Semua Status</option>
-                                <option value="PENDING">Menunggu Persetujuan</option>
-                                <option value="APPROVED_DKM">Disetujui DKM</option>
-                                <option value="DISBURSED">Dana Dicairkan</option>
+                                <option value="PENDING">Menunggu Approval</option>
+                                <option value="POSTPONED">Ditunda</option>
+                                <option value="APPROVED_DKM">Disetujui</option>
+                                <option value="DISBURSED">Dana Telah Dicairkan</option>
                                 <option value="REJECTED">Ditolak</option>
                             </select>
                             <select id="budget-type-filter" class="form-select" onchange="filterBudgetTable()">
@@ -4478,9 +4475,6 @@
                             <div style="display: flex; gap: 0.5rem; align-items: center;">
                                 <button type="button" class="btn btn-outline" id="btn-batch-approve-donations" style="font-size: 0.78rem; padding: 0.4rem 0.85rem; display: none; background: #ECFDF5; color: #065F46; border-color: #A7F3D0;" onclick="handleBatchApproveDonations()">
                                     <i class="fa-solid fa-check-double"></i> Verifikasi Terpilih (<span id="batch-donation-count">0</span>)
-                                </button>
-                                <button type="button" class="btn-action-gold" onclick="loadKeuanganData(true)" style="font-size: 0.78rem; padding: 0.4rem 0.85rem;">
-                                    <i class="fa-solid fa-arrows-rotate"></i> Refresh Donasi
                                 </button>
                             </div>
                         </div>
@@ -5802,9 +5796,6 @@
                             <button class="btn-action-gold" onclick="openAddUserModal()" style="font-size: 0.78rem;">
                                 <i class="fa-solid fa-user-plus"></i> Tambah Pengurus Baru
                             </button>
-                            <button class="btn-table-action" onclick="loadAdminUsers(true)" title="Refresh data pengurus dari database">
-                                <i class="fa-solid fa-arrows-rotate"></i>
-                            </button>
                         </div>
                     </div>
 
@@ -5971,11 +5962,6 @@
                         </button>
                         <button type="button" class="btn-subview-santri" id="btn-subview-santri-milestone" onclick="switchSantriSubView('milestone')">
                             <i class="fa-solid fa-award"></i> Capaian &amp; Milestone 30 Juz
-                        </button>
-                    </div>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button type="button" class="btn-action-gold" onclick="loadSantriData(true)">
-                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Santri
                         </button>
                     </div>
                 </div>
@@ -6218,11 +6204,6 @@
                             <i class="fa-solid fa-boxes-packing"></i> Penitipan Kendaraan &amp; Loker
                         </button>
                     </div>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button type="button" class="btn-action-gold" onclick="loadMusafirData(true)">
-                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Musafir
-                        </button>
-                    </div>
                 </div>
 
                 <!-- SUBVIEW 1: BUKU TAMU DIGITAL (SELURUH LAYANAN) -->
@@ -6417,11 +6398,6 @@
                             <i class="fa-solid fa-calendar-week"></i> Jadwal Shift &amp; Pos Patroli
                         </button>
                     </div>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button type="button" class="btn-action-gold" onclick="loadKeamananData(true)">
-                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Keamanan
-                        </button>
-                    </div>
                 </div>
 
                 <!-- SUBVIEW 1: LOG RONDA PIKET 24 JAM -->
@@ -6599,11 +6575,6 @@
                             <i class="fa-solid fa-file-invoice-dollar"></i> Ajukan Anggaran Stok
                         </button>
                     </div>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button type="button" class="btn-action-gold" onclick="loadKebersihanData(true)">
-                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Kebersihan
-                        </button>
-                    </div>
                 </div>
 
                 <!-- SUBVIEW 1: CHECKLIST SANITASI SELURUH ZONA -->
@@ -6753,11 +6724,6 @@
                         </button>
                         <button type="button" class="btn-subview-logistik" id="btn-subview-logistik-aset" onclick="switchLogistikSubView('aset')">
                             <i class="fa-solid fa-boxes-stacked"></i> Manajemen Inventaris Aset &amp; Sarpras
-                        </button>
-                    </div>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button type="button" class="btn-action-gold" onclick="loadLogistikData(true)">
-                            <i class="fa-solid fa-arrows-rotate"></i> Refresh Logistik
                         </button>
                     </div>
                 </div>
@@ -9234,16 +9200,17 @@
                     <!-- Approval Box (Only visible when editing and user is approver) -->
                     <div id="budget-form-approver-box" style="display: none; background: rgba(227, 196, 102, 0.08); border: 1px solid var(--color-gold-deep); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem;">
                         <h5 style="margin: 0 0 0.6rem 0; font-size: 0.85rem; color: var(--color-charcoal); display: flex; align-items: center; gap: 0.4rem;">
-                            <i class="fa-solid fa-stamp" style="color: var(--color-gold-deep);"></i> Keputusan DKM / Evaluasi Anggaran
+                            <i class="fa-solid fa-stamp" style="color: var(--color-gold-deep);"></i> Evaluasi Status Pengajuan
                         </h5>
                         <div style="display: grid; grid-template-columns: 1fr; gap: 0.6rem;">
                             <div>
-                                <label class="form-label" style="font-weight: 600; font-size: 0.8rem;">Status Persetujuan</label>
+                                <label class="form-label" style="font-weight: 600; font-size: 0.8rem;">Status Pengajuan</label>
                                 <select id="budget-form-status" class="form-input">
-                                    <option value="PENDING">Menunggu Persetujuan / Review</option>
-                                    <option value="APPROVED_DKM">Disetujui DKM (Siap Dicairkan)</option>
+                                    <option value="PENDING">Menunggu Approval</option>
+                                    <option value="POSTPONED">Tunda / Perlu Kajian Lebih Lanjut</option>
+                                    <option value="APPROVED_DKM">Disetujui</option>
                                     <option value="REJECTED">Ditolak</option>
-                                    <option value="DISBURSED" disabled>Sudah Dicairkan (Telah Masuk Jurnal Kas)</option>
+                                    <option value="DISBURSED">Dana Telah Dicairkan</option>
                                 </select>
                             </div>
                             <div>
@@ -9307,12 +9274,12 @@
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
                         <div class="form-group" style="margin-bottom: 0; grid-column: 1 / -1;">
-                            <label class="form-label" style="font-weight: 600;">Keputusan DKM</label>
+                            <label class="form-label" style="font-weight: 600;">Status Pengajuan</label>
                             <select id="review-budget-action-status" class="form-input" required>
-                                <option value="PENDING">Tunda / Perlu Kajian Lebih Lanjut</option>
-                                <option value="APPROVED_DKM">Disetujui DKM (Siap Dicairkan)</option>
+                                <option value="POSTPONED">Tunda / Perlu Kajian Lebih Lanjut</option>
+                                <option value="APPROVED_DKM">Disetujui</option>
                                 <option value="REJECTED">Ditolak</option>
-                                <option value="DISBURSED" disabled>Sudah Dicairkan (Telah Masuk Jurnal Kas)</option>
+                                <option value="DISBURSED">Dana Telah Dicairkan</option>
                             </select>
                         </div>
                     </div>
@@ -14660,8 +14627,12 @@
                 updated_at: new Date().toISOString()
             };
 
-            financialJournalsList.unshift(journalRecord);
-            localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
+            if (typeof upsertJournalInMemory === 'function') {
+                upsertJournalInMemory(journalRecord);
+            } else {
+                financialJournalsList.unshift(journalRecord);
+                localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
+            }
 
             if (typeof sbClient !== 'undefined' && sbClient) {
                 try {
@@ -20980,6 +20951,30 @@
         // --------------------------------------------------------------------------
         // JURNAL KAS ENGINE (FINANCIAL_JOURNALS)
         // --------------------------------------------------------------------------
+        function upsertJournalInMemory(record) {
+            if (!record) return;
+            const existingIdx = financialJournalsList.findIndex(j => 
+                (j.id && record.id && j.id === record.id) || 
+                (j.kode_transaksi && record.kode_transaksi && j.kode_transaksi === record.kode_transaksi)
+            );
+            if (existingIdx !== -1) {
+                financialJournalsList[existingIdx] = { ...financialJournalsList[existingIdx], ...record };
+            } else {
+                financialJournalsList.unshift(record);
+            }
+            // Strict deduplication safeguard
+            const seen = new Set();
+            financialJournalsList = financialJournalsList.filter(j => {
+                const key = j.id || j.kode_transaksi;
+                if (!key || seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+            try {
+                localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
+            } catch (e) {}
+        }
+
         async function loadFinancialJournals() {
             if (typeof sbClient !== 'undefined' && sbClient) {
                 try {
@@ -20989,10 +20984,17 @@
                         .order('tanggal', { ascending: false });
 
                     if (!error && Array.isArray(data)) {
-                        financialJournalsList = data;
-                        localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(data));
+                        const seen = new Set();
+                        financialJournalsList = data.filter(j => {
+                            const key = j.id || j.kode_transaksi;
+                            if (!key || seen.has(key)) return false;
+                            seen.add(key);
+                            return true;
+                        });
+                        localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
                         renderJournalsTable();
                         updateJournalsKpiStats();
+                        if (typeof renderLabaRugiReport === 'function') renderLabaRugiReport();
                         return;
                     }
                 } catch (e) {
@@ -21003,7 +21005,14 @@
             try {
                 const saved = localStorage.getItem('masjid_sophia_journals_master');
                 if (saved) {
-                    financialJournalsList = JSON.parse(saved);
+                    const parsed = JSON.parse(saved);
+                    const seen = new Set();
+                    financialJournalsList = Array.isArray(parsed) ? parsed.filter(j => {
+                        const key = j.id || j.kode_transaksi;
+                        if (!key || seen.has(key)) return false;
+                        seen.add(key);
+                        return true;
+                    }) : [];
                 } else {
                     financialJournalsList = [];
                 }
@@ -21012,6 +21021,7 @@
             }
             renderJournalsTable();
             updateJournalsKpiStats();
+            if (typeof renderLabaRugiReport === 'function') renderLabaRugiReport();
         }
 
         function renderJournalsTable(data = null) {
@@ -21024,7 +21034,14 @@
                 addBtn.style.display = isApprover ? 'inline-flex' : 'none';
             }
 
-            const list = data || financialJournalsList;
+            const rawList = data || financialJournalsList;
+            const seen = new Set();
+            const list = rawList.filter(j => {
+                const key = j.id || j.kode_transaksi;
+                if (!key || seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
 
             if (list.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--color-charcoal-muted); padding: 3rem 1.5rem;"><div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-gold-light); color: var(--color-gold-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-book-journal-whills"></i></div><div style="font-weight: 700; font-size: 0.95rem; color: var(--color-charcoal); margin-bottom: 0.25rem;">Belum Ada Transaksi Jurnal Kas</div><p style="font-size: 0.8rem; margin: 0; color: var(--color-charcoal-muted);">Klik tombol <b>"+ Catat Transaksi Baru"</b> untuk mulai merekam arus kas masuk atau keluar masjid.</p></td></tr>';
@@ -21107,7 +21124,15 @@
             let totalMasuk = 0;
             let totalKeluar = 0;
 
-            financialJournalsList.forEach(j => {
+            const seen = new Set();
+            const uniqueList = financialJournalsList.filter(j => {
+                const key = j.id || j.kode_transaksi;
+                if (!key || seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+
+            uniqueList.forEach(j => {
                 const nom = parseFloat(j.nominal || 0);
                 if (j.tipe_transaksi === 'KAS_MASUK') {
                     totalMasuk += nom;
@@ -21128,7 +21153,7 @@
             if (statKeluar) statKeluar.textContent = formatRupiah(totalKeluar);
 
             const statTrx = document.getElementById('stat-kas-total-trx');
-            if (statTrx) statTrx.textContent = financialJournalsList.length + ' Transaksi';
+            if (statTrx) statTrx.textContent = uniqueList.length + ' Transaksi';
         }
 
         function generateJournalCode(type) {
@@ -21243,14 +21268,21 @@
             };
 
             const existingIdx = financialJournalsList.findIndex(j => j.id === id);
-            if (existingIdx !== -1) {
-                financialJournalsList[existingIdx] = { ...financialJournalsList[existingIdx], ...record };
-            } else {
+            if (existingIdx === -1) {
                 record.created_at = new Date().toISOString();
-                financialJournalsList.unshift(record);
+            } else {
+                record.created_at = financialJournalsList[existingIdx].created_at || new Date().toISOString();
             }
-
-            localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
+            if (typeof upsertJournalInMemory === 'function') {
+                upsertJournalInMemory(record);
+            } else {
+                if (existingIdx !== -1) {
+                    financialJournalsList[existingIdx] = { ...financialJournalsList[existingIdx], ...record };
+                } else {
+                    financialJournalsList.unshift(record);
+                }
+                localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
+            }
 
             if (typeof sbClient !== 'undefined' && sbClient) {
                 const { error: jrnErr } = await sbClient.from('financial_journals').upsert([record], { onConflict: 'id' });
@@ -21370,12 +21402,16 @@
 
             tbody.innerHTML = list.map(item => {
                 let statusBadgeClass = 'status-budget-pending';
-                let statusLabel = 'Menunggu DKM';
+                let statusLabel = 'Menunggu Approval';
                 let statusSubtext = '<span style="color: #6B7280; font-size: 0.68rem;"><i class="fa-solid fa-hourglass-start"></i> Menunggu review</span>';
-                if (item.status_pengajuan === 'APPROVED_DKM') {
+                if (item.status_pengajuan === 'POSTPONED') {
+                    statusBadgeClass = 'status-budget-postponed';
+                    statusLabel = 'Ditunda';
+                    statusSubtext = '<span style="color: #B45309; font-weight: 600; font-size: 0.68rem;"><i class="fa-solid fa-clock-rotate-left"></i> Perlu dikaji lebih lanjut</span>';
+                } else if (item.status_pengajuan === 'APPROVED_DKM') {
                     statusBadgeClass = 'status-budget-approved';
-                    statusLabel = 'Disetujui DKM';
-                    statusSubtext = '<span style="color: #047857; font-weight: 600; font-size: 0.68rem;"><i class="fa-solid fa-clock"></i> Siap Dicairkan Kasir</span>';
+                    statusLabel = 'Disetujui';
+                    statusSubtext = '<span style="color: #047857; font-weight: 600; font-size: 0.68rem;"><i class="fa-solid fa-clock"></i> Siap dicairkan</span>';
                 } else if (item.status_pengajuan === 'DISBURSED') {
                     statusBadgeClass = 'status-budget-disbursed';
                     statusLabel = 'Dana Dicairkan';
@@ -21397,7 +21433,7 @@
 
                 let actionButtons = '';
                 if (isApprover) {
-                    if (item.status_pengajuan === 'PENDING') {
+                    if (item.status_pengajuan === 'PENDING' || item.status_pengajuan === 'POSTPONED') {
                         actionButtons += '<button type="button" class="btn btn-outline btn-sm" onclick="openReviewBudgetModal(\'' + item.id + '\')" style="font-size: 0.72rem; padding: 0.25rem 0.5rem; gap: 0.3rem;" title="Evaluasi & Keputusan DKM"><i class="fa-solid fa-stamp" style="color: var(--color-gold-deep);"></i> Evaluasi DKM</button>';
                     } else if (item.status_pengajuan === 'APPROVED_DKM') {
                         actionButtons += '<button type="button" class="btn btn-sm" onclick="openDisburseBudgetModal(\'' + item.id + '\')" style="font-size: 0.72rem; padding: 0.25rem 0.55rem; gap: 0.3rem; background: var(--color-success); color: #fff; border: 1px solid var(--color-success); font-weight: 700; border-radius: 4px;" title="Keluarkan Kas Masjid"><i class="fa-solid fa-hand-holding-dollar"></i> Cairkan Kas</button>';
@@ -21409,7 +21445,7 @@
                     }
                 }
 
-                if (isApprover || item.status_pengajuan === 'PENDING') {
+                if (isApprover || item.status_pengajuan === 'PENDING' || item.status_pengajuan === 'POSTPONED') {
                     actionButtons += '<button type="button" class="btn-action edit" onclick="openEditBudgetModal(\'' + item.id + '\')" title="Edit Pengajuan"><i class="fa-solid fa-pen-to-square"></i></button>';
                     actionButtons += '<button type="button" class="btn-action delete" onclick="deleteBudgetEntry(\'' + item.id + '\')" title="Hapus Pengajuan"><i class="fa-solid fa-trash"></i></button>';
                 }
@@ -21476,7 +21512,7 @@
 
             budgetRequestsList.forEach(b => {
                 totalNominal += parseFloat(b.nominal_diajukan || 0);
-                if (b.status_pengajuan === 'PENDING') pendingCount++;
+                if (b.status_pengajuan === 'PENDING' || b.status_pengajuan === 'POSTPONED') pendingCount++;
                 else if (b.status_pengajuan === 'APPROVED_DKM') approvedCount++;
                 else if (b.status_pengajuan === 'DISBURSED') disbursedCount++;
             });
@@ -21717,7 +21753,44 @@
             const item = budgetRequestsList.find(b => b.id === id);
             if (!item) return;
 
-            // Evaluasi DKM murni persetujuan / penolakan, TIDAK mencatat uang kas keluar!
+            // Jika pimpinan memilih 'Dana Telah Dicairkan', langsung alihkan ke proses pencairan kas
+            if (newStatus === 'DISBURSED') {
+                item.status_pengajuan = 'APPROVED_DKM';
+                item.catatan_evaluasi = catatan;
+                item.reviewed_by = getUserDisplayName(currentUser);
+                item.reviewed_by_email = (currentUser && currentUser.email) ? currentUser.email : '';
+                item.reviewed_at = new Date().toISOString();
+                item.updated_at = new Date().toISOString();
+
+                localStorage.setItem('masjid_sophia_budget_master', JSON.stringify(budgetRequestsList));
+
+                if (typeof sbClient !== 'undefined' && sbClient) {
+                    const { error: bgtUpdErr } = await sbClient.from('budget_requests').update({
+                        status_pengajuan: 'APPROVED_DKM',
+                        catatan_evaluasi: item.catatan_evaluasi,
+                        reviewed_by: item.reviewed_by,
+                        reviewed_by_email: item.reviewed_by_email,
+                        reviewed_at: item.reviewed_at,
+                        updated_at: item.updated_at
+                    }).eq('id', id);
+                    if (bgtUpdErr) {
+                        console.error('[Budget] Update review error:', bgtUpdErr);
+                        alert('Gagal menyetujui pengajuan di database Supabase: ' + (bgtUpdErr.message || JSON.stringify(bgtUpdErr)));
+                        return;
+                    }
+                }
+
+                broadcastEvent('BUDGET_SYNC', { action: 'update_status', item });
+                closeModal('modal-budget-review');
+                renderBudgetTable();
+                updateBudgetKpiStats();
+
+                // Buka modal pencairan kas resmi untuk mencatat metode transaksi & jurnal kas
+                openDisburseBudgetModal(item.id);
+                return;
+            }
+
+            // Evaluasi DKM murni persetujuan / penolakan / tunda, TIDAK mencatat uang kas keluar!
             item.status_pengajuan = newStatus;
             item.catatan_evaluasi = catatan;
             item.reviewed_by = getUserDisplayName(currentUser);
@@ -21751,6 +21824,8 @@
 
             if (newStatus === 'APPROVED_DKM') {
                 alert('Pengajuan telah disetujui DKM!\nUang kas belum keluar. Tim Keuangan / Bendahara dapat mencairkan dana melalui tombol "Cairkan Kas".');
+            } else if (newStatus === 'POSTPONED') {
+                alert('Pengajuan anggaran telah ditunda (perlu kajian lebih lanjut).');
             } else if (newStatus === 'REJECTED') {
                 alert('Pengajuan anggaran telah ditolak.');
             } else {
@@ -21918,9 +21993,13 @@
                 if (bgtErr) console.warn('[Disbursement] Budget update warning:', bgtErr);
             }
 
-            // 3. Catat ke daftar jurnal lokal
-            financialJournalsList.unshift(journalRecord);
-            localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
+            // 3. Catat ke daftar jurnal lokal dengan proteksi anti-duplikasi idempotensi
+            if (typeof upsertJournalInMemory === 'function') {
+                upsertJournalInMemory(journalRecord);
+            } else {
+                financialJournalsList.unshift(journalRecord);
+                localStorage.setItem('masjid_sophia_journals_master', JSON.stringify(financialJournalsList));
+            }
             broadcastEvent('JOURNAL_SYNC', { action: 'insert', record: journalRecord });
 
             // 4. Perbarui status pengajuan anggaran lokal

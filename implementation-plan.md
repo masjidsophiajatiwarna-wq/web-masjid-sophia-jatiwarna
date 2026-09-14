@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v6.2 (Pemisahan Persetujuan DKM vs Pencairan Kasir Keuangan & Proteksi Idempotensi Kas Keluar)  
+**Versi Rencana Induk:** v6.3 (Resolusi Duplikasi Pencatatan Kas Keluar & Eliminasi Tombol Refresh Hardcoded Modul PJ)  
 **Terakhir Diperbarui:** 2026-09-14  
 
 ---
@@ -454,4 +454,71 @@ Berikut adalah modul coaching langkah-demi-langkah yang akan dipandu secara inte
 | 12 | Kas keluar tercatat prematur saat baru disetujui DKM & risiko duplikasi pencatatan | `admin.html` (`handleBudgetReviewSubmit`, `#modal-budget-disburse`, `handleBudgetDisburseSubmit`) | **SELESAI** — Memisahkan alur persetujuan DKM (`APPROVED_DKM`, tanpa mutasi kas keluar) dari alur pencairan uang kasir/accounting (`DISBURSED`), menambahkan modal khusus `#modal-budget-disburse`, tombol aksi "Cairkan Kas", serta proteksi idempotensi ketat anti-duplikasi jurnal kas. |
 | 13 | Error skema `budget_request_id` pada Supabase saat pencairan kas keluar & status macet di Dana Dicairkan | `admin.html` (`handleBudgetDisburseSubmit`), Supabase DB (`budget_requests`) | **SELESAI** — Menghapus kolom non-eksisten `budget_request_id` dari payload `financial_journals`, menyematkan kode pengajuan pada `deskripsi` dan `disbursed_journal_code`, menerapkan transactional rollback safeguard (proses dibatalkan jika insert jurnal gagal), serta mereset record `REQ-2026-002` ke status `APPROVED_DKM`. |
 | 14 | Ketiadaan Laporan Laba Rugi (Surplus / Defisit) interaktif, grafik Chart.js, dan tombol Ekspor PDF | `admin.html` (`#subview-keu-labarugi`, `renderLabaRugiReport`, `printLabaRugiReport`, `exportLabaRugiToCSV`, Chart.js CDN) | **SELESAI** — Menambahkan Subview 4 "Laporan Laba Rugi (Surplus / Defisit)" berstandar ISAK 35, 4 kartu KPI eksekutif, grafik batang komparasi Kas Masuk vs Kas Keluar, grafik donat beban kategori operasional, tabel rincian pendapatan & beban dengan subtotal, serta tombol Ekspor CSV dan Cetak PDF resmi ber-Kop DKM Masjid Sophia Jatiwarna lengkap dengan blok tanda tangan digital. |
+
+---
+
+## 9. Matriks Verifikasi Bug Race Condition Kas Keluar & Eliminasi Tombol Refresh Hardcoded (v6.3)
+
+### Analisis Akar Masalah: Mengapa Muncul Duplikasi Pencatatan (2x di Tampilan)?
+1. **Status Database Supabase:** Pengecekan langsung pada tabel `financial_journals` membuktikan bahwa data transaksi kas keluar pencairan `REQ-2026-002` hanya tersimpan **1 baris** (`id: 521700e9-67dc-4511-b29c-ba5fe48a9006`, nominal Rp 10.000, kode `TRX-OUT-001`). Tidak ada duplikasi data di database Supabase.
+2. **Penyebab Duplikasi di Memori UI (*Race Condition*):**
+   - Saat kasir/accounting mencairkan dana di `#modal-budget-disburse`, fungsi `handleBudgetDisburseSubmit(e)` memanggil `await sbClient.from('financial_journals').insert([journalRecord])`.
+   - Begitu data ter-insert di Supabase, listener WebSocket Realtime CDC (`postgres_changes` pada tabel `financial_journals` di baris 11593) seketika aktif dan memicu `loadFinancialJournals()`.
+   - Fungsi `loadFinancialJournals()` mengambil data dari Supabase via `SELECT *` yang sudah mencakup `TRX-OUT-001`, lalu mengisi array memori `financialJournalsList`.
+   - Namun, fungsi `handleBudgetDisburseSubmit(e)` yang masih berjalan di latar depan kemudian mengeksekusi `financialJournalsList.unshift(journalRecord)` pada baris 21922.
+   - Akibatnya, `journalRecord` dimasukkan untuk kedua kalinya ke dalam `financialJournalsList`. Fungsi `renderJournalsTable()` dan `updateJournalsKpiStats()` kemudian menghitung 2 baris `TRX-OUT-001` sehingga total kas keluar membengkak menjadi Rp 20.000.
+   - Ketika halaman di-refresh via browser (F5), `financialJournalsList` di-load ulang murni dari Supabase sehingga tampilan kembali menjadi 1 baris (Rp 10.000).
+
+### Analisis Akar Masalah: Mengapa Status 'Tunda / Perlu Kajian Lebih Lanjut' Tidak Berubah?
+1. **Inkonsistensi Value `<option>`:** Pada form `#modal-budget-review` (baris 9312), pilihan "Tunda / Perlu Kajian Lebih Lanjut" memiliki atribut `value="PENDING"`.
+2. **Inkonsistensi Label di Tabel:** Di fungsi `renderBudgetTable()` (baris 21373), status `'PENDING'` dirender dengan badge label `'Menunggu DKM'`.
+3. **Akibat Lapangan:** Saat pengguna memilih "Tunda / Perlu Kajian Lebih Lanjut" lalu menyimpan keputusan, sistem menyimpan status `'PENDING'`. Karena tabel merender `'PENDING'` sebagai `'Menunggu DKM'`, tabel terlihat sama sekali tidak berubah dan tetap berstatus `'Menunggu DKM'`.
+4. **Solusi:**
+   - Pisahkan status pengajuan menjadi nilai unik:
+     - `'PENDING'` -> **Menunggu Approval** (subteks: `Menunggu review`)
+     - `'POSTPONED'` -> **Ditunda** (subteks: `Perlu dikaji lebih lanjut`)
+     - `'APPROVED_DKM'` -> **Disetujui** (subteks: `Siap dicairkan`)
+     - `'DISBURSED'` -> **Dana Telah Dicairkan** (subteks: `Kas Keluar YYYY-MM-DD`)
+     - `'REJECTED'` -> **Ditolak** (subteks: `Tidak disetujui`)
+
+### Alur Penyelesaian Teknis:
+1. **Idempotensi In-Memory Sentral (`upsertJournalInMemory`):** Seluruh mutasi lokal jurnal kas diarahkan melalui fungsi pemeriksa duplikasi berbasis `id` dan `kode_transaksi`. Jika sudah ada (misal telah diisi lebih awal oleh Realtime CDC), lakukan penimpaan properti tanpa menambahkan baris baru.
+2. **Filter Idempotensi pada `loadFinancialJournals` & Rendering:** Menambahkan proteksi `Set` unik untuk menyaring duplikat sebelum penyimpanan memori, rendering tabel, dan perhitungan KPI saldo kas.
+3. **Penyempurnaan Form Evaluasi Pengajuan Anggaran (`#modal-budget-review`):**
+   - Mengubah label field `Keputusan DKM` menjadi `'Status Pengajuan'`.
+   - Menghapus seluruh teks di dalam tanda kurung pada opsi select sehingga hanya ada 4 pilihan:
+     - `Tunda / Perlu Kajian Lebih Lanjut` (`value="POSTPONED"`)
+     - `Disetujui` (`value="APPROVED_DKM"`)
+     - `Ditolak` (`value="REJECTED"`)
+     - `Dana Telah Dicairkan` (`value="DISBURSED"`)
+4. **Pembaruan Badge & Filter Status Pengajuan Anggaran (`renderBudgetTable` & `#budget-status-filter`):**
+   - Status baru `PENDING` menggunakan badge **Menunggu Approval** (menggantikan 'Menunggu DKM').
+   - Status `POSTPONED` menggunakan badge **Ditunda** dengan subteks `Perlu dikaji lebih lanjut`.
+   - Status `APPROVED_DKM` menggunakan badge **Disetujui** dengan subteks `Siap dicairkan`.
+   - Status `DISBURSED` menggunakan badge **Dana Dicairkan** / **Dana Telah Dicairkan**.
+   - Status `REJECTED` menggunakan badge **Ditolak**.
+   - **Filter Status (`#budget-status-filter`):** Menghapus seluruh tanda kurung dari opsi dropdown filter sehingga tertulis bersih:
+     - `Semua Status`
+     - `Menunggu Approval`
+     - `Ditunda`
+     - `Disetujui`
+     - `Dana Telah Dicairkan`
+     - `Ditolak`
+5. **Eliminasi Seluruh Tombol Refresh Hardcoded:** Menghapus 8 tombol refresh buatan di seluruh modul PJ (Keuangan, Donasi, Pengurus, Santri, Musafir, Keamanan, Kebersihan, Logistik), mengembalikan kebiasaan refresh murni ke browser (`F5` / `Ctrl+R`) didukung sinkronisasi otomatis Supabase Realtime WebSocket (CDC).
+
+| No | Poin Masalah / Perbaikan | Berkas & Komponen | Resolusi Teknis & Status |
+| :---: | :--- | :--- | :--- |
+| 1 | Duplikasi pencatatan kas keluar in-memory saat pencairan anggaran (*race condition* CDC vs unshift) | `admin.html` (`handleBudgetDisburseSubmit`, `upsertJournalInMemory`, `loadFinancialJournals`) | **SELESAI (100% TERVERIFIKASI)** — Mengganti `unshift` dengan `upsertJournalInMemory`, menambahkan deduplikasi berbasis ID/kode transaksi pada `loadFinancialJournals`, `renderJournalsTable`, dan `updateJournalsKpiStats`. |
+| 2 | Status 'Tunda / Perlu Kajian Lebih Lanjut' tidak berubah saat disimpan | `admin.html` (`#modal-budget-review`, `openReviewBudgetModal`, `handleBudgetReviewSubmit`, `renderBudgetTable`) | **SELESAI (100% TERVERIFIKASI)** — Memisahkan nilai status ke `POSTPONED`, menampilkan badge 'Ditunda' dengan subteks 'Perlu dikaji lebih lanjut'. |
+| 3 | Teks dalam kurung pada field dan pergantian nama field ke 'Status Pengajuan' | `admin.html` (`#modal-budget-review`, `#modal-budget-entry`) | **SELESAI (100% TERVERIFIKASI)** — Mengubah label field menjadi 'Status Pengajuan', membersihkan tanda kurung dari opsi dropdown menjadi tepat 4 pilihan: Tunda / Perlu Kajian Lebih Lanjut, Disetujui, Ditolak, Dana Telah Dicairkan. |
+| 4 | Pergantian badge 'Menunggu DKM' ke 'Menunggu Approval' & filter status bersih tanpa tanda kurung | `admin.html` (`renderBudgetTable`, `#budget-status-filter`) | **SELESAI (100% TERVERIFIKASI)** — Mengubah label badge status pengajuan baru dari 'Menunggu DKM' menjadi 'Menunggu Approval', serta memastikan seluruh opsi filter status bersih tanpa tanda kurung (Semua Status, Menunggu Approval, Ditunda, Disetujui, Dana Telah Dicairkan, Ditolak). |
+| 5 | Tombol Refresh Keuangan hardcoded | `admin.html` (`#subview-keu-jurnal` nav) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-action-gold" onclick="loadKeuanganData(true)">` dari subview navigasi Keuangan. |
+| 6 | Tombol Refresh Donasi hardcoded | `admin.html` (`#subview-keu-donasi` toolbar) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-action-gold" onclick="loadKeuanganData(true)">` dari toolbar tabel donasi. |
+| 7 | Tombol Refresh Pengurus DKM hardcoded | `admin.html` (`#admin-users-table` toolbar) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-table-action" onclick="loadAdminUsers(true)">` dari toolbar direktori pengurus. |
+| 8 | Tombol Refresh Santri hardcoded | `admin.html` (`#tab-santri` nav) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-action-gold" onclick="loadSantriData(true)">` dari subview navigasi Santri. |
+| 9 | Tombol Refresh Musafir hardcoded | `admin.html` (`#tab-musafir` nav) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-action-gold" onclick="loadMusafirData(true)">` dari subview navigasi Musafir. |
+| 10 | Tombol Refresh Keamanan hardcoded | `admin.html` (`#tab-keamanan` nav) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-action-gold" onclick="loadKeamananData(true)">` dari subview navigasi Keamanan. |
+| 11 | Tombol Refresh Kebersihan hardcoded | `admin.html` (`#tab-kebersihan` nav) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-action-gold" onclick="loadKebersihanData(true)">` dari subview navigasi Kebersihan. |
+| 12 | Tombol Refresh Logistik hardcoded | `admin.html` (`#tab-logistik` nav) | **SELESAI (100% TERVERIFIKASI)** — Menghapus tombol `<button class="btn-action-gold" onclick="loadLogistikData(true)">` dari subview navigasi Logistik. |
+
 

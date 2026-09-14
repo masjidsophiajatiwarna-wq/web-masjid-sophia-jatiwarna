@@ -4,6 +4,26 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.29] - 2026-09-14
+
+### Resolusi Race Condition Pencairan Anggaran, Standardisasi Status Pengajuan, & Eliminasi Tombol Refresh Hardcoded
+
+#### Resolusi Race Condition Duplikasi Kas Keluar & Idempotensi Jurnal In-Memory
+- `[JOURNAL_CENTRAL_IDEMPOTENCY]` Menambahkan fungsi sentral `upsertJournalInMemory(record)` dengan verifikasi kunci unik ganda (`id` dan `kode_transaksi`) serta penyaringan `Set` mutlak sebelum disimpan ke memori dan `localStorage`.
+- `[DISBURSEMENT_RACE_CONDITION_FIX]` Mengganti pemanggilan `financialJournalsList.unshift(journalRecord)` pada `handleBudgetDisburseSubmit` dengan `upsertJournalInMemory(journalRecord)`. Mengeliminasi bug duplikasi tampilan kas keluar (Rp 20.000 menjadi Rp 10.000) yang sebelumnya disebabkan oleh benturan race condition antara penerimaan data via Supabase Realtime CDC (`postgres_changes`) dan mutasi array foreground.
+- `[JOURNAL_LOAD_DEDUPLICATION]` Menerapkan filter deduplikasi in-memory pada `loadFinancialJournals()`, `renderJournalsTable()`, dan `updateJournalsKpiStats()`.
+
+#### Standardisasi Status Pengajuan Anggaran & Pembersihan Tanda Kurung
+- `[BUDGET_STATUS_POSTPONED]` Memisahkan nilai status penundaan pengajuan ke kode baku `POSTPONED`. Pada tabel pengajuan anggaran, status ini dirender dengan badge kuning/amber **"Ditunda"** dan subteks *"Perlu dikaji lebih lanjut"*.
+- `[BUDGET_STATUS_PENDING_RENAMED]` Memperbarui label badge untuk status pengajuan awal (`PENDING`) dari *"Menunggu DKM"* menjadi **"Menunggu Approval"** dengan subteks *"Menunggu review"*.
+- `[BUDGET_REVIEW_MODAL_CLEANUP]` Mengubah label field form evaluasi pimpinan dari `Keputusan DKM` menjadi `'Status Pengajuan'`, serta menghapus seluruh teks di dalam tanda kurung pada opsi dropdown menjadi tepat 4 pilihan bersih: `Tunda / Perlu Kajian Lebih Lanjut` (`POSTPONED`), `Disetujui` (`APPROVED_DKM`), `Ditolak` (`REJECTED`), dan `Dana Telah Dicairkan` (`DISBURSED`).
+- `[BUDGET_DISBURSE_REDIRECT]` Mengarahkan pemilihan status "Dana Telah Dicairkan" di modal evaluasi DKM secara otomatis ke pembukaan formulir pencairan kas resmi (`#modal-budget-disburse`), memastikan pencatatan metode pembayaran, kwitansi, dan tanggal kas keluar terekam secara terverifikasi.
+- `[BUDGET_FILTER_CLEANUP]` Membersihkan seluruh opsi dropdown filter status (`#budget-status-filter`) dari teks tanda kurung menjadi: `Semua Status`, `Menunggu Approval`, `Ditunda`, `Disetujui`, `Dana Telah Dicairkan`, dan `Ditolak`.
+
+#### Eliminasi Seluruh Tombol Refresh Hardcoded (Standar Browser & Realtime CDC)
+- `[HARDCODED_REFRESH_REMOVAL]` Menghapus 8 tombol refresh buatan berikon `fa-arrows-rotate` pada seluruh modul PJ Pengurus DKM (`Keuangan`, `Donasi`, `Direktori Pengurus DKM`, `Santri`, `Musafir`, `Keamanan`, `Kebersihan`, dan `Logistik`).
+- `[BROWSER_NATIVE_REFRESH]` Mengembalikan pengalaman pengguna ke standar web modern dan browser bawaan (`F5` / `Ctrl+R`) yang sepenuhnya didukung oleh sinkronisasi otomatis Supabase Realtime WebSocket (CDC).
+
 ## [1.9.28] - 2026-09-14
 
 ### Resolusi Skema Pencairan Kas Masuk/Keluar & Modul Laporan Laba Rugi (Surplus / Defisit) Standar ISAK 35
