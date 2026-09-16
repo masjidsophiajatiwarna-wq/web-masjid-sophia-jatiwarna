@@ -3,6 +3,50 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "progdev.masjidsophia.com"
+        }
+      ],
+      "destination": "/progress-implementation-plan",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "progdev.masjidsophiajatiwarna.com"
+        }
+      ],
+      "destination": "/progress-implementation-plan",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.masjidsophia.com"
+        }
+      ],
+      "destination": "/admin",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.masjidsophiajatiwarna.com"
+        }
+      ],
+      "destination": "/admin",
+      "permanent": false
+    },
+    {
       "source": "/artikel/:slug",
       "destination": "/artikel-detail.html?slug=:slug",
       "permanent": false
