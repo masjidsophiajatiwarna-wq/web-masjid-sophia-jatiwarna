@@ -1061,10 +1061,10 @@
                 <span class="gantt-item-name">
                     <i class="fa-solid fa-rocket" style="color: var(--color-success);"></i> Fase 6: Go-Live &amp; SEO Cutover
                 </span>
-                <span class="status-tag status-inprogress">55% Selesai</span>
+                <span class="status-tag status-inprogress">80% Selesai</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-55">55% - Email, SEO Dasar, 404 Kustom, Twitter Card &amp; JSON-LD Live</div>
+                <div class="gantt-bar-fill fill-80" style="width: 80%; background: linear-gradient(90deg, var(--color-gold-deep), var(--color-success));">80% - Email Routing, Google &amp; Bing SEO, Cloudflare Analytics &amp; Domain Live</div>
             </div>
         </div>
 
@@ -2214,7 +2214,7 @@
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-inprogress">55% Selesai</span>
+                    <span class="status-tag status-inprogress">80% Selesai</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
@@ -2240,6 +2240,26 @@
                             <div class="task-desc">Peta situs terstruktur dan halaman error bertema terang resmi.</div>
                         </div>
                     </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Registrasi Google Search Console, Bing Webmaster &amp; Cloudflare Analytics
+                                <span class="task-badge-pill">Search Engines</span>
+                            </div>
+                            <div class="task-desc">Verifikasi DNS TXT Google Search Console, submit sitemap.xml berhasil, sinkronisasi 1-klik Bing Webmaster Tools (Bing, Yahoo, DuckDuckGo, Copilot), serta integrasi beacon Cloudflare Web Analytics bebas cookie di seluruh halaman publik.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Konfigurasi Email Resmi Baru Resend &amp; Cloudflare Email Routing
+                                <span class="task-badge-pill">Email Resmi</span>
+                            </div>
+                            <div class="task-desc">Penyelarasan alamat aspirasi@masjidsophia.com (kotak aspirasi &amp; aduan utama), info@masjidsophia.com, saran@masjidsophia.com, dan pengaduan@masjidsophia.com via Cloudflare Email Routing otomatis ke masjidsophiajatiwarna@gmail.com, outbound Resend SMTP terverifikasi DKIM/SPF, serta Gmail Send mail as aktif.</div>
+                        </div>
+                    </div>
                     <div class="task-item">
                         <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
                         <div class="task-content">
@@ -2247,17 +2267,7 @@
                                 Migrasi Domain Utama ke masjidsophia.com &amp; 301 Redirect Arsitektur 7 Pilar
                                 <span class="task-badge-pill">Migrasi Domain</span>
                             </div>
-                            <div class="task-desc">Pengalihan domain produksi utama ke masjidsophia.com dengan redirect 301 permanen dari masjidsophiajatiwarna.com, sinkronisasi DNS Cloudflare, Vercel, Supabase Auth, dan ImageKit CDN (dieksekusi melalui modul interaktif 1-by-1 coaching).</div>
-                        </div>
-                    </div>
-                    <div class="task-item">
-                        <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
-                        <div class="task-content">
-                            <div class="task-title">
-                                Konfigurasi Email Resmi Baru Resend &amp; Cloudflare Email Routing
-                                <span class="task-badge-pill">Email Resmi</span>
-                            </div>
-                            <div class="task-desc">Penyelarasan alamat aspirasi@masjidsophia.com (kotak aspirasi &amp; aduan utama), info@masjidsophia.com, saran@masjidsophia.com, dan pengaduan@masjidsophia.com via Cloudflare Email Routing otomatis ke masjidsophiajatiwarna@gmail.com serta outbound Resend SMTP via verifikasi DNS DKIM/SPF.</div>
+                            <div class="task-desc">Domain masjidsophia.com dan subdomain aktif di Vercel &amp; Cloudflare DNS. Tahap akhir meliputi aktivasi Redirect Rule 301 dari masjidsophiajatiwarna.com dan penyesuaian Supabase Auth Site URL.</div>
                         </div>
                     </div>
                 </div>
