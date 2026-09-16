@@ -225,48 +225,50 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
   - [ ] **Eksekusi Migrasi Domain Utama ke masjidsophia.com (Arsitektur 7 Pilar):**
     - [ ] **Pilar 1 - GitHub:** Repositori tetap di `web-masjid-sophia-jatiwarna`, pembaruan secret tokens dan URL dokumentasi.
     - [ ] **Pilar 2 - Cloudflare:** Setup DNS Zone `masjidsophia.com`, SSL/TLS Full Strict, dan Page/Redirect Rules 301 dari `masjidsophiajatiwarna.com/*` ke `masjidsophia.com/$1`.
-    - [ ] **Pilar 3 - Email Resmi (Resend & Cloudflare):** Domain sending baru `masjidsophia.com` di Resend (DKIM, SPF, MX), serta forwarding Cloudflare Email Routing untuk 3 alamat resmi:
-      - `info@masjidsophia.com` -> Email inbox pengurus DKM
-      - `saran@masjidsophia.com` -> Kotak saran jamaah
-      - `pengaduan@masjidsophia.com` -> Layanan aduan fasilitas
+    - [ ] **Pilar 3 - Email Resmi (Resend & Cloudflare Email Routing):** Domain sending baru `masjidsophia.com` di Resend (DKIM, SPF, MX), serta forwarding Cloudflare Email Routing otomatis ke email dasar `masjidsophiajatiwarna@gmail.com` untuk 4 alamat:
+      - `aspirasi@masjidsophia.com` -> Kotak aspirasi, pengaduan fasilitas, & saran jamaah (Alamat Utama UI)
+      - `info@masjidsophia.com` -> Informasi umum & kontak publik DKM
+      - `saran@masjidsophia.com` -> Alias cadangan kotak saran
+      - `pengaduan@masjidsophia.com` -> Alias cadangan pengaduan jamaah
     - [ ] **Pilar 4 - Vercel Hosting:** Penambahan custom domains (`masjidsophia.com`, `admin.masjidsophia.com`, `progdev.masjidsophia.com`, `dev.masjidsophia.com`) dan konfigurasi 301 redirect di Vercel Dashboard.
     - [ ] **Pilar 5 - Supabase Backend:** Pembaruan Site URL & Redirect URLs di Supabase Auth Settings, penyesuaian redirect OAuth Google (jika diaktifkan), dan CORS headers.
     - [ ] **Pilar 6 - ImageKit.io CDN:** Pembaruan origin URL endpoint dan CORS domain whitelist ke `https://masjidsophia.com` & `https://admin.masjidsophia.com`.
-    - [ ] **Pilar 7 - Environment Variables & Codebase:** Sinkronisasi berkas `.env`, Vercel Project Environment Variables (`SITE_URL`, `RESEND_FROM_EMAIL`), dan pembaruan tautan statis internal.
+    - [ ] **Pilar 7 - Environment Variables & Codebase:** Sinkronisasi berkas `.env`, Vercel Project Environment Variables (`SITE_URL`, `RESEND_FROM_EMAIL`), pembaruan footer `index.html` (`info@masjidsophia.com`), kotak aspirasi (`aspirasi@masjidsophia.com`), `api/send-receipt.js`, `api/pengaduan.js`, `vercel.json`, `robots.txt`, dan `sitemap.xml`.
     - [ ] **Pilar 8 - SEO Link Equity & 301 Redirect:** Pemetaan menyeluruh pengalihan permanen (HTTP 301) dari seluruh URL lawas ke URL baru tanpa kehilangan reputasi search engine.
-    - [ ] **Pilar 9 - Handover & Delegasi Hak Akses Tim:** Prosedur transfer kepemilikan/undangan akun (GitHub, Cloudflare, Vercel, Supabase) ke email resmi DKM.
+    - [ ] **Pilar 9 - Integritas Akun & Kepemilikan Tetap:** Kepemilikan akun inti (GitHub, Cloudflare, Vercel, Resend, Supabase) tetap menggunakan akun yang sudah ada (`masjidsophiajatiwarna@gmail.com`), tanpa transfer akun yang berisiko.
 
 ---
 
 ### Panduan Teknis 1-by-1 Coaching: Eksekusi Migrasi Domain ke masjidsophia.com
 
-Berikut adalah modul coaching langkah-demi-langkah yang akan dipandu secara interaktif saat fase migrasi domain dimulai:
+Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-by-1 Coaching** sebelum dan selama setiap konfigurasi:
 
 #### Langkah 1: Persiapan Domain & Cloudflare DNS
-1. Buka dashboard Cloudflare (`dash.cloudflare.com`) -> Klik **Add a Domain** -> Masukkan `masjidsophia.com` -> Pilih paket **Free**.
-2. Ubah Name Server di registrar tempat membeli domain `masjidsophia.com` agar mengarah ke 2 NS Cloudflare yang diberikan.
-3. Di tab **DNS Records** Cloudflare untuk `masjidsophia.com`, buat entri:
+1. Buka dashboard Cloudflare (`dash.cloudflare.com`) -> Pastikan domain `masjidsophia.com` berada pada status **Active**.
+2. Di tab **DNS Records** Cloudflare untuk `masjidsophia.com`, buat entri CNAME yang mengarah ke Vercel:
    - `CNAME` | `@` (root) -> `cname.vercel-dns.com` (Proxy: ON / Orange Cloud)
    - `CNAME` | `www` -> `cname.vercel-dns.com` (Proxy: ON)
    - `CNAME` | `admin` -> `cname.vercel-dns.com` (Proxy: ON)
    - `CNAME` | `progdev` -> `cname.vercel-dns.com` (Proxy: ON)
    - `CNAME` | `dev` -> `cname.vercel-dns.com` (Proxy: ON)
-4. Di tab **SSL/TLS**, pastikan mode enkripsi disetel ke **Full (Strict)** dan aktifkan **Always Use HTTPS**.
+3. Di tab **SSL/TLS**, pastikan mode enkripsi disetel ke **Full (Strict)** dan aktifkan **Always Use HTTPS**.
 
 #### Langkah 2: Setup Email Routing Cloudflare & Resend SMTP
-1. **Cloudflare Email Routing:**
+1. **Cloudflare Email Routing (Inbound Forwarding):**
    - Di zone `masjidsophia.com`, buka menu **Email** -> **Email Routing** -> Klik **Enable Email Routing**.
    - Cloudflare akan meminta penambahan record DNS MX dan TXT SPF secara otomatis (klik **Add records automatically**).
-   - Buat 3 Destination Rules / Custom Addresses:
+   - Buat 4 Destination Rules / Custom Addresses:
+     - `aspirasi@masjidsophia.com` -> arahkan ke `masjidsophiajatiwarna@gmail.com`
      - `info@masjidsophia.com` -> arahkan ke `masjidsophiajatiwarna@gmail.com`
      - `saran@masjidsophia.com` -> arahkan ke `masjidsophiajatiwarna@gmail.com`
      - `pengaduan@masjidsophia.com` -> arahkan ke `masjidsophiajatiwarna@gmail.com`
-   - Verifikasi email tujuan dengan mengklik tautan konfirmasi yang masuk ke Gmail DKM.
+   - Buka inbox `masjidsophiajatiwarna@gmail.com` dan klik tautan verifikasi jika diminta oleh Cloudflare.
 2. **Resend.com (Pengiriman Email Keluar / Transactional SMTP):**
    - Buka dashboard Resend (`resend.com/domains`) -> Klik **Add Domain** -> Masukkan `masjidsophia.com`.
    - Salin record verifikasi yang diberikan Resend (1 record MX, 1 record TXT SPF, dan 3 record TXT DKIM `resend._domainkey`).
    - Masukkan seluruh record tersebut ke DNS Cloudflare `masjidsophia.com` (Proxy: DNS Only / Grey Cloud).
    - Klik **Verify DNS Records** di Resend hingga status menjadi **Verified**.
+   - Pada pengaturan *Sender email address*, setel ke `info@masjidsophia.com`.
 
 #### Langkah 3: Konfigurasi Custom Domain di Vercel
 1. Buka dashboard Vercel (`vercel.com`) -> Pilih proyek `web-masjid-sophia-jatiwarna` -> Buka tab **Settings** -> **Domains**.

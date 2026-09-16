@@ -18,28 +18,32 @@ Sesuai dengan protokol keselamatan, **setiap fase harus diselesaikan dan diverif
 
 ---
 
-## Phase 2: Persiapan Rilis & Merge ke Branch `main` (Sedang Berjalan)
-**Status**: Siap Dieksekusi
-**Deskripsi**: Seluruh perbaikan (Keamanan RBAC, Keuangan Laba Rugi ISAK 35, eliminasi refresh hardcoded, dan sinkronisasi ImageKit) dipublikasikan ke branch `main` dan di-push ke GitHub agar Vercel otomatis mendeploy ke lingkungan produksi live (`admin.masjidsophiajatiwarna.com` / `masjidsophiajatiwarna.com/admin.html`).
-**Deskripsi**: Karena perbaikan *bug* (v1.9.29 & v1.9.30) dan Phase 1 sudah stabil di `dev`, kode wajib didorong ke `main` sebelum modifikasi domain dilakukan, untuk memastikan tidak ada pencampuran kode cacat dengan perubahan infrastruktur.
+## Phase 2: Persiapan Rilis & Merge ke Branch `main` (Selesai)
+**Status**: Selesai (100%)
+**Deskripsi**: Seluruh perbaikan (Keamanan RBAC, Keuangan Laba Rugi ISAK 35, eliminasi refresh hardcoded, dan sinkronisasi ImageKit) telah dipublikasikan ke branch `main` dan di-push ke GitHub (`origin/main`), dan telah aktif di lingkungan produksi live.
 **Pelaksana**: Agent (Git Commands) & User (Review)
 **Kriteria Keberhasilan (DoD)**:
-- [ ] Melakukan operasi `git commit` untuk perubahan UI ImageKit.
-- [ ] Melakukan penggabungan (*merge*) branch `dev` ke branch `main`.
-- [ ] Melakukan `git push origin main`.
-- [ ] Pengguna mengonfirmasi bahwa produksi di `masjidsophiajatiwarna.com` berjalan lancar tanpa error/regresi.
+- [x] Melakukan operasi `git commit` untuk perubahan UI ImageKit (commit `fd1b1a9`).
+- [x] Melakukan penggabungan (*merge*) branch `dev` ke branch `main`.
+- [x] Melakukan `git push origin main`.
+- [x] Pengguna mengonfirmasi bahwa produksi di `masjidsophiajatiwarna.com` berjalan lancar tanpa error/regresi.
 
 ---
 
-## Phase 3: Eksekusi Migrasi Domain Utama (`masjidsophia.com`)
-**Status**: Menunggu Phase 2
-**Deskripsi**: Menghubungkan arsitektur *web portal* ke domain baru yang lebih singkat dan resmi secara bertahap.
-**Pelaksana**: User (Operasi Dashboard Manual) & Agent (Panduan/Konsultasi)
+## Phase 3: Eksekusi Migrasi Domain Utama (`masjidsophia.com`) & Setup Email Profesional (Aktif)
+**Status**: Sedang Dijalankan (Protokol Grill-Me & Penyelarasan)
+**Deskripsi**: Menghubungkan arsitektur web portal ke domain baru yang lebih singkat dan resmi (`masjidsophia.com`), membangun infrastruktur email profesional gratis (inbound via Cloudflare Email Routing & outbound via Resend SMTP), menyelaraskan Supabase Auth, serta mengaktifkan 301 redirect permanen dari domain lama.
+**Pelaksana**: User (Operasi Dashboard) & Agent (Panduan 1-by-1 Coaching & Codebase)
 **Kriteria Keberhasilan (DoD)**:
-- [ ] Domain `masjidsophia.com` ditambahkan ke Vercel (Production) dan dikonfigurasi DNS/Nameserver-nya.
-- [ ] Konfigurasi Supabase *Authentication*: Mengganti *Site URL* dan mendaftarkan URL baru di daftar *Redirect URLs*.
-- [ ] Verifikasi login Admin DKM di domain baru sukses dilakukan (tidak diblokir CORS/Supabase).
-- [ ] Konfigurasi integrasi lainnya (seperti Cloudflare Email Routing / Resend DNS DKIM) dihubungkan ke domain baru.
+- [ ] Verifikasi domain `masjidsophia.com` aktif di Cloudflare dengan DNS proxied ke Vercel (`cname.vercel-dns.com`).
+- [ ] Domain `masjidsophia.com`, `admin.masjidsophia.com`, `progdev.masjidsophia.com`, dan `dev.masjidsophia.com` ditambahkan ke Vercel.
+- [ ] Setup Cloudflare Email Routing: inbound `aspirasi@masjidsophia.com`, `info@masjidsophia.com`, `pengaduan@masjidsophia.com`, dan `saran@masjidsophia.com` otomatis diteruskan ke `masjidsophiajatiwarna@gmail.com`.
+- [ ] Setup Resend SMTP: domain `masjidsophia.com` diverifikasi (DKIM, SPF, MX) di DNS Cloudflare, sender email disetel ke `info@masjidsophia.com`.
+- [ ] Penyelarasan basis kode: footer `index.html`, formulir kotak aspirasi, `api/send-receipt.js`, `api/pengaduan.js`, `vercel.json`, `robots.txt`, dan `sitemap.xml`.
+- [ ] Konfigurasi Supabase Authentication: update Site URL dan allow list Redirect URLs ke domain baru.
+- [ ] Setup Cloudflare 301 Permanent Redirect dari `masjidsophiajatiwarna.com/*` ke `masjidsophia.com/$1`.
+- [ ] Verifikasi login Admin DKM di `admin.masjidsophia.com` sukses tanpa error CORS/redirect.
+- [ ] Verifikasi kirim dan terima email profesional berjalan lancar.
 
 ---
 

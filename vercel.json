@@ -7,10 +7,32 @@
       "has": [
         {
           "type": "host",
+          "value": "progdev.masjidsophia.com"
+        }
+      ],
+      "destination": "/progress-implementation-plan.html",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
           "value": "progdev.masjidsophiajatiwarna.com"
         }
       ],
       "destination": "/progress-implementation-plan.html",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.masjidsophia.com"
+        }
+      ],
+      "destination": "/admin.html",
       "permanent": false
     },
     {
@@ -41,10 +63,30 @@
       "has": [
         {
           "type": "host",
+          "value": "progdev.masjidsophia.com"
+        }
+      ],
+      "destination": "/progress-implementation-plan.html"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
           "value": "progdev.masjidsophiajatiwarna.com"
         }
       ],
       "destination": "/progress-implementation-plan.html"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "admin.masjidsophia.com"
+        }
+      ],
+      "destination": "/admin.html"
     },
     {
       "source": "/",

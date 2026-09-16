@@ -64,9 +64,9 @@ export default async function handler(req, res) {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        from: 'Pusat Pengaduan Sophia <info@masjidsophiajatiwarna.com>',
+                        from: 'Layanan Aspirasi Sophia <aspirasi@masjidsophia.com>',
                         to: ['masjidsophiajatiwarna@gmail.com'],
-                        subject: `[PENGADUAN JAMAAH - ${category || 'Saran'}] ${subject}`,
+                        subject: `[ASPIRASI JAMAAH - ${category || 'Saran'}] ${subject}`,
                         html: `
                             <div style="font-family: Arial, sans-serif; padding: 20px; background: #F8F6F0; color: #1D1D1B;">
                                 <div style="max-width: 600px; margin: 0 auto; background: #FFFFFF; border-radius: 10px; border-left: 6px solid #C9A84C; padding: 25px;">

@@ -1,5 +1,5 @@
 # Robots.txt - Masjid Musafir Sophia Jatiwarna
-# https://masjidsophiajatiwarna.com/
+# https://masjidsophia.com/
 
 User-agent: *
 Allow: /
@@ -8,4 +8,4 @@ Disallow: /admin
 Disallow: /admin.html
 Disallow: /api/
 
-Sitemap: https://masjidsophiajatiwarna.com/sitemap.xml
+Sitemap: https://masjidsophia.com/sitemap.xml

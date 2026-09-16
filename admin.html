@@ -3935,7 +3935,7 @@
             </form>
 
             <div style="margin-top: 1.5rem; text-align: center;">
-                <a href="https://masjidsophiajatiwarna.com" style="font-size: 0.775rem; color: var(--color-charcoal-muted); text-decoration: none; font-weight: 600;">
+                <a href="https://masjidsophia.com" style="font-size: 0.775rem; color: var(--color-charcoal-muted); text-decoration: none; font-weight: 600;">
                     <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda Publik
                 </a>
             </div>
@@ -5370,7 +5370,7 @@
                         <div class="cloud-kpi-card">
                             <div class="cloud-kpi-lbl">TRANSACTIONAL EMAIL (RESEND)</div>
                             <div class="cloud-kpi-val">3.000 <span style="font-size: 0.82rem; color: var(--color-charcoal-muted); font-weight: 600;">Emails/Mo</span></div>
-                            <div class="cloud-kpi-sub">info@masjidsophiajatiwarna.com Verified</div>
+                            <div class="cloud-kpi-sub">info@masjidsophia.com Verified</div>
                         </div>
                     </div>
 
@@ -5457,13 +5457,13 @@
                                     <div class="pillar-metric-item">
                                         <div class="metric-row">
                                             <span class="metric-name">Verified Domain</span>
-                                            <span class="metric-num" id="cloud-metric-resend-domain">masjidsophiajatiwarna.com (DKIM Active)</span>
+                                            <span class="metric-num" id="cloud-metric-resend-domain">masjidsophia.com (DKIM Active)</span>
                                         </div>
                                     </div>
                                     <div class="pillar-metric-item">
                                         <div class="metric-row">
                                             <span class="metric-name">Default Sender</span>
-                                            <span class="metric-num">info@masjidsophiajatiwarna.com</span>
+                                            <span class="metric-num">info@masjidsophia.com</span>
                                         </div>
                                     </div>
                                 </div>
@@ -5656,7 +5656,7 @@
                                     <div class="pillar-metric-item">
                                         <div class="metric-row">
                                             <span class="metric-name">Email Routing</span>
-                                            <span class="metric-num">info@masjidsophiajatiwarna.com</span>
+                                            <span class="metric-num">info@ &amp; aspirasi@masjidsophia.com</span>
                                         </div>
                                     </div>
                                     <div class="pillar-metric-item">
@@ -10311,8 +10311,8 @@
                         matchingUser = DEFAULT_ADMIN_USERS_SEED.find(u => (u.email || '').toLowerCase().trim() === email);
                     }
 
-                    // Jika akun berakhiran @masjidsophiajatiwarna.com
-                    if (!matchingUser && email.endsWith('@masjidsophiajatiwarna.com')) {
+                    // Jika akun berakhiran @masjidsophiajatiwarna.com atau @masjidsophia.com
+                    if (!matchingUser && (email.endsWith('@masjidsophiajatiwarna.com') || email.endsWith('@masjidsophia.com'))) {
                         const meta = getRoleAndDivisionFromEmail(email);
                         matchingUser = {
                             id: generateUUID(),
@@ -19982,8 +19982,8 @@
 
             const roleParam = encodeURIComponent(roleStr);
             let baseUrl = '/';
-            if (window.location.hostname.includes('admin.masjidsophiajatiwarna.com') || window.location.hostname.startsWith('admin.')) {
-                baseUrl = 'https://masjidsophiajatiwarna.com/';
+            if (window.location.hostname.includes('admin.masjidsophia.com') || window.location.hostname.includes('admin.masjidsophiajatiwarna.com') || window.location.hostname.startsWith('admin.')) {
+                baseUrl = 'https://masjidsophia.com/';
             }
             const targetUrl = baseUrl + '?preview=' + roleParam;
             window.open(targetUrl, '_blank');
@@ -22656,7 +22656,7 @@
                             '<h1 class="kop-title">DEWAN KEMAKMURAN MASJID MUSAFIR SOPHIA</h1>' +
                             '<p class="kop-sub">' +
                                 'Jl. Raya Jatiwarna No. 1, Pondok Melati, Kota Bekasi, Jawa Barat 17415<br>' +
-                                'Email: dkm@masjidsophiajatiwarna.com | Web: masjidsophiajatiwarna.com' +
+                                'Email: info@masjidsophia.com | Web: masjidsophia.com' +
                             '</p>' +
                         '</div>' +
                     '</div>' +

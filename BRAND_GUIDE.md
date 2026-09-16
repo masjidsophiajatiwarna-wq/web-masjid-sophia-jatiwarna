@@ -21,7 +21,8 @@ Masjid Musafir 24 Jam, Dakwah Sosial, dan Pengelolaan Infaq/Sedekah Umat
 - Alamat: Jl. Raya Hankam, RT.001/RW.011, Jatiwarna, Kec. Pondok Melati, Kota Bekasi, Jawa Barat 17415
 - Titik Patokan: Samping Ruko Gate 2 Kodau / UMAR Travel
 - WhatsApp Hotline: 0851-8835-2432 (Layanan Informasi & Konfirmasi Donasi)
-- Email: masjidsophiajatiwarna@gmail.com
+- Email Resmi: info@masjidsophia.com (Informasi) & aspirasi@masjidsophia.com (Aspirasi & Saran Jamaah)
+- Email Operasional Dasar: masjidsophiajatiwarna@gmail.com
 - Saluran WhatsApp Resmi: Komunitas Informasi & Jadwal Kajian Masjid Sophia
 
 ### Akun Media Sosial Resmi

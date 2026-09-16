@@ -86,7 +86,7 @@ export default async function handler(req, res) {
                     </p>
                     <div class="footer">
                         Masjid Sophia Jatiwarna • Jl. Raya Hankam, Jatiwarna, Bekasi<br>
-                        Hotline DKM 24 Jam: 0851-8835-2432 • masjidsophiajatiwarna@gmail.com
+                        Hotline DKM 24 Jam: 0851-8835-2432 • info@masjidsophia.com
                     </div>
                 </div>
             </body>
@@ -100,7 +100,7 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                from: 'Masjid Sophia Jatiwarna <info@masjidsophiajatiwarna.com>',
+                from: 'Masjid Sophia <info@masjidsophia.com>',
                 to: [email],
                 subject: `Kuitansi Tanda Terima Donasi - Masjid Sophia [${program_category || 'Sedekah'}]`,
                 html: emailHtml

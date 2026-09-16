@@ -11,10 +11,9 @@ Portal web resmi dan pusat layanan informasi digital terintegrasi untuk Masjid M
 - **Lokasi:** Jl. Raya Hankam, RT.001/RW.011, Jatiwarna, Kec. Pondok Melati, Kota Bekasi, Jawa Barat 17415
 - **Titik Koordinat Astronomis:** Latitude `-6.310391`, Longitude `106.921264` (Zona Waktu: WIB / UTC+7)
 - **Titik Patokan:** Samping Ruko Gate 2 Kodau / UMAR Travel
-- **Hotline WhatsApp:** 0851-8835-2432
-- **Email Resmi:** masjidsophiajatiwarna@gmail.com
-- **Domain Utama:** [masjidsophiajatiwarna.com](https://masjidsophiajatiwarna.com)
-- **Domain Sekunder (Redirect 301):** `masjidsophiajatiwarna.my.id`, `masjidsophia.com`
+- **Email Resmi:** info@masjidsophia.com (Informasi) & aspirasi@masjidsophia.com (Aspirasi)
+- **Domain Utama:** [masjidsophia.com](https://masjidsophia.com)
+- **Domain Lawas & Sekunder (Redirect 301):** `masjidsophiajatiwarna.com`, `masjidsophiajatiwarna.my.id`
 
 ---
 

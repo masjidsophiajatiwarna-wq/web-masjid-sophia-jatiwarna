@@ -4,6 +4,20 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.33] - 2026-09-16
+
+### Persiapan Infrastruktur Email Profesional & Rencana Migrasi Domain Utama (masjidsophia.com)
+
+#### Standardisasi Email Profesional & Inbound Forwarding Cloudflare
+- `[EMAIL_ASPIRASI_STANDARD]` Menetapkan alamat resmi `aspirasi@masjidsophia.com` sebagai kanal terpadu penampung aduan fasilitas, masukan jamaah, dan saran program dakwah, selaras dengan tombol *"Kotak Aspirasi"* di beranda publik.
+- `[CLOUDFLARE_EMAIL_ROUTING]` Merumuskan arsitektur penerusan otomatis (*zero-cost forwarding*) dari 4 alamat domain resmi (`aspirasi@...`, `info@...`, `saran@...`, `pengaduan@...`) ke email dasar operasional DKM: `masjidsophiajatiwarna@gmail.com`.
+- `[RESEND_OUTBOUND_SMTP]` Menyiapkan integrasi transactional email keluar dengan identitas pengirim resmi `Masjid Sophia <info@masjidsophia.com>` terverifikasi DKIM & SPF di DNS Cloudflare.
+
+#### Rencana Migrasi Domain & Redireksi 301 Permanen
+- `[DOMAIN_CUTOVER_PREPARATION]` Menyiapkan skenario cutover domain utama ke `masjidsophia.com` (serta subdomain `admin`, `progdev`, `dev`) di Vercel Dashboard dan DNS Cloudflare.
+- `[PERMANENT_REDIRECT_PRESERVATION]` Menyusun aturan HTTP 301 Redirect di Cloudflare untuk mengalihkan seluruh lalu lintas dari `masjidsophiajatiwarna.com/*` ke `masjidsophia.com/$1` demi melindungi integritas tautan dan SEO Google.
+- `[GRILL_ME_COACHING_PROTOCOL]` Mengintegrasikan protokol penelusuran penalaran bertahap (*Grill-Me Protocol*) dan pendampingan 1-by-1 coaching untuk memandu setiap langkah di dashboard tanpa risiko salah konfigurasi.
+
 ## [1.9.32] - 2026-09-14
 
 ### Penyempurnaan Single Source of Truth Supabase & Fitur Pratinjau Tim Mandiri (?preview=[role])
