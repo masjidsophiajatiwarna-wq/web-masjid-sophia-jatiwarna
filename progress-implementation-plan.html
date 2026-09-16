@@ -358,7 +358,8 @@
             white-space: nowrap;
         }
 
-        .status-tag.status-done {
+        .status-tag.status-done,
+        .status-tag.status-completed {
             background: var(--color-success-bg);
             color: var(--color-success);
             border: 1px solid rgba(0, 166, 81, 0.3);
@@ -591,7 +592,8 @@
             flex-shrink: 0;
         }
 
-        .phase-badge.done {
+        .phase-badge.done,
+        .phase-badge.completed {
             background: var(--color-success);
             color: #FFFFFF;
         }
@@ -882,7 +884,7 @@
                 </div>
             </div>
             <div>
-                <span class="status-tag status-completed">
+                <span class="status-tag status-done">
                     <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Fase 0 - 6 Selesai (95%) &amp; Portal Live Stabil
                 </span>
             </div>
@@ -1024,7 +1026,7 @@
                 <span class="gantt-item-name">
                     <i class="fa-solid fa-desktop" style="color: var(--color-gold-deep);"></i> Fase 3: Portal Publik &amp; Shalat Engine
                 </span>
-                <span class="status-tag status-completed">Selesai 100%</span>
+                <span class="status-tag status-done">100% Selesai</span>
             </div>
             <div class="gantt-bar-box">
                 <div class="gantt-bar-fill fill-100">100% - Beranda Istiqlal, Galeri Mandiri, Warta Dakwah, Slider Manager &amp; CDC Live</div>
@@ -1036,7 +1038,7 @@
                 <span class="gantt-item-name">
                     <i class="fa-solid fa-list-check" style="color: var(--color-charcoal);"></i> Fase 4: Web Admin DKM, Fluid Mobile &amp; Task Engine
                 </span>
-                <span class="status-tag status-completed">Selesai 100%</span>
+                <span class="status-tag status-done">100% Selesai</span>
             </div>
             <div class="gantt-bar-box">
                 <div class="gantt-bar-fill fill-100">100% - Admin Core, Task Suite, PDF Export, Obrolan &amp; Semua Modul PJ Selesai</div>
@@ -1046,14 +1048,13 @@
         <div class="gantt-card-item">
             <div class="gantt-item-top">
                 <span class="gantt-item-name">
-                    <i class="fa-solid fa-vial-circle-check" style="color: var(--color-charcoal-muted);"></i> Fase 5: Uji Presisi &amp; Audit Keamanan
+                    <i class="fa-solid fa-vial-circle-check" style="color: var(--color-success);"></i> Fase 5: Uji Presisi &amp; Audit Keamanan
                 </span>
-                <span class="status-tag status-pending">Menunggu Fase 3 &amp; 4</span>
+                <span class="status-tag status-done">100% Selesai</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-0"></div>
+                <div class="gantt-bar-fill fill-100">100% - Validasi Hisab Kemenag, Audit RLS, dan Resolusi Tuntas Seluruh Temuan Bug</div>
             </div>
-            <span class="gantt-empty-label">Status: Tahap pengujian menyeluruh multi-perangkat setelah modul selesai.</span>
         </div>
 
         <div class="gantt-card-item">
@@ -1096,7 +1097,7 @@
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-done">Selesai (100%)</span>
+                    <span class="status-tag status-done">100% Selesai</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
@@ -1166,7 +1167,7 @@
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-done">Selesai (100%)</span>
+                    <span class="status-tag status-done">100% Selesai</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
@@ -1340,14 +1341,14 @@
         <div class="phase-card" id="card-fase-3">
             <div class="phase-header" onclick="togglePhase('card-fase-3')">
                 <div class="phase-title-group">
-                    <div class="phase-badge completed">3</div>
+                    <div class="phase-badge done"><i class="fa-solid fa-check"></i></div>
                     <div class="phase-name">
                         <h3>Fase 3: Web Portal Publik untuk Umat &amp; Musafir</h3>
                         <p>Beranda Istiqlal, jadwal shalat otomatis, donasi, pengaduan jamaah, galeri mandiri, warta dakwah, dan slider hero manager</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-completed">Selesai 100%</span>
+                    <span class="status-tag status-done">100% Selesai</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
@@ -1518,7 +1519,7 @@
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-done">Selesai (100%)</span>
+                    <span class="status-tag status-done">100% Selesai</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
@@ -2126,14 +2127,14 @@
         <div class="phase-card collapsed" id="card-fase-5">
             <div class="phase-header" onclick="togglePhase('card-fase-5')">
                 <div class="phase-title-group">
-                    <div class="phase-badge">5</div>
+                    <div class="phase-badge done"><i class="fa-solid fa-check"></i></div>
                     <div class="phase-name">
                         <h3>Fase 5: Pengujian Terpadu, Audit Keamanan &amp; UAT</h3>
                         <p>Validasi hisab Kemenag, uji beban formulir, sanitasi XSS, dan uji responsif</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-completed">100% Selesai</span>
+                    <span class="status-tag status-done">100% Selesai</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
