@@ -213,7 +213,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
 ---
 
 ### Fase 6: Finalisasi Produksi, SEO, Migrasi Domain ke masjidsophia.com & Go-Live
-- **Status:** 80% Selesai
+- **Status:** 95% Selesai
 - **Prasyarat & Jadwal Eksekusi:** Migrasi domain dieksekusi **SETELAH** seluruh setup portal admin (`admin.html`) dan portal publik (`index.html`, `artikel.html`, `galeri.html`) selesai dibangun, diuji, dan dipublikasikan ke branch `main` produksi melalui domain awal (`masjidsophiajatiwarna.com`) untuk memastikan kestabilan sistem terlebih dahulu.
 - **Daftar Tugas:**
   - [x] **Email Routing & SMTP Gateway Awal:** Cloudflare Email Routing & Resend SMTP aktif untuk domain awal.
@@ -223,15 +223,15 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
   - [x] **SEO Lanjutan — Schema.org JSON-LD:** `Mosque` JSON-LD di `index.html`, `CollectionPage` di `galeri.html`, `Blog` di `artikel.html`, `NewsArticle` dinamis di `artikel-detail.html` (diperbarui JS setiap kali artikel dimuat).
   - [x] **Pendaftaran Mesin Pencari & Sitemap:** Google Search Console & Bing Webmaster Tools untuk domain baru `masjidsophia.com` (Selesai diverifikasi via DNS TXT dan sitemap.xml sukses dikirimkan).
   - [x] **Cloudflare Web Analytics:** Integrasi beacon script resmi Cloudflare bebas cookie pada seluruh halaman publik (`index.html`, `artikel.html`, `artikel-detail.html`, `galeri.html`, `404.html`, `maintenance.html`).
-  - [ ] **Eksekusi Migrasi Domain Utama ke masjidsophia.com (Arsitektur 7 Pilar):**
+  - [x] **Eksekusi Migrasi Domain Utama ke masjidsophia.com (Arsitektur 7 Pilar):**
     - [x] **Pilar 1 - GitHub:** Repositori tetap di `web-masjid-sophia-jatiwarna`, author resmi `Masjid Sophia <masjidsophiajatiwarna@gmail.com>`.
     - [x] **Pilar 2 - Cloudflare DNS & Proxy:** Setup DNS Zone `masjidsophia.com`, SSL/TLS Full Strict, CNAME root & www ke `cname.vercel-dns.com`, MX & SPF Cloudflare Email Routing.
     - [x] **Pilar 3 - Email Resmi (Resend & Cloudflare Email Routing):** Domain sending baru `masjidsophia.com` di Resend (DKIM, SPF), forwarding Cloudflare Email Routing otomatis ke email dasar `masjidsophiajatiwarna@gmail.com` untuk 4 alamat (`aspirasi@`, `info@`, `saran@`, `pengaduan@`), serta Gmail "Send mail as" aktif untuk `info@` & `aspirasi@`.
     - [x] **Pilar 4 - Vercel Hosting:** Penambahan custom domains (`masjidsophia.com`, `admin.masjidsophia.com`, `progdev.masjidsophia.com`) dengan status valid di Vercel Dashboard.
-    - [ ] **Pilar 5 - Supabase Backend:** Pembaruan Site URL & Redirect URLs di Supabase Auth Settings (`https://admin.masjidsophia.com`).
-    - [ ] **Pilar 6 - ImageKit.io CDN:** Pembaruan origin URL endpoint dan CORS domain whitelist ke `https://masjidsophia.com` & `https://admin.masjidsophia.com`.
+    - [x] **Pilar 5 - Supabase Backend:** Pembaruan Site URL (`https://admin.masjidsophia.com`) & Redirect URLs (`https://masjidsophia.com/**`, `https://admin.masjidsophia.com/**`, `https://progdev.masjidsophia.com/**`) di Supabase Auth Settings.
+    - [x] **Pilar 6 - ImageKit.io CDN:** Endpoint CDN `https://ik.imagekit.io/masjidsophia` siap melayani domain baru tanpa hambatan CORS.
     - [x] **Pilar 7 - Environment Variables & Codebase:** Sinkronisasi berkas `.env`, Vercel Project Environment Variables (`SITE_URL`, `RESEND_FROM_EMAIL`), pembaruan footer `index.html` (`info@masjidsophia.com`), kotak aspirasi (`aspirasi@masjidsophia.com`), `api/send-receipt.js`, `api/pengaduan.js`, `vercel.json`, `robots.txt`, dan `sitemap.xml`.
-    - [ ] **Pilar 8 - SEO Link Equity & 301 Redirect:** Aturan HTTP 301 Permanent Redirect dari `masjidsophiajatiwarna.com/*` ke `masjidsophia.com/$1` di Cloudflare Redirect Rules.
+    - [x] **Pilar 8 - SEO Link Equity & 301 Redirect:** Aturan HTTP 301/308 Permanent Redirect dari `masjidsophiajatiwarna.com/*` ke `https://masjidsophia.com/$1` aktif di Cloudflare Redirect Rules (teruji preserve path 100%).
     - [x] **Pilar 9 - Integritas Akun & Kepemilikan Tetap:** Kepemilikan akun inti (GitHub, Cloudflare, Vercel, Resend, Supabase) tetap menggunakan akun yang sudah ada (`masjidsophiajatiwarna@gmail.com`), tanpa transfer akun yang berisiko.
 
 ---

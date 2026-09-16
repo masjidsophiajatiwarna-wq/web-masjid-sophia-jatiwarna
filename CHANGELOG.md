@@ -16,6 +16,10 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 - `[CF_WEB_ANALYTICS_BEACON]` Memasang tag pelacak performa web ringan resmi Cloudflare (`beacon.min.js` dengan token `d9cc48d7e9ab494b94a15094273b068d`) pada seluruh berkas publik: `index.html`, `artikel.html`, `artikel-detail.html`, `galeri.html`, `404.html`, dan `maintenance.html`.
 - `[PRIVACY_FIRST_MONITORING]` Menyediakan pemantauan trafik kunjungan jamaah dan musafir secara real-time tanpa mengorbankan kecepatan situs serta 100% patuh privasi tanpa pemasangan cookie pelacak.
 
+#### Pengalihan Permanen 301 & Keamanan Autentikasi Supabase
+- `[CLOUDFLARE_301_REDIRECT_LIVE]` Mengaktifkan aturan pengalihan permanen (HTTP 301/308) dari domain lawas `masjidsophiajatiwarna.com/*` ke `https://masjidsophia.com/$1`, teruji sukses mempertahankan struktur path URL secara presisi tanpa ada tautan rusak.
+- `[SUPABASE_AUTH_URL_ALIGNMENT]` Menyelaraskan Site URL Supabase ke `https://admin.masjidsophia.com` dan menambahkan redirect URLs untuk `masjidsophia.com/**`, `admin.masjidsophia.com/**`, dan `progdev.masjidsophia.com/**` demi mengisolasi sesi pengurus secara aman.
+
 ## [1.9.33] - 2026-09-16
 
 ### Persiapan Infrastruktur Email Profesional & Rencana Migrasi Domain Utama (masjidsophia.com)
