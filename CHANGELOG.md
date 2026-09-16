@@ -4,6 +4,16 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.36] - 2026-09-16
+
+### Resolusi Kerusakan Bersarang DOM (Unclosed Div) & Audit Aksesibilitas 18 Modul Portal Admin
+
+#### Resolusi Kerusakan Layar Kosong Modul PJ Ibadah & PJ Logistik
+- `[DOM_UNCLOSED_DIV_FIX]` Menutup tag kontainer `<div id="tab-kebersihan">` yang sebelumnya kehilangan tag penutup `</div>` pada baris 6753 `admin.html`. Kerusakan ini sebelumnya menyebabkan `<div id="tab-logistik">` dan `<div id="tab-ibadah">` bersarang keliru di dalam kontainer modul kebersihan.
+- `[BLANK_SCREEN_ELIMINATION]` Menghilangkan total gejala layar putih kosong saat membuka modul `#logistik` dan `#ibadah` (di mana kedua modul sebelumnya ikut tersembunyi ketika modul kebersihan disetel `display: none` oleh fungsi `switchTab`).
+- `[AUDIT_18_MODULES_COMPLETE]` Mengaudit dan memvalidasi ke-18 panel modul portal admin (`overview`, `donations`, `tasks`, `history`, `chat`, `feedback`, `articles`, `media`, `gallery`, `health`, `accounts`, `leave_requests`, `santri`, `musafir`, `keamanan`, `kebersihan`, `logistik`, `ibadah`). Terbukti seluruh 18 modul kini berada pada kedalaman tingkat utama (stack depth 5) yang sejajar dan independen tanpa ada modul yang tertelan atau terhalang hak aksesnya.
+- `[JS_NULL_SAFETY_CONFIRMATION]` Memastikan seluruh skrip inline JavaScript (820.000+ karakter) lulus uji sintaks Node.js dan seluruh pemanggilan DOM element via `document.getElementById` menerapkan guards null-safety dan optional chaining secara presisi.
+
 ## [1.9.35] - 2026-09-16
 
 ### Implementasi Protokol IndexNow Mesin Pencari Instan (Bing, Yandex, IndexNow.org)

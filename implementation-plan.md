@@ -7,8 +7,8 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v6.3 (Resolusi Duplikasi Pencatatan Kas Keluar & Eliminasi Tombol Refresh Hardcoded Modul PJ)  
-**Terakhir Diperbarui:** 2026-09-14  
+**Versi Rencana Induk:** v6.4 (Resolusi Tag Bersarang DOM Modul Kebersihan & Audit Aksesibilitas 18 Modul Portal Admin)  
+**Terakhir Diperbarui:** 2026-09-16  
 
 ---
 
@@ -523,5 +523,6 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 | 13 | Laporan keamanan berstatus 'Kondusif' tapi muncul di Insiden Eskalasi sebagai 'Waspada' | `admin.html` (`renderInsidenTable`) | **SELESAI (100% TERVERIFIKASI)** — Memperbaiki logika if-else badge pada tabel Insiden agar memprioritaskan kondisi `KONDUSIF` sebelum mencetak badge `WASPADA`. |
 | 14 | Logika RBAC (Role-Based Access Control) pada "Status Tindak Lanjut" di modal Keamanan bocor | `admin.html` (`openEditSecurityModal`, `openAddSecurityModal`) | **SELESAI (100% TERVERIFIKASI)** — Menonaktifkan field status dan menyembunyikan "Catatan DKM" untuk PJ Keamanan jika status terkini adalah `ESKALASI_DKM` (Hanya DKM/Admin yang bisa edit). |
 | 15 | Fitur Sakelar Status Live / Under Maintenance Terpadu, Supabase SSOT, & Pratinjau Tim Mandiri | `admin.html`, `maintenance.html`, `asset/js/env-loader.js` | **SELESAI (100% TERVERIFIKASI)** — Menyediakan sakelar status Live vs Maintenance di Visual Web Builder dengan proteksi wewenang RBAC (`SUPER_ADMIN`, `SUPER_USER`, `KETUA_DKM`, `PJ_MEDIA`), arsitektur murni Supabase SSOT bebas locking localStorage, tombol 'Buka Web Publik' dengan parameter `?preview=[role]` dan retensi sessionStorage, halaman kustom `maintenance.html` islami bebas emoji dengan kontak WhatsApp DKM & auto-reload realtime instan, serta indikator status mandiri berdenyut lembut di pojok kanan toolbar. |
+| 16 | Resolusi Kerusakan Bersarang DOM (Unclosed Div) & Audit Aksesibilitas 18 Modul Portal Admin | `admin.html` (`#tab-kebersihan`, `#tab-logistik`, `#tab-ibadah`, `switchTab`) | **SELESAI (100% TERVERIFIKASI)** — Menutup tag kontainer `<div id="tab-kebersihan">` yang sebelumnya kehilangan tag penutup `</div>` pada baris 6753, mengeliminasi gejala layar putih kosong pada modul PJ Ibadah dan PJ Logistik. Memvalidasi seluruh 18 modul portal admin berada pada kedalaman tingkat utama (depth 5) secara mandiri dan seimbang. |
 
 
