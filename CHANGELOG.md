@@ -4,6 +4,16 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.35] - 2026-09-16
+
+### Implementasi Protokol IndexNow Mesin Pencari Instan (Bing, Yandex, IndexNow.org)
+
+#### Kunci Verifikasi Domain & Protokol IndexNow
+- `[INDEXNOW_KEY_VERIFICATION]` Memasang berkas kunci verifikasi domain `3c0606547e9f4e598bddd982c65cf8f0.txt` tepat di root direktori proyek (`https://masjidsophia.com/3c0606547e9f4e598bddd982c65cf8f0.txt`) sesuai spesifikasi protokol resmi IndexNow dan Microsoft Bing.
+- `[INDEXNOW_API_ENDPOINT]` Membangun serverless function Vercel `/api/indexnow` (`api/indexnow.js`) yang memfasilitasi pengiriman instan daftar URL sitemap ke mesin pencari secara otomatis saat ada pembaruan konten.
+- `[INDEXNOW_CLI_SUBMISSION]` Menyediakan skrip otomatisasi Python `scripts/submit_indexnow.py` dengan pembacaan otomatis berkas sitemap, pemfilteran host presisi, dan pelaporan status submisi HTTP (teruji menerima respon sukses HTTP 202 Accepted dari Microsoft Bing dan IndexNow.org).
+- `[COMPLIANCE_SUITE_UPDATE]` Menambahkan berkas IndexNow ke dalam suite pengujian integritas `scripts/verify_index_compliance.py` dengan hasil 100% lulus (zero emoji, zero secret leaks, structural integrity verified).
+
 ## [1.9.34] - 2026-09-16
 
 ### Integrasi Mesin Pencari (Google & Bing) dan Cloudflare Web Analytics Real-Time

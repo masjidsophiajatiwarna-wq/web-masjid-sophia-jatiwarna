@@ -233,6 +233,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - [x] **Pilar 7 - Environment Variables & Codebase:** Sinkronisasi berkas `.env`, Vercel Project Environment Variables (`SITE_URL`, `RESEND_FROM_EMAIL`), pembaruan footer `index.html` (`info@masjidsophia.com`), kotak aspirasi (`aspirasi@masjidsophia.com`), `api/send-receipt.js`, `api/pengaduan.js`, `vercel.json`, `robots.txt`, dan `sitemap.xml`.
     - [x] **Pilar 8 - SEO Link Equity & 301 Redirect:** Aturan HTTP 301/308 Permanent Redirect dari `masjidsophiajatiwarna.com/*` ke `https://masjidsophia.com/$1` aktif di Cloudflare Redirect Rules (teruji preserve path 100%).
     - [x] **Pilar 9 - Integritas Akun & Kepemilikan Tetap:** Kepemilikan akun inti (GitHub, Cloudflare, Vercel, Resend, Supabase) tetap menggunakan akun yang sudah ada (`masjidsophiajatiwarna@gmail.com`), tanpa transfer akun yang berisiko.
+  - [x] **IndexNow Instant Search Engine Indexing (Bing, Yandex & IndexNow Protocol):** Berkas kunci verifikasi domain `3c0606547e9f4e598bddd982c65cf8f0.txt` di root direktori, endpoint serverless `/api/indexnow` untuk integrasi otomatis/webhook, serta skrip CLI `scripts/submit_indexnow.py` yang sukses memvalidasi dan mengirimkan sitemap URL dengan respon HTTP 202 (Accepted) dari Microsoft Bing dan IndexNow.org.
 
 ---
 

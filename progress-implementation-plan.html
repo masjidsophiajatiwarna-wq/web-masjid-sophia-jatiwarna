@@ -885,7 +885,7 @@
             </div>
             <div>
                 <span class="status-tag status-done">
-                    <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Fase 0 - 6 Selesai (95%) &amp; Portal Live Stabil
+                    <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Fase 0 - 6 Selesai (100%) &amp; Portal Live Stabil
                 </span>
             </div>
         </div>
@@ -1060,12 +1060,12 @@
         <div class="gantt-card-item">
             <div class="gantt-item-top">
                 <span class="gantt-item-name">
-                    <i class="fa-solid fa-rocket" style="color: var(--color-success);"></i> Fase 6: Go-Live &amp; SEO Cutover
+                    <i class="fa-solid fa-rocket" style="color: var(--color-success);"></i> Fase 6: Go-Live, SEO &amp; IndexNow Cutover
                 </span>
-                <span class="status-tag status-done">95% Selesai</span>
+                <span class="status-tag status-done">100% Selesai</span>
             </div>
             <div class="gantt-bar-box">
-                <div class="gantt-bar-fill fill-95" style="width: 95%; background: linear-gradient(90deg, var(--color-gold-deep), var(--color-success));">95% - Domain Cutover, 301 Redirect, Email Routing, GSC &amp; Bing SEO Live</div>
+                <div class="gantt-bar-fill fill-100">100% - Domain Cutover, 301 Redirect, Email Routing, GSC, Bing &amp; IndexNow Live</div>
             </div>
         </div>
 
@@ -2208,14 +2208,14 @@
         <div class="phase-card collapsed" id="card-fase-6">
             <div class="phase-header" onclick="togglePhase('card-fase-6')">
                 <div class="phase-title-group">
-                    <div class="phase-badge in-progress">6</div>
+                    <div class="phase-badge done"><i class="fa-solid fa-check"></i></div>
                     <div class="phase-name">
-                        <h3>Fase 6: Finalisasi Produksi, SEO &amp; Go-Live</h3>
-                        <p>Schema.org JSON-LD, sitemap.xml, robots.txt, custom 404, dan Resend DKIM/SPF</p>
+                        <h3>Fase 6: Finalisasi Produksi, SEO, IndexNow &amp; Go-Live</h3>
+                        <p>Schema.org JSON-LD, sitemap.xml, robots.txt, custom 404, Resend DKIM/SPF, dan protokol IndexNow</p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="status-tag status-done">95% Selesai</span>
+                    <span class="status-tag status-done">100% Selesai</span>
                     <i class="fa-solid fa-chevron-down toggle-icon"></i>
                 </div>
             </div>
@@ -2269,6 +2269,16 @@
                                 <span class="task-badge-pill">Migrasi Domain</span>
                             </div>
                             <div class="task-desc">Domain masjidsophia.com aktif di Vercel &amp; Cloudflare DNS, 301 Permanent Redirect dari masjidsophiajatiwarna.com aktif dan teruji preserve path 100%, serta Supabase Auth Site URL selaras ke admin.masjidsophia.com.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Protokol IndexNow Instant Search Engine Indexing (Bing, Yandex &amp; IndexNow)
+                                <span class="task-badge-pill">IndexNow</span>
+                            </div>
+                            <div class="task-desc">Pemasangan berkas kunci 3c0606547e9f4e598bddd982c65cf8f0.txt di root domain, endpoint serverless otomatisasi (/api/indexnow), serta skrip pengiriman URL sitemap instan (scripts/submit_indexnow.py) yang teruji menerima respon HTTP 202 Accepted.</div>
                         </div>
                     </div>
                 </div>

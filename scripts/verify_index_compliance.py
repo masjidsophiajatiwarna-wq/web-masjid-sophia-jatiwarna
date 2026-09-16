@@ -141,7 +141,10 @@ def test_files_existence():
         'asset/js/env-loader.js',
         'implementation-plan.md',
         'progress-implementation-plan.html',
-        'CHANGELOG.md'
+        'CHANGELOG.md',
+        '3c0606547e9f4e598bddd982c65cf8f0.txt',
+        'api/indexnow.js',
+        'scripts/submit_indexnow.py'
     ]
     all_ok = True
     for rf in required_files:
@@ -243,7 +246,10 @@ if __name__ == '__main__':
         'admin.html',
         'implementation-plan.md',
         'progress-implementation-plan.html',
-        'CHANGELOG.md'
+        'CHANGELOG.md',
+        '3c0606547e9f4e598bddd982c65cf8f0.txt',
+        'api/indexnow.js',
+        'scripts/submit_indexnow.py'
     ]
     r0 = test_files_existence()
     r1 = test_no_emojis(target_docs)
