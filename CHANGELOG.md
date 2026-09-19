@@ -4,6 +4,23 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.37] - 2026-09-19
+
+### Penyempurnaan UI/UX, Aksesibilitas Mobile & Stabilitas Sesi Admin
+
+#### Ditambahkan
+- [FEAT] **Bilah Notifikasi Terpusat:** Menambahkan ikon lonceng notifikasi (dengan dropdown panel default) di bilah atas (dmin.html) sebagai fondasi sistem push notifikasi real-time ke depannya.
+- [FEAT] **Aksesibilitas Mobile (Hamburger Menu):** Mengimplementasikan tombol toggle *hamburger* pada bilah atas PWA yang hanya muncul pada layar mobile (< 900px), memperbaiki aksesibilitas ke sidebar navigasi utama.
+- [FEAT] **Penolakan Donasi Terperinci:** Memisahkan fungsi "Verifikasi" menjadi 2 tombol terpisah ("Verifikasi" dan "Tolak") pada tabel donasi. Tombol tolak terhubung ke prompt alasan penolakan dan menyimpan status REJECTED serta alasan penolakan ke dmin_notes.
+- [FEAT] **Migrasi SQL Admin Notes:** Membuat berkas migrasi database/migration_update_donations_notes.sql untuk menambahkan kolom dmin_notes di tabel donations.
+
+#### Diperbarui
+- [UX] **Thousand Separator Otomatis:** Memodifikasi input nominal donasi di index.html (form incognito) dengan kemampuan menambahkan titik ribuan (mis. 10.000) saat pengguna mengetik, dengan metode sanitasi nilai murni sebelum dikirim ke database.
+- [ASSET] **QRIS Masjid Resmi:** Mengganti placeholder teks QRIS di halaman publik (index.html) dengan tag <img src="asset/images/qris-masjid.jpeg"> resmi Masjid Sophia Jatiwarna.
+
+#### Diperbaiki
+- [BUGFIX] **Stabilitas Sesi Fallback Login:** Menyelesaikan masalah akun admin otomatis logout saat menekan refresh (F5) pada desktop dan PWA dengan menambahkan mekanisme penyimpanan masjid_sophia_local_session ke localStorage bagi pengurus yang masuk menggunakan *fallback login credentials*, lalu mengevaluasi token sesi tersebut pada event DOMContentLoaded.
+
 ## [1.9.36] - 2026-09-16
 
 ### Resolusi Kerusakan Bersarang DOM (Unclosed Div) & Audit Aksesibilitas 18 Modul Portal Admin
@@ -1406,3 +1423,4 @@ Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.
 - `[RULES]` Penerapan gaya penulisan manusiawi (*Anti-AI Slop*) dengan bahasa Indonesia yang santun, hangat, lugas, dan berbasis fakta riil.
 - `[RULES]` Penegakan tema visual terang (*Light, Warm, Clean, Serene*) berbasis palet warna resmi (`#FFFFFF`, `#F8F6F0`, `#1D1D1B`, `#E3C466`, `#C9A84C`).
 - `[SECURITY]` Proteksi kredensial sensitif Supabase, Vercel, Resend, dan ImageKit dari pelacakan repositori publik.
+

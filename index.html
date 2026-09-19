@@ -2701,7 +2701,9 @@
                     </div>
 
                     <div class="qris-box">
-                        <div class="qris-icon-tag"><i class="fa-solid fa-qrcode"></i></div>
+                        <div class="qris-img-container" style="flex-shrink: 0; margin-right: 0.5rem;">
+                            <img src="asset/images/qris-masjid.jpeg" alt="QRIS Sedekah Makan Masjid Sophia" style="width: 85px; height: 85px; object-fit: contain; border-radius: 6px; border: 1px solid #eee;">
+                        </div>
                         <div style="flex: 1;">
                             <div style="font-size: 0.95rem; font-weight: 800;">QRIS SEDEKAH MAKAN</div>
                             <div style="font-size: 0.775rem; color: var(--color-charcoal-muted);">NMID: <strong>ID2025401816769</strong></div>
@@ -2736,7 +2738,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Nominal Donasi (Rp)</label>
-                            <input type="number" class="form-input" id="in_amount" placeholder="Contoh: 50000" min="10000" required>
+                            <input type="text" inputmode="numeric" class="form-input" id="in_amount" placeholder="Contoh: 50.000" required oninput="formatRupiah(this)">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Titipan Doa / Permohonan Kebaikan</label>
@@ -3146,13 +3148,23 @@
         // ==========================================================================
         // 5. INCOGNITO DONATION FORM HANDLER
         // ==========================================================================
+        function formatRupiah(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value !== '') {
+                input.value = parseInt(value, 10).toLocaleString('id-ID').replace(/,/g, '.');
+            } else {
+                input.value = '';
+            }
+        }
+
         async function submitIncognitoForm(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-donasi-text');
             const name = document.getElementById('in_name').value;
             const phone = document.getElementById('in_phone').value;
             const prog = document.getElementById('in_prog').value;
-            const amount = document.getElementById('in_amount').value;
+            let amountStr = document.getElementById('in_amount').value;
+            const amount = amountStr.replace(/\./g, '');
             const prayer = document.getElementById('in_prayer').value;
 
             if (btn) {
