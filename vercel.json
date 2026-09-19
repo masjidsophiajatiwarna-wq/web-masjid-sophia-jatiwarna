@@ -145,6 +145,10 @@
     {
       "source": "/media",
       "destination": "/media-checklist.html"
+    },
+    {
+      "source": "/config",
+      "destination": "/api/config"
     }
   ]
 }

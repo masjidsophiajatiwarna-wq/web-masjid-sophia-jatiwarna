@@ -545,11 +545,17 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
    - Mengimplementasikan fungsi handleRejectSingleDonation(id) yang memunculkan prompt (atau *modal*) untuk meminta **Alasan Penolakan**.
    - Menyimpan status 'REJECTED' dan menambahkan catatan penolakan ke memori tabel atau *database* (opsional menambah kolom dmin_notes jika diizinkan).
 4. **Pemasangan QRIS Masjid Resmi (index.html)**
-   - Mengganti teks/placeholder QRIS di form donasi (halaman publik) dengan tag <img> yang memuat gambar QRIS Masjid resmi.
-   - Karena keterbatasan akses API Key ImageKit di *environment local*, gambar akan disimpan dan dipanggil dari folder lokal (sset/images/QRIS MASJID.jpeg) terlebih dahulu. Jika nanti API key tersedia, bisa diupload terpisah.
-5. **Perbaikan *Session Persistence* PWA/Desktop (dmin.html)**
-   - Mengatasi isu *logout* saat *refresh* dengan menyimpan sesi akun (uthUser) ke dalam localStorage saat pengguna menggunakan jalur *fallback credential login* (benih akun master DKM).
-   - Memastikan DOMContentLoaded mengecek *local storage* ini apabila sbClient.auth.getSession() dari Supabase gagal mengembalikan sesi.
+   - Mengganti teks/placeholder QRIS di form donasi (halaman publik) dengan tag `<img>` yang memuat gambar QRIS Masjid resmi.
+   - Karena keterbatasan akses API Key ImageKit di *environment local*, gambar akan disimpan dan dipanggil dari folder lokal (`asset/images/QRIS MASJID.jpeg`) terlebih dahulu. Jika nanti API key tersedia, bisa diupload terpisah.
+5. **Perbaikan *Session Persistence* PWA/Desktop (admin.html)**
+   - Mengatasi isu *logout* saat *refresh* dengan menyimpan sesi akun (`authUser`) ke dalam localStorage saat pengguna menggunakan jalur *fallback credential login* (benih akun master DKM).
+   - Memastikan DOMContentLoaded mengecek *local storage* ini apabila `sbClient.auth.getSession()` dari Supabase gagal mengembalikan sesi.
 6. **Pemformatan Angka Otomatis (*Thousand Separator*) (index.html)**
    - Mengubah form input nominal donasi agar otomatis memunculkan titik pemisah ribuan (contoh: 10.000) saat pengguna mengetik, sehingga mencegah kesalahan input jumlah nol.
-
+7. **Penyempurnaan Lanjutan Berdasarkan Grill-Me & UAT:**
+   - [x] **Perbaikan Tombol Aksi Tabel Donasi (`admin.html`):** Mengganti batasan 32x32px `.btn-action` dengan `.btn-donation-verify` dan `.btn-donation-reject` (width: auto, padding proporsional, flex-row berdampingan, min-width 175px).
+   - [x] **Modal Tolak Donasi Kustom (`admin.html`):** Mengganti `prompt()` dengan modal bertema DKM Sophia (`#modal-reject-donation`) dilengkapi 3 preset alasan cepat + opsi "Lainnya" yang memunculkan textarea manual, serta sistem notifikasi toast (`showToast`).
+   - [x] **Modal Lightbox Zoom QRIS (`index.html`):** Thumbnail QRIS diperbesar ke 110x110px dengan badge interaktif, terhubung ke popup lightbox fullscreen (`#qris-lightbox-modal`) lengkap dengan tombol unduh gambar (`download="QRIS-Masjid-Sophia-Jatiwarna.jpeg"`).
+   - [x] **Resolusi Error Log 404 /config (`vercel.json`):** Menambahkan rewrite rule `/config` -> `/api/config` pada konfigurasi Vercel.
+   - [x] **Resolusi Auth 422 (`admin.html`):** Membersihkan panggilan signUp otomatis yang gagal saat akun fallback master DKM digunakan.
+   - [x] **Script SQL Migrasi Supabase:** Penyediaan `database/migration_update_donations_notes.sql` untuk penambahan kolom `admin_notes TEXT` pada tabel `donations`.

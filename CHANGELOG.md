@@ -4,6 +4,23 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.38] - 2026-09-19
+
+### Penyempurnaan UI Tombol Aksi Donasi, Modal Tolak Kustom, Lightbox Zoom QRIS & Resolusi Error Log
+
+#### Ditambahkan
+- [UI/MODAL] **Modal Tolak Konfirmasi Donasi Kustom DKM (`#modal-reject-donation`):** Menggantikan `prompt()` bawaan browser yang terblokir pada perangkat mobile/PWA dengan modal terintegrasi tema Masjid Sophia. Dilengkapi ringkasan data donatur, 3 preset opsi cepat (*Mutasi tidak ditemukan di rekening BSI*, *Nominal transfer tidak sesuai*, *Bukti / data transaksi duplikat*) serta opsi *Lainnya* yang memunculkan textarea input manual.
+- [UI/TOAST] **Sistem Notifikasi Toast Admin (`showToast`):** Mengganti `alert()` native browser dengan notifikasi toast modern di pojok kanan atas antarmuka untuk status verifikasi dan penolakan donasi.
+- [UI/LIGHTBOX] **Modal Lightbox Zoom & Unduh Gambar QRIS (`#qris-lightbox-modal`):** Menghadirkan modal fullscreen zoom berlatar belakang gelap dengan tampilan resolusi tinggi kode QRIS resmi Masjid Sophia Jatiwarna (NMID: `ID2025401816769`), panduan scan e-wallet / m-Banking, serta tombol *Unduh Gambar QRIS* (`download="QRIS-Masjid-Sophia-Jatiwarna.jpeg"`).
+- [ROUTING] **Rewrite Aturan `/config` di `vercel.json`:** Mengarahkan rute `/config` ke `/api/config` untuk mengeliminasi pesan status HTTP 404 (Not Found).
+
+#### Diperbarui
+- [UI/TABLE] **Tombol Verifikasi & Tolak Donasi Proporsional:** Menghapus keterikatan pada kelas `.btn-action` yang membatasi ukuran 32x32px, menggantikannya dengan `.btn-donation-verify` dan `.btn-donation-reject` dengan `width: auto`, padding proporsional, layout berdampingan horizontal (flex-row), transisi hover halus, dan lebar kolom minimal 175px.
+- [UI/THUMBNAIL] **Dimensi QRIS Form Donasi:** Memperbesar thumbnail QRIS pada form konfirmasi donasi `index.html` ke ukuran 110x110px dengan badge interaktif bertuliskan *Perbesar*.
+
+#### Diperbaiki
+- [AUTH] **Guard Otentikasi Fallback Master Seed:** Mengeliminasi error konsol `POST auth/v1/signup 422 (Unprocessable Content)` dan `POST auth/v1/token 400 (Bad Request)` pada fungsi `handleLogin` di `admin.html` ketika pengurus masuk menggunakan kredensial benih master DKM.
+
 ## [1.9.37] - 2026-09-19
 
 ### Penyempurnaan UI/UX, Aksesibilitas Mobile & Stabilitas Sesi Admin

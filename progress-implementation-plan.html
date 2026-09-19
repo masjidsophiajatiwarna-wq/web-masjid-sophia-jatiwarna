@@ -2210,6 +2210,36 @@
                             <div class="task-desc">Perbaikan unclosed tag kontainer #tab-kebersihan yang menyebabkan modul PJ Ibadah (#tab-ibadah) dan PJ Logistik (#tab-logistik) tertelan dan tak terlihat (blank screen). Audit menyeluruh memastikan seluruh 18 modul portal admin mandiri pada stack depth 5, validasi sintaks JavaScript Node.js 100% bebas error, dan konfirmasi null-safety seluruh elemen antarmuka.</div>
                         </div>
                     </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Tombol Aksi Donasi &amp; Modal Tolak Donasi Kustom DKM (v1.9.38)
+                                <span class="task-badge-pill">UI/UX Donasi</span>
+                            </div>
+                            <div class="task-desc">Mengganti batasan .btn-action 32x32px dengan .btn-donation-verify dan .btn-donation-reject (width: auto, padding proporsional, flex berdampingan). Mengganti prompt browser native dengan modal penolakan kustom (#modal-reject-donation) bertema Sophia dilengkapi 3 preset alasan cepat + opsi 'Lainnya' dan notifikasi toast modern.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Lightbox Zoom &amp; Unduh Gambar QRIS Masjid Resmi (v1.9.38)
+                                <span class="task-badge-pill">Portal Publik</span>
+                            </div>
+                            <div class="task-desc">Pembesaran thumbnail QRIS form donasi ke 110x110px dengan badge interaktif 'Perbesar'. Pembangunan modal lightbox fullscreen (#qris-lightbox-modal) dengan gambar QRIS besar, detail NMID resmi ID2025401816769, panduan scan m-Banking, dan tombol unduh file gambar QRIS mandiri.</div>
+                        </div>
+                    </div>
+                    <div class="task-item completed">
+                        <input type="checkbox" class="task-checkbox" checked onchange="updateProgress()">
+                        <div class="task-content">
+                            <div class="task-title">
+                                Eliminasi Error Log 404 /config &amp; Guard Auth 422 (v1.9.38)
+                                <span class="task-badge-pill">Keandalan Sistem</span>
+                            </div>
+                            <div class="task-desc">Penambahan aturan rewrite /config ke /api/config di vercel.json guna mengeliminasi error 404, serta penyederhanaan otentikasi fallback master seed DKM di admin.html agar tidak memicu panggilan signUp yang menghasilkan error 422 Unprocessable Content.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

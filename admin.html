@@ -3507,6 +3507,98 @@
             color: #DC2626;
         }
 
+        /* Tombol Aksi Tabel Donasi Khusus (Berdampingan, Responsif & Elegan) */
+        .btn-donation-verify {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            background: #059669;
+            border: 1px solid #059669;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            white-space: nowrap;
+        }
+        .btn-donation-verify:hover {
+            background: #047857;
+            border-color: #047857;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(5, 150, 105, 0.25);
+        }
+        .btn-donation-reject {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            background: #DC2626;
+            border: 1px solid #DC2626;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            white-space: nowrap;
+        }
+        .btn-donation-reject:hover {
+            background: #B91C1C;
+            border-color: #B91C1C;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(220, 38, 38, 0.25);
+        }
+
+        /* Toast Notification Admin */
+        .admin-toast-container {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            pointer-events: none;
+        }
+        .admin-toast {
+            pointer-events: auto;
+            min-width: 280px;
+            max-width: 400px;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.825rem;
+            color: var(--color-charcoal);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.25s ease;
+        }
+        .admin-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .admin-toast.success {
+            border-left: 4px solid #059669;
+        }
+        .admin-toast.error {
+            border-left: 4px solid #DC2626;
+        }
+        .admin-toast.warning {
+            border-left: 4px solid #D97706;
+        }
+        .admin-toast.info {
+            border-left: 4px solid #2563EB;
+        }
+
         /* Search & Form Elements */
         .search-box {
             position: relative;
@@ -4531,7 +4623,7 @@
                                         <th>Total Transfer (Kode Unik)</th>
                                         <th>Doa / Catatan</th>
                                         <th>Status</th>
-                                        <th style="text-align: right;">Aksi</th>
+                                        <th style="text-align: right; min-width: 175px;">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="all-donations-tbody">
@@ -9763,6 +9855,83 @@
         </div>
     </div>
 
+    <!-- ==========================================================================
+       MODAL TOLAK KONFIRMASI DONASI (DKM ADMIN)
+       ========================================================================== -->
+    <div id="modal-reject-donation" class="admin-modal-backdrop" onclick="if(event.target.id==='modal-reject-donation') closeRejectDonationModal()" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center;">
+        <div class="admin-modal-card" style="background: #FFFFFF; width: 100%; max-width: 480px; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden; margin: 1rem; border: 1px solid var(--color-border);">
+            <!-- Header -->
+            <div style="padding: 1.25rem 1.5rem; background: #FEF2F2; border-bottom: 1px solid #FEE2E2; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 0.65rem;">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: #FEE2E2; color: #DC2626; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.05rem; font-weight: 800; color: #991B1B; margin: 0;">Tolak Konfirmasi Donasi</h3>
+                        <p style="font-size: 0.75rem; color: #B91C1C; margin: 0;">Status donasi akan diubah menjadi Ditolak</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeRejectDonationModal()" style="background: none; border: none; font-size: 1.25rem; color: #9CA3AF; cursor: pointer; padding: 0.25rem;">&times;</button>
+            </div>
+
+            <!-- Body -->
+            <div style="padding: 1.5rem;">
+                <!-- Summary Card -->
+                <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.825rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+                        <span style="color: var(--color-charcoal-muted);">Donatur:</span>
+                        <strong id="reject-modal-donor" style="color: var(--color-charcoal);">-</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--color-charcoal-muted);">Nominal:</span>
+                        <strong id="reject-modal-amount" style="color: var(--color-gold-deep); font-size: 0.95rem;">-</strong>
+                    </div>
+                </div>
+
+                <!-- Alasan Cepat (Radio Options) -->
+                <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal); margin-bottom: 0.5rem;">
+                    Pilih Alasan Penolakan:
+                </label>
+                <div style="display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1rem;" id="reject-preset-chips">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 0.75rem; border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-size: 0.8rem; background: #FFFFFF; transition: background 0.15s;">
+                        <input type="radio" name="reject_reason_preset" value="Mutasi tidak ditemukan di rekening BSI" onchange="onRejectPresetChange(this.value)" checked>
+                        <span>Mutasi tidak ditemukan di rekening BSI</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 0.75rem; border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-size: 0.8rem; background: #FFFFFF; transition: background 0.15s;">
+                        <input type="radio" name="reject_reason_preset" value="Nominal transfer tidak sesuai" onchange="onRejectPresetChange(this.value)">
+                        <span>Nominal transfer tidak sesuai</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 0.75rem; border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-size: 0.8rem; background: #FFFFFF; transition: background 0.15s;">
+                        <input type="radio" name="reject_reason_preset" value="Bukti / data transaksi duplikat" onchange="onRejectPresetChange(this.value)">
+                        <span>Bukti / data transaksi duplikat</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 0.75rem; border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; font-size: 0.8rem; background: #FFFFFF; transition: background 0.15s;">
+                        <input type="radio" name="reject_reason_preset" value="OTHER" onchange="onRejectPresetChange(this.value)">
+                        <span>Lainnya (Tulis alasan manual)</span>
+                    </label>
+                </div>
+
+                <!-- Custom Textarea (Tampil jika Lainnya dipilih) -->
+                <div id="reject-manual-input-box" style="display: none; margin-bottom: 0.5rem;">
+                    <label style="display: block; font-size: 0.78rem; font-weight: 700; color: var(--color-charcoal); margin-bottom: 0.35rem;">
+                        Tuliskan Alasan Manual:
+                    </label>
+                    <textarea id="reject-manual-reason" rows="3" class="form-input" style="width: 100%; font-size: 0.825rem; border-radius: 8px; padding: 0.6rem; resize: vertical;" placeholder="Tuliskan keterangan detail alasan penolakan..."></textarea>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div style="padding: 1rem 1.5rem; background: #F8FAFC; border-top: 1px solid var(--color-border); display: flex; justify-content: flex-end; gap: 0.65rem;">
+                <button type="button" class="btn btn-outline" onclick="closeRejectDonationModal()" style="font-size: 0.825rem; padding: 0.5rem 1rem; border-radius: 8px;">
+                    Batal
+                </button>
+                <button type="button" id="btn-confirm-reject-donation" onclick="submitRejectDonationModal()" style="font-size: 0.825rem; padding: 0.5rem 1.15rem; border-radius: 8px; background: #DC2626; color: #FFFFFF; border: none; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;">
+                    <i class="fa-solid fa-ban"></i> Tolak Donasi Ini
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Supabase Client Config (Dynamic Runtime Config - Zero Hardcode)
         let sbClient = null;
@@ -10378,37 +10547,7 @@
                         const isCustomPassMatch = customPass && (password === customPass || passTrimmed === customPass);
 
                         if (isDefaultPass || isCustomPassMatch) {
-                            let sbUser = null;
-                            if (sbClient) {
-                                try {
-                                    const { data: inData } = await sbClient.auth.signInWithPassword({
-                                        email: email,
-                                        password: password
-                                    });
-                                    if (inData && inData.user) {
-                                        sbUser = inData.user;
-                                    } else {
-                                        const { data: upData, error: upError } = await sbClient.auth.signUp({
-                                            email: email,
-                                            password: password,
-                                            options: {
-                                                data: {
-                                                    full_name: matchingUser.full_name,
-                                                    role: matchingUser.role,
-                                                    division: matchingUser.division
-                                                }
-                                            }
-                                        });
-                                        if (upData && upData.user && !upError) {
-                                            sbUser = upData.user;
-                                        }
-                                    }
-                                } catch (provErr) {
-                                    console.warn("Auto-provision notice:", provErr);
-                                }
-                            }
-
-                            authUser = sbUser || {
+                            authUser = {
                                 id: matchingUser.id || generateUUID(),
                                 email: matchingUser.email,
                                 user_metadata: {
@@ -12769,6 +12908,38 @@
                 .replace(/'/g, '&#039;');
         }
 
+        // Universal Toast Notification Engine for Admin Dashboard
+        function showToast(msg, type = 'info') {
+            let container = document.getElementById('admin-toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'admin-toast-container';
+                container.className = 'admin-toast-container';
+                document.body.appendChild(container);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = `admin-toast ${type}`;
+
+            let iconHtml = '<i class="fa-solid fa-circle-info" style="color: #2563EB;"></i>';
+            if (type === 'success') iconHtml = '<i class="fa-solid fa-circle-check" style="color: #059669;"></i>';
+            else if (type === 'error') iconHtml = '<i class="fa-solid fa-circle-xmark" style="color: #DC2626;"></i>';
+            else if (type === 'warning') iconHtml = '<i class="fa-solid fa-triangle-exclamation" style="color: #D97706;"></i>';
+
+            toast.innerHTML = `
+                <div style="font-size: 1.1rem; flex-shrink: 0;">${iconHtml}</div>
+                <div style="flex: 1; line-height: 1.35;">${escapeHtml(msg)}</div>
+            `;
+
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
         function renderMonthGrid(year, month) {
             const container = document.getElementById('calendar-days-grid');
             if (!container) return;
@@ -14649,12 +14820,12 @@
                         : `<input type="checkbox" class="donation-checkbox" value="${d.id}" ${isChecked ? 'checked' : ''} onchange="handleDonationCheckboxChange('${d.id}', this.checked)">`;
 
                     const actionBtn = isVerified
-                        ? `<span style="font-size: 0.72rem; color: #059669; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Terverifikasi</span>`
+                        ? `<span style="font-size: 0.75rem; color: #059669; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;"><i class="fa-solid fa-circle-check"></i> Terverifikasi</span>`
                         : (d.payment_status === 'REJECTED' 
-                            ? `<span style="font-size: 0.72rem; color: #DC2626; font-weight: 700;"><i class="fa-solid fa-circle-xmark"></i> Ditolak</span>`
-                            : `<div style="display:flex; gap:0.4rem; justify-content:flex-end;">
-                                <button type="button" class="btn-action edit" style="color: white; font-size: 0.75rem; padding: 0.35rem 0.65rem; border: none; background: #059669; border-radius: 4px; font-weight: 600;" onclick="handleApproveSingleDonation('${escapeHtml(d.id)}')" title="Verifikasi & Otomatis Catat Kas Masuk"><i class="fa-solid fa-check"></i> Verifikasi</button>
-                                <button type="button" class="btn-action delete" style="color: white; font-size: 0.75rem; padding: 0.35rem 0.65rem; border: none; background: #DC2626; border-radius: 4px; font-weight: 600;" onclick="handleRejectSingleDonation('${escapeHtml(d.id)}')" title="Tolak Donasi"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                            ? `<span style="font-size: 0.75rem; color: #DC2626; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;" title="${escapeHtml(d.admin_notes || 'Ditolak tanpa alasan')}"><i class="fa-solid fa-circle-xmark"></i> Ditolak</span>`
+                            : `<div style="display: inline-flex; gap: 0.45rem; justify-content: flex-end; align-items: center; white-space: nowrap;">
+                                <button type="button" class="btn-donation-verify" onclick="handleApproveSingleDonation('${escapeHtml(d.id)}')" title="Verifikasi &amp; Otomatis Catat Kas Masuk"><i class="fa-solid fa-check"></i> Verifikasi</button>
+                                <button type="button" class="btn-donation-reject" onclick="openRejectDonationModal('${escapeHtml(d.id)}')" title="Tolak Donasi"><i class="fa-solid fa-xmark"></i> Tolak</button>
                                </div>`);
 
                     return `
@@ -14755,44 +14926,120 @@
             }
         }
 
-        async function handleRejectSingleDonation(id) {
+        let activeRejectDonationId = null;
+
+        function openRejectDonationModal(id) {
             const role = getUserRole();
             if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_KEUANGAN'].includes(role)) {
-                alert('Akses Ditolak: Hanya Bendahara atau Pimpinan DKM yang berwenang menolak donasi.');
+                showToast('Akses Ditolak: Hanya Bendahara atau Pimpinan DKM yang berwenang menolak donasi.', 'warning');
                 return;
             }
 
-            const reason = prompt('Masukkan alasan penolakan donasi:');
-            if (reason === null) return; // User cancelled
-            
             const donation = globalDonationsList.find(d => d.id === id);
             if (!donation) return;
 
-            donation.payment_status = 'REJECTED';
-            donation.admin_notes = reason || 'Ditolak oleh admin tanpa alasan';
-            donation.updated_at = new Date().toISOString();
+            activeRejectDonationId = id;
+            const donorEl = document.getElementById('reject-modal-donor');
+            const amtEl = document.getElementById('reject-modal-amount');
+            if (donorEl) donorEl.textContent = donation.donor_name || 'Hamba Allah';
+            if (amtEl) amtEl.textContent = 'Rp ' + Number(donation.total_amount || donation.amount || 0).toLocaleString('id-ID');
 
-            if (typeof sbClient !== 'undefined' && sbClient) {
-                try {
-                    await sbClient.from('donations').update({ 
-                        payment_status: 'REJECTED', 
-                        admin_notes: donation.admin_notes,
-                        updated_at: donation.updated_at 
-                    }).eq('id', id);
-                } catch (e) {
-                    console.warn('[Donations] Supabase reject exception:', e);
+            // Reset preset selection
+            const radios = document.getElementsByName('reject_reason_preset');
+            if (radios.length > 0) radios[0].checked = true;
+            const manualBox = document.getElementById('reject-manual-input-box');
+            if (manualBox) manualBox.style.display = 'none';
+            const manualInput = document.getElementById('reject-manual-reason');
+            if (manualInput) manualInput.value = '';
+
+            const modal = document.getElementById('modal-reject-donation');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeRejectDonationModal() {
+            const modal = document.getElementById('modal-reject-donation');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            activeRejectDonationId = null;
+        }
+
+        function onRejectPresetChange(val) {
+            const manualBox = document.getElementById('reject-manual-input-box');
+            if (!manualBox) return;
+            if (val === 'OTHER') {
+                manualBox.style.display = 'block';
+                const input = document.getElementById('reject-manual-reason');
+                if (input) input.focus();
+            } else {
+                manualBox.style.display = 'none';
+            }
+        }
+
+        async function submitRejectDonationModal() {
+            if (!activeRejectDonationId) return;
+
+            const selectedRadio = document.querySelector('input[name="reject_reason_preset"]:checked');
+            let reason = selectedRadio ? selectedRadio.value : '';
+
+            if (reason === 'OTHER') {
+                const manualText = (document.getElementById('reject-manual-reason')?.value || '').trim();
+                if (!manualText) {
+                    showToast('Harap tuliskan alasan penolakan manual.', 'warning');
+                    return;
                 }
+                reason = manualText;
             }
 
-            selectedDonationIds.delete(id);
-            renderDonations(globalDonationsList);
-            alert(`Donasi dari ${donation.donor_name} telah ditolak.`);
+            const btn = document.getElementById('btn-confirm-reject-donation');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+            }
+
+            const donation = globalDonationsList.find(d => d.id === activeRejectDonationId);
+            if (donation) {
+                donation.payment_status = 'REJECTED';
+                donation.admin_notes = reason || 'Ditolak oleh admin tanpa alasan';
+                donation.updated_at = new Date().toISOString();
+
+                if (typeof sbClient !== 'undefined' && sbClient) {
+                    try {
+                        await sbClient.from('donations').update({ 
+                            payment_status: 'REJECTED', 
+                            admin_notes: donation.admin_notes,
+                            updated_at: donation.updated_at 
+                        }).eq('id', activeRejectDonationId);
+                    } catch (e) {
+                        console.warn('[Donations] Supabase reject exception:', e);
+                    }
+                }
+
+                selectedDonationIds.delete(activeRejectDonationId);
+                renderDonations(globalDonationsList);
+            }
+
+            const donorName = donation ? (donation.donor_name || 'Hamba Allah') : 'Donatur';
+            closeRejectDonationModal();
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-ban"></i> Tolak Donasi Ini';
+            }
+            showToast(`Donasi dari ${donorName} telah berhasil ditolak.`, 'success');
+        }
+
+        async function handleRejectSingleDonation(id) {
+            openRejectDonationModal(id);
         }
 
         async function handleApproveSingleDonation(id) {
             const role = getUserRole();
             if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_KEUANGAN'].includes(role)) {
-                alert('Akses Ditolak: Hanya Bendahara atau Pimpinan DKM yang berwenang memverifikasi donasi.');
+                showToast('Akses Ditolak: Hanya Bendahara atau Pimpinan DKM yang berwenang memverifikasi donasi.', 'warning');
                 return;
             }
 
@@ -14809,7 +15056,7 @@
                         .update({ payment_status: 'VERIFIED', updated_at: donation.updated_at })
                         .eq('id', id);
                     if (error) {
-                        alert('Peringatan: Gagal memperbarui status donasi di Supabase: ' + error.message);
+                        showToast('Peringatan: Gagal memperbarui status donasi di Supabase: ' + error.message, 'warning');
                     }
                 } catch (e) {
                     console.warn('[Donations] Supabase verify exception:', e);
@@ -14823,7 +15070,7 @@
             if (typeof renderJournalsTable === 'function') renderJournalsTable();
             if (typeof updateJournalsKpiStats === 'function') updateJournalsKpiStats();
 
-            alert(`Donasi dari ${donation.donor_name} sebesar Rp ${Number(donation.total_amount || donation.amount).toLocaleString('id-ID')} berhasil diverifikasi dan otomatis tercatat ke Jurnal Kas Masuk!`);
+            showToast(`Donasi dari ${donation.donor_name || 'Hamba Allah'} (Rp ${Number(donation.total_amount || donation.amount).toLocaleString('id-ID')}) berhasil diverifikasi & tercatat di Jurnal Kas!`, 'success');
         }
 
         async function handleBatchApproveDonations() {
