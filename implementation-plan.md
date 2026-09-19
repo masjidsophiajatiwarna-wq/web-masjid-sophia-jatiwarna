@@ -526,3 +526,30 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 | 16 | Resolusi Kerusakan Bersarang DOM (Unclosed Div) & Audit Aksesibilitas 18 Modul Portal Admin | `admin.html` (`#tab-kebersihan`, `#tab-logistik`, `#tab-ibadah`, `switchTab`) | **SELESAI (100% TERVERIFIKASI)** — Menutup tag kontainer `<div id="tab-kebersihan">` yang sebelumnya kehilangan tag penutup `</div>` pada baris 6753, mengeliminasi gejala layar putih kosong pada modul PJ Ibadah dan PJ Logistik. Memvalidasi seluruh 18 modul portal admin berada pada kedalaman tingkat utama (depth 5) secara mandiri dan seimbang. |
 
 
+
+---
+
+## FASE 4: UI/UX & Bug Fixing (Notifikasi, Mobile Menu, QRIS, & Formating)
+**Tujuan:** Menyelesaikan catatan bug dan peningkatan antarmuka berdasarkan umpan balik pengguna.
+
+### Daftar Pekerjaan:
+1. **Bilah Button Notification Terpusat (dmin.html)**
+   - Menambahkan icon notifikasi (a-bell) di pojok kanan atas 	op-app-bar.
+   - Mengimplementasikan tampilan *dropdown* notifikasi kosong sementara (menyediakan slot untuk pengembangan fitur push notifikasi ke depannya).
+2. **Tombol Menu Mobile / PWA (dmin.html)**
+   - Menambahkan tombol *hamburger menu* (a-bars) di sebelah kiri judul pada 	op-app-bar yang khusus muncul di tampilan *mobile*.
+   - Menghubungkannya dengan fungsi 	oggleSidebar() agar pengguna HP bisa membuka/menutup navigasi utama.
+3. **Penyempurnaan Verifikasi Donasi & Tombol Reject (dmin.html)**
+   - Mengubah *styling* tombol aksi "Verifikasi" di tabel donasi agar lebih interaktif dan berbentuk tombol (bukan sekadar teks).
+   - Menambahkan tombol "Tolak" berwarna merah di sebelah tombol "Verifikasi".
+   - Mengimplementasikan fungsi handleRejectSingleDonation(id) yang memunculkan prompt (atau *modal*) untuk meminta **Alasan Penolakan**.
+   - Menyimpan status 'REJECTED' dan menambahkan catatan penolakan ke memori tabel atau *database* (opsional menambah kolom dmin_notes jika diizinkan).
+4. **Pemasangan QRIS Masjid Resmi (index.html)**
+   - Mengganti teks/placeholder QRIS di form donasi (halaman publik) dengan tag <img> yang memuat gambar QRIS Masjid resmi.
+   - Karena keterbatasan akses API Key ImageKit di *environment local*, gambar akan disimpan dan dipanggil dari folder lokal (sset/images/QRIS MASJID.jpeg) terlebih dahulu. Jika nanti API key tersedia, bisa diupload terpisah.
+5. **Perbaikan *Session Persistence* PWA/Desktop (dmin.html)**
+   - Mengatasi isu *logout* saat *refresh* dengan menyimpan sesi akun (uthUser) ke dalam localStorage saat pengguna menggunakan jalur *fallback credential login* (benih akun master DKM).
+   - Memastikan DOMContentLoaded mengecek *local storage* ini apabila sbClient.auth.getSession() dari Supabase gagal mengembalikan sesi.
+6. **Pemformatan Angka Otomatis (*Thousand Separator*) (index.html)**
+   - Mengubah form input nominal donasi agar otomatis memunculkan titik pemisah ribuan (contoh: 10.000) saat pengguna mengetik, sehingga mencegah kesalahan input jumlah nol.
+
