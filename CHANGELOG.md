@@ -4,6 +4,24 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.47] - 2026-09-21
+
+### Pembersihan Label Teknis Antarmuka, Perbaikan Ikon Font Awesome KPI, dan Penguatan UI Human-First
+
+#### Diperbaiki
+- [UI/FONT_AWESOME_ICONS] **Resolusi Ikon KPI Kosong (`admin.html`):** Memperbaiki kartu indikator metrik yang sebelumnya kosong akibat penggunaan nama kelas ikon Font Awesome Pro pada pustaka Font Awesome 6 Free:
+  - Mengganti `fa-arrow-down-left` pada kartu KPI "TOTAL KAS MASUK" (`#stat-kas-total-masuk`), kartu "TOTAL PENERIMAAN" (`#stat-lr-penerimaan`), dan badge tabel jurnal kas masuk menjadi `fa-circle-arrow-down` yang valid dan didukung penuh.
+  - Mengganti `fa-sparkles` pada kartu KPI "BERSIH & HARUM (STANDAR)" di modul sanitasi kebersihan menjadi `fa-wand-magic-sparkles`.
+  - Memverifikasi secara komprehensif 39 ikon kartu KPI di seluruh modul admin terhadap skema CSS Font Awesome 6.5.1 dengan hasil 100% valid.
+
+#### Dihapus & Disederhanakan
+- [UI/STAT_CARD_CLEANUP] **Penghapusan Kartu Supabase CDC (`admin.html`):** Menghapus kartu status teknis "Supabase CDC" (`.account-stat-card`) pada panel Direktori & Manajemen Pengguna DKM (`account-stat-grid`) untuk menyederhanakan tata letak dan memfokuskan visual pada metrik operasional riil.
+- [UI/CHAT_HEADER_CLEANUP] **Pembersihan Subtitle Teknis Chat Koordinasi (`admin.html`):** Menghapus teks teknis "Saluran komunikasi multi-arah antar 10 peran DKM (Live WhatsApp-Style tanpa refresh)" dari header tab Chat Koordinasi (`#tab-chat`) serta memperbarui metadata deskripsi navigasi menjadi bahasa santun bernuansa human-first ("Ruang komunikasi dan koordinasi terpadu pengurus DKM").
+- [UI/HISTORY_TITLE_CLEANUP] **Pembersihan Label CDC Riwayat Portal (`admin.html`):** Menghapus teks "(CDC)" pada judul panel "Log Riwayat Aktivitas Portal DKM" agar tidak memuat jargon arsitektur basis data bagi pengurus non-teknis.
+- [UI/BUILDER_TITLE_CLEANUP] **Pembersihan Label Index.html Visual Web Builder (`admin.html`):** Menghapus teks "(index.html)" pada judul panel "Visual Web Builder & Manajemen Beranda" dan deskripsi navigasi terkait.
+- [UI/MEDIA_TITLE_CLEANUP] **Pembersihan Label ImageKit.io Galeri & Studio (`admin.html`):** Menghapus teks "(ImageKit.io)" pada judul panel penyimpanan media CDN di tab Content Studio Warta dan tab Galeri Media menjadi "Penyimpanan Media CDN" yang bersih.
+- [UI/FINANCE_BUTTON_CLEANUP] **Penyederhanaan Tombol Navigasi Subview Keuangan (`admin.html`):** Menghapus teks teknis berlebih "(Surplus / Defisit)" pada tombol "Laporan Laba Rugi" (`#btn-subview-keu-labarugi`) dan "(QRIS/BSI)" pada tombol "Infaq & Donasi Masuk" (`#btn-subview-keu-donasi`) agar tata letak tombol subview lebih proporsional, rapi, dan mudah diakses.
+
 ## [1.9.46] - 2026-09-21
 
 ### Toggle Suara Notifikasi iOS Slider, Format Titik Pemisah Ribuan, Integrasi Notifikasi Review Tugas DKM, & Skema Kompatibilitas Database
