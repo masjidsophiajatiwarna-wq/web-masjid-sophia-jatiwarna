@@ -2651,26 +2651,23 @@
             <div class="donation-progress-banner">
                 <div class="progress-banner-inner">
                     <div>
-                        <div style="font-size: 0.775rem; font-weight: 700; color: var(--color-gold-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">
-                            <i class="fa-solid fa-chart-line"></i> Capaian Sedekah Makan Hari Ini
-                        </div>
-                        <h3 id="live-banner-makan-title" style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.25rem;">
-                            Penyaluran ~70+ Porsi Makan Siang Gratis Ba'da Dzuhur
+                        <h3 id="live-banner-makan-title" style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.35rem; color: #FFFFFF; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-chart-line" style="color: var(--color-gold-primary);"></i> Capaian Infaq &amp; Sedekah Makan Minggu Ini
                         </h3>
-                        <p style="font-size: 0.825rem; color: #D1D5DB; margin-bottom: 0.5rem;">
+                        <p style="font-size: 0.825rem; color: #D1D5DB; margin-bottom: 0;">
                             Alhamdulillah, hidangan siang ini disiapkan tim dapur relawan bersama UMAR Travel untuk musafir &amp; jamaah.
                         </p>
                     </div>
-                    <div>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: 700;">
-                            <span>Terkumpul Pekan Ini: <strong style="color: var(--color-gold-primary);" id="live-donation-count">0 Porsi</strong></span>
-                            <span>Target: <strong id="live-donation-target">490 Porsi/Pekan</strong></span>
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 1.1rem 1.35rem; border-radius: 10px; border: 1px solid rgba(218, 165, 32, 0.35);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                            <span style="font-size: 0.825rem; font-weight: 700; color: #E5E7EB;">Total Infaq Minggu Ini</span>
+                            <span style="font-size: 0.725rem; color: var(--color-gold-primary); font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Terverifikasi DKM</span>
                         </div>
-                        <div class="progress-bar-wrap">
-                            <div class="progress-bar-fill" id="live-progress-fill" style="width: 0%;"></div>
+                        <div style="font-size: 1.55rem; font-weight: 800; color: var(--color-gold-primary); line-height: 1.2;" id="live-donation-total">
+                            Rp 0 <span style="font-size: 0.9rem; font-weight: 600; color: #D1D5DB;" id="live-donation-porsi">(0 Porsi)</span>
                         </div>
-                        <div style="font-size: 0.725rem; color: #9CA3AF; text-align: right; margin-top: 0.35rem;">
-                            <i class="fa-solid fa-circle-check" style="color: var(--color-gold-primary);"></i> Akumulasi infaq pekan ini (Senin - Ahad) terverifikasi DKM
+                        <div style="font-size: 0.725rem; color: #9CA3AF; margin-top: 0.4rem;">
+                            Akumulasi infaq pekan ini (Senin - Ahad) terverifikasi DKM
                         </div>
                     </div>
                 </div>
@@ -3804,30 +3801,11 @@
             if (!sbClientIndex) return;
 
             try {
-                // 1. Ambil data riil dapur untuk menghitung rata-rata porsi harian
-                let avgPorsi = 70;
-                const { data: dapurLogs, error: dapurErr } = await sbClientIndex
-                    .from('dapur_makan_siang')
-                    .select('realisasi_porsi, target_porsi, status_distribusi');
-
-                if (!dapurErr && Array.isArray(dapurLogs) && dapurLogs.length > 0) {
-                    let totalPorsiRealisasi = 0;
-                    dapurLogs.forEach(l => {
-                        totalPorsiRealisasi += (Number(l.realisasi_porsi) || 0);
-                    });
-                    avgPorsi = Math.max(1, Math.round(totalPorsiRealisasi / dapurLogs.length));
-                }
-
-                const bannerTitle = document.getElementById('live-banner-makan-title');
-                if (bannerTitle) {
-                    bannerTitle.textContent = `Penyaluran ~${avgPorsi}+ Porsi Makan Siang Gratis Ba'da Dzuhur`;
-                }
-
-                // 2. Siklus Reset Mingguan (Senin 00:00 s.d. Ahad 23:59)
+                // 1. Siklus Reset Mingguan (Senin 00:00 s.d. Ahad 23:59)
                 const mondayStart = getMondayStartOfWeek();
                 const mondayISO = mondayStart.toISOString();
 
-                // 3. Ambil data donasi terverifikasi pekan berjalan
+                // 2. Ambil data donasi terverifikasi pekan berjalan
                 const { data: donations, error: donErr } = await sbClientIndex
                     .from('donations')
                     .select('amount, total_amount, payment_status, program_category, created_at')
@@ -3848,17 +3826,21 @@
 
                 // Setiap Rp 25.000 mewakili 1 porsi makan siang berkah
                 const weeklyPorsi = Math.floor(weeklyInfaq / 25000);
-                const targetPekan = avgPorsi * 7;
 
+                const totalEl = document.getElementById('live-donation-total');
+                const porsiEl = document.getElementById('live-donation-porsi');
                 const countEl = document.getElementById('live-donation-count');
-                const targetEl = document.getElementById('live-donation-target');
-                const progressEl = document.getElementById('live-progress-fill');
 
-                if (countEl) countEl.innerText = `${weeklyPorsi} Porsi`;
-                if (targetEl) targetEl.innerText = `${targetPekan} Porsi/Pekan`;
-                if (progressEl) {
-                    const pct = Math.min(100, Math.round((weeklyPorsi / Math.max(1, targetPekan)) * 100));
-                    progressEl.style.width = `${pct}%`;
+                const formattedRupiah = `Rp ${Number(weeklyInfaq).toLocaleString('id-ID')}`;
+                const formattedPorsi = `(${weeklyPorsi.toLocaleString('id-ID')} Porsi)`;
+
+                if (totalEl) {
+                    totalEl.innerHTML = `${formattedRupiah} <span style="font-size: 0.9rem; font-weight: 600; color: #D1D5DB;" id="live-donation-porsi">${formattedPorsi}</span>`;
+                } else if (porsiEl) {
+                    porsiEl.innerText = formattedPorsi;
+                }
+                if (countEl) {
+                    countEl.innerText = `${weeklyPorsi.toLocaleString('id-ID')} Porsi`;
                 }
             } catch (err) {
                 console.warn('[Donations/Dapur] Progress load notice:', err);

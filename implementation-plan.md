@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v6.6 (Resolusi Zombie Tasks, Donasi Publik, Kotak Saran, dan Capaian Sedekah Makan Realtime)  
+**Versi Rencana Induk:** v6.7 (Penyempurnaan Banner Publik: Capaian Infaq Mingguan & Eliminasi Target Publik)  
 **Terakhir Diperbarui:** 2026-09-21  
 
 ---
@@ -606,7 +606,10 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
    - *Solusi:* Menghubungkan fungsi `updateDapurKpiStats()` dengan kartu `#kpi-makan-count` untuk menampilkan rata-rata porsi riil harian (`~${avgPorsi}+ Porsi`), serta mempercepat pemulihan data dapur dari cache lokal saat halaman dimuat.
 5. **Capaian Sedekah Makan Realtime di Web Publik (`index.html`):**
    - *Akar Masalah:* Banner capaian sedekah makan menghitung donasi dengan rumus statis dan tidak membaca database operasional dapur `dapur_makan_siang`, serta belum memiliki siklus reset mingguan.
-   - *Solusi:* Menghubungkan banner ke tabel `dapur_makan_siang` untuk menghitung rata-rata harian riil (judul banner: `Penyaluran ~${avgPorsi}+ Porsi Makan Siang Gratis Ba'da Dzuhur`), menerapkan siklus reset mingguan otomatis (Senin 00:00 s.d. Ahad 23:59) untuk akumulasi infaq sedekah makan, dan menambahkan channel realtime CDC untuk `dapur_makan_siang`.
+   - *Solusi:* Menghubungkan banner ke siklus reset mingguan otomatis (Senin 00:00 s.d. Ahad 23:59) untuk akumulasi infaq sedekah makan, dan menambahkan channel realtime CDC untuk `dapur_makan_siang` dan `donations`.
+6. **Penyempurnaan Banner Publik & Eliminasi Target Publik (`index.html`):**
+   - *Akar Masalah:* Publik melihat teks target (`Target: ... Porsi/Pekan`) dan progress bar yang berpotensi menimbulkan misinformasi jamaah, sementara target merupakan metrik internal DKM. Selain itu, judul banner memiliki teks porsi kaku.
+   - *Solusi:* Mengubah judul banner menjadi "Capaian Infaq & Sedekah Makan Minggu Ini" dengan ikon penanda, menghapus judul lama "Penyaluran ~45+ Porsi...", menghapus label dan angka target publik beserta progress bar, dan menyajikan kartu metrik "Total Infaq Minggu Ini" yang menampilkan total rupiah dan padanan porsi secara elegan dan dinamis.
 
 ### 2. Matriks Pengujian & Verifikasi:
 - [x] Syntax checking inline JavaScript via Node.js: 0 errors pada `admin.html` dan `index.html`.
@@ -615,6 +618,7 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 - [x] Verifikasi bulk toolbar tertutup bersih saat daftar tugas kosong.
 - [x] Verifikasi seleksi donasi, hapus tunggal, hapus massal, dan KPI terverifikasi.
 - [x] Verifikasi kolom Aksi, modal respon DKM, dan penghapusan saran pada Kotak Saran.
-- [x] Verifikasi penyaluran rata-rata dapur dan siklus mingguan Senin-Ahad di halaman publik.
+- [x] Verifikasi judul banner general "Capaian Infaq & Sedekah Makan Minggu Ini" dan kartu "Total Infaq Minggu Ini".
+- [x] Verifikasi eliminasi total indikator target dan progress bar dari pandangan publik.
 
 

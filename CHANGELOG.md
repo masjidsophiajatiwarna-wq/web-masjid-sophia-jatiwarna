@@ -4,6 +4,15 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.41] - 2026-09-21
+
+### Penyempurnaan Banner Publik: Capaian Infaq Mingguan & Eliminasi Target Publik
+
+#### Diperbarui
+- [PUBLIC/BANNER] **Judul Ringkas & Elegan (`index.html`):** Mengubah judul banner menjadi "Capaian Infaq & Sedekah Makan Minggu Ini" dengan ikon penanda, serta menghapus judul teks porsi kaku "Penyaluran ~45+ Porsi Makan Siang Gratis Ba'da Dzuhur".
+- [PUBLIC/TARGET] **Eliminasi Target Publik & Batang Progres:** Menghapus label dan angka target ("Target: ... Porsi/Pekan") serta progress bar dari antarmuka publik demi privasi metrik operasional internal DKM dan mencegah kesalahpahaman informasi jamaah.
+- [PUBLIC/TOTAL] **Kartu Metrik Total Infaq Minggu Ini:** Mengganti tampilan target dengan kartu statistik "Total Infaq Minggu Ini" yang menyajikan akumulasi rupiah terverifikasi dan padanan porsi secara dinamis dan transparan.
+
 ## [1.9.40] - 2026-09-21
 
 ### Resolusi Zombie Tasks & Stuck Toolbar, Seleksi Cerdas & Hapus Donasi, Respon Kotak Saran, dan Capaian Sedekah Makan Realtime
