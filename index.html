@@ -2654,23 +2654,23 @@
                         <div style="font-size: 0.775rem; font-weight: 700; color: var(--color-gold-primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">
                             <i class="fa-solid fa-chart-line"></i> Capaian Sedekah Makan Hari Ini
                         </div>
-                        <h3 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.25rem;">
-                            Penyaluran 70+ Porsi Makan Siang Gratis Ba'da Dzuhur
+                        <h3 id="live-banner-makan-title" style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.25rem;">
+                            Penyaluran ~70+ Porsi Makan Siang Gratis Ba'da Dzuhur
                         </h3>
                         <p style="font-size: 0.825rem; color: #D1D5DB; margin-bottom: 0.5rem;">
-                            Alhamdulillah, hidangan siang ini sedang disiapkan tim dapur relawan bersama UMAR Travel.
+                            Alhamdulillah, hidangan siang ini disiapkan tim dapur relawan bersama UMAR Travel untuk musafir &amp; jamaah.
                         </p>
                     </div>
                     <div>
                         <div style="display: flex; justify-content: space-between; font-size: 0.825rem; font-weight: 700;">
-                            <span>Terkumpul: <strong style="color: var(--color-gold-primary);" id="live-donation-count">78 Porsi</strong></span>
-                            <span>Target: <strong>70 Porsi/Hari</strong></span>
+                            <span>Terkumpul Pekan Ini: <strong style="color: var(--color-gold-primary);" id="live-donation-count">0 Porsi</strong></span>
+                            <span>Target: <strong id="live-donation-target">490 Porsi/Pekan</strong></span>
                         </div>
                         <div class="progress-bar-wrap">
-                            <div class="progress-bar-fill" id="live-progress-fill" style="width: 100%;"></div>
+                            <div class="progress-bar-fill" id="live-progress-fill" style="width: 0%;"></div>
                         </div>
-                        <div style="font-size: 0.725rem; color: #9CA3AF; text-align: right;">
-                            <i class="fa-solid fa-circle-check" style="color: var(--color-gold-primary);"></i> Data infaq terverifikasi DKM
+                        <div style="font-size: 0.725rem; color: #9CA3AF; text-align: right; margin-top: 0.35rem;">
+                            <i class="fa-solid fa-circle-check" style="color: var(--color-gold-primary);"></i> Akumulasi infaq pekan ini (Senin - Ahad) terverifikasi DKM
                         </div>
                     </div>
                 </div>
@@ -3787,45 +3787,86 @@
         }
 
         // ==========================================================================
-        // 11.5 PROGRESS DONASI SEDEKAH MAKAN SIANG (donations)
+        // 11.5 PROGRESS DONASI SEDEKAH MAKAN SIANG (donations & dapur_makan_siang)
         // ==========================================================================
+        function getMondayStartOfWeek() {
+            const now = new Date();
+            const day = now.getDay(); // 0 = Sunday, 1 = Monday, ...
+            const diff = (day === 0 ? -6 : 1) - day;
+            const monday = new Date(now);
+            monday.setDate(now.getDate() + diff);
+            monday.setHours(0, 0, 0, 0);
+            return monday;
+        }
+
         async function loadDonationsProgress() {
             if (!sbClientIndex) await initSupabasePromise;
             if (!sbClientIndex) return;
 
             try {
-                const { data, error } = await sbClientIndex
-                    .from('donations')
-                    .select('amount, total_amount, payment_status, program_category');
+                // 1. Ambil data riil dapur untuk menghitung rata-rata porsi harian
+                let avgPorsi = 70;
+                const { data: dapurLogs, error: dapurErr } = await sbClientIndex
+                    .from('dapur_makan_siang')
+                    .select('realisasi_porsi, target_porsi, status_distribusi');
 
-                if (!error && Array.isArray(data)) {
-                    let totalAmount = 0;
-                    data.forEach(d => {
+                if (!dapurErr && Array.isArray(dapurLogs) && dapurLogs.length > 0) {
+                    let totalPorsiRealisasi = 0;
+                    dapurLogs.forEach(l => {
+                        totalPorsiRealisasi += (Number(l.realisasi_porsi) || 0);
+                    });
+                    avgPorsi = Math.max(1, Math.round(totalPorsiRealisasi / dapurLogs.length));
+                }
+
+                const bannerTitle = document.getElementById('live-banner-makan-title');
+                if (bannerTitle) {
+                    bannerTitle.textContent = `Penyaluran ~${avgPorsi}+ Porsi Makan Siang Gratis Ba'da Dzuhur`;
+                }
+
+                // 2. Siklus Reset Mingguan (Senin 00:00 s.d. Ahad 23:59)
+                const mondayStart = getMondayStartOfWeek();
+                const mondayISO = mondayStart.toISOString();
+
+                // 3. Ambil data donasi terverifikasi pekan berjalan
+                const { data: donations, error: donErr } = await sbClientIndex
+                    .from('donations')
+                    .select('amount, total_amount, payment_status, program_category, created_at')
+                    .gte('created_at', mondayISO);
+
+                let weeklyInfaq = 0;
+                if (!donErr && Array.isArray(donations)) {
+                    donations.forEach(d => {
                         const status = (d.payment_status || '').toUpperCase();
-                        if (!status || status === 'PAID' || status === 'VERIFIED' || status === 'SUCCESS' || status === 'PENDING') {
-                            totalAmount += (Number(d.total_amount) || Number(d.amount) || 0);
+                        const prog = (d.program_category || '').toLowerCase();
+                        if (status === 'VERIFIED' || status === 'PAID' || status === 'SUCCESS') {
+                            if (prog.includes('makan') || prog.includes('sedekah') || prog.includes('infaq')) {
+                                weeklyInfaq += (Number(d.total_amount) || Number(d.amount) || 0);
+                            }
                         }
                     });
+                }
 
-                    // Setiap Rp 25.000 mewakili 1 porsi makan siang berkah
-                    const porsiTambahan = Math.floor(totalAmount / 25000);
-                    const totalPorsi = Math.max(78, 70 + porsiTambahan);
-                    
-                    const countEl = document.getElementById('live-donation-count');
-                    const progressEl = document.getElementById('live-progress-fill');
-                    if (countEl) countEl.innerText = `${totalPorsi} Porsi`;
-                    if (progressEl) {
-                        const pct = Math.min(100, Math.round((totalPorsi / 70) * 100));
-                        progressEl.style.width = `${pct}%`;
-                    }
+                // Setiap Rp 25.000 mewakili 1 porsi makan siang berkah
+                const weeklyPorsi = Math.floor(weeklyInfaq / 25000);
+                const targetPekan = avgPorsi * 7;
+
+                const countEl = document.getElementById('live-donation-count');
+                const targetEl = document.getElementById('live-donation-target');
+                const progressEl = document.getElementById('live-progress-fill');
+
+                if (countEl) countEl.innerText = `${weeklyPorsi} Porsi`;
+                if (targetEl) targetEl.innerText = `${targetPekan} Porsi/Pekan`;
+                if (progressEl) {
+                    const pct = Math.min(100, Math.round((weeklyPorsi / Math.max(1, targetPekan)) * 100));
+                    progressEl.style.width = `${pct}%`;
                 }
             } catch (err) {
-                console.warn('[Donations] Progress load notice:', err);
+                console.warn('[Donations/Dapur] Progress load notice:', err);
             }
         }
 
         // ==========================================================================
-        // 12. SUPABASE REALTIME CDC SUBSCRIPTIONS (ALL 6 CHANNELS)
+        // 12. SUPABASE REALTIME CDC SUBSCRIPTIONS (ALL CHANNELS)
         // ==========================================================================
         async function initAllRealtimeSubscriptions() {
             if (!sbClientIndex) await initSupabasePromise;
@@ -3873,6 +3914,15 @@
                 .channel('public:donations:index')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'donations' }, payload => {
                     console.log('[Realtime] Donation change:', payload);
+                    loadDonationsProgress();
+                })
+                .subscribe();
+
+            // Channel 5b: Operasional Dapur Makan Siang Realtime CDC
+            sbClientIndex
+                .channel('public:dapur_makan_siang:index')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'dapur_makan_siang' }, payload => {
+                    console.log('[Realtime] Dapur change:', payload);
                     loadDonationsProgress();
                 })
                 .subscribe();

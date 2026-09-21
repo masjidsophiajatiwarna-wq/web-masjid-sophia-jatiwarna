@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v6.5 (Perbaikan Responsif Mobile Viewport HP, Side Drawer & Eliminasi Overflow Visual Builder)  
+**Versi Rencana Induk:** v6.6 (Resolusi Zombie Tasks, Donasi Publik, Kotak Saran, dan Capaian Sedekah Makan Realtime)  
 **Terakhir Diperbarui:** 2026-09-21  
 
 ---
@@ -584,4 +584,37 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 - [x] Verifikasi dropdown notifikasi berada di tengah layar yang aman dan terbaca penuh.
 - [x] Verifikasi Side Drawer meluncur mulus, backdrop menutup saat diklik, dan drawer otomatis tertutup saat menu navigasi diklik.
 - [x] Verifikasi Visual Web Builder bebas scroll horizontal dan 100% responsif pada viewport 395x824px.
+
+---
+
+## FASE 4.2: Resolusi Zombie Tasks, Seleksi & Hapus Donasi, Respon Kotak Saran, dan Capaian Sedekah Makan Realtime
+**Status:** Selesai (100% Terverifikasi)  
+**Tanggal Penyelesaian:** 2026-09-21  
+
+### 1. Masalah yang Diselesaikan & Solusi Arsitektural:
+1. **Eliminasi Zombie Tasks & Stuck Bulk Toolbar (`admin.html`):**
+   - *Akar Masalah:* `getLocalTasks()` mengembalikan `null` jika array kosong (`parsed.length === 0`), sehingga saat pengurus menghapus habis semua tugas dan me-refresh halaman, `allTasksList` mengambil fallback 9 tugas bawaan (`DEFAULT_SEED_TASKS`) lalu Supabase melakukan upsert ulang 9 tugas tersebut ke database. Selain itu, `renderMasterTable()` langsung keluar (`return;`) saat `tasks.length === 0` sebelum memanggil `updateBulkToolbarState()`, menyebabkan toolbar hitam tetap macet menampilkan "9 tugas terpilih".
+   - *Solusi:* Memperbaiki `getLocalTasks()` agar menerima array kosong `[]` sebagai state valid, menambahkan guard persistensi benih `masjid_sophia_tasks_seeded`, dan memastikan `renderMasterTable()` membersihkan `selectedTaskIds`, mematikan checkbox header, dan menyembunyikan bulk toolbar saat tugas kosong.
+2. **Log Donasi Publik & Koreksi KPI Donasi Masuk (`admin.html`):**
+   - *Akar Masalah:* Baris donasi berstatus `VERIFIED` menampilkan ikon ceklist tanpa checkbox, sementara donasi `REJECTED` menampilkan checkbox, sehingga donasi yang ditolak tampak terseleksi sendirian. Selain itu, perhitungan KPI Donasi Masuk menjumlahkan seluruh donasi termasuk yang ditolak atau belum terverifikasi, dan belum tersedia fitur hapus donasi.
+   - *Solusi:* Memberikan checkbox di seluruh baris donasi, memisahkan tombol "Verifikasi Terpilih" (hanya memproses status `PENDING`) dan tombol "Hapus Terpilih" (menghapus seluruh transaksi yang dicentang), menambahkan tombol hapus tunggal per baris, serta mengoreksi KPI Donasi Masuk agar hanya menghitung transaksi berstatus `VERIFIED`.
+3. **Pusat Pengaduan & Kotak Saran Jamaah (`admin.html`):**
+   - *Akar Masalah:* Tabel pengaduan hanya memiliki 6 kolom tanpa kolom Aksi, tidak memiliki kontrol pembaruan status, modal catatan tindak lanjut pengurus, maupun opsi hapus saran testing/spam.
+   - *Solusi:* Menambahkan kolom Aksi dengan tombol "Respon" dan tombol "Hapus" (trash icon), membuat modal `#modal-feedback-followup` untuk pembaruan status penanganan (`BARU` -> `DIPROSES` -> `SELESAI`) dan pengisian catatan respon pengurus DKM, serta fungsi `handleDeleteSingleFeedback(id)`.
+4. **Koneksi Dinamis Capaian Dapur ke KPI Overview (`admin.html`):**
+   - *Akar Masalah:* Elemen `#kpi-makan-count` di dashboard Overview berisi teks statis `<h3 id="kpi-makan-count">70+ Porsi</h3>` dan tidak terhubung ke fungsi pembaharuan operasional dapur.
+   - *Solusi:* Menghubungkan fungsi `updateDapurKpiStats()` dengan kartu `#kpi-makan-count` untuk menampilkan rata-rata porsi riil harian (`~${avgPorsi}+ Porsi`), serta mempercepat pemulihan data dapur dari cache lokal saat halaman dimuat.
+5. **Capaian Sedekah Makan Realtime di Web Publik (`index.html`):**
+   - *Akar Masalah:* Banner capaian sedekah makan menghitung donasi dengan rumus statis dan tidak membaca database operasional dapur `dapur_makan_siang`, serta belum memiliki siklus reset mingguan.
+   - *Solusi:* Menghubungkan banner ke tabel `dapur_makan_siang` untuk menghitung rata-rata harian riil (judul banner: `Penyaluran ~${avgPorsi}+ Porsi Makan Siang Gratis Ba'da Dzuhur`), menerapkan siklus reset mingguan otomatis (Senin 00:00 s.d. Ahad 23:59) untuk akumulasi infaq sedekah makan, dan menambahkan channel realtime CDC untuk `dapur_makan_siang`.
+
+### 2. Matriks Pengujian & Verifikasi:
+- [x] Syntax checking inline JavaScript via Node.js: 0 errors pada `admin.html` dan `index.html`.
+- [x] Zero-emoji strict compliance: 0 emoji baru diperkenalkan pada seluruh berkas yang dimodifikasi.
+- [x] Verifikasi penghapusan seluruh tugas tidak memunculkan kembali tugas zombie saat refresh.
+- [x] Verifikasi bulk toolbar tertutup bersih saat daftar tugas kosong.
+- [x] Verifikasi seleksi donasi, hapus tunggal, hapus massal, dan KPI terverifikasi.
+- [x] Verifikasi kolom Aksi, modal respon DKM, dan penghapusan saran pada Kotak Saran.
+- [x] Verifikasi penyaluran rata-rata dapur dan siklus mingguan Senin-Ahad di halaman publik.
+
 

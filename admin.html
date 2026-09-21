@@ -4838,6 +4838,9 @@
                                 <button type="button" class="btn btn-outline" id="btn-batch-approve-donations" style="font-size: 0.78rem; padding: 0.4rem 0.85rem; display: none; background: #ECFDF5; color: #065F46; border-color: #A7F3D0;" onclick="handleBatchApproveDonations()">
                                     <i class="fa-solid fa-check-double"></i> Verifikasi Terpilih (<span id="batch-donation-count">0</span>)
                                 </button>
+                                <button type="button" class="btn btn-outline" id="btn-batch-delete-donations" style="font-size: 0.78rem; padding: 0.4rem 0.85rem; display: none; background: #FEF2F2; color: #991B1B; border-color: #FECACA;" onclick="handleBatchDeleteDonations()">
+                                    <i class="fa-solid fa-trash"></i> Hapus Terpilih (<span id="batch-delete-donation-count">0</span>)
+                                </button>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -5247,8 +5250,9 @@
                                     <th>Pengirim</th>
                                     <th>Kontak</th>
                                     <th>Kategori</th>
-                                    <th>Subjek & Pesan</th>
+                                    <th>Subjek &amp; Pesan</th>
                                     <th>Status</th>
+                                    <th style="text-align: right; min-width: 135px;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="all-feedback-tbody">
@@ -10163,6 +10167,77 @@
         </div>
     </div>
 
+    <!-- ==========================================================================
+       MODAL RESPON & TINDAK LANJUT KOTAK SARAN (DKM ADMIN)
+       ========================================================================== -->
+    <div id="modal-feedback-followup" class="admin-modal-backdrop" onclick="if(event.target.id==='modal-feedback-followup') closeFeedbackFollowUpModal()" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center;">
+        <div class="admin-modal-card" style="background: #FFFFFF; width: 100%; max-width: 520px; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden; margin: 1rem; border: 1px solid var(--color-border);">
+            <!-- Header -->
+            <div style="padding: 1.25rem 1.5rem; background: var(--color-gold-light); border-bottom: 1px solid var(--color-gold-border); display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 0.65rem;">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: #FFFFFF; color: var(--color-gold-deep); display: flex; align-items: center; justify-content: center; font-size: 1rem; border: 1px solid var(--color-gold-border);">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--color-charcoal); margin: 0;">Tindak Lanjut Aspirasi Jamaah</h3>
+                        <p style="font-size: 0.75rem; color: var(--color-charcoal-muted); margin: 0;">Pembaruan status penanganan dan catatan respon pengurus DKM</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeFeedbackFollowUpModal()" style="background: none; border: none; font-size: 1.25rem; color: #9CA3AF; cursor: pointer; padding: 0.25rem;">&times;</button>
+            </div>
+
+            <!-- Body -->
+            <div style="padding: 1.5rem;">
+                <!-- Summary Card -->
+                <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.825rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+                        <span style="color: var(--color-charcoal-muted);">Pengirim:</span>
+                        <strong id="feedback-modal-sender" style="color: var(--color-charcoal);">-</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+                        <span style="color: var(--color-charcoal-muted);">Kategori / Kontak:</span>
+                        <span id="feedback-modal-category" style="color: var(--color-charcoal); font-weight: 600;">-</span>
+                    </div>
+                    <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--color-border);">
+                        <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); margin-bottom: 0.15rem;">Subjek &amp; Pesan:</div>
+                        <strong id="feedback-modal-subject" style="display: block; font-size: 0.825rem; margin-bottom: 0.25rem; color: var(--color-charcoal);">-</strong>
+                        <p id="feedback-modal-message" style="font-size: 0.775rem; color: var(--color-charcoal-muted); margin: 0; line-height: 1.4;"></p>
+                    </div>
+                </div>
+
+                <!-- Status Selection -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal); margin-bottom: 0.35rem;">
+                        Status Penanganan:
+                    </label>
+                    <select id="feedback-modal-status" class="form-input" style="width: 100%; font-size: 0.825rem; border-radius: 8px; padding: 0.55rem 0.75rem; border: 1px solid var(--color-border);">
+                        <option value="BARU">BARU (Menunggu Tindak Lanjut)</option>
+                        <option value="DIPROSES">DIPROSES (Sedang Ditangani Divisi DKM Terkait)</option>
+                        <option value="SELESAI">SELESAI (Aspirasi Telah Direspon / Tuntas)</option>
+                    </select>
+                </div>
+
+                <!-- Respon / Catatan DKM -->
+                <div style="margin-bottom: 0.5rem;">
+                    <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--color-charcoal); margin-bottom: 0.35rem;">
+                        Catatan Respon &amp; Solusi Pengurus DKM:
+                    </label>
+                    <textarea id="feedback-modal-notes" rows="3" class="form-input" style="width: 100%; font-size: 0.825rem; border-radius: 8px; padding: 0.6rem; resize: vertical; border: 1px solid var(--color-border);" placeholder="Tuliskan catatan tindak lanjut, divisi penanggung jawab, atau respon internal..."></textarea>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div style="padding: 1rem 1.5rem; background: #F8FAFC; border-top: 1px solid var(--color-border); display: flex; justify-content: flex-end; gap: 0.65rem;">
+                <button type="button" class="btn btn-outline" onclick="closeFeedbackFollowUpModal()" style="font-size: 0.825rem; padding: 0.5rem 1rem; border-radius: 8px;">
+                    Batal
+                </button>
+                <button type="button" id="btn-save-feedback-followup" onclick="submitFeedbackFollowUpModal()" style="font-size: 0.825rem; padding: 0.5rem 1.15rem; border-radius: 8px; background: var(--color-gold-primary); color: var(--color-charcoal); border: 1px solid var(--color-gold-border); font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Tindak Lanjut
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Supabase Client Config (Dynamic Runtime Config - Zero Hardcode)
         let sbClient = null;
@@ -11797,9 +11872,9 @@
         function getLocalTasks() {
             try {
                 const raw = localStorage.getItem('masjid_sophia_local_tasks');
-                if (raw) {
+                if (raw !== null) {
                     const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                    if (Array.isArray(parsed)) return parsed;
                 }
             } catch (e) {}
             return null;
@@ -11902,8 +11977,9 @@
             const localTasks = getLocalTasks();
             const localLogs = getLocalLogs();
             const localChats = getLocalChats();
+            const isTasksSeeded = localStorage.getItem('masjid_sophia_tasks_seeded') === 'true';
 
-            allTasksList = localTasks || [...DEFAULT_SEED_TASKS];
+            allTasksList = localTasks !== null ? localTasks : (isTasksSeeded ? [] : [...DEFAULT_SEED_TASKS]);
             taskActivityLogs = localLogs || [...DEFAULT_SEED_LOGS];
             taskChatMessages = localChats || [...DEFAULT_SEED_CHATS];
 
@@ -11934,12 +12010,20 @@
                         start_date: t.start_date || (t.created_at ? t.created_at.split('T')[0] : new Date().toISOString().split('T')[0])
                     }));
                     persistLocalTasks(allTasksList);
+                    localStorage.setItem('masjid_sophia_tasks_seeded', 'true');
                 } else if (!taskErr && (!tasks || tasks.length === 0)) {
-                    // Seed database if empty
-                    try {
-                        await sbClient.from('team_tasks').upsert(allTasksList);
-                    } catch (e) {
-                        console.debug('Seeding notice:', e);
+                    if (!isTasksSeeded && allTasksList.length > 0) {
+                        try {
+                            await sbClient.from('team_tasks').upsert(allTasksList);
+                            localStorage.setItem('masjid_sophia_tasks_seeded', 'true');
+                        } catch (e) {
+                            console.debug('Seeding notice:', e);
+                        }
+                    } else {
+                        // User or DKM intentionally emptied the tasks table
+                        allTasksList = [];
+                        persistLocalTasks([]);
+                        localStorage.setItem('masjid_sophia_tasks_seeded', 'true');
                     }
                 }
 
@@ -13555,6 +13639,10 @@
 
             if (tasks.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">Tidak ada tugas ditemukan.</td></tr>`;
+                selectedTaskIds.clear();
+                const chkAll = document.getElementById('check-all-tasks');
+                if (chkAll) chkAll.checked = false;
+                updateBulkToolbarState();
                 return;
             }
 
@@ -13594,6 +13682,10 @@
                 `;
             }).join('');
 
+            const chkAll = document.getElementById('check-all-tasks');
+            if (chkAll) {
+                chkAll.checked = tasks.length > 0 && selectedTaskIds.size === tasks.length;
+            }
             updateBulkToolbarState();
         }
 
@@ -13601,15 +13693,20 @@
             if (isChecked) selectedTaskIds.add(id);
             else selectedTaskIds.delete(id);
             updateBulkToolbarState();
+            const chkAll = document.getElementById('check-all-tasks');
+            const tasks = getFilteredTasks(false);
+            if (chkAll) {
+                chkAll.checked = tasks.length > 0 && selectedTaskIds.size === tasks.length;
+            }
         }
 
         function toggleSelectAllTasks(checkbox) {
             const tasks = getFilteredTasks(false);
+            selectedTaskIds.clear();
             if (checkbox.checked) {
                 tasks.forEach(t => selectedTaskIds.add(t.id));
-            } else {
-                selectedTaskIds.clear();
             }
+            updateBulkToolbarState();
             renderMasterTable();
         }
 
@@ -13617,6 +13714,7 @@
             selectedTaskIds.clear();
             const chkAll = document.getElementById('check-all-tasks');
             if (chkAll) chkAll.checked = false;
+            updateBulkToolbarState();
             renderMasterTable();
         }
 
@@ -13630,6 +13728,7 @@
                 countDisplay.textContent = `${selectedTaskIds.size} tugas terpilih`;
             } else {
                 bar.style.display = 'none';
+                countDisplay.textContent = '0 tugas terpilih';
             }
         }
 
@@ -13704,6 +13803,7 @@
             if (!confirm(`Apakah Anda yakin ingin menghapus permanen ${ids.length} tugas terpilih? Tindakan ini tidak dapat dibatalkan.`)) return;
 
             allTasksList = allTasksList.filter(t => !selectedTaskIds.has(t.id));
+            persistLocalTasks(allTasksList);
             logTaskActivity('DELETED', `${ids.length} Tugas`, `Menghapus ${ids.length} tugas terpilih secara masal.`);
 
             // Broadcast bulk delete event
@@ -13718,6 +13818,9 @@
             }
 
             selectedTaskIds.clear();
+            const chkAll = document.getElementById('check-all-tasks');
+            if (chkAll) chkAll.checked = false;
+            updateBulkToolbarState();
             renderAllTaskViews();
         }
 
@@ -14112,6 +14215,9 @@
             if (!confirm(`Apakah Anda yakin ingin menghapus permanen tugas: "${task.title}"? Tindakan ini tidak dapat dibatalkan.`)) return;
 
             allTasksList = allTasksList.filter(t => String(t.id) !== String(taskId));
+            persistLocalTasks(allTasksList);
+            selectedTaskIds.delete(taskId);
+            updateBulkToolbarState();
             logTaskActivity('DELETED', task.title, 'Menghapus tugas secara permanen dari sistem.');
             broadcastEvent('TASK_SYNC', { action: 'DELETE', task: { id: taskId } });
 
@@ -15035,19 +15141,24 @@
             const overviewTbody = document.getElementById('overview-donations-tbody');
             const allTbody = document.getElementById('all-donations-tbody');
 
-            let totalAmount = 0;
+            let totalVerifiedAmount = 0;
+            let verifiedCount = 0;
             globalDonationsList.forEach(d => {
-                totalAmount += Number(d.total_amount || d.amount || 0);
+                if (d.payment_status === 'VERIFIED') {
+                    totalVerifiedAmount += Number(d.total_amount || d.amount || 0);
+                    verifiedCount++;
+                }
             });
 
             const kpiDonasi = document.getElementById('kpi-total-donasi');
-            if (kpiDonasi) kpiDonasi.textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalAmount);
+            if (kpiDonasi) kpiDonasi.textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalVerifiedAmount);
             const kpiCount = document.getElementById('kpi-donasi-count');
-            if (kpiCount) kpiCount.textContent = `${globalDonationsList.length} Transaksi Terdata`;
+            if (kpiCount) kpiCount.textContent = `${verifiedCount} Transaksi Terverifikasi`;
 
             if (globalDonationsList.length === 0) {
                 if (overviewTbody) overviewTbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada data donasi masuk.</td></tr>`;
                 if (allTbody) allTbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--color-charcoal-muted); padding: 2rem;">Belum ada data donasi masuk dari website atau QRIS.</td></tr>`;
+                selectedDonationIds.clear();
                 updateBatchDonationsToolbar();
                 return;
             }
@@ -15060,7 +15171,7 @@
                         <td>${escapeHtml(d.program_category || 'Makan Berjamaah Gratis')}</td>
                         <td><strong>Rp ${Number(d.total_amount || d.amount || 0).toLocaleString('id-ID')}</strong></td>
                         <td><span class="status-badge" style="background: #F3F4F6;">${escapeHtml(d.payment_method || 'QRIS')}</span></td>
-                        <td><span class="status-badge ${d.payment_status === 'VERIFIED' ? 'verified' : 'pending'}">${d.payment_status}</span></td>
+                        <td><span class="status-badge ${d.payment_status === 'VERIFIED' ? 'verified' : (d.payment_status === 'REJECTED' ? 'rejected' : 'pending')}">${d.payment_status}</span></td>
                     </tr>
                 `).join('');
             }
@@ -15069,18 +15180,35 @@
                 allTbody.innerHTML = globalDonationsList.map(d => {
                     const isVerified = d.payment_status === 'VERIFIED';
                     const isChecked = selectedDonationIds.has(d.id);
-                    const chkHtml = isVerified
-                        ? `<span style="color: #9CA3AF; font-size: 0.8rem;"><i class="fa-solid fa-check"></i></span>`
-                        : `<input type="checkbox" class="donation-checkbox" value="${d.id}" ${isChecked ? 'checked' : ''} onchange="handleDonationCheckboxChange('${d.id}', this.checked)">`;
+                    const chkHtml = `<input type="checkbox" class="donation-checkbox" value="${d.id}" ${isChecked ? 'checked' : ''} onchange="handleDonationCheckboxChange('${d.id}', this.checked)">`;
 
-                    const actionBtn = isVerified
-                        ? `<span style="font-size: 0.75rem; color: #059669; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;"><i class="fa-solid fa-circle-check"></i> Terverifikasi</span>`
-                        : (d.payment_status === 'REJECTED' 
-                            ? `<span style="font-size: 0.75rem; color: #DC2626; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;" title="${escapeHtml(d.admin_notes || 'Ditolak tanpa alasan')}"><i class="fa-solid fa-circle-xmark"></i> Ditolak</span>`
-                            : `<div style="display: inline-flex; gap: 0.45rem; justify-content: flex-end; align-items: center; white-space: nowrap;">
+                    const deleteBtn = `<button type="button" class="btn-shift" style="color: var(--color-danger); background: rgba(220, 38, 38, 0.08); border: 1px solid rgba(220, 38, 38, 0.2); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;" onclick="handleDeleteSingleDonation('${escapeHtml(d.id)}')" title="Hapus Donasi"><i class="fa-solid fa-trash"></i></button>`;
+
+                    let actionBtn = '';
+                    if (isVerified) {
+                        actionBtn = `
+                            <div style="display: inline-flex; gap: 0.45rem; justify-content: flex-end; align-items: center; white-space: nowrap;">
+                                <span style="font-size: 0.75rem; color: #059669; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;"><i class="fa-solid fa-circle-check"></i> Terverifikasi</span>
+                                ${deleteBtn}
+                            </div>
+                        `;
+                    } else if (d.payment_status === 'REJECTED') {
+                        actionBtn = `
+                            <div style="display: inline-flex; gap: 0.45rem; justify-content: flex-end; align-items: center; white-space: nowrap;">
+                                <span style="font-size: 0.75rem; color: #DC2626; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;" title="${escapeHtml(d.admin_notes || 'Ditolak tanpa alasan')}"><i class="fa-solid fa-circle-xmark"></i> Ditolak</span>
+                                ${deleteBtn}
+                            </div>
+                        `;
+                    } else {
+                        // PENDING
+                        actionBtn = `
+                            <div style="display: inline-flex; gap: 0.45rem; justify-content: flex-end; align-items: center; white-space: nowrap;">
                                 <button type="button" class="btn-donation-verify" onclick="handleApproveSingleDonation('${escapeHtml(d.id)}')" title="Verifikasi &amp; Otomatis Catat Kas Masuk"><i class="fa-solid fa-check"></i> Verifikasi</button>
                                 <button type="button" class="btn-donation-reject" onclick="openRejectDonationModal('${escapeHtml(d.id)}')" title="Tolak Donasi"><i class="fa-solid fa-xmark"></i> Tolak</button>
-                               </div>`);
+                                ${deleteBtn}
+                            </div>
+                        `;
+                    }
 
                     return `
                         <tr>
@@ -15091,7 +15219,7 @@
                             <td><span class="badge-leave-type badge-leave-operasional" style="font-size: 0.7rem;">${escapeHtml(d.program_category || 'Makan Berjamaah Gratis')}</span></td>
                             <td><strong>Rp ${Number(d.total_amount || d.amount || 0).toLocaleString('id-ID')}</strong></td>
                             <td><div style="font-size: 0.75rem; color: var(--color-charcoal-muted); max-width: 200px;">${escapeHtml(d.prayer_notes || '-')}</div></td>
-                            <td><span class="status-badge ${isVerified ? 'verified' : 'pending'}">${d.payment_status}</span></td>
+                            <td><span class="status-badge ${isVerified ? 'verified' : (d.payment_status === 'REJECTED' ? 'rejected' : 'pending')}">${d.payment_status}</span></td>
                             <td style="text-align: right; white-space: nowrap;">${actionBtn}</td>
                         </tr>
                     `;
@@ -15103,7 +15231,7 @@
         function toggleSelectAllDonations(checked) {
             if (checked) {
                 globalDonationsList.forEach(d => {
-                    if (d.payment_status !== 'VERIFIED') selectedDonationIds.add(d.id);
+                    selectedDonationIds.add(d.id);
                 });
             } else {
                 selectedDonationIds.clear();
@@ -15118,16 +15246,27 @@
         }
 
         function updateBatchDonationsToolbar() {
-            const btn = document.getElementById('btn-batch-approve-donations');
-            const cnt = document.getElementById('batch-donation-count');
+            const btnApprove = document.getElementById('btn-batch-approve-donations');
+            const btnDelete = document.getElementById('btn-batch-delete-donations');
+            const cntApprove = document.getElementById('batch-donation-count');
+            const cntDelete = document.getElementById('batch-delete-donation-count');
             const checkAll = document.getElementById('check-all-donations');
-            const count = selectedDonationIds.size;
-            if (cnt) cnt.textContent = count;
-            if (btn) btn.style.display = count > 0 ? 'inline-flex' : 'none';
+            const totalSelected = selectedDonationIds.size;
 
-            const unverifiedTotal = globalDonationsList.filter(d => d.payment_status !== 'VERIFIED').length;
+            let pendingCount = 0;
+            selectedDonationIds.forEach(id => {
+                const d = globalDonationsList.find(item => String(item.id) === String(id));
+                if (d && d.payment_status === 'PENDING') pendingCount++;
+            });
+
+            if (cntApprove) cntApprove.textContent = pendingCount;
+            if (btnApprove) btnApprove.style.display = pendingCount > 0 ? 'inline-flex' : 'none';
+
+            if (cntDelete) cntDelete.textContent = totalSelected;
+            if (btnDelete) btnDelete.style.display = totalSelected > 0 ? 'inline-flex' : 'none';
+
             if (checkAll) {
-                checkAll.checked = unverifiedTotal > 0 && count === unverifiedTotal;
+                checkAll.checked = globalDonationsList.length > 0 && totalSelected === globalDonationsList.length;
             }
         }
 
@@ -15334,19 +15473,23 @@
                 return;
             }
 
-            if (selectedDonationIds.size === 0) {
-                alert('Peringatan: Silakan pilih minimal satu donasi yang ingin diverifikasi.');
+            const pendingIds = Array.from(selectedDonationIds).filter(id => {
+                const item = globalDonationsList.find(d => String(d.id) === String(id));
+                return item && item.payment_status === 'PENDING';
+            });
+
+            if (pendingIds.length === 0) {
+                alert('Peringatan: Silakan pilih minimal satu donasi berstatus PENDING yang ingin diverifikasi.');
                 return;
             }
 
-            const idsToApprove = Array.from(selectedDonationIds);
-            if (!confirm(`Konfirmasi: Apakah Anda yakin ingin memverifikasi ${idsToApprove.length} transaksi donasi sekaligus dan mencatatnya ke Jurnal Kas Masuk?`)) {
+            if (!confirm(`Konfirmasi: Apakah Anda yakin ingin memverifikasi ${pendingIds.length} transaksi donasi berstatus PENDING sekaligus dan mencatatnya ke Jurnal Kas Masuk?`)) {
                 return;
             }
 
-            for (const id of idsToApprove) {
+            for (const id of pendingIds) {
                 const donation = globalDonationsList.find(d => d.id === id);
-                if (donation && donation.payment_status !== 'VERIFIED') {
+                if (donation && donation.payment_status === 'PENDING') {
                     donation.payment_status = 'VERIFIED';
                     donation.updated_at = new Date().toISOString();
 
@@ -15356,41 +15499,235 @@
                         } catch (e) {}
                     }
                     await createAutoJournalForDonation(donation);
+                    selectedDonationIds.delete(id);
                 }
             }
 
-            selectedDonationIds.clear();
             renderDonations(globalDonationsList);
             if (typeof renderJournalsTable === 'function') renderJournalsTable();
             if (typeof updateJournalsKpiStats === 'function') updateJournalsKpiStats();
 
-            alert(`Sukses: ${idsToApprove.length} transaksi donasi berhasil diverifikasi dan masuk ke Jurnal Pembukuan Kas!`);
+            showToast(`${pendingIds.length} transaksi donasi berhasil diverifikasi dan masuk ke Jurnal Pembukuan Kas!`, 'success');
         }
 
-        function renderFeedback(list) {
-            const tbody = document.getElementById('all-feedback-tbody');
-            const kpi = document.getElementById('kpi-feedback-count');
-            if (kpi) kpi.textContent = `${list.length} Pesan`;
-
-            if (!tbody) return;
-            if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada aspirasi atau saran masuk dari jamaah.</td></tr>`;
+        async function handleDeleteSingleDonation(id) {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_KEUANGAN'].includes(role)) {
+                showToast('Akses Ditolak: Hanya Bendahara atau Pimpinan DKM yang berwenang menghapus data donasi.', 'warning');
                 return;
             }
 
-            tbody.innerHTML = list.map(f => `
-                <tr>
-                    <td>${new Date(f.created_at).toLocaleDateString('id-ID')}</td>
-                    <td><strong>${f.sender_name}</strong></td>
-                    <td>${f.phone_number || f.email || '-'}</td>
-                    <td><span class="status-badge" style="background: #F3F4F6;">${f.category}</span></td>
-                    <td>
-                        <div style="font-weight: 700;">${f.subject}</div>
-                        <div style="font-size: 0.75rem; color: var(--color-charcoal-muted);">${f.message}</div>
-                    </td>
-                    <td><span class="status-badge new">${f.status}</span></td>
-                </tr>
-            `).join('');
+            const item = globalDonationsList.find(d => String(d.id) === String(id));
+            if (!item) return;
+
+            const donorName = item.donor_name || 'Hamba Allah';
+            const amountStr = Number(item.total_amount || item.amount || 0).toLocaleString('id-ID');
+            if (!confirm(`Konfirmasi: Apakah Anda yakin ingin menghapus permanen donasi dari "${donorName}" senilai Rp ${amountStr}? Tindakan ini tidak dapat dibatalkan.`)) {
+                return;
+            }
+
+            globalDonationsList = globalDonationsList.filter(d => String(d.id) !== String(id));
+            selectedDonationIds.delete(id);
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('donations').delete().eq('id', id);
+                } catch (err) {
+                    console.warn('[Donations] Delete warning:', err);
+                }
+            }
+
+            renderDonations(globalDonationsList);
+            showToast(`Data donasi dari ${donorName} berhasil dihapus.`, 'success');
+        }
+
+        async function handleBatchDeleteDonations() {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_KEUANGAN'].includes(role)) {
+                alert('Akses Ditolak: Hanya Bendahara atau Pimpinan DKM yang berwenang menghapus data donasi.');
+                return;
+            }
+
+            if (selectedDonationIds.size === 0) {
+                alert('Peringatan: Silakan centang minimal satu donasi yang ingin dihapus.');
+                return;
+            }
+
+            const ids = Array.from(selectedDonationIds);
+            if (!confirm(`Konfirmasi: Apakah Anda yakin ingin menghapus permanen ${ids.length} data donasi terpilih? Tindakan ini tidak dapat dibatalkan.`)) {
+                return;
+            }
+
+            globalDonationsList = globalDonationsList.filter(d => !selectedDonationIds.has(d.id));
+            selectedDonationIds.clear();
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('donations').delete().in('id', ids);
+                } catch (err) {
+                    console.warn('[Donations] Batch delete warning:', err);
+                }
+            }
+
+            renderDonations(globalDonationsList);
+            showToast(`${ids.length} data donasi terpilih berhasil dihapus permanen.`, 'success');
+        }
+
+        let globalFeedbackList = [];
+        let activeFeedbackFollowUpId = null;
+
+        function renderFeedback(list) {
+            globalFeedbackList = list || [];
+            const tbody = document.getElementById('all-feedback-tbody');
+            const kpi = document.getElementById('kpi-feedback-count');
+            if (kpi) kpi.textContent = `${globalFeedbackList.length} Pesan`;
+
+            if (!tbody) return;
+            if (globalFeedbackList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--color-charcoal-muted); padding: 1.5rem;">Belum ada aspirasi atau saran masuk dari jamaah.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = globalFeedbackList.map(f => {
+                const status = (f.status || 'BARU').toUpperCase();
+                let statusBadgeCls = 'pending';
+                let statusStyle = '';
+                if (status === 'SELESAI' || status === 'RESOLVED') {
+                    statusBadgeCls = 'verified';
+                } else if (status === 'DIPROSES' || status === 'IN_PROGRESS') {
+                    statusBadgeCls = 'pending';
+                    statusStyle = 'background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE;';
+                }
+
+                return `
+                    <tr>
+                        <td>${new Date(f.created_at).toLocaleDateString('id-ID')}</td>
+                        <td><strong>${escapeHtml(f.sender_name || 'Jamaah')}</strong></td>
+                        <td>${escapeHtml(f.phone_number || f.email || '-')}</td>
+                        <td><span class="status-badge" style="background: #F3F4F6;">${escapeHtml(f.category || 'Umum')}</span></td>
+                        <td>
+                            <div style="font-weight: 700; color: var(--color-charcoal);">${escapeHtml(f.subject || '-')}</div>
+                            <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); margin-top: 0.15rem;">${escapeHtml(f.message || '-')}</div>
+                            ${f.admin_notes ? `<div style="font-size: 0.72rem; color: #1E40AF; background: #EFF6FF; padding: 0.25rem 0.5rem; border-radius: 4px; margin-top: 0.35rem; border-left: 3px solid #3B82F6;"><strong>Catatan DKM:</strong> ${escapeHtml(f.admin_notes)}</div>` : ''}
+                        </td>
+                        <td><span class="status-badge ${statusBadgeCls}" style="${statusStyle}">${status}</span></td>
+                        <td style="text-align: right; white-space: nowrap;">
+                            <div style="display: inline-flex; gap: 0.35rem; justify-content: flex-end; align-items: center;">
+                                <button type="button" class="btn-shift" onclick="openFeedbackFollowUpModal('${escapeHtml(f.id)}')" title="Tindak Lanjut &amp; Beri Catatan" style="color: #2563EB; background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.2); padding: 0.25rem 0.55rem; border-radius: 4px; font-size: 0.75rem;">
+                                    <i class="fa-solid fa-clipboard-check"></i> Respon
+                                </button>
+                                <button type="button" class="btn-shift" onclick="handleDeleteSingleFeedback('${escapeHtml(f.id)}')" title="Hapus Aspirasi" style="color: var(--color-danger); background: rgba(220, 38, 38, 0.08); border: 1px solid rgba(220, 38, 38, 0.2); padding: 0.25rem 0.55rem; border-radius: 4px; font-size: 0.75rem;">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openFeedbackFollowUpModal(id) {
+            const item = globalFeedbackList.find(f => String(f.id) === String(id));
+            if (!item) return;
+
+            activeFeedbackFollowUpId = id;
+            const senderEl = document.getElementById('feedback-modal-sender');
+            const catEl = document.getElementById('feedback-modal-category');
+            const subEl = document.getElementById('feedback-modal-subject');
+            const msgEl = document.getElementById('feedback-modal-message');
+            const statusEl = document.getElementById('feedback-modal-status');
+            const notesEl = document.getElementById('feedback-modal-notes');
+
+            if (senderEl) senderEl.textContent = item.sender_name || 'Jamaah';
+            if (catEl) catEl.textContent = `${item.category || 'Umum'} (${item.phone_number || item.email || 'Tanpa Kontak'})`;
+            if (subEl) subEl.textContent = item.subject || '-';
+            if (msgEl) msgEl.textContent = item.message || '-';
+            if (statusEl) statusEl.value = (item.status || 'BARU').toUpperCase();
+            if (notesEl) notesEl.value = item.admin_notes || '';
+
+            const modal = document.getElementById('modal-feedback-followup');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeFeedbackFollowUpModal() {
+            const modal = document.getElementById('modal-feedback-followup');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            activeFeedbackFollowUpId = null;
+        }
+
+        async function submitFeedbackFollowUpModal() {
+            if (!activeFeedbackFollowUpId) return;
+
+            const item = globalFeedbackList.find(f => String(f.id) === String(activeFeedbackFollowUpId));
+            if (!item) return;
+
+            const newStatus = (document.getElementById('feedback-modal-status')?.value || 'BARU').toUpperCase();
+            const notes = (document.getElementById('feedback-modal-notes')?.value || '').trim();
+
+            const btn = document.getElementById('btn-save-feedback-followup');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            }
+
+            item.status = newStatus;
+            item.admin_notes = notes;
+            item.updated_at = new Date().toISOString();
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('feedback_complaints').update({
+                        status: newStatus,
+                        admin_notes: notes,
+                        updated_at: item.updated_at
+                    }).eq('id', activeFeedbackFollowUpId);
+                } catch (err) {
+                    console.warn('[Feedback] Update notice:', err);
+                }
+            }
+
+            renderFeedback(globalFeedbackList);
+            closeFeedbackFollowUpModal();
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Tindak Lanjut';
+            }
+            showToast('Tindak lanjut aspirasi jamaah berhasil disimpan.', 'success');
+        }
+
+        async function handleDeleteSingleFeedback(id) {
+            const role = getUserRole();
+            if (!['SUPER_ADMIN', 'KETUA_DKM', 'SUPER_USER', 'PJ_KEAMANAN', 'PJ_MEDIA'].includes(role)) {
+                showToast('Akses Ditolak: Hanya Pengurus DKM atau Super Admin yang berwenang menghapus pesan aspirasi.', 'warning');
+                return;
+            }
+
+            const item = globalFeedbackList.find(f => String(f.id) === String(id));
+            if (!item) return;
+
+            if (!confirm(`Apakah Anda yakin ingin menghapus permanen pesan aspirasi dari "${item.sender_name || 'Jamaah'}" (Subjek: "${item.subject || '-'}")? Tindakan ini tidak dapat dibatalkan.`)) {
+                return;
+            }
+
+            globalFeedbackList = globalFeedbackList.filter(f => String(f.id) !== String(id));
+
+            if (sbClient) {
+                try {
+                    await sbClient.from('feedback_complaints').delete().eq('id', id);
+                } catch (err) {
+                    console.warn('[Feedback] Delete notice:', err);
+                }
+            }
+
+            renderFeedback(globalFeedbackList);
+            showToast('Pesan aspirasi jamaah berhasil dihapus.', 'success');
         }
 
         function renderArticles(list) {
@@ -20925,6 +21262,16 @@
         // DAPUR ENGINE (SEDDAKAH MAKAN DZUHUR 70+ PORSI/HARI)
         // --------------------------------------------------------------------------
         async function loadDapurData() {
+            // Restore from local cache first for instant display
+            try {
+                const saved = localStorage.getItem('masjid_sophia_dapur_master');
+                if (saved) {
+                    dapurLogList = JSON.parse(saved);
+                    renderDapurTable();
+                    updateDapurKpiStats();
+                }
+            } catch (e) {}
+
             if (typeof sbClient !== 'undefined' && sbClient) {
                 try {
                     const { data, error } = await sbClient
@@ -21054,11 +21401,19 @@
             let count = dapurLogList.length;
             dapurLogList.forEach(d => { totalPorsi += parseInt(d.realisasi_porsi || 0); });
 
+            const avgPorsi = count > 0 ? Math.round(totalPorsi / count) : 0;
+
             const statTotal = document.getElementById('stat-dapur-total-porsi');
             if (statTotal) statTotal.textContent = totalPorsi.toLocaleString('id-ID') + ' Porsi';
 
             const statAvg = document.getElementById('stat-dapur-avg-porsi');
-            if (statAvg) statAvg.textContent = count > 0 ? Math.round(totalPorsi / count) + ' Porsi' : '0 Porsi';
+            if (statAvg) statAvg.textContent = `${avgPorsi.toLocaleString('id-ID')} Porsi`;
+
+            // Overview Dashboard KPI Card Connection
+            const kpiMakan = document.getElementById('kpi-makan-count');
+            if (kpiMakan) {
+                kpiMakan.textContent = avgPorsi > 0 ? `~${avgPorsi}+ Porsi` : '0 Porsi';
+            }
 
             // Today's stats
             const todayStr = new Date().toISOString().split('T')[0];

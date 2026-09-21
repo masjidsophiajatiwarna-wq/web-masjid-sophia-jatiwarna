@@ -4,6 +4,27 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.40] - 2026-09-21
+
+### Resolusi Zombie Tasks & Stuck Toolbar, Seleksi Cerdas & Hapus Donasi, Respon Kotak Saran, dan Capaian Sedekah Makan Realtime
+
+#### Ditambahkan
+- [TASK/PERSISTENCE] **Guard Benih Tugas Permanen (`masjid_sophia_tasks_seeded`):** Menambahkan flag penanda inisialisasi agar tabel tugas yang dikosongkan pengurus tidak pernah terisi ulang secara otomatis (*auto-reseeding*) oleh 9 data benih bawaan saat halaman direfresh atau koneksi Supabase terhubung.
+- [DONATION/DELETE] **Fitur Hapus Transaksi Donasi (`handleDeleteSingleDonation` & `handleBatchDeleteDonations`):** Menghadirkan tombol hapus tunggal (ikon tempat sampah) di setiap baris dan tombol "Hapus Terpilih" pada toolbar atas untuk membersihkan transaksi donasi sampah/testing dari Supabase dan memori lokal.
+- [FEEDBACK/ACTION] **Kolom Aksi & Respon Tindak Lanjut Kotak Saran (`#modal-feedback-followup`):** Menambahkan kolom Aksi lengkap dengan tombol "Respon" dan tombol "Hapus", serta modal interaktif untuk mengubah status penanganan (`BARU` -> `DIPROSES` -> `SELESAI`) dan menyimpan catatan tindak lanjut pengurus DKM.
+- [REALTIME/CDC] **Kanal Realtime Operasional Dapur Publik (`dapur_makan_siang`):** Menambahkan langganan CDC WebSocket pada web publik (`index.html`) sehingga pembaruan sesi dapur langsung memicu sinkronisasi banner tanpa perlu memuat ulang halaman.
+
+#### Diperbarui
+- [TASK/TOOLBAR] **Pembersihan Bersih Bulk Toolbar Tugas:** Memperbarui `renderMasterTable()` dan fungsi aksi massal agar saat seluruh tugas dihapus atau status tugas kosong (0 tugas), toolbar hitam (`#table-bulk-toolbar`) otomatis tersembunyi, checkbox header mati, dan counter ter-reset.
+- [DONATION/SELECTION] **Checkbox Seleksi Universal Donasi:** Mengubah seluruh baris transaksi donasi (baik terverifikasi, ditolak, maupun pending) agar memiliki checkbox aktif, serta membatasi tombol "Verifikasi Terpilih" hanya aktif jika terdapat donasi berstatus `PENDING` yang dicentang.
+- [DONATION/KPI] **Koreksi KPI Donasi Masuk Bulan Ini (`#kpi-total-donasi`):** Menyesuaikan kalkulasi metrik ringkasan agar hanya menjumlahkan transaksi donasi yang berstatus `VERIFIED`, mengabaikan transaksi yang ditolak atau belum divalidasi.
+- [DAPUR/KPI] **Koneksi Dinamis KPI Dapur Overview (`#kpi-makan-count`):** Menghubungkan kartu metrik makan siang gratis di dashboard ikhtisar langsung ke rata-rata porsi riil harian operasional dapur (`~${avgPorsi}+ Porsi`).
+- [PUBLIC/BANNER] **Rata-rata Penyaluran Harian & Akumulasi Infaq Mingguan (`index.html`):** Menampilkan rata-rata porsi harian riil dari database dapur pada judul banner publik, serta mengimplementasikan siklus akumulasi infaq mingguan yang ter-reset otomatis setiap hari Senin pukul 00:00 WIB (Senin s.d. Ahad).
+
+#### Diperbaiki
+- [BUGFIX/TASKS] **Eliminasi Masalah Zombie Tasks & Toolbar Macet:** Memperbaiki fungsi `getLocalTasks()` yang sebelumnya menganggap array kosong `[]` sebagai null, menghentikan re-insert 9 tugas benih ke database Supabase setelah dihapus pengurus.
+- [BUGFIX/DONATIONS] **Anomali Baris Terseleksi Sendiri:** Menyelesaikan kendala donasi yang ditolak tampak terseleksi sendirian akibat ketiadaan checkbox pada baris yang telah terverifikasi.
+
 ## [1.9.39] - 2026-09-21
 
 ### Resolusi Responsif Mobile Viewport HP, Top App Bar Sejajar, Side Drawer Melayang & Eliminasi Overflow Visual Web Builder
