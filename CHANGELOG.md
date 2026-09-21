@@ -4,6 +4,22 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.46] - 2026-09-21
+
+### Toggle Suara Notifikasi iOS Slider, Format Titik Pemisah Ribuan, Integrasi Notifikasi Review Tugas DKM, & Skema Kompatibilitas Database
+
+#### Ditambahkan
+- [NOTIFICATION/SOUND_TOGGLE] **Toggle Suara Notifikasi iOS Slider (`admin.html`):** Mengganti tombol "Tes Suara" lama dengan switch toggle slider iOS elegan di footer panel notifikasi. Default keadaan nonaktif (OFF/Senyap) demi ketenangan kerja pengurus, tersimpan permanen di peramban via `localStorage` (`masjid_sophia_notif_sound_enabled`).
+- [CURRENCY/THOUSAND_SEPARATOR] **Format Titik Pemisah Ribuan Moneter (`admin.html`):** Menerapkan format pemisah ribuan otomatis (contoh: `1.000.000`) saat pengurus mengetikkan nominal pada 3 formulir moneter utama: Formulir Pengajuan Anggaran & Bon (`#budget-form-nominal`), Formulir Jurnal Pembukuan Kas (`#journal-form-nominal`), dan Formulir Pencairan Kas DKM (`#disburse-budget-nominal`). Didukung fungsi pembantu `formatRupiahInput()`, `parseRupiahValue()`, dan `formatRupiahNumber()`.
+- [BUDGET/DIVISION] **Kelengkapan Divisi Media & Dakwah (`#budget-form-divisi`):** Menambahkan pilihan divisi "Media & Dakwah" pada modal entri pengajuan anggaran dan klaim nota bon, memastikan seluruh 8 penanggung jawab divisi terfasilitasi secara utuh.
+
+#### Diperbarui
+- [NOTIFICATION/DROPDOWN_FIX] **Penyempurnaan Tab Filter & Umpan Balik Tombol Tandai Dibaca:** Memperbaiki bug tab "Semua" dan "Belum Dibaca" yang terkunci akibat konflik inline style dengan transisi CSS murni (`.notif-filter-tab.active`). Menambahkan efek mikro animasi hover angkat, perubahan warna kontras, dan umpan balik centang hijau sukses pada tombol "Tandai Semua Dibaca" (`.btn-notif-mark-read`).
+- [NOTIFICATION/FOOTER_CLEANUP] **Pembersihan Footer Panel Notifikasi:** Menghapus label dan ikon redundan "Realtime CDC Aktif" dari bagian bawah dropdown demi estetika antarmuka yang bersih, ringkas, dan profesional.
+- [TASK/REVIEW_NOTIFICATION] **Pemicu Notifikasi Review Tugas Pimpinan DKM:** Memastikan bahwa pembuatan tugas baru dengan status `REVIEW` maupun perpindahan kartu tugas pada papan Kanban secara konsisten mengirimkan notifikasi ke akun Pimpinan DKM (`recipient_role: 'DKM'`), kecuali jika tugas dibuat oleh Ketua DKM sendiri.
+- [DATABASE/MIGRATION] **Skema Kompatibilitas Notifikasi Supabase (`database/migration_notifications_engine.sql`):** Menambahkan kolom `read_at`, `action_type`, dan `action_payload` serta perintah `ALTER TABLE public.app_notifications ADD COLUMN IF NOT EXISTS ...` untuk mengeliminasi potensi penolakan skema PostgREST (error 400 Bad Request) dan memastikan kueri pembaruan berjalan mulus.
+- [UI/KPI_CLEANUP] **Pembersihan Badge KPI Kas Keluar & Transaksi:** Menghapus badge sempit pada kartu metrik "TOTAL KAS KELUAR" dan "TOTAL TRANSAKSI" pada subview Jurnal Kas, serta menambahkan aturan `white-space: nowrap` pada `.kpi-badge` untuk mencegah teks terlipat ke bawah pada resolusi layar standar.
+
 ## [1.9.45] - 2026-09-21
 
 ### Notifikasi Senyap (Silent), Pemicu Dana Masuk Realtime, Retensi 50 & Auto-Purge 7 Hari, serta Poles Banner Publik

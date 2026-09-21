@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v7.1 (Notifikasi Senyap, Pemicu Dana Masuk Realtime, Retensi 50 & Auto-Purge 7 Hari, serta Poles Banner Publik)  
+**Versi Rencana Induk:** v7.2 (Toggle Suara Notifikasi iOS Slider, Format Titik Pemisah Ribuan, Integrasi Notifikasi Review Tugas DKM, & Skema Kompatibilitas Database)  
 **Terakhir Diperbarui:** 2026-09-21  
 
 ---
@@ -697,6 +697,49 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 - [x] Verifikasi pemicu notifikasi saat ada donasi masuk atau kas masuk ke grup DKM_FINANCE.
 - [x] Verifikasi skrip SQL auto-purge (retensi 7 hari dan limit 50 notif FIFO).
 - [x] Verifikasi tampilan banner publik di desktop dan smartphone tanpa text wrapping yang janggal.
+
+---
+
+## FASE 5.2: Toggle Suara Notifikasi iOS Slider, Format Titik Pemisah Ribuan, Integrasi Notifikasi Review Tugas DKM, & Skema Kompatibilitas Database
+**Status:** Selesai (100% Terverifikasi)  
+**Tanggal Penyelesaian:** 2026-09-21  
+
+### 1. Masalah yang Diselesaikan & Solusi Arsitektural:
+1. **Toggle Suara Notifikasi Switch iOS Slider (`admin.html`):**
+   - *Akar Masalah:* Tombol "Tes Suara" tidak memberikan kontrol keadaan aktif/nonaktif bagi pengurus yang ingin menyalakan nada lonceng secara opsional.
+   - *Solusi:* Mengganti tombol statis dengan switch toggle slider iOS elegan di footer panel notifikasi. Standar default: Nonaktif (OFF/Senyap), disimpan di `localStorage` (`masjid_sophia_notif_sound_enabled`). Pengurus dapat mengaktifkannya kapan saja dengan sentuhan slider yang responsif.
+2. **Perbaikan Tab Filter & Umpan Balik Tombol Tandai Dibaca (`admin.html`):**
+   - *Akar Masalah:* Garis bawah emas indikator tab filter terkunci pada "Semua" karena benturan inline CSS, dan tombol "Tandai Semua Dibaca" tidak memiliki efek hover dan respon klik.
+   - *Solusi:* Memigrasikan styling tab ke kelas CSS murni `.notif-filter-tab` dan `.notif-filter-tab.active`. Menambahkan kelas `.btn-notif-mark-read` dengan transisi hover angkat, background tint, serta umpan balik visual instan berupa ikon centang hijau sukses dan teks "Semua Telah Dibaca".
+3. **Pembersihan Footer Dropdown Notifikasi:**
+   - *Solusi:* Menghapus teks dan ikon redundan "Realtime CDC Aktif" dari footer dropdown untuk menjaga tampilan panel notifikasi tetap bersih, ringkas, dan fokus.
+4. **Pemicu Notifikasi Tugas Review Pimpinan DKM (`admin.html`):**
+   - *Akar Masalah:* Tugas yang berstatus `REVIEW` (baik saat pembuatan tugas baru maupun saat digeser pada kolom Kanban) tidak memunculkan notifikasi ke akun Pimpinan DKM.
+   - *Solusi:* Memperbarui `handleSaveTask` dan `updateTaskStatus` sehingga penugasan dengan status `REVIEW` otomatis mengirimkan notifikasi kategori `TASK` ke pimpinan DKM (`recipient_role: 'DKM'`), kecuali jika pembuatnya adalah Ketua DKM itu sendiri untuk tugasnya sendiri.
+5. **Penambahan Opsi Divisi Media & Dakwah (`#budget-form-divisi`):**
+   - *Akar Masalah:* Pilihan divisi "Media & Dakwah" terlewat pada formulir entri pengajuan anggaran dan nota bon.
+   - *Solusi:* Menambahkan elemen `<option value="Media & Dakwah">Media &amp; Dakwah</option>` ke dalam dropdown `#budget-form-divisi` sehingga seluruh 8 penanggung jawab divisi operasional terlayani.
+6. **Format Titik Pemisah Ribuan (Rupiah Input Mask) pada Seluruh Form Moneter:**
+   - *Akar Masalah:* Input nominal bertipe angka murni tanpa pemisah ribuan menyulitkan pengurus membaca angka nominal besar (misal: 1000000 vs 10000000) dan berisiko salah ketik.
+   - *Solusi:* Mengubah `#budget-form-nominal`, `#journal-form-nominal`, dan `#disburse-budget-nominal` menjadi `type="text" inputmode="numeric" oninput="formatRupiahInput(this)"`. Mengintegrasikan fungsi pembantu `formatRupiahInput(input)`, `parseRupiahValue(val)`, dan `formatRupiahNumber(num)` pada seluruh alur input, edit, dan pengiriman formulir.
+7. **Skema Kompatibilitas Database Notifikasi SSOT (`database/migration_notifications_engine.sql`):**
+   - *Akar Masalah:* Upaya mutasi update status notifikasi (`read_at`) menghasilkan penolakan skema PostgREST (error 400 Bad Request) karena kolom belum ada pada skema fisik tabel lama.
+   - *Solusi:* Menambahkan kolom `read_at`, `action_type`, dan `action_payload` ke skrip migrasi serta menyertakan klausul `ALTER TABLE public.app_notifications ADD COLUMN IF NOT EXISTS ...`. Pada frontend, kueri mutasi dibersihkan agar sepenuhnya tahan banting.
+8. **Pembersihan Badge KPI Kas Keluar & Transaksi:**
+   - *Akar Masalah:* Badge berteks panjang pada kartu metrik kas keluar dan transaksi melipat teks ke bawah secara tidak proporsional pada resolusi layar standar.
+   - *Solusi:* Menghapus badge sempit tersebut dan menambahkan aturan CSS `white-space: nowrap` pada `.kpi-badge` untuk menjaga keseragaman kartu eksekutif keuangan.
+
+### 2. Matriks Pengujian & Verifikasi:
+- [x] Syntax checking inline JavaScript via Node.js: 0 errors pada `admin.html`.
+- [x] Zero-emoji strict compliance: 0 emoji pada seluruh kode dan berkas dokumentasi.
+- [x] Verifikasi toggle switch iOS (default OFF, persistensi localStorage, chime berbunyi hanya saat aktif).
+- [x] Verifikasi tab filter "Semua" dan "Belum Dibaca" berpindah dengan visual underline emas aktif.
+- [x] Verifikasi tombol "Tandai Semua Dibaca" dengan hover effect dan konfirmasi centang sukses.
+- [x] Verifikasi notifikasi review tugas DKM terkirim ke role DKM saat tugas berstatus REVIEW.
+- [x] Verifikasi opsi "Media & Dakwah" pada form pengajuan anggaran.
+- [x] Verifikasi format titik pemisah ribuan otomatis pada input anggaran, jurnal kas, dan pencairan kas.
+- [x] Verifikasi skrip migrasi SQL kompatibilitas dengan ALTER TABLE kolom baru.
+
 
 
 

@@ -15,10 +15,18 @@ CREATE TABLE IF NOT EXISTS public.app_notifications (
     target_tab VARCHAR(50) NOT NULL, -- 'tab-finance', 'tab-tasks', 'tab-feedback', dll.
     target_subview VARCHAR(50), -- 'budget', 'jurnal', dll.
     reference_id VARCHAR(100), -- ID dari transaksi/tugas/pesan yang bersangkutan
+    action_type VARCHAR(50) DEFAULT 'NAVIGATE', -- 'NAVIGATE', 'MODAL', dll.
+    action_payload JSONB DEFAULT '{}'::jsonb, -- Parameter navigasi detail (recordId, dsb)
     is_read BOOLEAN DEFAULT FALSE,
+    read_at TIMESTAMP WITH TIME ZONE,
     created_by_name VARCHAR(150),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Pastikan kolom kompatibilitas tersedia jika tabel sudah ada sebelumnya di Supabase
+ALTER TABLE public.app_notifications ADD COLUMN IF NOT EXISTS action_type VARCHAR(50) DEFAULT 'NAVIGATE';
+ALTER TABLE public.app_notifications ADD COLUMN IF NOT EXISTS action_payload JSONB DEFAULT '{}'::jsonb;
+ALTER TABLE public.app_notifications ADD COLUMN IF NOT EXISTS read_at TIMESTAMP WITH TIME ZONE;
 
 -- 2. INDEKS PERFORMA QUERY
 CREATE INDEX IF NOT EXISTS idx_app_notifications_recipient_role ON public.app_notifications(recipient_role);

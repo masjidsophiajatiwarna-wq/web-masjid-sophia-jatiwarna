@@ -724,6 +724,7 @@
             font-size: 0.7rem;
             font-weight: 700;
             color: var(--color-success);
+            white-space: nowrap;
         }
 
         /* Section Panels */
@@ -3887,9 +3888,103 @@
         .notif-item:hover {
             background-color: #F9FAFB !important;
         }
+        .notif-filter-tab {
+            flex: 1;
+            padding: 0.65rem 0.5rem;
+            font-size: 0.775rem;
+            font-weight: 600;
+            border: none;
+            background: transparent;
+            color: var(--color-charcoal-muted);
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        .notif-filter-tab:hover {
+            color: var(--color-charcoal);
+            background-color: rgba(0, 0, 0, 0.02);
+        }
         .notif-filter-tab.active {
             color: var(--color-gold-deep) !important;
+            font-weight: 700 !important;
             border-bottom: 2px solid var(--color-gold-primary) !important;
+            background-color: rgba(227, 196, 102, 0.04) !important;
+        }
+        .btn-notif-mark-read {
+            background: none;
+            border: none;
+            font-size: 0.72rem;
+            color: var(--color-gold-deep);
+            cursor: pointer;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-notif-mark-read:hover {
+            background-color: rgba(227, 196, 102, 0.15);
+            color: var(--color-gold-deep);
+            transform: translateY(-1px);
+        }
+        .btn-notif-mark-read:active {
+            transform: scale(0.96);
+        }
+
+        /* iOS Slider Switch for Notification Sound */
+        .notif-sound-toggle-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+            font-size: 0.725rem;
+            font-weight: 600;
+            color: var(--color-charcoal);
+        }
+        .notif-sound-switch {
+            position: relative;
+            display: inline-block;
+            width: 32px;
+            height: 18px;
+        }
+        .notif-sound-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            margin: 0;
+        }
+        .notif-sound-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #D1D5DB;
+            transition: 0.25s ease;
+            border-radius: 20px;
+        }
+        .notif-sound-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.25s ease;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+        }
+        .notif-sound-switch input:checked + .notif-sound-slider {
+            background-color: var(--color-gold-deep);
+        }
+        .notif-sound-switch input:checked + .notif-sound-slider:before {
+            transform: translateX(14px);
         }
 
         /* Search & Form Elements */
@@ -4404,16 +4499,16 @@
                                     <span style="font-weight: 800; font-size: 0.95rem; color: var(--color-charcoal);">Pusat Notifikasi</span>
                                     <span id="notif-header-unread-badge" style="display: none; font-size: 0.68rem; font-weight: 700; background: rgba(227, 196, 102, 0.2); color: var(--color-gold-deep); padding: 2px 7px; border-radius: 10px; border: 1px solid rgba(227, 196, 102, 0.4);">0 Baru</span>
                                 </div>
-                                <button type="button" onclick="markAllNotificationsAsRead()" style="background: none; border: none; font-size: 0.72rem; color: var(--color-gold-deep); cursor: pointer; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem; padding: 0;">
+                                <button type="button" id="btn-mark-all-read" onclick="markAllNotificationsAsRead()" class="btn-notif-mark-read" title="Tandai semua notifikasi sebagai telah dibaca">
                                     <i class="fa-solid fa-check-double"></i> Tandai Semua Dibaca
                                 </button>
                             </div>
                             <!-- Notification Filters -->
-                            <div style="display: flex; border-bottom: 1px solid var(--color-border); background: #FFFFFF; padding: 0 0.5rem;">
-                                <button type="button" id="notif-filter-btn-all" onclick="filterNotificationsTab('all')" class="notif-filter-tab active" style="flex: 1; padding: 0.55rem; font-size: 0.775rem; font-weight: 700; border: none; background: none; color: var(--color-gold-deep); border-bottom: 2px solid var(--color-gold-primary); cursor: pointer;">
+                            <div style="display: flex; border-bottom: 1px solid var(--color-border); background: #FFFFFF;">
+                                <button type="button" id="notif-filter-btn-all" onclick="filterNotificationsTab('all')" class="notif-filter-tab active">
                                     Semua
                                 </button>
-                                <button type="button" id="notif-filter-btn-unread" onclick="filterNotificationsTab('unread')" class="notif-filter-tab" style="flex: 1; padding: 0.55rem; font-size: 0.775rem; font-weight: 600; border: none; background: none; color: var(--color-charcoal-muted); border-bottom: 2px solid transparent; cursor: pointer;">
+                                <button type="button" id="notif-filter-btn-unread" onclick="filterNotificationsTab('unread')" class="notif-filter-tab">
                                     Belum Dibaca
                                 </button>
                             </div>
@@ -4426,11 +4521,15 @@
                                 </div>
                             </div>
                             <!-- Notification Footer -->
-                            <div style="padding: 0.5rem 1rem; border-top: 1px solid var(--color-border); background: #F9FAFB; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--color-charcoal-muted);">
-                                <span><i class="fa-solid fa-satellite-dish" style="color: #059669;"></i> Realtime CDC Aktif</span>
-                                <button type="button" onclick="playNotificationChime()" title="Uji Suara Lonceng Notifikasi" style="background: none; border: none; font-size: 0.75rem; color: var(--color-charcoal-muted); cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;">
-                                    <i class="fa-solid fa-volume-high"></i> Tes Suara
-                                </button>
+                            <div style="padding: 0.6rem 1.15rem; border-top: 1px solid var(--color-border); background: #FAFAFA; display: flex; justify-content: flex-end; align-items: center;">
+                                <label class="notif-sound-toggle-wrap" title="Aktifkan atau nonaktifkan bunyi notifikasi (Default: Nonaktif)">
+                                    <i id="notif-sound-icon" class="fa-solid fa-volume-xmark" style="color: var(--color-charcoal-muted); font-size: 0.8rem; transition: color 0.2s;"></i>
+                                    <span style="font-size: 0.725rem; color: var(--color-charcoal-muted);">Suara Notifikasi</span>
+                                    <div class="notif-sound-switch">
+                                        <input type="checkbox" id="notif-sound-checkbox" onchange="toggleSoundNotification(this.checked)">
+                                        <span class="notif-sound-slider"></span>
+                                    </div>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -4571,7 +4670,6 @@
                             <div class="kpi-details">
                                 <span>TOTAL KAS KELUAR</span>
                                 <h3 id="stat-kas-total-keluar" style="font-size: 1.1rem; color: #DC2626;">Rp 0</h3>
-                                <div class="kpi-badge" style="color: #DC2626;"><i class="fa-solid fa-circle-arrow-up"></i> Operasional &amp; Dapur</div>
                             </div>
                         </div>
                         <div class="kpi-card">
@@ -4581,7 +4679,6 @@
                             <div class="kpi-details">
                                 <span>TOTAL TRANSAKSI</span>
                                 <h3 id="stat-kas-total-trx">0 Transaksi</h3>
-                                <div class="kpi-badge" style="color: #2563EB;"><i class="fa-solid fa-database"></i> Terverifikasi DKM</div>
                             </div>
                         </div>
                     </div>
@@ -9586,7 +9683,7 @@
 
                     <div class="form-group" style="margin-bottom: 0.85rem;">
                         <label class="form-label" style="font-weight: 600;">Nominal (Rp)</label>
-                        <input type="number" id="journal-form-nominal" class="form-input" placeholder="Contoh: 150000" min="0" required>
+                        <input type="text" inputmode="numeric" id="journal-form-nominal" class="form-input" placeholder="Contoh: 150.000" oninput="formatRupiahInput(this)" required>
                     </div>
 
                     <div class="form-group" style="margin-bottom: 0.85rem;">
@@ -9647,6 +9744,7 @@
                     <div class="form-group" style="margin-bottom: 0.85rem;">
                         <label class="form-label" style="font-weight: 600;">Divisi Pemohon</label>
                         <select id="budget-form-divisi" class="form-input" required>
+                            <option value="Media & Dakwah">Media &amp; Dakwah</option>
                             <option value="Ibadah & Shalat">Ibadah &amp; Shalat</option>
                             <option value="Logistik & Dapur">Logistik &amp; Dapur</option>
                             <option value="Pelayanan Musafir">Pelayanan Musafir</option>
@@ -9669,7 +9767,7 @@
 
                     <div class="form-group" style="margin-bottom: 0.85rem;">
                         <label class="form-label" style="font-weight: 600;">Nominal yang Diajukan (Rp)</label>
-                        <input type="number" id="budget-form-nominal" class="form-input" placeholder="Contoh: 250000" min="0" required>
+                        <input type="text" inputmode="numeric" id="budget-form-nominal" class="form-input" placeholder="Contoh: 250.000" oninput="formatRupiahInput(this)" required>
                     </div>
 
                     <div class="form-group" style="margin-bottom: 1rem;">
@@ -9820,7 +9918,7 @@
                         </div>
                         <div>
                             <label class="form-label" style="font-weight: 600;">Nominal Dicairkan (Rp)</label>
-                            <input type="number" id="disburse-budget-nominal" class="form-input" min="1000" step="1000" required>
+                            <input type="text" inputmode="numeric" id="disburse-budget-nominal" class="form-input" placeholder="Contoh: 250.000" oninput="formatRupiahInput(this)" required>
                         </div>
                     </div>
 
@@ -11215,12 +11313,46 @@
             }
         }
 
+        function isSoundNotificationEnabled() {
+            try {
+                return localStorage.getItem('masjid_sophia_notif_sound_enabled') === '1';
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function initSoundNotificationToggle() {
+            const checkbox = document.getElementById('notif-sound-checkbox');
+            const icon = document.getElementById('notif-sound-icon');
+            const isEnabled = isSoundNotificationEnabled();
+            if (checkbox) checkbox.checked = isEnabled;
+            if (icon) {
+                icon.className = isEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
+                icon.style.color = isEnabled ? 'var(--color-gold-deep)' : 'var(--color-charcoal-muted)';
+            }
+        }
+
+        function toggleSoundNotification(checked) {
+            try {
+                localStorage.setItem('masjid_sophia_notif_sound_enabled', checked ? '1' : '0');
+            } catch (e) {}
+            const icon = document.getElementById('notif-sound-icon');
+            if (icon) {
+                icon.className = checked ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
+                icon.style.color = checked ? 'var(--color-gold-deep)' : 'var(--color-charcoal-muted)';
+            }
+            if (checked) {
+                playNotificationChime();
+            }
+        }
+
         function toggleNotificationDropdown(forceState = null) {
             const dropdown = document.getElementById('notification-dropdown');
             if (!dropdown) return;
             const willShow = (typeof forceState === 'boolean') ? forceState : (dropdown.style.display === 'none' || !dropdown.style.display);
             dropdown.style.display = willShow ? 'block' : 'none';
             if (willShow) {
+                initSoundNotificationToggle();
                 renderNotificationsList();
             }
         }
@@ -11393,7 +11525,21 @@
 
             if (sbClient) {
                 try {
-                    const { error: insErr } = await sbClient.from('app_notifications').insert([notifItem]);
+                    const dbPayload = {
+                        id: notifItem.id,
+                        recipient_role: notifItem.recipient_role,
+                        recipient_email: notifItem.recipient_email,
+                        category: notifItem.category,
+                        title: notifItem.title,
+                        message: notifItem.message,
+                        target_tab: (action_payload && action_payload.tab) || (category === 'BUDGET' ? 'donations' : (category === 'TASK' ? 'tasks' : (category === 'CHAT' ? 'chat' : 'overview'))),
+                        target_subview: (action_payload && action_payload.subview) || null,
+                        reference_id: notifItem.reference_id,
+                        is_read: false,
+                        created_by_name: typeof getUserDisplayName === 'function' ? getUserDisplayName(currentUser) : 'Sistem',
+                        created_at: notifItem.created_at
+                    };
+                    const { error: insErr } = await sbClient.from('app_notifications').insert([dbPayload]);
                     if (insErr) console.warn('[Notification] Supabase insert notice:', insErr);
 
                     // Auto-purge record lebih dari 7 hari di Supabase untuk menghemat kuota
@@ -11414,7 +11560,9 @@
                         .slice(0, 50);
                     saveLocalNotifications();
                     renderNotificationsList();
-                    // Notifikasi senyap (silent): toast popup banner + red badge counter tanpa chime
+                    if (isSoundNotificationEnabled()) {
+                        playNotificationChime();
+                    }
                     showNotificationToast(notifItem.title, notifItem.message, notifItem.id);
                 }
             }
@@ -11494,8 +11642,7 @@
                 if (sbClient) {
                     try {
                         await sbClient.from('app_notifications').update({
-                            is_read: true,
-                            read_at: notif.read_at
+                            is_read: true
                         }).eq('id', notifId);
                     } catch (e) {}
                 }
@@ -11514,6 +11661,18 @@
             saveLocalNotifications();
             renderNotificationsList();
 
+            // Visual feedback tombol Tandai Semua Dibaca
+            const btn = document.getElementById('btn-mark-all-read');
+            if (btn) {
+                const origHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Semua Telah Dibaca';
+                btn.style.color = '#059669';
+                setTimeout(() => {
+                    btn.innerHTML = origHtml;
+                    btn.style.color = '';
+                }, 1800);
+            }
+
             const userEmailKey = (currentUser?.email || 'anon').toLowerCase().trim();
             try {
                 const localReadIds = JSON.parse(localStorage.getItem(`masjid_sophia_read_notifs_${userEmailKey}`) || '[]');
@@ -11524,8 +11683,7 @@
             if (sbClient && unreadIds.length > 0) {
                 try {
                     await sbClient.from('app_notifications').update({
-                        is_read: true,
-                        read_at: nowISO
+                        is_read: true
                     }).in('id', unreadIds);
                 } catch (e) {}
             }
@@ -11584,7 +11742,9 @@
                     globalUserNotifications[existingIdx] = { ...globalUserNotifications[existingIdx], ...notif };
                 } else {
                     globalUserNotifications.unshift(notif);
-                    // Notifikasi senyap (silent): toast banner + red badge counter tanpa chime
+                    if (isSoundNotificationEnabled()) {
+                        playNotificationChime();
+                    }
                     showNotificationToast(notif.title, notif.message, notif.id);
                 }
                 // Batasi maksimal 50 notifikasi dan retensi 7 hari
@@ -13455,15 +13615,18 @@
 
             // Notifikasi ke DKM jika tugas diajukan ke status Review atau Selesai
             if (newStatus === 'REVIEW') {
-                if (typeof createSystemNotification === 'function') {
-                    createSystemNotification({
-                        recipient_role: 'DKM',
-                        title: 'Tugas Memerlukan Review DKM',
-                        message: `Tugas "${task.title}" (${task.division}) telah diajukan ke status Review oleh ${getUserDisplayName(currentUser)}. Mohon verifikasi pelaksanaan di lapangan.`,
-                        category: 'TASK',
-                        action_type: 'MODAL_TASK',
-                        action_payload: { tab: 'tasks', taskId: task.id }
-                    });
+                const myRole = getUserRole();
+                if (myRole !== 'KETUA_DKM' || (task.assigned_to && !task.assigned_to.toLowerCase().includes('ketua'))) {
+                    if (typeof createSystemNotification === 'function') {
+                        createSystemNotification({
+                            recipient_role: 'DKM',
+                            title: 'Tugas Memerlukan Review DKM',
+                            message: `Tugas "${task.title}" (${task.division}) telah diajukan ke status Review oleh ${getUserDisplayName(currentUser)}. Mohon verifikasi pelaksanaan di lapangan.`,
+                            category: 'TASK',
+                            action_type: 'MODAL_TASK',
+                            action_payload: { tab: 'tasks', taskId: task.id }
+                        });
+                    }
                 }
             } else if (newStatus === 'COMPLETED' && oldStatus !== 'COMPLETED') {
                 if (typeof createSystemNotification === 'function') {
@@ -15742,9 +15905,36 @@
                 // Broadcast create
                 broadcastEvent('TASK_SYNC', { action: 'UPSERT', task: newTask });
 
+                // Notifikasi ke Pimpinan DKM jika tugas baru berstatus Review
+                if (status === 'REVIEW') {
+                    const myRole = getUserRole();
+                    if (myRole !== 'KETUA_DKM' || (pic && !pic.toLowerCase().includes('ketua'))) {
+                        if (typeof createSystemNotification === 'function') {
+                            createSystemNotification({
+                                recipient_role: 'DKM',
+                                title: 'Tugas Memerlukan Review DKM',
+                                message: `Tugas "${title}" (${division}) memerlukan verifikasi dan review lapangan oleh Ketua DKM.`,
+                                category: 'TASK',
+                                action_type: 'MODAL_TASK',
+                                action_payload: { tab: 'tasks', taskId: newTask.id }
+                            });
+                        }
+                    }
+                }
+
                 // Notifikasi ke PIC yang ditugaskan
                 if (pic && typeof createSystemNotification === 'function') {
+                    let picEmail = null;
+                    if (Array.isArray(adminUsersList)) {
+                        const found = adminUsersList.find(u => 
+                            (u.name && u.name.toLowerCase().includes(pic.toLowerCase())) ||
+                            (pic.toLowerCase().includes((u.name || '').toLowerCase()))
+                        );
+                        if (found) picEmail = found.email;
+                    }
                     createSystemNotification({
+                        recipient_email: picEmail,
+                        recipient_role: picEmail ? null : 'ALL',
                         title: 'Penugasan Tugas Baru DKM',
                         message: `Anda ditugaskan pada: "${title}" (${division}, Prioritas: ${priority}). Silakan pantau rincian tugas.`,
                         category: 'TASK',
@@ -21993,6 +22183,22 @@
             return 'Rp ' + Math.floor(val).toLocaleString('id-ID');
         }
 
+        function formatRupiahInput(input) {
+            if (!input) return;
+            let val = input.value.replace(/\D/g, '');
+            input.value = val ? Number(val).toLocaleString('id-ID') : '';
+        }
+
+        function parseRupiahValue(val) {
+            if (!val) return 0;
+            return parseFloat(String(val).replace(/\./g, '').replace(/,/g, '.').replace(/[^\d.-]/g, '')) || 0;
+        }
+
+        function formatRupiahNumber(num) {
+            if (num === null || num === undefined || isNaN(num) || num === '') return '';
+            return Number(num).toLocaleString('id-ID');
+        }
+
         // Subview Switcher
         function switchLogistikSubView(subView) {
             currentLogistikSubView = subView;
@@ -23084,7 +23290,7 @@
             document.getElementById('journal-form-tipe').value = item.tipe_transaksi;
             handleJournalTypeChange(item.tipe_transaksi);
             document.getElementById('journal-form-kategori').value = item.kategori;
-            document.getElementById('journal-form-nominal').value = item.nominal;
+            document.getElementById('journal-form-nominal').value = item.nominal ? formatRupiahNumber(item.nominal) : '';
             document.getElementById('journal-form-metode').value = item.metode_pembayaran;
             document.getElementById('journal-form-deskripsi').value = item.deskripsi;
             document.getElementById('journal-form-foto-url').value = item.bukti_transaksi_url || '';
@@ -23129,7 +23335,7 @@
             const tanggal = document.getElementById('journal-form-tanggal').value;
             const tipe = document.getElementById('journal-form-tipe').value;
             const kategori = document.getElementById('journal-form-kategori').value;
-            const nominal = parseFloat(document.getElementById('journal-form-nominal').value || 0);
+            const nominal = parseRupiahValue(document.getElementById('journal-form-nominal').value);
             const metode = document.getElementById('journal-form-metode').value;
             const deskripsi = document.getElementById('journal-form-deskripsi').value.trim();
             const fotoUrl = document.getElementById('journal-form-foto-url').value.trim();
@@ -23482,7 +23688,7 @@
             document.getElementById('budget-form-tanggal').value = item.tanggal_pengajuan;
             document.getElementById('budget-form-judul').value = item.judul_keperluan;
             document.getElementById('budget-form-rincian').value = item.rincian_keperluan;
-            document.getElementById('budget-form-nominal').value = item.nominal_diajukan;
+            document.getElementById('budget-form-nominal').value = item.nominal_diajukan ? formatRupiahNumber(item.nominal_diajukan) : '';
             document.getElementById('budget-form-foto-url').value = item.lampiran_nota_url || '';
 
             const previewBox = document.getElementById('budget-form-preview-box');
@@ -23540,7 +23746,7 @@
             const tanggal = document.getElementById('budget-form-tanggal').value;
             const judul = document.getElementById('budget-form-judul').value.trim();
             const rincian = document.getElementById('budget-form-rincian').value.trim();
-            const nominal = parseFloat(document.getElementById('budget-form-nominal').value || 0);
+            const nominal = parseRupiahValue(document.getElementById('budget-form-nominal').value);
             const fotoUrl = document.getElementById('budget-form-foto-url').value.trim();
 
             const existing = budgetRequestsList.find(b => b.id === id);
@@ -23786,7 +23992,7 @@
             document.getElementById('disburse-budget-nominal-disetujui').textContent = formatRupiah(item.nominal_diajukan);
 
             document.getElementById('disburse-budget-tanggal').value = new Date().toISOString().split('T')[0];
-            document.getElementById('disburse-budget-nominal').value = item.nominal_diajukan;
+            document.getElementById('disburse-budget-nominal').value = item.nominal_diajukan ? formatRupiahNumber(item.nominal_diajukan) : '';
             document.getElementById('disburse-budget-metode').value = 'TRANSFER_BSI';
 
             // Auto-select kategori buku kas berdasarkan divisi pengaju
@@ -23859,7 +24065,7 @@
             }
 
             const disburseTanggal = document.getElementById('disburse-budget-tanggal').value;
-            const disburseNominal = parseFloat(document.getElementById('disburse-budget-nominal').value || item.nominal_diajukan);
+            const disburseNominal = parseRupiahValue(document.getElementById('disburse-budget-nominal').value) || item.nominal_diajukan;
             const disburseMetode = document.getElementById('disburse-budget-metode').value;
             const disburseKategori = document.getElementById('disburse-budget-kategori').value;
             const disburseRef = document.getElementById('disburse-budget-ref').value.trim();
