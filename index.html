@@ -1440,9 +1440,38 @@
 
         .progress-banner-inner {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
+            grid-template-columns: 1fr 1.35fr;
             gap: 1.5rem;
             align-items: center;
+        }
+
+        .banner-stat-panels {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .banner-stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.1rem 1.25rem;
+            border-radius: 10px;
+            border: 1px solid rgba(218, 165, 32, 0.35);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .banner-stat-card:hover {
+            border-color: var(--color-gold-primary);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 640px) {
+            .banner-stat-panels {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
         }
 
         .progress-bar-wrap {
@@ -2658,16 +2687,33 @@
                             Alhamdulillah, hidangan siang ini disiapkan tim dapur relawan bersama UMAR Travel untuk musafir &amp; jamaah.
                         </p>
                     </div>
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 1.1rem 1.35rem; border-radius: 10px; border: 1px solid rgba(218, 165, 32, 0.35);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                            <span style="font-size: 0.825rem; font-weight: 700; color: #E5E7EB;">Total Infaq Minggu Ini</span>
-                            <span style="font-size: 0.725rem; color: var(--color-gold-primary); font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Terverifikasi DKM</span>
+                    <div class="banner-stat-panels">
+                        <!-- Panel 1: Total Infaq Mingguan -->
+                        <div class="banner-stat-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <span style="font-size: 0.8rem; font-weight: 700; color: #E5E7EB;">Total Infaq Mingguan</span>
+                                <span style="font-size: 0.7rem; color: var(--color-gold-primary); font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Terverifikasi</span>
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: var(--color-gold-primary); line-height: 1.2; margin: 0.25rem 0;" id="live-donation-total">
+                                Rp 0
+                            </div>
+                            <div style="font-size: 0.725rem; color: #9CA3AF; margin-top: 0.35rem;">
+                                Akumulasi infaq Senin s.d. Ahad
+                            </div>
                         </div>
-                        <div style="font-size: 1.55rem; font-weight: 800; color: var(--color-gold-primary); line-height: 1.2;" id="live-donation-total">
-                            Rp 0 <span style="font-size: 0.9rem; font-weight: 600; color: #D1D5DB;" id="live-donation-porsi">(0 Porsi)</span>
-                        </div>
-                        <div style="font-size: 0.725rem; color: #9CA3AF; margin-top: 0.4rem;">
-                            Akumulasi infaq pekan ini (Senin - Ahad) terverifikasi DKM
+
+                        <!-- Panel 2: Rata-rata Porsi Harian -->
+                        <div class="banner-stat-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                                <span style="font-size: 0.8rem; font-weight: 700; color: #E5E7EB;">Rata-rata Porsi Harian</span>
+                                <span style="font-size: 0.7rem; color: var(--color-gold-primary); font-weight: 600;"><i class="fa-solid fa-utensils"></i> Dapur</span>
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: var(--color-gold-primary); line-height: 1.2; margin: 0.25rem 0;" id="live-daily-avg-porsi">
+                                ~45+ Porsi
+                            </div>
+                            <div style="font-size: 0.725rem; color: #9CA3AF; margin-top: 0.35rem;">
+                                Penyaluran gratis ba'da Dzuhur
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3801,11 +3847,34 @@
             if (!sbClientIndex) return;
 
             try {
-                // 1. Siklus Reset Mingguan (Senin 00:00 s.d. Ahad 23:59)
+                // 1. Ambil data riil dapur untuk menghitung rata-rata porsi harian
+                let avgPorsi = 45;
+                try {
+                    const { data: dapurLogs, error: dapurErr } = await sbClientIndex
+                        .from('dapur_makan_siang')
+                        .select('realisasi_porsi');
+
+                    if (!dapurErr && Array.isArray(dapurLogs) && dapurLogs.length > 0) {
+                        let totalPorsiRealisasi = 0;
+                        dapurLogs.forEach(l => {
+                            totalPorsiRealisasi += (Number(l.realisasi_porsi) || 0);
+                        });
+                        avgPorsi = Math.max(1, Math.round(totalPorsiRealisasi / dapurLogs.length));
+                    }
+                } catch (dErr) {
+                    console.warn('[Dapur] Log fetch notice:', dErr);
+                }
+
+                const avgPorsiEl = document.getElementById('live-daily-avg-porsi');
+                if (avgPorsiEl) {
+                    avgPorsiEl.textContent = `~${avgPorsi}+ Porsi`;
+                }
+
+                // 2. Siklus Reset Mingguan (Senin 00:00 s.d. Ahad 23:59)
                 const mondayStart = getMondayStartOfWeek();
                 const mondayISO = mondayStart.toISOString();
 
-                // 2. Ambil data donasi terverifikasi pekan berjalan
+                // 3. Ambil data donasi terverifikasi pekan berjalan
                 const { data: donations, error: donErr } = await sbClientIndex
                     .from('donations')
                     .select('amount, total_amount, payment_status, program_category, created_at')
@@ -3824,23 +3893,9 @@
                     });
                 }
 
-                // Setiap Rp 25.000 mewakili 1 porsi makan siang berkah
-                const weeklyPorsi = Math.floor(weeklyInfaq / 25000);
-
                 const totalEl = document.getElementById('live-donation-total');
-                const porsiEl = document.getElementById('live-donation-porsi');
-                const countEl = document.getElementById('live-donation-count');
-
-                const formattedRupiah = `Rp ${Number(weeklyInfaq).toLocaleString('id-ID')}`;
-                const formattedPorsi = `(${weeklyPorsi.toLocaleString('id-ID')} Porsi)`;
-
                 if (totalEl) {
-                    totalEl.innerHTML = `${formattedRupiah} <span style="font-size: 0.9rem; font-weight: 600; color: #D1D5DB;" id="live-donation-porsi">${formattedPorsi}</span>`;
-                } else if (porsiEl) {
-                    porsiEl.innerText = formattedPorsi;
-                }
-                if (countEl) {
-                    countEl.innerText = `${weeklyPorsi.toLocaleString('id-ID')} Porsi`;
+                    totalEl.textContent = `Rp ${Number(weeklyInfaq).toLocaleString('id-ID')}`;
                 }
             } catch (err) {
                 console.warn('[Donations/Dapur] Progress load notice:', err);

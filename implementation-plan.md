@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v6.8 (Perbaikan Antarmuka Tombol Respon Kotak Saran Jamaah)  
+**Versi Rencana Induk:** v6.9 (Pemisahan 2 Panel Banner Capaian Infaq & Rata-rata Dapur)  
 **Terakhir Diperbarui:** 2026-09-21  
 
 ---
@@ -613,6 +613,9 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 7. **Perbaikan Antarmuka & Tata Letak Tombol Respon Kotak Saran (`admin.html`):**
    - *Akar Masalah:* Tombol respon menggunakan kelas sempit `.btn-shift` yang mengunci ukuran tombol pada 26x26px, menyebabkan teks "Respon" terpotong, berhimpitan, dan bertabrakan dengan tombol hapus.
    - *Solusi:* Membuat kelas CSS khusus `.btn-feedback-respond` dan `.btn-feedback-delete` dengan padding proporsional (0.4rem 0.85rem), border melengkung 6px, bayangan halus, ikon `fa-reply`, jarak pemisah (`gap: 0.5rem`), serta memperlebar `min-width` kolom Aksi menjadi 155px.
+8. **Pemisahan Banner Capaian 2 Panel Terpisah (`index.html`):**
+   - *Akar Masalah:* Tampilan kartu metrik sebelumnya menggabungkan total infaq dan padanan porsi dalam satu kartu tunggal yang terlihat kurang seimbang dan terlalu lebar.
+   - *Solusi:* Memisahkan kartu menjadi 2 panel terpisah berdampingan: Panel 1 "Total Infaq Mingguan" (akumulasi rupiah terverifikasi), dan Panel 2 "Rata-rata Porsi Harian" (rata-rata porsi dapur harian riil), dengan CSS responsif `.banner-stat-panels` yang adaptif pada smartphone.
 
 ### 2. Matriks Pengujian & Verifikasi:
 - [x] Syntax checking inline JavaScript via Node.js: 0 errors pada `admin.html` dan `index.html`.
@@ -624,5 +627,6 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 - [x] Verifikasi judul banner general "Capaian Infaq & Sedekah Makan Minggu Ini" dan kartu "Total Infaq Minggu Ini".
 - [x] Verifikasi eliminasi total indikator target dan progress bar dari pandangan publik.
 - [x] Verifikasi tata letak proporsional dan tidak terhimpitnya tombol Respon & Hapus pada Kotak Saran.
+- [x] Verifikasi pemisahan 2 panel stat card (Total Infaq Mingguan & Rata-rata Porsi Harian) yang seimbang dan responsif.
 
 

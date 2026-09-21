@@ -4,6 +4,14 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.43] - 2026-09-21
+
+### Pemisahan Banner Capaian 2 Panel: Total Infaq Mingguan & Rata-rata Porsi Harian
+
+#### Diperbarui
+- [PUBLIC/BANNER] **Struktur 2 Panel Metrik Terpisah (`index.html`):** Memisahkan ringkasan capaian menjadi dua kartu berdampingan: Panel 1 menyajikan "Total Infaq Mingguan" (akumulasi rupiah terverifikasi), dan Panel 2 menyajikan "Rata-rata Porsi Harian" (rata-rata riil porsi makan siang gratis dari database dapur).
+- [PUBLIC/RESPONSIVE] **Grid Adaptif Smartphone (`.banner-stat-panels`):** Menerapkan layout 2 kolom pada layar desktop/tablet dengan transisi hover halus, serta penataan bertumpuk 1 kolom pada layar mobile (<= 640px) agar tampilan tetap proporsional dan tidak berdesakan.
+
 ## [1.9.42] - 2026-09-21
 
 ### Perbaikan Antarmuka & Tata Letak Tombol Respon & Hapus Kotak Saran Jamaah
