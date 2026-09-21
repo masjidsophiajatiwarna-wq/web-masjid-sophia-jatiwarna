@@ -25,6 +25,7 @@ CREATE INDEX IF NOT EXISTS idx_app_notifications_recipient_role ON public.app_no
 CREATE INDEX IF NOT EXISTS idx_app_notifications_recipient_email ON public.app_notifications(recipient_email);
 CREATE INDEX IF NOT EXISTS idx_app_notifications_is_read ON public.app_notifications(is_read);
 CREATE INDEX IF NOT EXISTS idx_app_notifications_created_at ON public.app_notifications(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_app_notifications_reference_id ON public.app_notifications(reference_id);
 
 -- 3. HAK AKSES & KEAMANAN ROW LEVEL SECURITY (RLS)
 ALTER TABLE public.app_notifications ENABLE ROW LEVEL SECURITY;
@@ -55,3 +56,31 @@ BEGIN
         ALTER PUBLICATION supabase_realtime ADD TABLE public.app_notifications;
     END IF;
 END $$;
+
+-- 5. FUNGSI & TRIGGER AUTO-PURGE (MAKSIMAL 50 NOTIFIKASI & RETENSI 7 HARI)
+-- Menjaga kuota Supabase free tier tetap hemat, efisien, dan bersih otomatis
+CREATE OR REPLACE FUNCTION public.purge_old_notifications()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Hapus notifikasi yang telah melampaui masa simpan 7 hari
+    DELETE FROM public.app_notifications
+    WHERE created_at < (NOW() - INTERVAL '7 days');
+
+    -- Jika total notifikasi melebihi 50 baris, hapus notifikasi tertua (FIFO)
+    DELETE FROM public.app_notifications
+    WHERE id NOT IN (
+        SELECT id FROM public.app_notifications
+        ORDER BY created_at DESC
+        LIMIT 50
+    );
+
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS trg_auto_purge_notifications ON public.app_notifications;
+CREATE TRIGGER trg_auto_purge_notifications
+    AFTER INSERT ON public.app_notifications
+    FOR EACH STATEMENT
+    EXECUTE FUNCTION public.purge_old_notifications();
+

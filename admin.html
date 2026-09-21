@@ -11379,6 +11379,7 @@
                 created_at: new Date().toISOString(),
                 recipient_email: recipient_email ? recipient_email.toLowerCase().trim() : null,
                 recipient_role: recipient_role || null,
+                reference_id: (action_payload && (action_payload.recordId || action_payload.taskId || action_payload.messageId || action_payload.feedbackId)) ? String(action_payload.recordId || action_payload.taskId || action_payload.messageId || action_payload.feedbackId) : null,
                 title: title,
                 message: message,
                 category: category,
@@ -11394,6 +11395,10 @@
                 try {
                     const { error: insErr } = await sbClient.from('app_notifications').insert([notifItem]);
                     if (insErr) console.warn('[Notification] Supabase insert notice:', insErr);
+
+                    // Auto-purge record lebih dari 7 hari di Supabase untuk menghemat kuota
+                    const sevenDaysAgoISO = new Date(Date.now() - (7 * 24 * 60 * 60 * 1000)).toISOString();
+                    sbClient.from('app_notifications').delete().lt('created_at', sevenDaysAgoISO).then(() => {});
                 } catch (err) {
                     console.debug('[Notification] Supabase network notice:', err);
                 }
@@ -11402,9 +11407,14 @@
             if (isNotificationForUser(notifItem, currentUser)) {
                 if (!globalUserNotifications.some(n => n.id === notifItem.id)) {
                     globalUserNotifications.unshift(notifItem);
+                    // Batasi maksimal 50 notifikasi dan retensi 7 hari
+                    const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                    globalUserNotifications = globalUserNotifications
+                        .filter(n => new Date(n.created_at).getTime() >= sevenDaysAgo)
+                        .slice(0, 50);
                     saveLocalNotifications();
                     renderNotificationsList();
-                    playNotificationChime();
+                    // Notifikasi senyap (silent): toast popup banner + red badge counter tanpa chime
                     showNotificationToast(notifItem.title, notifItem.message, notifItem.id);
                 }
             }
@@ -11420,7 +11430,11 @@
             try {
                 const cached = localStorage.getItem(storageKey);
                 if (cached) {
-                    globalUserNotifications = JSON.parse(cached);
+                    const parsed = JSON.parse(cached);
+                    const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                    globalUserNotifications = parsed
+                        .filter(n => new Date(n.created_at).getTime() >= sevenDaysAgo)
+                        .slice(0, 50);
                     renderNotificationsList();
                 }
             } catch (e) {}
@@ -11431,10 +11445,14 @@
                         .from('app_notifications')
                         .select('*')
                         .order('created_at', { ascending: false })
-                        .limit(60);
+                        .limit(50);
 
                     if (!error && Array.isArray(data)) {
-                        const filtered = data.filter(n => isNotificationForUser(n, currentUser));
+                        const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                        const filtered = data
+                            .filter(n => isNotificationForUser(n, currentUser))
+                            .filter(n => new Date(n.created_at).getTime() >= sevenDaysAgo)
+                            .slice(0, 50);
                         
                         let localReadIds = [];
                         try {
@@ -11566,9 +11584,14 @@
                     globalUserNotifications[existingIdx] = { ...globalUserNotifications[existingIdx], ...notif };
                 } else {
                     globalUserNotifications.unshift(notif);
-                    playNotificationChime();
+                    // Notifikasi senyap (silent): toast banner + red badge counter tanpa chime
                     showNotificationToast(notif.title, notif.message, notif.id);
                 }
+                // Batasi maksimal 50 notifikasi dan retensi 7 hari
+                const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                globalUserNotifications = globalUserNotifications
+                    .filter(n => new Date(n.created_at).getTime() >= sevenDaysAgo)
+                    .slice(0, 50);
                 saveLocalNotifications();
                 renderNotificationsList();
             }
@@ -12759,6 +12782,47 @@
                         console.log('[Realtime CDC] app_notifications:', payload);
                         if (typeof handleIncomingRealtimeNotification === 'function') {
                             handleIncomingRealtimeNotification(payload);
+                        }
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'donations' }, payload => {
+                        console.log('[Realtime CDC] donations:', payload);
+                        if (typeof loadDonationsData === 'function') loadDonationsData();
+                        if (typeof loadLiveMakanStats === 'function') loadLiveMakanStats();
+
+                        // Notifikasi saat ada dana masuk (infaq / donasi online) untuk DKM & Keuangan
+                        if (payload.eventType === 'INSERT' && payload.new) {
+                            const don = payload.new;
+                            const nominalVal = Number(don.total_amount || don.amount || don.nominal || 0);
+                            const formattedAmount = 'Rp ' + nominalVal.toLocaleString('id-ID');
+                            const donaturName = don.donor_name || don.nama || 'Hamba Allah';
+                            const programName = don.program_category || don.program || 'Infaq & Sedekah';
+
+                            const myRole = getUserRole();
+                            if (['SUPER_ADMIN', 'SUPER_USER', 'KETUA_DKM', 'PJ_KEUANGAN'].includes(myRole)) {
+                                const notifItem = {
+                                    id: 'notif_don_' + don.id,
+                                    created_at: don.created_at || new Date().toISOString(),
+                                    recipient_role: 'DKM_FINANCE',
+                                    reference_id: don.id,
+                                    title: 'Dana Donasi Masuk',
+                                    message: `Penerimaan dana ${formattedAmount} dari ${donaturName} (${programName}).`,
+                                    category: 'BUDGET',
+                                    action_type: 'NAVIGATE',
+                                    action_payload: { tab: 'donations', subview: 'donasi', recordId: don.id },
+                                    is_read: false
+                                };
+
+                                if (!globalUserNotifications.some(n => n.id === notifItem.id)) {
+                                    globalUserNotifications.unshift(notifItem);
+                                    const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                                    globalUserNotifications = globalUserNotifications
+                                        .filter(n => new Date(n.created_at).getTime() >= sevenDaysAgo)
+                                        .slice(0, 50);
+                                    saveLocalNotifications();
+                                    renderNotificationsList();
+                                    showNotificationToast(notifItem.title, notifItem.message, notifItem.id);
+                                }
+                            }
                         }
                     })
                     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'feedback_complaints' }, payload => {
@@ -15998,6 +16062,18 @@
 
             if (typeof broadcastEvent === 'function') {
                 broadcastEvent('JOURNAL_SYNC', { action: 'upsert', record: journalRecord });
+            }
+
+            // Notifikasi dana masuk terverifikasi ke pimpinan DKM dan PJ Keuangan
+            if (typeof createSystemNotification === 'function') {
+                createSystemNotification({
+                    recipient_role: 'DKM_FINANCE',
+                    title: 'Dana Masuk Terverifikasi',
+                    message: `Penerimaan dana Rp ${nominal.toLocaleString('id-ID')} dari ${donation.donor_name || 'Hamba Allah'} (${program}) telah diverifikasi masuk kas masjid.`,
+                    category: 'BUDGET',
+                    action_type: 'NAVIGATE',
+                    action_payload: { tab: 'donations', subview: 'donasi', recordId: donation.id }
+                });
             }
         }
 
@@ -23101,6 +23177,21 @@
             }
 
             broadcastEvent('JOURNAL_SYNC', { action: 'upsert', record });
+
+            // Kirim notifikasi jika ada transaksi kas masuk baru yang dicatat
+            if (existingIdx === -1 && record.tipe_transaksi === 'KAS_MASUK') {
+                if (typeof createSystemNotification === 'function') {
+                    const formattedAmount = 'Rp ' + Number(record.nominal || 0).toLocaleString('id-ID');
+                    createSystemNotification({
+                        recipient_role: 'DKM_FINANCE',
+                        title: 'Dana Kas Masuk Tercatat',
+                        message: `Penerimaan kas ${formattedAmount} (${record.kategori}) berhasil dicatat oleh ${record.pj_input || 'PJ Keuangan'}.`,
+                        category: 'BUDGET',
+                        action_type: 'NAVIGATE',
+                        action_payload: { tab: 'donations', subview: 'jurnal', recordId: record.id }
+                    });
+                }
+            }
 
             closeModal('modal-journal-entry');
             renderJournalsTable();

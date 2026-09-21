@@ -4,6 +4,17 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.45] - 2026-09-21
+
+### Notifikasi Senyap (Silent), Pemicu Dana Masuk Realtime, Retensi 50 & Auto-Purge 7 Hari, serta Poles Banner Publik
+
+#### Diperbarui
+- [NOTIFICATION/SILENT] **Mode Senyap Default (Zero Audio Disturbance):** Menonaktifkan pemanggilan audio lonceng otomatis (`playNotificationChime()`) pada toast banner dan counter badge unread saat notifikasi baru tiba, sehingga pengurus dapat bekerja dengan fokus tanpa gangguan suara. Fitur "Tes Suara" tetap dapat diakses secara manual melalui tombol footer dropdown.
+- [NOTIFICATION/TRIGGER] **Pemicu Notifikasi Penerimaan Dana Masuk Realtime:** Menambahkan pendengar CDC PostgreSQL dan event hook pada modul infaq/donasi (`donations`) serta pencatatan kas masuk (`financial_journals`) yang secara otomatis mengirimkan notifikasi kategori `BUDGET` ke grup pimpinan dan bendahara (`DKM_FINANCE`: `KETUA_DKM`, `SUPER_ADMIN`, `SUPER_USER`, dan `PJ_KEUANGAN`).
+- [DATABASE/PURGE] **Mekanisme Auto-Purge Database SSOT (`database/migration_notifications_engine.sql`):** Menambahkan fungsi PostgreSQL `purge_old_notifications()` dan trigger statement `trg_auto_purge_notifications` (AFTER INSERT) untuk menghapus record yang berumur lebih dari 7 hari serta membatasi total notifikasi maksimal 50 baris secara otomatis (FIFO) guna menjaga kuota free-tier Supabase tetap hemat dan bersih.
+- [NOTIFICATION/CLIENT] **Retensi 50 & Filter 7 Hari di Frontend (`admin.html`):** Menerapkan pembatasan 50 data terbaru dan filter pembersihan 7 hari pada penyimpanan lokal (`localStorage`) dan memori aplikasi (`globalUserNotifications`).
+- [PUBLIC/BANNER] **Poles Tata Letak Banner Capaian (`index.html`):** Menghapus badge sempit "Terverifikasi" dan "Dapur" pada panel statistik capaian infaq dan porsi harian agar kartu statistik tidak kelebaran, serta menambahkan pembungkus `flex: 1` dengan `min-width: 0` pada blok judul agar teks "Capaian Infaq & Sedekah Makan Minggu Ini" tidak terpotong atau membungkus ke bawah.
+
 ## [1.9.44] - 2026-09-21
 
 ### Pusat Notifikasi Terpadu (Notification Center) & Mesin Deep-Linking Realtime Pengurus DKM

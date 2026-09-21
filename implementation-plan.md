@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v7.0 (Pusat Notifikasi Terpadu & Mesin Deep-Linking Realtime DKM)  
+**Versi Rencana Induk:** v7.1 (Notifikasi Senyap, Pemicu Dana Masuk Realtime, Retensi 50 & Auto-Purge 7 Hari, serta Poles Banner Publik)  
 **Terakhir Diperbarui:** 2026-09-21  
 
 ---
@@ -669,6 +669,35 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 - [x] Verifikasi deep-linking tugas ke modal rincian (`openTaskDetailModal`).
 - [x] Verifikasi deep-linking mention chat ke pesan terkait (`scrollToMessage`).
 - [x] Verifikasi saluran realtime CDC listener pada tabel `app_notifications` dan broadcast channel.
+
+---
+
+## FASE 5.1: Notifikasi Senyap, Pemicu Dana Masuk Realtime, Retensi 50 & Auto-Purge 7 Hari, serta Poles Banner Publik
+**Status:** Selesai (100% Terverifikasi)  
+**Tanggal Penyelesaian:** 2026-09-21  
+
+### 1. Masalah yang Diselesaikan & Solusi Arsitektural:
+1. **Mode Notifikasi Senyap (Silent Notification):**
+   - *Akar Masalah:* Suara chime otomatis berpotensi mengganggu konsentrasi pengurus saat sedang bertugas atau berada di ruang ibadah/pelayanan.
+   - *Solusi:* Menghapus pemanggilan audio lonceng otomatis (`playNotificationChime()`) dari alur penerimaan notifikasi (`createSystemNotification` dan `handleIncomingRealtimeNotification`). Notifikasi tetap hadir secara visual melalui toast banner elegan dan red badge counter unread pada ikon lonceng. Tombol manual "Tes Suara" tetap dipertahankan pada footer dropdown.
+2. **Pemicu Notifikasi Penerimaan Dana Masuk Realtime (Infaq & Kas Masuk):**
+   - *Akar Masalah:* Pimpinan DKM dan PJ Keuangan perlu mengetahui secara langsung setiap ada dana infaq/donasi masuk (via portal online) maupun pencatatan kas masuk baru.
+   - *Solusi:* Menambahkan listener CDC tabel `donations` (INSERT), hook verifikasi donasi (`createAutoJournalForDonation`), dan hook pencatatan kas masuk (`handleJournalFormSubmit`) yang secara otomatis mengirimkan notifikasi kategori `BUDGET` ke grup pengurus `DKM_FINANCE` (`KETUA_DKM`, `SUPER_ADMIN`, `SUPER_USER`, dan `PJ_KEUANGAN`).
+3. **Mekanisme Retensi 50 Notifikasi & Auto-Purge 7 Hari (Hemat Kuota Supabase Free-Tier):**
+   - *Akar Masalah:* Akumulasi record notifikasi yang tidak terbatas dapat melampaui batas kuota baris tabel pada tier gratis Supabase.
+   - *Solusi:* Menambahkan fungsi PostgreSQL `purge_old_notifications()` dan trigger `trg_auto_purge_notifications` (AFTER INSERT) pada `database/migration_notifications_engine.sql` yang secara otomatis menghapus record > 7 hari dan memotong data hingga tersisa 50 record terbaru (FIFO). Mekanisme ini juga diduplikasi di frontend (`admin.html`) pada `localStorage` dan array memori.
+4. **Poles Banner Publik & Pencegahan Judul Membungkus (Wrap) (`index.html`):**
+   - *Akar Masalah:* Badge "Terverifikasi" dan "Dapur" pada panel statistik membuat kartu terlalu lebar sehingga judul banner "Capaian Infaq & Sedekah Makan Minggu Ini" terpotong atau membungkus ke bawah.
+   - *Solusi:* Menghapus kedua badge tersebut, membungkus blok judul dengan `.progress-banner-info` bertipe `flex: 1` dan `min-width: 0`, serta memperbarui `.progress-banner-inner` menjadi `display: flex; justify-content: space-between; align-items: center; gap: 2rem;` agar judul banner tampil proporsional dalam satu baris yang lega.
+
+### 2. Matriks Pengujian & Verifikasi:
+- [x] Syntax checking inline JavaScript via Node.js: 0 errors pada `admin.html` dan `index.html`.
+- [x] Zero-emoji strict compliance: 0 emoji baru pada seluruh kode dan berkas dokumentasi.
+- [x] Verifikasi notifikasi senyap (toast banner dan badge counter tampil tanpa audio chime).
+- [x] Verifikasi pemicu notifikasi saat ada donasi masuk atau kas masuk ke grup DKM_FINANCE.
+- [x] Verifikasi skrip SQL auto-purge (retensi 7 hari dan limit 50 notif FIFO).
+- [x] Verifikasi tampilan banner publik di desktop dan smartphone tanpa text wrapping yang janggal.
+
 
 
 

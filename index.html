@@ -1439,26 +1439,32 @@
         }
 
         .progress-banner-inner {
-            display: grid;
-            grid-template-columns: 1fr 1.35fr;
-            gap: 1.5rem;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
+            gap: 2rem;
+        }
+
+        .progress-banner-info {
+            flex: 1;
+            min-width: 0;
         }
 
         .banner-stat-panels {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            display: flex;
+            gap: 0.85rem;
+            flex-shrink: 0;
         }
 
         .banner-stat-card {
             background: rgba(255, 255, 255, 0.05);
-            padding: 1.1rem 1.25rem;
+            padding: 0.85rem 1.15rem;
             border-radius: 10px;
             border: 1px solid rgba(218, 165, 32, 0.35);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            min-width: 175px;
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
@@ -1467,10 +1473,22 @@
             transform: translateY(-2px);
         }
 
+        @media (max-width: 992px) {
+            .progress-banner-inner {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1.25rem;
+            }
+        }
+
         @media (max-width: 640px) {
             .banner-stat-panels {
-                grid-template-columns: 1fr;
+                flex-direction: column;
                 gap: 0.75rem;
+            }
+            .banner-stat-card {
+                min-width: unset;
+                width: 100%;
             }
         }
 
@@ -2679,7 +2697,7 @@
             <!-- Realtime Donation Progress Banner -->
             <div class="donation-progress-banner">
                 <div class="progress-banner-inner">
-                    <div>
+                    <div class="progress-banner-info">
                         <h3 id="live-banner-makan-title" style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.35rem; color: #FFFFFF; display: flex; align-items: center; gap: 0.5rem;">
                             <i class="fa-solid fa-chart-line" style="color: var(--color-gold-primary);"></i> Capaian Infaq &amp; Sedekah Makan Minggu Ini
                         </h3>
@@ -2690,10 +2708,7 @@
                     <div class="banner-stat-panels">
                         <!-- Panel 1: Total Infaq Mingguan -->
                         <div class="banner-stat-card">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                                <span style="font-size: 0.8rem; font-weight: 700; color: #E5E7EB;">Total Infaq Mingguan</span>
-                                <span style="font-size: 0.7rem; color: var(--color-gold-primary); font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Terverifikasi</span>
-                            </div>
+                            <div style="font-size: 0.8rem; font-weight: 700; color: #E5E7EB; margin-bottom: 0.35rem;">Total Infaq Mingguan</div>
                             <div style="font-size: 1.5rem; font-weight: 800; color: var(--color-gold-primary); line-height: 1.2; margin: 0.25rem 0;" id="live-donation-total">
                                 Rp 0
                             </div>
@@ -2704,10 +2719,7 @@
 
                         <!-- Panel 2: Rata-rata Porsi Harian -->
                         <div class="banner-stat-card">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                                <span style="font-size: 0.8rem; font-weight: 700; color: #E5E7EB;">Rata-rata Porsi Harian</span>
-                                <span style="font-size: 0.7rem; color: var(--color-gold-primary); font-weight: 600;"><i class="fa-solid fa-utensils"></i> Dapur</span>
-                            </div>
+                            <div style="font-size: 0.8rem; font-weight: 700; color: #E5E7EB; margin-bottom: 0.35rem;">Rata-rata Porsi Harian</div>
                             <div style="font-size: 1.5rem; font-weight: 800; color: var(--color-gold-primary); line-height: 1.2; margin: 0.25rem 0;" id="live-daily-avg-porsi">
                                 ~45+ Porsi
                             </div>
