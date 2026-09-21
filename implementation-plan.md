@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v6.7 (Penyempurnaan Banner Publik: Capaian Infaq Mingguan & Eliminasi Target Publik)  
+**Versi Rencana Induk:** v6.8 (Perbaikan Antarmuka Tombol Respon Kotak Saran Jamaah)  
 **Terakhir Diperbarui:** 2026-09-21  
 
 ---
@@ -610,6 +610,9 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 6. **Penyempurnaan Banner Publik & Eliminasi Target Publik (`index.html`):**
    - *Akar Masalah:* Publik melihat teks target (`Target: ... Porsi/Pekan`) dan progress bar yang berpotensi menimbulkan misinformasi jamaah, sementara target merupakan metrik internal DKM. Selain itu, judul banner memiliki teks porsi kaku.
    - *Solusi:* Mengubah judul banner menjadi "Capaian Infaq & Sedekah Makan Minggu Ini" dengan ikon penanda, menghapus judul lama "Penyaluran ~45+ Porsi...", menghapus label dan angka target publik beserta progress bar, dan menyajikan kartu metrik "Total Infaq Minggu Ini" yang menampilkan total rupiah dan padanan porsi secara elegan dan dinamis.
+7. **Perbaikan Antarmuka & Tata Letak Tombol Respon Kotak Saran (`admin.html`):**
+   - *Akar Masalah:* Tombol respon menggunakan kelas sempit `.btn-shift` yang mengunci ukuran tombol pada 26x26px, menyebabkan teks "Respon" terpotong, berhimpitan, dan bertabrakan dengan tombol hapus.
+   - *Solusi:* Membuat kelas CSS khusus `.btn-feedback-respond` dan `.btn-feedback-delete` dengan padding proporsional (0.4rem 0.85rem), border melengkung 6px, bayangan halus, ikon `fa-reply`, jarak pemisah (`gap: 0.5rem`), serta memperlebar `min-width` kolom Aksi menjadi 155px.
 
 ### 2. Matriks Pengujian & Verifikasi:
 - [x] Syntax checking inline JavaScript via Node.js: 0 errors pada `admin.html` dan `index.html`.
@@ -620,5 +623,6 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 - [x] Verifikasi kolom Aksi, modal respon DKM, dan penghapusan saran pada Kotak Saran.
 - [x] Verifikasi judul banner general "Capaian Infaq & Sedekah Makan Minggu Ini" dan kartu "Total Infaq Minggu Ini".
 - [x] Verifikasi eliminasi total indikator target dan progress bar dari pandangan publik.
+- [x] Verifikasi tata letak proporsional dan tidak terhimpitnya tombol Respon & Hapus pada Kotak Saran.
 
 

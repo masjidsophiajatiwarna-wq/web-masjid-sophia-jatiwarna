@@ -4,6 +4,14 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.42] - 2026-09-21
+
+### Perbaikan Antarmuka & Tata Letak Tombol Respon & Hapus Kotak Saran Jamaah
+
+#### Diperbarui
+- [FEEDBACK/UI] **Kelas CSS Tombol Aksi Mandiri (`.btn-feedback-respond` & `.btn-feedback-delete`):** Menghadirkan styling khusus dengan padding proporsional (0.4rem 0.85rem), sudut melengkung 6px, bayangan halus, dan efek hover transisi angkat (`translateY(-1px)`) elegan.
+- [FEEDBACK/LAYOUT] **Spasi Proporsional & Kolom Aksi Lega (`admin.html`):** Menghapus keterikatan pada kelas sempit `.btn-shift` (26x26px), memberikan jeda pemisah antar tombol (`gap: 0.5rem`), serta memperlebar `min-width` kolom Aksi menjadi 155px agar teks dan ikon tidak terdesak atau bertumpuk.
+
 ## [1.9.41] - 2026-09-21
 
 ### Penyempurnaan Banner Publik: Capaian Infaq Mingguan & Eliminasi Target Publik

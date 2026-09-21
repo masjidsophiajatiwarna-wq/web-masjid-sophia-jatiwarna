@@ -3778,6 +3778,57 @@
             box-shadow: 0 3px 8px rgba(220, 38, 38, 0.25);
         }
 
+        /* Tombol Aksi Kotak Saran & Aspirasi Jamaah */
+        .btn-feedback-respond {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.85rem;
+            font-size: 0.775rem;
+            font-weight: 700;
+            color: #1D4ED8;
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            line-height: 1;
+        }
+        .btn-feedback-respond:hover {
+            background: #1D4ED8;
+            color: #FFFFFF;
+            border-color: #1D4ED8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(29, 78, 216, 0.25);
+        }
+        .btn-feedback-delete {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            font-size: 0.775rem;
+            color: #DC2626;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .btn-feedback-delete:hover {
+            background: #DC2626;
+            color: #FFFFFF;
+            border-color: #DC2626;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.25);
+        }
+
         /* Toast Notification Admin */
         .admin-toast-container {
             position: fixed;
@@ -5252,7 +5303,7 @@
                                     <th>Kategori</th>
                                     <th>Subjek &amp; Pesan</th>
                                     <th>Status</th>
-                                    <th style="text-align: right; min-width: 135px;">Aksi</th>
+                                    <th style="text-align: right; min-width: 155px;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="all-feedback-tbody">
@@ -15611,12 +15662,12 @@
                             ${f.admin_notes ? `<div style="font-size: 0.72rem; color: #1E40AF; background: #EFF6FF; padding: 0.25rem 0.5rem; border-radius: 4px; margin-top: 0.35rem; border-left: 3px solid #3B82F6;"><strong>Catatan DKM:</strong> ${escapeHtml(f.admin_notes)}</div>` : ''}
                         </td>
                         <td><span class="status-badge ${statusBadgeCls}" style="${statusStyle}">${status}</span></td>
-                        <td style="text-align: right; white-space: nowrap;">
-                            <div style="display: inline-flex; gap: 0.35rem; justify-content: flex-end; align-items: center;">
-                                <button type="button" class="btn-shift" onclick="openFeedbackFollowUpModal('${escapeHtml(f.id)}')" title="Tindak Lanjut &amp; Beri Catatan" style="color: #2563EB; background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.2); padding: 0.25rem 0.55rem; border-radius: 4px; font-size: 0.75rem;">
-                                    <i class="fa-solid fa-clipboard-check"></i> Respon
+                        <td style="text-align: right; white-space: nowrap; vertical-align: middle;">
+                            <div style="display: inline-flex; gap: 0.5rem; justify-content: flex-end; align-items: center;">
+                                <button type="button" class="btn-feedback-respond" onclick="openFeedbackFollowUpModal('${escapeHtml(f.id)}')" title="Tindak Lanjut &amp; Beri Catatan">
+                                    <i class="fa-solid fa-reply"></i> Respon
                                 </button>
-                                <button type="button" class="btn-shift" onclick="handleDeleteSingleFeedback('${escapeHtml(f.id)}')" title="Hapus Aspirasi" style="color: var(--color-danger); background: rgba(220, 38, 38, 0.08); border: 1px solid rgba(220, 38, 38, 0.2); padding: 0.25rem 0.55rem; border-radius: 4px; font-size: 0.75rem;">
+                                <button type="button" class="btn-feedback-delete" onclick="handleDeleteSingleFeedback('${escapeHtml(f.id)}')" title="Hapus Aspirasi">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
