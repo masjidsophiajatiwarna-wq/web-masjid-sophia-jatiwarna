@@ -4,6 +4,26 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.39] - 2026-09-21
+
+### Resolusi Responsif Mobile Viewport HP, Top App Bar Sejajar, Side Drawer Melayang & Eliminasi Overflow Visual Web Builder
+
+#### Ditambahkan
+- [UI/DRAWER] **Overlay Mobile Sidebar Backdrop (`#sidebar-mobile-backdrop`):** Menghadirkan backdrop semi-transparan (`rgba(15, 23, 42, 0.65)`) dengan efek blur halus (`backdrop-filter: blur(3px)`) dan z-index 9998 tepat di bawah sidebar drawer (`z-index: 10000`).
+- [UI/DRAWER] **Tombol Tutup Cepat Drawer Mobile (`.btn-sidebar-mobile-close`):** Menambahkan tombol silang [X] melingkar pada header brand sidebar yang hanya muncul pada layar smartphone (<= 900px) untuk memudahkan penutupan navigasi samping.
+- [RESPONSIVE/RESIZE] **Window Resize Cleaner:** Menambahkan event listener `resize` otomatis untuk membersihkan status drawer mobile (`open`), backdrop (`show`), dan mengembalikan overflow body saat ukuran layar berubah atau diputar ke mode desktop (> 900px).
+
+#### Diperbarui
+- [UI/NAVBAR] **Top App Bar 1 Baris Sejajar Kompak:** Mengganti layout `flex-wrap: wrap` dengan `flex-nowrap` yang mengunci tombol hamburger di kiri, memangkas subjudul judul halaman pada layar mobile (`display: none`), memberikan pemangkasan `text-overflow: ellipsis` pada judul utama, dan mengunci tombol lonceng notifikasi di pojok kanan atas tanpa terdorong ke bawah.
+- [UI/NOTIFICATION] **Dropdown Notifikasi Viewport-Aware:** Mengubah pemosisian dropdown notifikasi dari absolute menjadi `position: fixed` dengan `top: 68px; left: 1rem; right: 1rem; max-width: 380px; margin: 0 auto; z-index: 10005;`, mencegah terpotongnya dropdown ke sisi kiri luar layar smartphone.
+- [UI/SIDEBAR] **Animasi Melayang Side Drawer Mobile:** Memberikan lebar adaptif `min(290px, 86vw)`, bayangan tegas `box-shadow: 0 0 35px rgba(0,0,0,0.5)`, dan transisi kubik halus `0.28s cubic-bezier(0.4, 0, 0.2, 1)` saat meluncur keluar dan masuk.
+- [NAVIGATION] **Auto-Close Sidebar pada Pemilihan Menu (`switchTab`):** Menghubungkan fungsi perpindahan tab dengan `toggleSidebarCollapse(false)` sehingga drawer mobile, backdrop, dan kunci scroll body tertutup otomatis saat pengurus memilih modul baru di smartphone.
+- [UI/BUILDER] **Kartu Slide Hero Responsif Vertikal (`.hero-slide-admin-item`):** Mengubah tata letak kartu slide banner di Visual Web Builder menjadi responsif bertumpuk vertikal pada layar <= 640px, memisahkan thumbnail + judul di bagian atas (`.hero-slide-header-row`) dan jajaran tombol aksi di bagian bawah (`.hero-slide-actions`) dengan garis pemisah putus-putus.
+- [UI/BUILDER] **Grid Statistik 1 Kolom (`.builder-stat-grid`):** Menjadikan 3 kolom input ringkasan statistik beranda bertumpuk menjadi 1 kolom (`grid-template-columns: 1fr !important;`) pada smartphone (<= 640px) untuk mencegah desakan elemen input yang menyebabkan pelebaran dokumen.
+
+#### Diperbaiki
+- [BUGFIX/OVERFLOW] **Eliminasi Horizontal Overflow Visual Web Builder:** Mencegah kebocoran lebar layar (*viewport bleed*) dan kemampuan zoom-out/geser kanan yang tidak diinginkan melalui penegakan `overflow-x: hidden; max-width: 100vw; min-width: 0;` pada elemen `html`, `body`, `.admin-layout`, `.admin-main`, dan kontainer builder.
+
 ## [1.9.38] - 2026-09-19
 
 ### Penyempurnaan UI Tombol Aksi Donasi, Modal Tolak Kustom, Lightbox Zoom QRIS & Resolusi Error Log

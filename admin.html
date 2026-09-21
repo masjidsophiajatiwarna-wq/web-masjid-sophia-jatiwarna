@@ -2982,21 +2982,246 @@
             }
         }
 
+        /* Global Mobile Viewport Anti-Bleed Defense */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        .admin-layout {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        .admin-main {
+            overflow-x: hidden;
+            max-width: 100vw;
+            min-width: 0;
+        }
+
         #mobile-menu-btn { display: none !important; }
-        
-        /* Mobile Responsive */
+        .btn-sidebar-mobile-close { display: none !important; }
+
+        /* Sidebar Mobile Backdrop */
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(3px);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .sidebar-backdrop.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Hero Slide Card Styling (Responsive) */
+        .hero-slide-admin-item {
+            display: flex;
+            gap: 0.85rem;
+            align-items: flex-start;
+            padding: 0.85rem 1rem;
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            transition: var(--transition);
+        }
+        .hero-slide-header-row {
+            display: flex;
+            gap: 0.85rem;
+            align-items: flex-start;
+            flex: 1;
+            min-width: 0;
+        }
+        .hero-slide-thumb {
+            width: 85px;
+            height: 58px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background: #E5E7EB center / cover no-repeat;
+            flex-shrink: 0;
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+        }
+        .hero-slide-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .hero-slide-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            flex-shrink: 0;
+            align-items: flex-end;
+        }
+
+        /* Mobile Responsive (<= 900px) */
         @media (max-width: 900px) {
-            #mobile-menu-btn { display: block !important; }
+            #mobile-menu-btn {
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+                width: 38px;
+                height: 38px;
+                background: #F3F4F6;
+                border: 1px solid var(--color-border);
+                border-radius: 8px;
+                color: var(--color-charcoal);
+                font-size: 1.15rem;
+                flex-shrink: 0;
+                cursor: pointer;
+            }
+            .btn-sidebar-mobile-close {
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: #FFFFFF;
+                font-size: 1.1rem;
+                cursor: pointer;
+            }
+            .desktop-only-collapse {
+                display: none !important;
+            }
+
+            /* 1 Baris Sejajar Top App Bar */
+            .top-app-bar {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                gap: 0.5rem !important;
+                margin-bottom: 1.25rem !important;
+                width: 100% !important;
+            }
+            .top-app-bar-left {
+                display: flex !important;
+                align-items: center !important;
+                gap: 0.65rem !important;
+                min-width: 0 !important;
+                flex: 1 !important;
+                overflow: hidden !important;
+            }
+            .page-header-titles {
+                min-width: 0 !important;
+                flex: 1 !important;
+                overflow: hidden !important;
+            }
+            .page-header-titles h1 {
+                font-size: 1.05rem !important;
+                font-weight: 800 !important;
+                line-height: 1.3 !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                margin: 0 !important;
+            }
+            .page-header-titles p {
+                display: none !important; /* Disembunyikan pada mobile agar 1 baris lega */
+            }
+            .top-app-bar-right {
+                flex-shrink: 0 !important;
+                margin-left: auto !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+            .btn-notification {
+                width: 38px !important;
+                height: 38px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background: #F3F4F6 !important;
+                border: 1px solid var(--color-border) !important;
+                border-radius: 8px !important;
+                color: var(--color-charcoal) !important;
+                padding: 0 !important;
+            }
+
+            /* Dropdown Notifikasi Adaptif Super Fleksibel */
+            .notif-dropdown {
+                position: fixed !important;
+                top: 68px !important;
+                left: 1rem !important;
+                right: 1rem !important;
+                width: auto !important;
+                max-width: 380px !important;
+                margin: 0 auto !important;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important;
+                z-index: 10005 !important;
+            }
+
+            /* Side Drawer Mobile Melayang */
             .admin-sidebar {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                bottom: 0 !important;
+                width: min(290px, 86vw) !important;
+                z-index: 10000 !important;
                 transform: translateX(-100%);
-                transition: var(--transition);
+                transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                box-shadow: 0 0 35px rgba(0,0,0,0.5) !important;
             }
             .admin-sidebar.open {
-                transform: translateX(0);
+                transform: translateX(0) !important;
             }
             .admin-main {
-                margin-left: 0;
-                padding: 1.25rem 1rem;
+                margin-left: 0 !important;
+                padding: 1.15rem 0.85rem !important;
+                min-width: 0 !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+            }
+        }
+
+        /* Perbaikan Layar Sempit (< 640px) */
+        @media (max-width: 640px) {
+            .hero-slide-admin-item {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.65rem !important;
+                padding: 0.75rem !important;
+            }
+            .hero-slide-header-row {
+                width: 100% !important;
+            }
+            .hero-slide-actions {
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                width: 100% !important;
+                border-top: 1px dashed var(--color-border) !important;
+                padding-top: 0.5rem !important;
+                margin-top: 0.2rem !important;
+            }
+            .builder-stat-grid {
+                grid-template-columns: 1fr !important;
+                gap: 0.45rem !important;
+            }
+            .builder-section-card {
+                padding: 0.85rem !important;
+            }
+            .builder-preview-screen {
+                max-width: 100% !important;
+                padding: 0.5rem !important;
+            }
+            .builder-preview-screen.mobile-view {
+                max-width: 100% !important;
+            }
+            .builder-preview-sticky {
+                position: static !important;
+            }
+            .builder-workspace, .builder-controls, .builder-preview-container {
+                min-width: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
             }
         }
         .password-wrapper {
@@ -4039,6 +4264,9 @@
 
     <!-- 2. Main Admin Dashboard Layout (Active After Login) -->
     <div class="admin-layout" id="admin-app">
+        <!-- Mobile Sidebar Backdrop Overlay -->
+        <div id="sidebar-mobile-backdrop" class="sidebar-backdrop" onclick="toggleSidebarCollapse(false)"></div>
+
         <!-- Sidebar Navigation -->
         <aside class="admin-sidebar" id="admin-sidebar">
             <div style="display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden;">
@@ -4050,8 +4278,11 @@
                             <span>Admin Dashboard</span>
                         </div>
                     </div>
-                    <button type="button" class="btn-sidebar-collapse-toggle" id="btn-sidebar-collapse" onclick="toggleSidebarCollapse()" title="Kecilkan/Perbesar Sidebar">
+                    <button type="button" class="btn-sidebar-collapse-toggle desktop-only-collapse" id="btn-sidebar-collapse" onclick="toggleSidebarCollapse()" title="Kecilkan/Perbesar Sidebar">
                         <i class="fa-solid fa-chevron-left" id="icon-sidebar-collapse"></i>
+                    </button>
+                    <button type="button" class="btn-sidebar-mobile-close" onclick="toggleSidebarCollapse(false)" title="Tutup Menu" aria-label="Tutup Menu">
+                        <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
 
@@ -5211,7 +5442,7 @@
                             <!-- 3 Quick Stats -->
                             <div style="margin-top: 1rem; padding-top: 0.85rem; border-top: 1px dashed var(--color-border);">
                                 <label class="form-label" style="font-weight: 700; color: var(--color-charcoal);">3 Kartu Statistik Ringkas di Bawah Hero</label>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-top: 0.35rem;">
+                                <div class="builder-stat-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-top: 0.35rem;">
                                     <div>
                                         <input type="text" id="builder-stat1-val" class="form-input" style="font-size: 0.75rem; font-weight: 700;" value="70+ Porsi/Hari" oninput="onHeroFieldInput()">
                                         <input type="text" id="builder-stat1-lbl" class="form-input" style="font-size: 0.7rem; margin-top: 2px;" value="Makan Siang Gratis" oninput="onHeroFieldInput()">
@@ -10715,17 +10946,30 @@
             }
         }
 
-        function toggleSidebarCollapse() {
+        function toggleSidebarCollapse(forceState) {
             const sidebar = document.getElementById('admin-sidebar');
             const main = document.querySelector('.admin-main');
             const icon = document.getElementById('icon-sidebar-collapse');
+            const backdrop = document.getElementById('sidebar-mobile-backdrop');
             if (!sidebar) return;
 
             const isMobile = window.innerWidth <= 900;
             if (isMobile) {
-                sidebar.classList.toggle('open');
+                const willOpen = typeof forceState === 'boolean' ? forceState : !sidebar.classList.contains('open');
+                if (willOpen) {
+                    sidebar.classList.add('open');
+                    if (backdrop) backdrop.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    sidebar.classList.remove('open');
+                    if (backdrop) backdrop.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
             } else {
-                const isCollapsed = sidebar.classList.toggle('collapsed');
+                const isCollapsed = typeof forceState === 'boolean' ? forceState : sidebar.classList.toggle('collapsed');
+                if (typeof forceState === 'boolean') {
+                    sidebar.classList.toggle('collapsed', isCollapsed);
+                }
                 if (main) main.classList.toggle('sidebar-collapsed', isCollapsed);
                 if (icon) {
                     icon.className = isCollapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left';
@@ -10755,6 +10999,17 @@
                 if (!wrapper.contains(event.target)) {
                     dropdown.style.display = 'none';
                 }
+            }
+        });
+
+        // Clean up mobile drawer state if resized to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 900) {
+                const sidebar = document.getElementById('admin-sidebar');
+                const backdrop = document.getElementById('sidebar-mobile-backdrop');
+                if (sidebar) sidebar.classList.remove('open');
+                if (backdrop) backdrop.classList.remove('show');
+                document.body.style.overflow = '';
             }
         });
 
@@ -11232,9 +11487,8 @@
             }
 
             // Close mobile sidebar drawer if open
-            const sidebar = document.getElementById('admin-sidebar');
-            if (sidebar && window.innerWidth <= 900) {
-                sidebar.classList.remove('open');
+            if (window.innerWidth <= 900) {
+                toggleSidebarCollapse(false);
             }
 
             // Route tab actions
@@ -19992,32 +20246,34 @@
                     : '<span class="status-badge" style="background: #F3F4F6; color: #9CA3AF; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.25rem;"><i class="fa-solid fa-circle-xmark" style="font-size: 0.65rem;"></i> Non-Aktif</span>';
                 
                 return `
-                    <div style="display: flex; gap: 0.85rem; align-items: flex-start; padding: 0.85rem 1rem; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); box-shadow: 0 1px 3px rgba(0,0,0,0.03); transition: var(--transition);" id="hero-slide-item-${escapeHtml(slide.id)}">
-                        <div style="width: 85px; height: 58px; border-radius: var(--radius-sm); overflow: hidden; background: #E5E7EB center / cover no-repeat; background-image: url('${escapeHtml(slide.media_url || '')}'); flex-shrink: 0; border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);"></div>
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem;">
-                                <span style="font-size: 0.72rem; font-weight: 800; color: var(--color-gold-deep); background: var(--color-gold-light); padding: 0.1rem 0.45rem; border-radius: 4px; border: 1px solid var(--color-gold-border);">Slide #${escapeHtml(String(slide.order_index || (idx + 1)))}</span>
-                                ${statusBadge}
-                            </div>
-                            <div style="font-size: 0.88rem; font-weight: 700; color: var(--color-charcoal); line-height: 1.35; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                ${escapeHtml(slide.judul || 'Tanpa Judul')}
-                            </div>
-                            ${slide.arabic_quote ? `
-                                <div style="font-size: 0.85rem; color: var(--color-charcoal-muted); font-family: 'Amiri', serif; direction: rtl; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.25rem; line-height: 1.6;">
-                                    ${escapeHtml(slide.arabic_quote)}
+                    <div class="hero-slide-admin-item" id="hero-slide-item-${escapeHtml(slide.id)}">
+                        <div class="hero-slide-header-row">
+                            <div class="hero-slide-thumb" style="background-image: url('${escapeHtml(slide.media_url || '')}');"></div>
+                            <div class="hero-slide-info">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem;">
+                                    <span style="font-size: 0.72rem; font-weight: 800; color: var(--color-gold-deep); background: var(--color-gold-light); padding: 0.1rem 0.45rem; border-radius: 4px; border: 1px solid var(--color-gold-border);">Slide #${escapeHtml(String(slide.order_index || (idx + 1)))}</span>
+                                    ${statusBadge}
                                 </div>
-                            ` : ''}
-                            <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.35rem;">
-                                ${escapeHtml(slide.subjudul || 'Tanpa quotes terjemahan')}
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: var(--color-charcoal-muted); background: #F9FAFB; padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; border: 1px solid #F3F4F6;">
-                                <i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--color-gold-deep); font-size: 0.65rem;"></i>
-                                <span style="font-weight: 700; color: var(--color-charcoal);">${escapeHtml(slide.action_label || 'Infaq')}</span>
-                                <span style="color: #9CA3AF;">&rarr;</span>
-                                <span style="font-family: monospace; color: var(--color-charcoal-muted);">${escapeHtml(slide.action_link || '#')}</span>
+                                <div style="font-size: 0.88rem; font-weight: 700; color: var(--color-charcoal); line-height: 1.35; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    ${escapeHtml(slide.judul || 'Tanpa Judul')}
+                                </div>
+                                ${slide.arabic_quote ? `
+                                    <div style="font-size: 0.85rem; color: var(--color-charcoal-muted); font-family: 'Amiri', serif; direction: rtl; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.25rem; line-height: 1.6;">
+                                        ${escapeHtml(slide.arabic_quote)}
+                                    </div>
+                                ` : ''}
+                                <div style="font-size: 0.75rem; color: var(--color-charcoal-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.35rem;">
+                                    ${escapeHtml(slide.subjudul || 'Tanpa quotes terjemahan')}
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: var(--color-charcoal-muted); background: #F9FAFB; padding: 0.2rem 0.5rem; border-radius: 4px; width: fit-content; max-width: 100%; overflow: hidden; border: 1px solid #F3F4F6;">
+                                    <i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--color-gold-deep); font-size: 0.65rem; flex-shrink: 0;"></i>
+                                    <span style="font-weight: 700; color: var(--color-charcoal); flex-shrink: 0;">${escapeHtml(slide.action_label || 'Infaq')}</span>
+                                    <span style="color: #9CA3AF; flex-shrink: 0;">&rarr;</span>
+                                    <span style="font-family: monospace; color: var(--color-charcoal-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(slide.action_link || '#')}</span>
+                                </div>
                             </div>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 0.35rem; flex-shrink: 0; align-items: flex-end;">
+                        <div class="hero-slide-actions">
                             <div style="display: flex; gap: 0.25rem;">
                                 <button type="button" class="btn btn-outline btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.72rem;" onclick="openHeroSlideModal('${escapeHtml(slide.id)}')" title="Edit Slide">
                                     <i class="fa-solid fa-pen-to-square"></i>

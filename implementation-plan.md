@@ -7,8 +7,8 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v6.4 (Resolusi Tag Bersarang DOM Modul Kebersihan & Audit Aksesibilitas 18 Modul Portal Admin)  
-**Terakhir Diperbarui:** 2026-09-16  
+**Versi Rencana Induk:** v6.5 (Perbaikan Responsif Mobile Viewport HP, Side Drawer & Eliminasi Overflow Visual Builder)  
+**Terakhir Diperbarui:** 2026-09-21  
 
 ---
 
@@ -559,3 +559,29 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
    - [x] **Resolusi Error Log 404 /config (`vercel.json`):** Menambahkan rewrite rule `/config` -> `/api/config` pada konfigurasi Vercel.
    - [x] **Resolusi Auth 422 (`admin.html`):** Membersihkan panggilan signUp otomatis yang gagal saat akun fallback master DKM digunakan.
    - [x] **Script SQL Migrasi Supabase:** Penyediaan `database/migration_update_donations_notes.sql` untuk penambahan kolom `admin_notes TEXT` pada tabel `donations`.
+
+---
+
+## FASE 4.1: Resolusi Responsif Mobile Viewport HP, Side Drawer & Eliminasi Overflow Visual Builder
+**Status:** Selesai (100% Terverifikasi)  
+**Tanggal Penyelesaian:** 2026-09-21  
+**Target Viewport Uji:** Smartphone 395 x 824 px (Portrait) dan seluruh resolusi layar sempit (<= 900px, <= 640px).
+
+### 1. Masalah yang Diselesaikan & Akar Masalah (Root Cause):
+1. **Tombol Notifikasi Tergeser ke Bawah & Dropdown Terpotong ke Luar Layar:**
+   - *Akar Masalah:* `.top-app-bar` menggunakan `flex-wrap: wrap;`. Judul halaman mengambil lebar 100%, mendesak tombol lonceng ke baris kedua di posisi `x = 0`. Dropdown menggunakan `position: absolute; right: 0; width: 320px;` sehingga terdorong 320px ke koordinat negatif kiri layar (hanya terlihat ujung kanannya).
+   - *Solusi:* Layout diubah menjadi 1 baris sejajar (`flex-nowrap`), subjudul disembunyikan di mobile, judul utama dipangkas dengan elipsis, tombol lonceng terkunci di kanan atas, dan dropdown dibuat adaptif `position: fixed; left: 1rem; right: 1rem; max-width: 380px; margin: 0 auto; z-index: 10005;`.
+2. **Sidebar Menu Tidak Muncul Saat Hamburger Diklik di Visual Web Builder:**
+   - *Akar Masalah:* Navigasi tab (`switchTab`) tidak pernah membersihkan status class `.open` dari `.admin-sidebar` pada perangkat mobile saat berpindah tab. Akibatnya sidebar tetap berstatus "open" di DOM internal, dan klik hamburger berikutnya memicu event penutupan (toggle false). Tidak adanya backdrop overlay juga membuat penutupan drawer tidak intuitif.
+   - *Solusi:* Dibuat arsitektur Side Drawer melayang dari kiri (`z-index: 10000; width: min(290px, 86vw)`) dengan backdrop gelap semi-transparan (`#sidebar-mobile-backdrop`, `z-index: 9998`), tombol tutup silang [X] pada header sidebar (`.btn-sidebar-mobile-close`), integrasi `toggleSidebarCollapse(false)` pada setiap event `switchTab()`, penguncian scroll body saat drawer terbuka, serta pembersihan otomatis via listener `resize`.
+3. **Bagian Bawah Visual Web Builder Tembus ke Kanan (Horizontal Overflow / Zoom-Out):**
+   - *Akar Masalah:* Kartu slide hero (`#hero-slides-admin-list`) menggunakan 1 baris flex kaku berisi thumbnail (85px) + teks info (flex:1) + 2 kolom tombol aksi (95px) dengan total min-width > 410px. Selain itu, input 3 kartu statistik di bawah hero dipaksa dalam grid 3 kolom (`1fr 1fr 1fr`). Hal ini menyebabkan lebar dokumen melampaui lebar viewport 395px, memicu scroll horizontal dan halaman bisa di-zoom out.
+   - *Solusi:* Pertahanan viewport global anti-bleed (`html, body, .admin-layout, .admin-main { overflow-x: hidden; max-width: 100vw; min-width: 0; }`), restrukturisasi kartu slide hero menjadi responsif bertumpuk vertikal pada layar <= 640px (`.hero-slide-admin-item` dengan `.hero-slide-header-row` di atas dan `.hero-slide-actions` horizontal di bawah), serta transformasi grid input 3 statistik menjadi 1 kolom (`.builder-stat-grid { grid-template-columns: 1fr !important; }`).
+
+### 2. Matriks Pengujian & Verifikasi:
+- [x] Syntax checking inline JavaScript via Node.js: 0 errors terdeteksi pada 25.700+ baris kode `admin.html`.
+- [x] Verifikasi layout Top App Bar 1 baris tanpa wrapping pada viewport <= 900px dan <= 640px.
+- [x] Verifikasi dropdown notifikasi berada di tengah layar yang aman dan terbaca penuh.
+- [x] Verifikasi Side Drawer meluncur mulus, backdrop menutup saat diklik, dan drawer otomatis tertutup saat menu navigasi diklik.
+- [x] Verifikasi Visual Web Builder bebas scroll horizontal dan 100% responsif pada viewport 395x824px.
+
