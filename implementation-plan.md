@@ -7,7 +7,7 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v6.9 (Pemisahan 2 Panel Banner Capaian Infaq & Rata-rata Dapur)  
+**Versi Rencana Induk:** v7.0 (Pusat Notifikasi Terpadu & Mesin Deep-Linking Realtime DKM)  
 **Terakhir Diperbarui:** 2026-09-21  
 
 ---
@@ -628,5 +628,47 @@ Modul coaching ini dieksekusi secara interaktif melalui protokol **Grill-Me & 1-
 - [x] Verifikasi eliminasi total indikator target dan progress bar dari pandangan publik.
 - [x] Verifikasi tata letak proporsional dan tidak terhimpitnya tombol Respon & Hapus pada Kotak Saran.
 - [x] Verifikasi pemisahan 2 panel stat card (Total Infaq Mingguan & Rata-rata Porsi Harian) yang seimbang dan responsif.
+
+---
+
+## FASE 5.0: Pusat Notifikasi Terpadu (Notification Center) & Mesin Deep-Linking Realtime Pengurus DKM
+**Status:** Selesai (100% Terverifikasi)  
+**Tanggal Penyelesaian:** 2026-09-21  
+
+### 1. Masalah yang Diselesaikan & Solusi Arsitektural:
+1. **Pusat Notifikasi Aktif Antar-Peran DKM (`admin.html`):**
+   - *Akar Masalah:* Ikon lonceng pada Top App Bar hanya berupa tombol statis dengan dropdown kosong ("Belum ada notifikasi"), tanpa logika pengiriman notifikasi, penyaringan penerima, maupun tanda belum dibaca.
+   - *Solusi:* Membangun mesin notifikasi multi-tier yang menghubungkan status tugas tim, alur permohonan & pencairan anggaran, sebutan mention ruang obrolan, dan aspirasi kotak saran jamaah ke dalam satu Pusat Notifikasi terpadu dengan lencana unread (`#notif-unread-count`) dan persistensi Supabase DB (`public.app_notifications`) + fallback hibrida lokal (`localStorage`).
+2. **Audio Sintesis Lonceng Web Audio API (`playNotificationChime`):**
+   - *Akar Masalah:* Notifikasi visual sering terlewat saat pengurus membuka tab lain atau sedang bertugas.
+   - *Solusi:* Menghasilkan suara lonceng islami lembut (harmonik E5 659.25Hz & B5 987.77Hz) menggunakan Web Audio API murni tanpa beban berkas MP3 eksternal dan bebas hambatan kuota aset CDN.
+3. **Mesin 1-Click Deep-Linking Terpadu (`handleNotificationItemClick`):**
+   - *Akar Masalah:* Notifikasi umum di dashboard konvensional seringkali tidak membawa pengguna ke konteks data sebenarnya, mengharuskan navigasi manual berlapis.
+   - *Solusi:* Mengimplementasikan *smart deep-linking* 1-klik:
+     - Notifikasi Anggaran langsung mengarahkan ke tab Keuangan (`tab-donations`), membuka subview `budget`, menggulirkan tabel ke baris pengajuan (`#budget-row-[id]`), dan memicu efek animasi denyut emas (`.highlight-row-glow`).
+     - Notifikasi Tugas langsung membuka tab Tugas (`tab-tasks`) dan meluncurkan modal rincian tugas (`openTaskDetailModal(taskId)`).
+     - Notifikasi Chat langsung beralih ke tab Obrolan (`tab-chat`) dan menggulirkan ke pesan spesifik (`#chat-msg-[id]`) dengan highlight flash.
+     - Notifikasi Aspirasi Jamaah langsung beralih ke tab Aspirasi (`tab-feedback`) dan menyorot baris masukan terkait.
+4. **Pemicu Peristiwa Notifikasi Otomatis (Event Hooks):**
+   - *Pengajuan Anggaran Baru:* Memicu notifikasi ke akun pimpinan DKM dan Tim Keuangan saat PJ divisi mengajukan permohonan dana atau klaim nota bon.
+   - *Evaluasi & Keputusan DKM:* Memicu notifikasi persetujuan/penolakan beserta catatan evaluasi pimpinan langsung ke email pemohon.
+   - *Pencairan Kas Keluar:* Memicu notifikasi konfirmasi pencairan kas ke pemohon saat kasir/bendahara mencairkan dana.
+   - *Penugasan Tugas:* Memicu notifikasi ke PIC yang ditugaskan saat tugas baru dibuat.
+   - *Tugas Siap Verifikasi:* Memicu notifikasi ke DKM saat tugas diajukan ke status `REVIEW` atau `COMPLETED` agar diverifikasi di lapangan.
+   - *Sebutan Mention Koordinasi:* Mendeteksi tag mention (`@nama`, `@peran`, dll.) pada pesan ruang koordinasi dan mengirim notifikasi personal ke akun yang dituju.
+   - *Aspirasi Baru Masuk:* Memicu notifikasi ke DKM saat aspirasi masuk via portal publik.
+5. **Skrip Migrasi Supabase SSOT (`database/migration_notifications_engine.sql`):**
+   - Menyediakan skrip DDL SQL untuk membuat tabel `public.app_notifications`, indeks performa multi-kolom, aturan keamanan Row Level Security (RLS), dan mendaftarkan tabel ke replikasi publikasi `supabase_realtime`.
+
+### 2. Matriks Pengujian & Verifikasi:
+- [x] Syntax checking inline JavaScript via Node.js: 0 errors pada `admin.html`.
+- [x] Zero-emoji strict compliance: 0 emoji baru pada seluruh kode dan markup.
+- [x] Verifikasi sintesis Web Audio API chime berjalan tanpa error browser console.
+- [x] Verifikasi unread badge counter, tab filter (Semua / Belum Dibaca), dan fungsi "Tandai Semua Dibaca".
+- [x] Verifikasi deep-linking pengajuan anggaran ke baris tabel dengan efek denyut emas (`.highlight-row-glow`).
+- [x] Verifikasi deep-linking tugas ke modal rincian (`openTaskDetailModal`).
+- [x] Verifikasi deep-linking mention chat ke pesan terkait (`scrollToMessage`).
+- [x] Verifikasi saluran realtime CDC listener pada tabel `app_notifications` dan broadcast channel.
+
 
 

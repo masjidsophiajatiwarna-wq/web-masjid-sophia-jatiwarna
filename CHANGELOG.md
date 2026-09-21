@@ -4,6 +4,30 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.44] - 2026-09-21
+
+### Pusat Notifikasi Terpadu (Notification Center) & Mesin Deep-Linking Realtime Pengurus DKM
+
+#### Ditambahkan
+- [NOTIFICATION/ENGINE] **Mesin Notifikasi Terpadu (`admin.html`):** Arsitektur notifikasi multi-tier yang menghubungkan status tugas, pengajuan anggaran, ruang koordinasi chat, dan aspirasi kotak saran jamaah secara terpusat dengan persistensi Supabase DB (`public.app_notifications`) dan fallback cache hibrida lokal (`localStorage`).
+- [NOTIFICATION/AUDIO] **Sintesis Lonceng Web Audio API (`playNotificationChime`):** Menghasilkan lonceng notifikasi islami bernada lembut (harmonik E5 659.25Hz dan B5 987.77Hz) murni via Web Audio API tanpa beban aset berkas audio eksternal atau dependensi MP3.
+- [NOTIFICATION/UI] **Dropdown & Badge Pusat Notifikasi Modern:** Tombol lonceng dengan lencana merah unread counter (`#notif-unread-count`), panel dropdown 380px responsif, tab filter "Semua" dan "Belum Dibaca", tombol "Tandai Semua Dibaca", tombol "Tes Suara", serta indikator realtime aktif.
+- [NOTIFICATION/TOAST] **Toast Banner Notifikasi Interaktif (`showNotificationToast`):** Banner toast melayang dengan highlight emas di sisi kiri dan tombol aksi "Lihat", yang otomatis muncul saat ada aktivitas baru dan dapat diklik untuk langsung membuka rincian entitas terkait.
+- [DEEP-LINKING/NAVIGATION] **Mesin 1-Click Deep-Linking Terpadu (`handleNotificationItemClick`):**
+  - **Anggaran & Nota Bon:** Beralih ke modul Keuangan (`tab-donations`), mengaktifkan subview Pengajuan Anggaran (`subview-keu-budget`), menggulirkan tabel ke baris pengajuan terkait (`#budget-row-[id]`), dan memicu efek visual denyut emas (`.highlight-row-glow`).
+  - **Tugas Tim DKM:** Beralih ke modul Tugas (`tab-tasks`) dan langsung membuka modal rincian tugas komprehensif (`openTaskDetailModal(id)`).
+  - **Ruang Koordinasi Chat:** Beralih ke modul Chat (`tab-chat`), menggulirkan riwayat ke pesan spesifik (`#chat-msg-[id]`), dan memicu highlight flash.
+  - **Kotak Saran / Feedback:** Beralih ke modul Aspirasi Jamaah (`tab-feedback`) dan menggulirkan tabel ke baris saran terkait (`#feedback-row-[id]`).
+- [NOTIFICATION/HOOKS] **Integrasi Pemicu Peristiwa Otomatis:**
+  - *Pengajuan Anggaran Baru:* Memicu notifikasi otomatis ke DKM dan Tim Keuangan saat PJ mengajukan dana kegiatan atau reimburse nota bon.
+  - *Keputusan Evaluasi DKM:* Memicu notifikasi status (Disetujui / Ditunda / Ditolak) beserta catatan evaluasi ke alamat email PJ pemohon.
+  - *Pencairan Kas Keluar:* Memicu notifikasi konfirmasi pencairan dana dan referensi nomor bukti kas keluar ke PJ pemohon saat bendahara mencairkan kas.
+  - *Penugasan Tugas Baru:* Memicu notifikasi ke akun pengurus yang ditugaskan saat tugas baru dibuat.
+  - *Tugas Siap Review / Selesai:* Memicu notifikasi ke Pimpinan DKM saat tugas diajukan ke status `REVIEW` atau `COMPLETED` agar dapat diverifikasi di lapangan.
+  - *Sebutan Mention Chat:* Mendeteksi tag mention (`@nama`, `@peran`, dll.) pada pesan ruang koordinasi dan mengirim notifikasi personal ke akun yang dituju.
+  - *Aspirasi Jamaah Baru:* Memicu notifikasi ke DKM saat saran baru masuk via formulir publik.
+- [DATABASE/MIGRATION] **Skrip Migrasi Supabase (`database/migration_notifications_engine.sql`):** Definisi tabel `public.app_notifications`, indeks performa, aturan keamanan RLS, dan publikasi ke publikasi `supabase_realtime` CDC.
+
 ## [1.9.43] - 2026-09-21
 
 ### Pemisahan Banner Capaian 2 Panel: Total Infaq Mingguan & Rata-rata Porsi Harian
