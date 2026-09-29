@@ -7,8 +7,8 @@
 **Domain Utama Produksi (Target Baru):** `https://masjidsophia.com/`  
 **Domain Sekunder & Lawas (Redirect 301 Permanen):** `https://masjidsophiajatiwarna.com/`, `https://masjidsophiajatiwarna.my.id/`  
 **Subdomain Pemantauan, Admin & Staging:** `https://progdev.masjidsophia.com/`, `https://admin.masjidsophia.com/`, `https://dev.masjidsophia.com/`  
-**Versi Rencana Induk:** v7.3 (Pembersihan Label Teknis Antarmuka, Perbaikan Ikon Font Awesome KPI, dan Penguatan UI Human-First)  
-**Terakhir Diperbarui:** 2026-09-21  
+**Versi Rencana Induk:** v7.4 (Penguatan Defensive Scripting & Perbaikan Otomasi 24/7 Supabase Keep-Alive CI/CD)  
+**Terakhir Diperbarui:** 2026-09-29  
 
 ---
 
@@ -119,6 +119,7 @@ Masjid Musafir Sophia Jatiwarna membutuhkan ekosistem web portal modern, terpadu
     - Endpoint serverless Vercel `/api/config.js` (`/api/config`) untuk melayani `supabaseUrl` dan `supabaseAnonKey` secara dinamis saat runtime dari `process.env`.
     - Pemuat runtime modular universal `asset/js/env-loader.js` (`window.MasjidConfig`) dengan mekanisme failover 5-tingkat (In-Memory -> SessionStorage -> `config.local.js` -> Serverless API `/api/config` -> LocalStorage) dan lazy initialization Supabase client.
     - Pembersihan 100% seluruh hardcode string URL proyek dan anon public key JWT dari berkas publik dan admin: `index.html`, `admin.html`, `media-checklist.html`, `api/health.js`, `api/donasi.js`, `api/pengaduan.js`, `api/cloud-usage.js`, dan `.github/workflows/supabase-keepalive.yml`.
+    - Penguatan defensive scripting pada `.github/workflows/supabase-keepalive.yml`: Pre-flight secret validation, environment variable isolation, sanitasi trailing slash, retry multi-tier cURL, dan safe string evaluation status code.
     - Hardening `.gitignore` untuk memblokir seluruh berkas kredensial (`.env*`, `config.local.js`, `credentials.txt`, `AKUN_PENGURUS_DKM.txt`, `logerror/`, `.agents/`) serta penyediaan template dokumentasi aman `.env.example`.
     - Audit pemindaian otomatis seluruh repositori dengan status kelulusan 100% (0 temuan celah kebocoran kunci).
 

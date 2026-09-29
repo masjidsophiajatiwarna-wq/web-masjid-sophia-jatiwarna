@@ -4,6 +4,17 @@ Seluruh perubahan penting pada proyek **Web Portal Masjid Musafir Sophia Jatiwar
 
 Format penulisan mengacu pada standar [Keep a Changelog](https://keepachangelog.com/id/1.0.0/) dan prinsip [Semantic Versioning](https://semver.org/).
 
+## [1.9.48] - 2026-09-29
+
+### Penguatan Defensive Scripting & Perbaikan Otomasi 24/7 Supabase Keep-Alive (`.github/workflows/supabase-keepalive.yml`)
+
+#### Diperbaiki
+- [CI/CD/KEEPALIVE_PREFLIGHT] **Validasi Pre-flight GitHub Secrets:** Menambahkan pemeriksaan keberadaan variabel rahasia `SUPABASE_URL` dan `SUPABASE_ANON_KEY` sebelum perintah cURL dieksekusi, mencegah penghentian paksa ("Failed in 2 seconds") akibat eksekusi cURL dengan URL kosong (`exit code 3`) saat repositori belum dikonfigurasi Secrets-nya di dashboard GitHub.
+- [CI/CD/ENV_BINDING] **Binding Environment Variable Mandiri:** Memetakan secrets ke blok `env:` di tingkat runner GitHub Actions alih-alih melakukan injeksi teks langsung ke skrip bash, sesuai rekomendasi resmi GitHub Actions untuk stabilitas eksekusi.
+- [CI/CD/URL_NORMALIZATION] **Normalisasi Trailing Slash URL:** Menambahkan sanitasi garis miring akhir (`CLEAN_URL="${SUPABASE_URL%/}"`) guna mencegah potensi URL ganda (`//rest/v1/...`) jika variabel URL dimasukkan dengan akhiran `/`.
+- [CI/CD/FAILSAFE_CURL] **Peningkatan Ketahanan Jaringan cURL:** Mengonfigurasi parameter cURL dengan batas waktu koneksi 15 detik, batas total 30 detik, dan auto-retry 3 kali berturut-turut dengan jeda 2 detik untuk mengantisipasi kegagalan jaringan transient.
+- [CI/CD/SAFE_STATUS_CHECK] **Evaluasi Status HTTP Tahan Kegagalan:** Mengganti evaluasi integer `-eq` dengan evaluasi string aman `=` guna mengeliminasi potensi error sintaksis bash `[: : integer expression expected` ketika respons jaringan terputus atau non-angka, serta menyajikan cuplikan log payload jika kode HTTP menunjukkan anomali.
+
 ## [1.9.47] - 2026-09-21
 
 ### Pembersihan Label Teknis Antarmuka, Perbaikan Ikon Font Awesome KPI, dan Penguatan UI Human-First

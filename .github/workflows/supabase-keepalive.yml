@@ -12,16 +12,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Perform Health Ping to Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          echo "Sending Keep-Alive request to Supabase PostgreSQL instance..."
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/media_checklists?select=id&limit=1")
+          echo "[INFO] Memulai proses Supabase Keep-Alive Health Ping..."
           
-          echo "Supabase Response Code: $HTTP_STATUS"
-          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 206 ]; then
-            echo "SUCCESS: Supabase database is active and healthy. Auto-pause prevented."
+          # Validasi Pre-flight: Pastikan GitHub Repository Secrets telah dikonfigurasi
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "[ERROR] Variabel rahasia SUPABASE_URL atau SUPABASE_ANON_KEY belum dikonfigurasi di GitHub Secrets."
+            echo ""
+            echo "Panduan Konfigurasi Repository Secrets:"
+            echo "1. Buka Repositori GitHub -> Settings -> Secrets and variables -> Actions."
+            echo "2. Klik 'New repository secret' dan tambahkan:"
+            echo "   - Nama: SUPABASE_URL"
+            echo "   - Nama: SUPABASE_ANON_KEY"
+            echo "Nilai kredensial dapat diambil dari dashboard Supabase Project API Settings."
+            exit 1
+          fi
+
+          # Normalisasi URL: Hapus trailing slash jika ada
+          CLEAN_URL="${SUPABASE_URL%/}"
+
+          echo "[INFO] Mengirimkan request keep-alive ke instance Supabase PostgREST..."
+          
+          # Kirim request dengan timeout dan retry
+          HTTP_STATUS=$(curl -sS --connect-timeout 15 --max-time 30 --retry 3 --retry-delay 2 \
+            -o /tmp/supabase_response.json -w "%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$CLEAN_URL/rest/v1/media_checklists?select=id&limit=1" || echo "CURL_FAILED")
+          
+          echo "[INFO] Kode Respons Supabase: $HTTP_STATUS"
+          
+          if [ "$HTTP_STATUS" = "200" ] || [ "$HTTP_STATUS" = "206" ]; then
+            echo "[SUKSES] Database Supabase aktif, responsif, dan sehat. Fitur auto-pause berhasil dicegah."
+            exit 0
           else
-            echo "WARNING: Unexpected HTTP status $HTTP_STATUS. Please verify credentials."
+            echo "[ERROR] Status HTTP tidak diharapkan: $HTTP_STATUS."
+            if [ -f /tmp/supabase_response.json ]; then
+              echo "[INFO] Cuplikan respons payload:"
+              head -c 300 /tmp/supabase_response.json
+              echo ""
+            fi
+            echo "[SARAN] Mohon verifikasi kembali nilai SUPABASE_URL dan SUPABASE_ANON_KEY pada GitHub Secrets."
+            exit 1
           fi
